@@ -1,0 +1,35 @@
+@import './_typography';
+@import './_definitions';
+
+main {
+  // width: 100vw;
+  // height: 100vh;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  object-fit: cover;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition: $boxTransition;
+
+  h1 {
+    font: $homeCityFont;
+    text-transform: uppercase;
+    margin: 0 auto;
+    position: absolute;
+    top: 40vh;
+    color: white;
+    text-align: center;
+  }
+}
+
+div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
