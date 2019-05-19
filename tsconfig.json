@@ -19,13 +19,12 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2015", "dom", "dom.iterable", "esnext"],
     "jsx": "preserve",
     "types": ["jest", "node"]
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["./src/public/", "node_modules"]
+  "include": ["**/*"],
+  "exclude": ["./src/public/", "node_modules","jest.config.js","client"]
 }

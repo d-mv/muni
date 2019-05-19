@@ -1,0 +1,11 @@
+"use strict";
+exports.__esModule = true;
+var mongodb_1 = require("mongodb");
+var dotenv_1 = require("dotenv");
+var dotEnv = dotenv_1["default"].config();
+var MongoClient = mongodb_1["default"].MongoClient;
+var connectUrl = (process.env.MONGO_URL || 'mongodb://localhost:27017') + "?retryWrites=true";
+var client = new MongoClient(connectUrl, { useNewUrlParser: true, connectTimeoutMS: 30000, reconnectTries: 30, reconnectInterval: 5000 });
+exports.client = client;
+var ObjectID = mongodb_1["default"].ObjectID;
+exports.ObjectID = ObjectID;
