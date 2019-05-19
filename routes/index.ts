@@ -1,6 +1,6 @@
 const express = require("express");
 
-import dbSeed from "../modules/db_seed";
+// import dbSeed from "../modules/db_seed";
 
 const router = express.Router();
 
