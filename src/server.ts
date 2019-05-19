@@ -1,13 +1,12 @@
-import createError from "http-errors";
-import express from "express";
-import cors from "cors";
-import path from "path";
-import cookieParser from "cookie-parser";
-import mongodb from "mongodb";
-import assert from "assert";
+const express = require('express')
+const cors = require('cors')
+const cookieParser = require("cookie-parser");
+import * as mongodb from "mongodb";
+import * as assert from "assert";
 
-import dotenv from "dotenv";
-import compression from "compression";
+import * as dotenv from "dotenv";
+// import compression from "compression";
+const compression =require("compression");
 
 // routes
 import router from "../routes";

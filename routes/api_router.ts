@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 
 import { showRequest } from "../modules/show_request";
 import * as UsersController from "../controllers/user_controller";
@@ -8,8 +8,8 @@ import { apiResponseTYPE } from "../src/types";
 const router = express.Router();
 
 // login
-router.get("/login", (req, res, next) => {
-    console.log("login");
+router.get("/login", (req: any, res: any, next: any) => {
+  console.log("login");
 
   showRequest(req.headers, req.query);
   const token = req.headers.token ? req.headers.token.toString() : "";
@@ -21,7 +21,7 @@ router.get("/login", (req, res, next) => {
   );
 });
 // rest
-router.get("/*", (req, res, next) => {
+router.get("/*", (req:any, res:any, next:any) => {
   res.send({ status: true, message: "Welcome to the API" });
 });
 

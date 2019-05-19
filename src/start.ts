@@ -2,7 +2,7 @@
 
 import app from "./server";
 import debug from "debug";
-import http from "http";
+import * as http from "http";
 
 const server = http.createServer(app);
 

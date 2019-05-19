@@ -1,5 +1,7 @@
-import express from "express";
+const express = require("express");
+
 import dbSeed from "../modules/db_seed";
+
 const router = express.Router();
 
 // ! seed the db with users/posts
@@ -10,7 +12,7 @@ const router = express.Router();
 // });
 
 // rest
-router.get("/*", (req, res, next) => {
+router.get("/*", (req:any, res:any, next:any) => {
   res.send();
 });
 

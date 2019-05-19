@@ -1,4 +1,4 @@
-import express from "express"
+const express = require("express");
 
 import * as UsersController from '../controllers/user_controller'
 
@@ -8,7 +8,7 @@ import { apiResponseTYPE } from '../src/types'
 const router = express.Router();
 
 // create user
-router.get("/create", (req, res, next) => {
+router.get("/create", (req:any, res:any, next:any) => {
   console.log('create')
   showRequest(req.headers, req.query)
   const token = req.headers.token ? req.headers.token.toString() : ''
@@ -17,7 +17,7 @@ router.get("/create", (req, res, next) => {
   })
 });
 // check if token login available
-router.get("/check", (req, res, next) => {
+router.get("/check", (req:any, res:any, next:any) => {
     console.log("check");
 
   showRequest(req.headers, req.query)
@@ -28,7 +28,7 @@ router.get("/check", (req, res, next) => {
 });
 
 // get user
-router.get("/:id", (req, res, next) => {
+router.get("/:id", (req:any, res:any, next:any) => {
     console.log("id");
   showRequest(req.headers, req.params.id)
   const token = req.headers.token ? req.headers.token.toString() : ''

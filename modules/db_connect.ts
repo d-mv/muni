@@ -1,6 +1,5 @@
-
-import mongodb from 'mongodb'
-import dotenv from "dotenv"
+import * as mongodb from "mongodb";
+import * as dotenv from "dotenv";
 
 const dotEnv = dotenv.config()
 

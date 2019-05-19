@@ -1,4 +1,4 @@
-import assert from "assert";
+import * as assert from "assert";
 
 import * as MDB from "../modules/db_connect";
 import * as Generate from "../modules/token_gen";

@@ -1,5 +1,5 @@
-import faker from "faker";
-import mongo from "mongodb";
+import * as faker from "faker";
+import * as mongodb from "mongodb";
 import * as MDB from "./db_connect";
 const dbName = "muni";
 
@@ -44,7 +44,7 @@ const dbSeed = (callback: any) => {
   for (let i = 0; i < users; i++) {
     // new user
     const user: any = {
-      _id: new mongo.ObjectID(),
+      _id: new MDB.ObjectID(),
       fName: faker.name.firstName(),
       lName: faker.name.lastName(),
       email: faker.internet.email(),
@@ -59,13 +59,13 @@ const dbSeed = (callback: any) => {
     for (let n = 0; n < posts; n++) {
       // new post
       const post: any = {
-        id: new mongo.ObjectID(),
+        id: new MDB.ObjectID(),
         title: faker.lorem.sentence,
         text: faker.lorem.paragraphs(5),
         photo: "https://picsum.photos/200/300?random=1",
         link: faker.internet.url,
-        newsId: new mongo.ObjectID(),
-        createdBy: new mongo.ObjectID(),
+        newsId: new MDB.ObjectID(),
+        createdBy: new MDB.ObjectID(),
         date: faker.date.between("2019-01-01", "2019-05-15"),
         status: "active",
         votes: {

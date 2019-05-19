@@ -1,1 +1,1 @@
-web: node dist/src/start.js
+web: yarn start
