@@ -14,7 +14,7 @@ import router from "../routes";
 import apiRouter from "../routes/api_router";
 import userRouter from "../routes/user_router";
 import locationRouter from "../routes/loc_router";
-import postRouter from '../routes/post_router'
+import postRouter from "../routes/post_router";
 
 const dotEnv = dotenv.config();
 const app = express();
@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 app.use("/api/user", userRouter);
 app.use("/api/location", locationRouter);
-app.use('/api/post',postRouter)
+app.use("/api/post", postRouter);
 app.use("/api", apiRouter);
 app.use("/", router);
 
