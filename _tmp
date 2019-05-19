@@ -1,0 +1,3 @@
+    "start": "node ./src/start.js",
+    "build":"tsc",
+        "prestart": "yarn run build",

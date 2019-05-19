@@ -12,8 +12,10 @@
     "dev": "tsnd --respawn ./src/start.ts",
     "client": "yarn start --prefix client",
     "client-install": "yarn install --prefix client",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --prefix client && yarn run build --prefix client",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "start": "yarn run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/start.ts"
   },
   "devDependencies": {
     "@trongnd/ts-nodemon": "^1.0.3",
