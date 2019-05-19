@@ -6,11 +6,12 @@
   "license": "UNLICENSED",
   "private": true,
   "repository": "",
-  "main": "dist/start.js",
+  "main": "./dist/start.js",
   "scripts": {
     "start": "node ./dist/src/start.js",
+    "prestart": "yarn build",
     "dev": "yarn run build:live",
-    "build": "tsc -p .",
+    "build": "tsc ./src/*.ts --outDir ./dist",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/start.ts"
   },
   "devDependencies": {
