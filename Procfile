@@ -1,1 +1,1 @@
-web: ts-node src/start.ts
+web: node dist/src/start.js
