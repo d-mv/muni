@@ -8,7 +8,7 @@ import { apiResponseTYPE } from "../src/types";
 const router = express.Router();
 
 // GET request of list of locations
-router.get("/list", (req:any, res:any, next:any) => {
+router.get("/list", (req: any, res: any, next: any) => {
   showRequest(req.headers, req.query);
   const token = req.headers.token ? req.headers.token.toString() : "";
   LocationController.list(
@@ -19,7 +19,7 @@ router.get("/list", (req:any, res:any, next:any) => {
   );
 });
 // GET request for list of posts
-router.get("/:id/posts", (req:any, res:any, next:any) => {
+router.get("/:id/posts", (req: any, res: any, next: any) => {
   showRequest(req.headers, [req.query, req.params.id]);
   const token = req.headers.token ? req.headers.token.toString() : "";
   LocationController.posts(
@@ -41,7 +41,18 @@ router.post("/create", (req: any, res: any, next: any) => {
   );
 });
 // update
-// put
+router.patch("/:id", (req: any, res: any, next: any) => {
+  console.log(req);
+  showRequest(req.headers, [req.body, req.headers.token]);
+  const token = req.headers.token ? req.headers.token.toString() : "";
+  LocationController.update(
+    { location: req.params.id, query: req.body, token: token },
+    (controllerResponse: apiResponseTYPE) => {
+      res.status(controllerResponse.code).send(controllerResponse);
+    }
+  );
+});
+
 // delete
 // delete
 
@@ -56,9 +67,6 @@ router.post("/create", (req: any, res: any, next: any) => {
 //     }
 //   );
 // });
-
-
-
 
 // router.get("/create", (req:any, res:any, next:any) => {
 //   showRequest(req.headers, req.query);
@@ -91,7 +99,7 @@ router.post("/create", (req: any, res: any, next: any) => {
 //   );
 // });
 // rest
-router.get("/*", (req:any, res:any, next:any) => {
+router.get("/*", (req: any, res: any, next: any) => {
   res.send();
 });
 

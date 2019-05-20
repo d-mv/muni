@@ -9,13 +9,8 @@ import {
   IncNewLocationTYPE
 } from "../src/types";
 
-import {
-  checkFields,
-  checkFieldsLogin,
-  checkTokenLength,
-  dropQuotes,
-  checkID
-} from "../modules/check_strings";
+import { checkTokenLength, dropQuotes } from "../modules/check_strings";
+import { stringify } from "querystring";
 
 /** Get the list of locations
  * @function list
@@ -91,7 +86,7 @@ export const create = (
     User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
       if (modelResponse.status) {
         Location.create(props.query, (modelResponse: apiResponseTYPE) => {
-                  callback(modelResponse);
+          callback(modelResponse);
         });
       } else {
         callback(modelResponse);
@@ -101,21 +96,48 @@ export const create = (
     callback(tokenLength);
   }
   // check fields
-  const checkQuery =
-    props.query &&
-    typeof props.query === "object" &&
-    props.query.photo &&
-    typeof props.query.photo === "string" &&
-    props.query.name &&
-    typeof props.query.name === "object" &&
-    props.query.name.en &&
-    props.query.name.he &&
-    typeof props.query.name.en === "string" &&
-    typeof props.query.name.he === "string";
+  // const checkQuery =
+  //   props.query &&
+  //   typeof props.query === "object" &&
+  //   props.query.photo &&
+  //   typeof props.query.photo === "string" &&
+  //   props.query.name &&
+  //   typeof props.query.name === "object" &&
+  //   props.query.name.en &&
+  //   props.query.name.he &&
+  //   typeof props.query.name.en === "string" &&
+  //   typeof props.query.name.he === "string";
 
-  console.log(checkQuery);
+  // console.log(checkQuery);
   // const checkResult = checkFieldsLocationNew({ query: props.query });
 
   // ask model
   // callback();
+};
+export const update = (
+  props: {
+    location: string;
+    query: { [index: string]: string };
+    token: string;
+  },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check su token
+  const tokenCheckResult = props.token && typeof props.token === "string";
+  const tokenLength = checkTokenLength(dropQuotes(props.token));
+  if (tokenCheckResult && tokenLength.status) {
+    // check if su
+    User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
+      if (modelResponse.status) {
+        const query = { location: props.location, fields: { ...props.query } };
+        Location.update(query, (modelResponse: apiResponseTYPE) => {
+          callback(modelResponse);
+        });
+      } else {
+        callback(modelResponse);
+      }
+    });
+  } else {
+    callback(tokenLength);
+  }
 };
