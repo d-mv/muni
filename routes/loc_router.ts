@@ -2,6 +2,7 @@ const express = require("express");
 
 import { showRequest } from "../modules/show_request";
 import * as LocationController from "../controllers/location_controller";
+import * as PostController from "../controllers/post_controller";
 
 import { apiResponseTYPE } from "../src/types";
 
@@ -22,14 +23,15 @@ router.get("/list", (req: any, res: any, next: any) => {
 router.get("/:id/posts", (req: any, res: any, next: any) => {
   showRequest(req.headers, [req.query, req.params.id]);
   const token = req.headers.token ? req.headers.token.toString() : "";
-  LocationController.posts(
+  PostController.posts(
+    // location, token and user
     { query: { location: req.params.id, options: req.query }, token: token },
     (controllerResponse: apiResponseTYPE) => {
       res.status(controllerResponse.code).send(controllerResponse);
     }
   );
 });
-// create
+// create 
 router.post("/create", (req: any, res: any, next: any) => {
   showRequest(req.headers, [req.body, req.headers.token]);
   const token = req.headers.token ? req.headers.token.toString() : "";

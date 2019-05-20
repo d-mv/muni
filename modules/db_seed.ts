@@ -48,7 +48,7 @@ const dbSeed = (callback: any) => {
       fName: faker.name.firstName(),
       lName: faker.name.lastName(),
       email: faker.internet.email(),
-      pass: 1234567,
+      pass: "1234567",
       posts: []
     };
     // qty of post per this user
@@ -59,11 +59,11 @@ const dbSeed = (callback: any) => {
     for (let n = 0; n < posts; n++) {
       // new post
       const post: any = {
-        id: new MDB.ObjectID(),
-        title: faker.lorem.sentence,
+        _id: new MDB.ObjectID(),
+        title: faker.lorem.sentence(),
         text: faker.lorem.paragraphs(5),
         photo: "https://picsum.photos/200/300?random=1",
-        link: faker.internet.url,
+        link: faker.internet.url(),
         newsId: new MDB.ObjectID(),
         createdBy: new MDB.ObjectID(),
         date: faker.date.between("2019-01-01", "2019-05-15"),
@@ -73,6 +73,7 @@ const dbSeed = (callback: any) => {
           down: faker.random.number()
         }
       };
+      console.log(post);
       // push the post to user
       user.posts.push(post);
     }
@@ -80,10 +81,10 @@ const dbSeed = (callback: any) => {
     block.push(user);
   }
   // ! call to update the DB
-  // update({
-  //   id: "5ce03513451847a32483c5bas",
-  //   fields: block
-  // });
+  update({
+    id: "5ce2a3c945e5451171394b35",
+    fields: block
+  });
   // return the data
   callback({ users: block });
 };

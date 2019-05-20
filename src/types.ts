@@ -5,6 +5,7 @@ export interface apiResponseTYPE {
   message: string;
   code: number;
   payload?: any;
+  level?:string
 }
 
 export interface IncPostsListTYPE {

@@ -29,18 +29,18 @@ export const checkToken = (
     if (!checkLength.status) {
       callback(checkLength);
     } else {
-      // check location malformed
-      //  const checkIdResult = checkID(props.location);
-      //  const check =
-      //    dropQuotes(props.location) !== "" && checkIdResult.status;
-      //  if (!check) {
-      //    callback(checkIdResult);
-      //  } else {
       // check with DB
-      User.checkToken(token, (modelResponse: apiResponseTYPE) => {
-        callback(modelResponse);
+      User.suCheckToken(token, (sUmodelResponse: apiResponseTYPE) => {
+        // if SU
+        if (sUmodelResponse.status && sUmodelResponse.level === "su") {
+          callback(sUmodelResponse);
+        } else {
+          // if Not
+          User.checkToken(token, (modelResponse: apiResponseTYPE) => {
+            callback(modelResponse);
+          });
+        }
       });
-      //  }
     }
   }
 };

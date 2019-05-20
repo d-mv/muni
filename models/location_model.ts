@@ -122,6 +122,7 @@ export const update = (
             )
             .then((document: any) => {
               // default response
+              
               response.message = "Error in updating the DB";
               response.code = 500;
               console.log(document);

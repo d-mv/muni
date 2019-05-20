@@ -141,7 +141,7 @@ export const checkToken = (
           $project: {
             "users.location": "$_id",
             "users.authDate": 1,
-            "users.fname": 1,
+            "users.fName": 1,
             "users._id": 1
           }
         },
@@ -153,6 +153,7 @@ export const checkToken = (
       ])
       .toArray((err: any, result: any) => {
         // if error return error
+        console.log("check token");
         console.log(result);
         if (err) {
           callback({
@@ -323,14 +324,15 @@ export const loginAttempt = (
   id: string,
   callback: (arg0: apiResponseTYPE) => void
 ) => {
+  console.log(user);
+  console.log(id);
   MDB.client.connect(err => {
     const db: any = MDB.client.db(dbName);
     db.collection("dev")
       .aggregate([
         {
           $match: {
-            _id: new MDB.ObjectID(user.location),
-            "users._id": new MDB.ObjectID(id)
+            _id: new MDB.ObjectID(user.location)
           }
         },
         {
@@ -350,6 +352,14 @@ export const loginAttempt = (
             email: user.email,
             pass: user.pass
           }
+        },
+        {
+          $project: {
+            fName: 1,
+            lName: 1,
+            email: 1,
+            pass: 1
+          }
         }
       ])
       .toArray((err: any, result: any) => {
@@ -358,6 +368,8 @@ export const loginAttempt = (
           message: "",
           code: 500
         };
+        console.log(result);
+        console.log(result.length);
         if (err) {
           callback({
             status: false,
@@ -368,7 +380,7 @@ export const loginAttempt = (
           });
         } else if (result.length === 1) {
           // match
-
+          console.log(result.length);
           // set the fields to update
           const token = Generate.token();
           const newFields = {
@@ -484,7 +496,8 @@ export const suCheckToken = (
               payload: {
                 id: result[0]._id,
                 expire: expireDate
-              }
+              },
+              level: "su"
             });
           } else {
             // if not valid
