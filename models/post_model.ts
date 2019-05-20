@@ -194,3 +194,98 @@ export const update = (
       });
   });
 };
+export const deletePost = (
+  props: {
+    post: string;
+    user: string;
+    level: string;
+  },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check is post is available
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    const database = MDB.client.db("muni").collection("dev");
+    database
+      .aggregate([
+        {
+          $unwind: {
+            path: "$users",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$users"
+          }
+        },
+        {
+          $unwind: {
+            path: "$posts",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            fName: 0,
+            lName: 0,
+            email: 0,
+            pass: 0,
+            authDate: 0,
+            token: 0
+          }
+        },
+        {
+          $match: {
+            "posts._id": new MDB.ObjectID(props.post)
+          }
+        },
+        {
+          $project: {
+            post: "$posts"
+          }
+        }
+      ])
+      .toArray((err: any, result: any) => {
+        // if there is a result
+        if (result.length === 1) {
+          // if the user can have access to it
+          if (props.level === "su" || result[0].post.createdBy === props.user) {
+            // remove item
+            database
+              .update(
+                { "users.posts._id": new MDB.ObjectID(props.post) },
+                {
+                  $pull: {
+                    "users.$[].posts": { _id: new MDB.ObjectID(props.post) }
+                  }
+                }
+              )
+              .then((document: any) => {
+                callback(
+                  updateMessage({
+                    subj: "Post",
+                    document: {
+                      ok: document.result.ok,
+                      nModified: document.result.nModified
+                    }
+                  })
+                );
+              })
+              .catch((e: any) => {
+                callback(errorMessage({ action: "post update", e: e }));
+              });
+          } else {
+            callback(
+              requestError(
+                "User doesn't have enough rights to modify the post."
+              )
+            );
+          }
+        } else {
+          callback(notFound("post"));
+        }
+      });
+  });
+};

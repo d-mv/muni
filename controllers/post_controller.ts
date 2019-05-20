@@ -63,7 +63,11 @@ export const posts = (
     }
   });
 };
-
+/** Update existing post
+ *@function update
+ * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token
+ * @return {} - Returns response through callback function
+ */
 export const update = (
   props: {
     id: string;
@@ -97,3 +101,78 @@ export const update = (
     });
   }
 };
+/** Update existing post
+ *@function update
+ * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token
+ * @return {} - Returns response through callback function
+ */
+export const create = (
+  props: {
+    id: string;
+    query: { [index: string]: string };
+    token: string;
+  },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check malformed ID
+  const idCheckResult = checkID(props.id);
+  if (!idCheckResult.status) {
+    callback(idCheckResult);
+  } else {
+    // check token
+    checkToken(props.token, (r: apiResponseTYPE) => {
+      // if token is bad
+      if (!r.status) {
+        callback(r);
+      } else {
+        // request User model
+        const query = {
+          id: props.id,
+          user: r.payload.id,
+          level: r.level || "",
+          fields: { ...props.query }
+        };
+        Post.update(query, (modelResponse: apiResponseTYPE) => {
+          callback(modelResponse);
+        });
+      }
+    });
+  }
+};
+/** Update existing post
+ *@function update
+ * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token
+ * @return {} - Returns response through callback function
+ */
+export const deletePost = (
+  props: {
+    post: string;
+    token: string;
+  },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check malformed ID
+  const idCheckResult = checkID(props.post);
+  if (!idCheckResult.status) {
+    callback(idCheckResult);
+  } else {
+    // check token
+    checkToken(props.token, (r: apiResponseTYPE) => {
+      // if token is bad
+      if (!r.status) {
+        callback(r);
+      } else {
+        // request User model
+        const query = {
+          post: props.post,
+          user: r.payload.id,
+          level: r.level || ""
+        };
+        Post.deletePost(query, (modelResponse: apiResponseTYPE) => {
+          callback(modelResponse);
+        });
+      }
+    });
+  }
+};
+

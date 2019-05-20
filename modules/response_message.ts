@@ -13,7 +13,7 @@ export const updateMessage = (props: {
   if (props.document.ok === 1) {
     // set response
     (response.status = true),
-      (response.message = `${props.subj} has been updated`);
+      (response.message = `${props.subj} has been updated/deleted`);
     response.code = 200;
     // if not updated
     if (props.document.nModified === 0) {

@@ -19,16 +19,28 @@ router.patch("/:id", (req: any, res: any, next: any) => {
   );
 });
 // create
-router.post("/create", (req: any, res: any, next: any) => {
+// router.post("/create", (req: any, res: any, next: any) => {
+//   showRequest(req.headers, [req.body, req.headers.token]);
+//   const token = req.headers.token ? req.headers.token.toString() : "";
+//   PostController.create(
+//     { query: req.body, token: token },
+//     (controllerResponse: apiResponseTYPE) => {
+//       res.status(controllerResponse.code).send(controllerResponse);
+//     }
+//   );
+// });
+// delete
+router.delete("/:id", (req: any, res: any, next: any) => {
   showRequest(req.headers, [req.body, req.headers.token]);
   const token = req.headers.token ? req.headers.token.toString() : "";
-  PostController.create(
-    { query: req.body, token: token },
+  PostController.deletePost(
+    { post: req.params.id, token: token },
     (controllerResponse: apiResponseTYPE) => {
       res.status(controllerResponse.code).send(controllerResponse);
     }
   );
 });
+
 // rest
 router.get("/*", (req: any, res: any, next: any) => {
   res.send();
