@@ -141,3 +141,31 @@ export const update = (
     callback(tokenLength);
   }
 };
+export const deleteLocation = (
+  props: {
+    location: string;
+    token: string;
+  },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check su token
+  const tokenCheckResult = props.token && typeof props.token === "string";
+  const tokenLength = checkTokenLength(dropQuotes(props.token));
+  if (tokenCheckResult && tokenLength.status) {
+    // check if su
+    User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
+      if (modelResponse.status) {
+        Location.deleteLocation(
+          props.location,
+          (modelResponse: apiResponseTYPE) => {
+            callback(modelResponse);
+          }
+        );
+      } else {
+        callback(modelResponse);
+      }
+    });
+  } else {
+    callback(tokenLength);
+  }
+};

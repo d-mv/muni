@@ -155,3 +155,59 @@ export const update = (
       });
   });
 };
+export const deleteLocation = (
+  location: string,
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check is location available
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    const database = MDB.client.db("muni").collection("dev");
+    database
+      .aggregate([{ $match: { _id: new MDB.ObjectID(location) } }])
+      .toArray((err: any, result: any) => {
+        // if not
+        let response: apiResponseTYPE = {
+          status: false,
+          message: "No location found",
+          code: 203
+        };
+        if (err) {
+          response.message = `Error: ${err}`;
+          response.code = 500;
+          callback(response);
+        } else if (result.length === 0) {
+          callback(response);
+        } else {
+          database
+            .deleteOne({ _id: new MDB.ObjectID(result[0]._id) })
+            .then((document: any) => {
+              // default response
+              response.message = "Error in updating the DB";
+              response.code = 500;
+              console.log(document);
+              // if OK
+              if (document.result.ok === 1) {
+                // set response
+                response = {
+                  status: true,
+                  message: "Location has been deleted",
+                  code: 200
+                };
+                callback(response);
+              } else {
+                // if not
+                callback(response);
+              }
+            })
+            .catch((e: any) =>
+              callback({
+                status: false,
+                message: `Contact administrator (${e.toString()})`,
+                code: 500
+              })
+            );
+        }
+      });
+  });
+};
