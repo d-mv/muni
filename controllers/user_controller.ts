@@ -10,7 +10,7 @@ import {
 import {
   checkFields,
   checkFieldsLogin,
-  checkID,
+  checkID
 } from "../modules/check_strings";
 
 /**
@@ -86,7 +86,16 @@ export const login = (
 ) => {
   // check fields
   const reply: apiResponseTYPE = checkFieldsLogin({ query: props.query });
-  const idCheckResult = checkID(props.query.location);
+  let idCheckResult = {
+    status: false,
+    message: "Location is missing",
+    code: 400
+  };
+  if (props.query.location) {
+    idCheckResult = checkID(props.query.location);
+  } else {
+    callback(idCheckResult);
+  }
   const check = reply.status && idCheckResult.status;
   // if negative reply immediately
   if (!check) {

@@ -1,4 +1,4 @@
-import { apiResponseTYPE, UserTYPE } from '../src/types'
+import { apiResponseTYPE, UserTYPE } from "../src/types";
 
 /**
  * Drop single/double quote marks
@@ -7,9 +7,9 @@ import { apiResponseTYPE, UserTYPE } from '../src/types'
  * @returns {boolean}
  */
 export const dropQuotes = (text: string): string => {
-  const newLine = text.replace(/"|'/g, "")
-  return newLine
-}
+  const newLine = text.replace(/"|'/g, "");
+  return newLine;
+};
 /**
  * Check if string is empty
  * @function stringIsEmpty
@@ -17,9 +17,10 @@ export const dropQuotes = (text: string): string => {
  * @returns {boolean}
  */
 const stringIsEmpty = (field: string): boolean => {
-  const response = field === '' || field === "" || field === "''" ? false : true
-  return response
-}
+  const response =
+    field === "" || field === "" || field === "''" ? false : true;
+  return response;
+};
 
 /**
  * Check if fields are empty
@@ -27,18 +28,29 @@ const stringIsEmpty = (field: string): boolean => {
  * @param {object} fields - Fields with/without values
  * @returns {object} - {  status: boolean, message: string}
  */
-const fieldsCheckIfEmpty = (fields: { [index: string]: string }, scoreMax: number = 3): apiResponseTYPE => {
+const fieldsCheckIfEmpty = (
+  fields: { [index: string]: string },
+  scoreMax: number = 3
+): apiResponseTYPE => {
   let response: apiResponseTYPE;
-  let score = 0
+  let score = 0;
 
   Object.keys(fields).map((field: any) => {
-    stringIsEmpty(fields[`${field}`]) ? score += 1 : null
-  })
-  if (score === 0) { response = { status: false, message: 'The request is empty', code: 400 } }
-  else if (score < scoreMax) { response = { status: false, message: 'The request is incomplete', code: 400 } }
-  else { response = { status: true, message: '', code: 200 } }
+    stringIsEmpty(fields[`${field}`]) ? (score += 1) : null;
+  });
+  if (score === 0) {
+    response = { status: false, message: "The request is empty", code: 400 };
+  } else if (score < scoreMax) {
+    response = {
+      status: false,
+      message: "The request is incomplete",
+      code: 400
+    };
+  } else {
+    response = { status: true, message: "", code: 200 };
+  }
   return response;
-}
+};
 
 /**
  * Check the fields of query
@@ -47,26 +59,35 @@ const fieldsCheckIfEmpty = (fields: { [index: string]: string }, scoreMax: numbe
  * @returns {object} - {status: boolean, message: string}
  */
 export const checkFields = (props: { query: any | {} }) => {
-  const fields = 'name' in props.query && "email" in props.query && "pass" in props.query
+  const fields =
+    "name" in props.query && "email" in props.query && "pass" in props.query;
   let response: apiResponseTYPE;
   if (fields) {
-    response = fieldsCheckIfEmpty(props.query)
+    response = fieldsCheckIfEmpty(props.query);
   } else {
-    response = { status: false, message: 'Fields are missing in the request', code: 400 }
+    response = {
+      status: false,
+      message: "Fields are missing in the request",
+      code: 400
+    };
   }
   return response;
-}
+};
 
 export const checkFieldsLogin = (props: { query: any | {} }) => {
-  const fields = "email" in props.query && "pass" in props.query
+  const fields = "email" in props.query && "pass" in props.query;
   let response: apiResponseTYPE;
   if (fields) {
-    response = fieldsCheckIfEmpty(props.query, 2)
+    response = fieldsCheckIfEmpty(props.query, 2);
   } else {
-    response = { status: false, message: 'Fields are missing in the request', code: 400 }
+    response = {
+      status: false,
+      message: "Fields are missing in the request",
+      code: 400
+    };
   }
   return response;
-}
+};
 /**
  * Check the ID string
  * @function checkID
@@ -83,7 +104,7 @@ export const checkID = (id: string) => {
     response = { status: true, message: "ID is in proper format", code: 200 };
   }
   return response;
-}
+};
 /**
  * Check the token
  * @function checkToken
@@ -100,7 +121,10 @@ export const checkTokenLength = (token: string) => {
     response = {
       status: true,
       message: "Token is in proper format",
-      code: 200 };
+      code: 200
+    };
+  } else if (token.length === 0) {
+    response.message = "Token is missing";
   }
   return response;
-}
+};

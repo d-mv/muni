@@ -1,3 +1,5 @@
+import { ObjectId } from 'bson';
+
 export interface apiResponseTYPE {
   status: boolean;
   message: string;
@@ -41,6 +43,24 @@ export interface IncLoginTYPE {
   email: string;
   pass: string;
   location?: string;
+}
+
+export interface IncNewLocationTYPE {
+  name: {
+    en: string;
+    he: string;
+    other?: {};
+  };
+  photo: string;
+}
+export interface LocationTYPE {
+  _id?: ObjectId;
+  lang: {
+    en: string;
+    he: string;
+    other?: {};
+  };
+  photo: string;
 }
 
 export interface NewUserTYPE {

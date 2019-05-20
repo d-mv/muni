@@ -446,6 +446,80 @@ export const login = (
     }
   });
 };
+export const suCheckToken = (
+  token: string,
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  MDB.client.connect(err => {
+    // assert.equal(null, err);
+    const db: any = MDB.client.db(dbName);
+    db.collection("app")
+      .aggregate([
+        {
+          $match: {
+            "su.token": token
+          }
+        }
+      ])
+      .toArray((err: any, result: any) => {
+        let response: apiResponseTYPE = {
+          status: false,
+          message: "Please, re-login and repeat",
+          code: 203
+        };
+        if (result.length > 0) {
+          // if token found
+          const id = result[0]._id;
+          const authDate = result[0].su.authDate;
+          const today: any = new Date();
+          const authedHours = Math.round((today - authDate) / 3600000);
+          // check time validity
+          if (authedHours < 720 && authedHours >= 0) {
+            // if valid
+            const expireDate = new Date(today.setDate(today.getDate() + 30));
+            callback({
+              status: true,
+              message: "Authorized",
+              code: 200,
+              payload: {
+                id: result[0]._id,
+                expire: expireDate
+              }
+            });
+          } else {
+            // if not valid
+            db.collection("app")
+              .updateOne(
+                { _id: new MDB.ObjectID(id) },
+                { $set: { "su.token": "", "su.authDate": "" } }
+              )
+              .then((document: any) => {
+                // default response
+                response.message = "Error in expired SU token reset";
+                response.code = 500;
+
+                // if OK
+                if (
+                  document.result.nModified === 1 &&
+                  document.result.ok === 1
+                ) {
+                  response = {
+                    status: true,
+                    message: "SU token expired and was reset",
+                    code: 401
+                  };
+                }
+                callback(response);
+              })
+              .catch((e: any) => console.log(e));
+          }
+        } else {
+          // if not
+          callback(response);
+        }
+      });
+  });
+};
 
 export const suCheckLogin = (
   user: IncLoginTYPE,
@@ -488,12 +562,17 @@ export const suCheckLogin = (
               response.code = 500;
 
               if (document.result.nModified === 1 && document.result.ok === 1) {
+                const today: any = new Date();
+                const expireDate = new Date(
+                  today.setDate(today.getDate() + 30)
+                );
                 response = {
                   status: true,
                   message: "SU login is OK",
                   code: 200,
                   payload: {
-                    token: token
+                    token: token,
+                    expire: expireDate
                   }
                 };
               }

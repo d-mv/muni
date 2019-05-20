@@ -1,8 +1,22 @@
+import * as User from "../models/user_model";
 import * as Location from "../models/location_model";
 import * as Post from "../models/post_model";
 import { checkToken } from "../modules/check_token";
 
-import { apiResponseTYPE, IncPostsListTYPE } from "../src/types";
+import {
+  apiResponseTYPE,
+  IncPostsListTYPE,
+  IncNewLocationTYPE
+} from "../src/types";
+
+import {
+  checkFields,
+  checkFieldsLogin,
+  checkTokenLength,
+  dropQuotes,
+  checkID
+} from "../modules/check_strings";
+
 /** Get the list of locations
  * @function list
  * @param  {object} props - Request in the form of {query:{[index:string]:string};token:string}
@@ -64,4 +78,44 @@ export const posts = (
       }
     }
   });
+};
+export const create = (
+  props: { query: IncNewLocationTYPE; token: string },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check su token
+  const tokenCheckResult = props.token && typeof props.token === "string";
+  const tokenLength = checkTokenLength(dropQuotes(props.token));
+  if (tokenCheckResult && tokenLength.status) {
+    // check if su
+    User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
+      if (modelResponse.status) {
+        Location.create(props.query, (modelResponse: apiResponseTYPE) => {
+                  callback(modelResponse);
+        });
+      } else {
+        callback(modelResponse);
+      }
+    });
+  } else {
+    callback(tokenLength);
+  }
+  // check fields
+  const checkQuery =
+    props.query &&
+    typeof props.query === "object" &&
+    props.query.photo &&
+    typeof props.query.photo === "string" &&
+    props.query.name &&
+    typeof props.query.name === "object" &&
+    props.query.name.en &&
+    props.query.name.he &&
+    typeof props.query.name.en === "string" &&
+    typeof props.query.name.he === "string";
+
+  console.log(checkQuery);
+  // const checkResult = checkFieldsLocationNew({ query: props.query });
+
+  // ask model
+  // callback();
 };

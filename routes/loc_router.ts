@@ -29,6 +29,36 @@ router.get("/:id/posts", (req:any, res:any, next:any) => {
     }
   );
 });
+// create
+router.post("/create", (req: any, res: any, next: any) => {
+  showRequest(req.headers, [req.body, req.headers.token]);
+  const token = req.headers.token ? req.headers.token.toString() : "";
+  LocationController.create(
+    { query: req.body, token: token },
+    (controllerResponse: apiResponseTYPE) => {
+      res.status(controllerResponse.code).send(controllerResponse);
+    }
+  );
+});
+// update
+// put
+// delete
+// delete
+
+// ? get location details
+// router.get("/:id", (req:any, res:any, next:any) => {
+//   showRequest(req.headers, req.query);
+//   const token = req.headers.token ? req.headers.token.toString() : "";
+//   LocationController.locationDetails(
+//     { query: req.query, token: token },
+//     (controllerResponse: apiResponseTYPE) => {
+//       res.status(controllerResponse.code).send(controllerResponse);
+//     }
+//   );
+// });
+
+
+
 
 // router.get("/create", (req:any, res:any, next:any) => {
 //   showRequest(req.headers, req.query);
