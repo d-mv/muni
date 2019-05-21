@@ -14,8 +14,15 @@ export const callAPI = async (request: string) => {
   // set url
   const url = request ? `/${request}` : "/";
   // call api and callback with result
-  const response = await axios(url).then((response: any) => response.data);
-  return response;
+  try {
+    const response = await axios.get(url);
+    return {
+      ...response.data,
+      code: response.status
+    };
+  } catch (error) {
+    return {
+      ...error.response
+    };
+  }
 };
-
-

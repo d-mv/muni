@@ -4,7 +4,8 @@ import { checkToken } from "../modules/check_token";
 import {
   apiResponseTYPE,
   IncUserCreateTYPE,
-  IncUserIdTYPE
+  IncUserIdTYPE,
+  NewUserTYPE
 } from "../src/types";
 
 import {
@@ -18,49 +19,44 @@ import {
  * @param  {(arg0:apiResponseTYPE)=>void} callback
  */
 export const create = (
-  props: IncUserCreateTYPE,
+  query: IncUserCreateTYPE,
   callback: (arg0: apiResponseTYPE) => void
 ) => {
-  // check fields
-  let reply: apiResponseTYPE = checkFields({ query: props.query });
-  // if negative reply immediately
-  if (!reply.status) {
-    callback(reply);
-  } else {
-    // assign value to avoid 'or empty' clause
-    const user: any = props.query;
-    // request User model
-    User.create(user, (modelResponse: apiResponseTYPE) => {
-      callback(modelResponse);
-    });
-  }
+  // assign value to avoid 'or empty' clause
+  const request: any = query;
+  // request User model
+  User.create(request, (modelResponse: apiResponseTYPE) => {
+    callback(modelResponse);
+  });
 };
+
 /**
  * @param  {IncUserIdTYPE} props
  * @param  {(arg0:apiResponseTYPE)=>void} callback
  */
 export const get = (
-  props: IncUserIdTYPE,
+  props: { id: string; userRequested: string },
   callback: (arg0: apiResponseTYPE) => void
 ) => {
-  // check auth
-  checkToken(props.token, (r: apiResponseTYPE) => {
-    if (!r.status) {
-      callback(r);
-    } else {
-      // check if ID is malformed
-      const idCheckResult = checkID(props.id);
-      if (idCheckResult.status) {
-        // request User model
-        User.get(props.id, (modelResponse: apiResponseTYPE) => {
-          callback(modelResponse);
-        });
-      } else {
-        callback(idCheckResult);
-      }
-    }
+  User.get(props, (modelResponse: apiResponseTYPE) => {
+    callback(modelResponse);
   });
 };
+// checkToken(props.token, (r: apiResponseTYPE) => {
+//   if (!r.status) {
+//     callback(r);
+//   } else {
+//     // check if ID is malformed
+//     const idCheckResult = checkID(props.id);
+//     if (idCheckResult.status) {
+//       // request User model
+
+// } else {
+//   callback(idCheckResult);
+// }
+// }
+//   });
+// };
 /**
  * @param  {string} token
  * @param  {(arg0:apiResponseTYPE)=>void} callback
@@ -75,7 +71,6 @@ export const check = (
   });
 };
 
-// * done!!!!
 /** Login function
  * @param  {object} props - Query and token
  * @return {} - Returns data with callback function
@@ -101,7 +96,7 @@ export const login = (
   if (!check) {
     reply ? callback(idCheckResult) : callback(reply);
   } else {
-    // assign value to avoid 'or empty' clause
+    // assign value to avoid 'or empty' type clause
     const user: any = props.query;
     // request User model
     User.login(user, (modelResponse: apiResponseTYPE) => {

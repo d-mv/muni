@@ -4,11 +4,22 @@ import * as MDB from "../modules/db_connect";
 import * as Generate from "../modules/token_gen";
 import { dropQuotes } from "../modules/check_strings";
 import {
+  updateMessage,
+  errorMessage,
+  notFound,
+  requestError,
+  tooManyResultsMessage,
+  notAllowedToGetResultsMessage,
+  alreadyExistsMessage
+} from "../modules/response_message";
+
+import {
   apiResponseTYPE,
   UserTYPE,
   NewUserTYPE,
   IncLoginTYPE,
-  TokenTYPE
+  TokenTYPE,
+  IncUserCreateTYPE
 } from "../src/types";
 
 const dbName = "muni";
@@ -63,6 +74,44 @@ const updateUser = (
       });
   });
 };
+// find user by email
+const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    const db: any = MDB.client.db(dbName);
+    db.collection("dev")
+      .aggregate([
+        {
+          $match: {
+            "users.email": email
+          }
+        },
+        {
+          $unwind: {
+            path: "$users",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$users"
+          }
+        },
+        {
+          $match: {
+            email: email
+          }
+        }
+      ])
+      .toArray((e: any, res: any) => {
+        if (e || res.length > 0) {
+          callback(false);
+        } else {
+          callback(true);
+        }
+      });
+  });
+};
 // * enf-of-utilities
 /**
  * Create user in the system and authenticate it
@@ -71,43 +120,62 @@ const updateUser = (
  * @returns {} - Uses callback function to send apiResponseTYPE
  */
 export const create = (
-  user: UserTYPE,
+  request: IncUserCreateTYPE,
   callback: (arg0: apiResponseTYPE) => void
 ) => {
-  const token = Generate.token();
-  const createUser: NewUserTYPE = {
-    name: dropQuotes(user.name),
-    email: dropQuotes(user.email),
-    pass: dropQuotes(user.pass),
-    token: token,
-    authDate: new Date()
-  };
+  // const token = Generate.token();
+  const id = new MDB.ObjectID();
+  checkIfEmailNew(request.email, (emailIsNew: boolean) => {
+    if (emailIsNew) {
+      const createUser: NewUserTYPE = {
+        _id: id,
+        fName: dropQuotes(request.fName),
+        lName: dropQuotes(request.lName),
+        avatar: dropQuotes(request.avatar),
+        email: dropQuotes(request.email),
+        pass: dropQuotes(request.pass),
+        posts: [],
+        settings: {}
+      };
 
-  MDB.client.connect(err => {
-    assert.equal(null, err);
+      MDB.client.connect(err => {
+        assert.equal(null, err);
 
-    const db: any = MDB.client.db(dbName);
-    db.collection("v2")
-      .insertOne({ user: createUser })
-      .then((dbReply: any) => {
-        if (dbReply.insertedCount === 1) {
-          callback({
-            status: true,
-            message: "User created",
-            code: 200,
-            payload: { token: token }
-          });
-          MDB.client.close();
-        } else {
-          callback({
-            status: false,
-            message: "User not created",
-            code: 500
-          });
-          MDB.client.close();
-        }
-      })
-      .catch((e: any) => console.log(e));
+        const db: any = MDB.client.db(dbName);
+        db.collection("dev")
+          .updateOne(
+            { _id: new MDB.ObjectID(request.location) },
+            { $push: { users: createUser } }
+          )
+          .then((dbReply: any) => {
+            console.log(dbReply);
+
+            if (dbReply.result.nModified === 1 && dbReply.result.ok === 1) {
+              callback({
+                status: true,
+                message: "User created",
+                code: 200,
+                payload: {
+                  id: id
+                }
+              });
+              MDB.client.close();
+            } else {
+              callback({
+                status: false,
+                message: "User not created",
+                code: 500
+              });
+              MDB.client.close();
+            }
+          })
+          .catch((e: any) =>
+            callback(errorMessage({ action: "user create", e }))
+          );
+      });
+    } else {
+      callback(alreadyExistsMessage("Email"));
+    }
   });
 };
 /**
@@ -214,37 +282,78 @@ export const checkToken = (
   });
 };
 /**
- * Get user details by ID
+ * Get user details by user ID
  * @function get
- * @param { string } id - User ID
+ * @param { object } props - Search ID and ID of user, requested the information
  * @returns {} - Uses callback function to send apiResponseTYPE
  */
-export const get = (id: string, callback: (arg0: apiResponseTYPE) => void) => {
+export const get = (
+  props: { id: string; userRequested: string },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check if userRequested is a SU
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const db: any = MDB.client.db(dbName);
-    db.collection("v2")
-      .findOne({ _id: new MDB.ObjectID(id) })
+    let database: any = MDB.client.db(dbName).collection("app");
+    database
+      .findOne({ "su._id": new MDB.ObjectID(props.userRequested) })
       .then((document: any) => {
-        let response: apiResponseTYPE = {
-          status: false,
-          message: "User not found",
-          code: 203
-        };
+        let userIsSuper = false;
         if (document) {
-          response = {
-            status: true,
-            message: "User is found",
-            code: 200,
-            payload: {
-              name: document.user.name,
-              email: document.user.email
-            }
-          };
+          userIsSuper = true;
         }
-        callback(response);
-      })
-      .catch((e: any) => console.log(e));
+        let database: any = MDB.client.db(dbName).collection("dev");
+        database
+          .aggregate([
+            {
+              $match: {
+                "users._id": new MDB.ObjectID(props.id)
+              }
+            },
+            {
+              $unwind: {
+                path: "$users",
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $replaceRoot: {
+                newRoot: "$users"
+              }
+            },
+            {
+              $match: {
+                _id: new MDB.ObjectID(props.id)
+              }
+            }
+          ])
+          .toArray((e: any, result: any) => {
+            if (e) {
+              errorMessage({ action: "user search", e });
+            } else if (result.length === 0) {
+              // not found
+              callback(notFound("user"));
+            } else if (result.length > 1) {
+              // houston, we've got problem
+              callback(tooManyResultsMessage("user search"));
+            } else {
+              // bingo
+              // allowed?
+              if (userIsSuper || result[0]._id === props.userRequested) {
+                // return result
+                callback({
+                  status: true,
+                  message: `User ${result[0]._id}`,
+                  code: 200,
+                  payload: result[0]
+                });
+              } else {
+                // no rights
+                callback(notAllowedToGetResultsMessage("get this information"));
+              }
+            }
+          });
+      });
   });
 };
 /**
@@ -438,7 +547,7 @@ export const login = (
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   suCheckLogin(user, (suCheckResponse: apiResponseTYPE) => {
-    if (suCheckResponse.status) {
+    if (suCheckResponse.status || suCheckResponse.code === 401) {
       callback(suCheckResponse);
     } else {
       isUserNew(user, (newUserResponse: apiResponseTYPE) => {
@@ -539,61 +648,85 @@ export const suCheckLogin = (
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   MDB.client.connect(err => {
-    // assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
+    // check if user exists
     db.collection("app")
       .aggregate([
         {
           $match: {
-            "su.email": user.email,
-            "su.pass": user.pass
+            "su.email": user.email
           }
         }
       ])
       .toArray((err: any, result: any) => {
-        let response: apiResponseTYPE = {
-          status: false,
-          message: "SU not found",
-          code: 203
-        };
-        if (result.length > 0) {
-          const token = Generate.token();
-          const newFields = {
-            "su.token": token,
-            "su.authDate": new Date()
-          };
-          db.collection("app")
-            .updateOne(
-              {
-                _id: new MDB.ObjectID(result[0]._id)
-              },
-              { $set: newFields },
-              { upsert: true }
-            )
-            .then((document: any) => {
-              response.message = "Error in SU login";
-              response.code = 500;
-
-              if (document.result.nModified === 1 && document.result.ok === 1) {
-                const today: any = new Date();
-                const expireDate = new Date(
-                  today.setDate(today.getDate() + 30)
-                );
-                response = {
-                  status: true,
-                  message: "SU login is OK",
-                  code: 200,
-                  payload: {
-                    token: token,
-                    expire: expireDate
-                  }
-                };
-              }
-              callback(response);
-            })
-            .catch((e: any) => console.log(e));
+        console.log(result);
+        // if no - response
+        if (result.length === 0) {
+          callback({
+            status: false,
+            message: "SU not found",
+            code: 203
+          });
         } else {
-          callback(response);
+          // try to login if yes
+          db.collection("app")
+            .aggregate([
+              {
+                $match: {
+                  "su.email": user.email,
+                  "su.pass": user.pass
+                }
+              }
+            ])
+            .toArray((err: any, result: any) => {
+              let response: apiResponseTYPE = {
+                status: false,
+                message: "SU: wrong password",
+                code: 401
+              };
+              if (result.length > 0) {
+                const token = Generate.token();
+                const newFields = {
+                  "su.token": token,
+                  "su.authDate": new Date()
+                };
+                db.collection("app")
+                  .updateOne(
+                    {
+                      _id: new MDB.ObjectID(result[0]._id)
+                    },
+                    { $set: newFields },
+                    { upsert: true }
+                  )
+                  .then((document: any) => {
+                    response.message = "Error in SU login";
+                    response.code = 500;
+
+                    if (
+                      document.result.nModified === 1 &&
+                      document.result.ok === 1
+                    ) {
+                      const today: any = new Date();
+                      const expireDate = new Date(
+                        today.setDate(today.getDate() + 30)
+                      );
+                      response = {
+                        status: true,
+                        message: "SU login is OK",
+                        code: 200,
+                        payload: {
+                          id: result[0].su._id,
+                          expire: expireDate
+                        }
+                      };
+                    }
+                    callback(response);
+                  })
+                  .catch((e: any) => console.log(e));
+              } else {
+                callback(response);
+              }
+            });
         }
       });
   });

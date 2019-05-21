@@ -5,7 +5,7 @@ export interface apiResponseTYPE {
   message: string;
   code: number;
   payload?: any;
-  level?:string
+  level?: string;
 }
 
 export interface IncPostsListTYPE {
@@ -31,14 +31,24 @@ export interface IncPostsListToModelTYPE {
 }
 
 export interface IncUserCreateTYPE {
-  query: { name: string; email: string; pass: string } | {};
-  token: string | undefined;
+  fName: string;
+  lName: string;
+  avatar: string;
+  email: string;
+  pass: string;
+  posts?: [];
+  settings?: {};
+  location: string;
 }
 
 export interface UserTYPE {
-  name: string;
+  fName: string;
+  lName: string;
+  avatar: string;
   email: string;
   pass: string;
+  posts?: [];
+  settings?: {};
 }
 export interface IncLoginTYPE {
   email: string;
@@ -65,11 +75,14 @@ export interface LocationTYPE {
 }
 
 export interface NewUserTYPE {
-  name: string;
+  _id: ObjectId;
+  fName: string;
+  lName: string;
+  avatar: string;
   email: string;
   pass: string;
-  token: string;
-  authDate: Date;
+  posts: [];
+  settings: {};
 }
 
 export interface IncUserIdTYPE {

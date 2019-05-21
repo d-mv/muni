@@ -179,7 +179,7 @@ export const update = (
                 );
               })
               .catch((e: any) => {
-                callback(errorMessage({ action: "post update", e: e }));
+                callback(errorMessage({ action: "post update", e }));
               });
           } else {
             callback(

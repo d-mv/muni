@@ -34,6 +34,27 @@ export const errorMessage = (props: { action: string; e: any }) => {
     code: 500
   };
 };
+export const tooManyResultsMessage = (subj: string) => {
+  return {
+    status: false,
+    message: `Error in ${subj}. Too many results`,
+    code: 500
+  };
+};
+export const alreadyExistsMessage = (subj: string) => {
+  return {
+    status: false,
+    message: `${subj} already exists.`,
+    code: 400
+  };
+};
+export const notAllowedToGetResultsMessage = (subj: string) => {
+  return {
+    status: false,
+    message: `You don't have sufficient rights to ${subj}.`,
+    code: 401
+  };
+};
 
 export const notFound = (subj: string) => {
   return {
