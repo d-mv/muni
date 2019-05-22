@@ -41,6 +41,14 @@ export const tooManyResultsMessage = (subj: string) => {
     code: 500
   };
 };
+export const wrongDbMessage = (subj: string) => {
+  return {
+    status: false,
+    message: `Error in DB/system. Reason: ${subj}`,
+    code: 500
+  };
+};
+
 export const alreadyExistsMessage = (subj: string) => {
   return {
     status: false,
@@ -52,6 +60,13 @@ export const notAllowedToGetResultsMessage = (subj: string) => {
   return {
     status: false,
     message: `You don't have sufficient rights to ${subj}.`,
+    code: 401
+  };
+};
+export const notAuthMessage = (subj: string) => {
+  return {
+    status: false,
+    message: `Not authorized. Reason: ${subj}.`,
     code: 401
   };
 };

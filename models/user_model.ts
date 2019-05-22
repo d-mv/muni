@@ -1,34 +1,29 @@
 import * as assert from "assert";
 
 import * as MDB from "../modules/db_connect";
-import * as Generate from "../modules/token_gen";
 import { dropQuotes } from "../modules/check_strings";
 import { compareStringToHash, encodeString } from "../modules/security";
 import {
-  updateMessage,
   errorMessage,
   generalError,
   notFound,
-  requestError,
   positiveMessage,
   tooManyResultsMessage,
   notAllowedToGetResultsMessage,
-  alreadyExistsMessage
+  alreadyExistsMessage,
+  updateMessage
 } from "../modules/response_message";
 
 import {
   apiResponseTYPE,
   intApiResponseTYPE,
-  UserTYPE,
   NewUserTYPE,
   IncLoginTYPE,
-  TokenTYPE,
   IncUserCreateTYPE
 } from "../src/types";
 
 const dbName = "muni";
 
-// * Utilities
 /**
  * Update user fields
  * @function updateUser
@@ -41,40 +36,29 @@ const updateUser = (
   newFields: { [index: string]: string | Date | number },
   callback: (arg0: apiResponseTYPE) => void
 ) => {
-  console.log("upd:");
-  console.log(id);
-  console.log(newFields);
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const db: any = MDB.client.db(dbName);
-    db.collection("dev")
+    const database: any = MDB.client.db(dbName).collection("dev");
+    database
       .updateOne(
         { "users._id": new MDB.ObjectID(id) },
         { $set: newFields },
         { upsert: true, multi: false }
       )
       .then((document: any) => {
-        console.log(document);
-        // check if result is positive
-        const check =
-          document.result.nModified === 1 && document.result.ok === 1;
-        if (check) {
-          callback({ status: true, message: "Fields updated", code: 200 });
-        } else {
-          callback({
-            status: false,
-            message: "Contact administrator (user fields update failed)",
-            code: 500
-          });
-        }
+        // check if result is positive adn callback result
+        callback(
+          updateMessage({
+            subj: "User",
+            document: {
+              ok: document.result.ok,
+              nModified: document.result.nModified
+            }
+          })
+        );
       })
       .catch((e: any) => {
-        console.log(e);
-        callback({
-          status: false,
-          message: `Contact administrator (${e})`,
-          code: 500
-        });
+        callback(errorMessage({ action: "user update", e }));
       });
   });
 };
@@ -116,12 +100,176 @@ const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
       });
   });
 };
-// * enf-of-utilities
+
+/**
+ * Get user details by user ID
+ * @function get
+ * @param { object } props - Search ID and ID of user, requested the information
+ * @returns {} - Uses callback function to send apiResponseTYPE
+ */
+export const get = (
+  props: { id: string; userRequested: string },
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  // check if userRequested is a SU
+  isUserSuper(props.userRequested, (isSuper: boolean) => {
+    // get requested user
+    MDB.client.connect(err => {
+      if (err) {
+        callback(errorMessage({ action: "connection to DB", e: err }));
+      } else {
+        let database: any = MDB.client.db(dbName).collection("dev");
+        database
+          .aggregate([
+            {
+              $match: {
+                "users._id": new MDB.ObjectID(props.id)
+              }
+            },
+            {
+              $unwind: {
+                path: "$users",
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $replaceRoot: {
+                newRoot: "$users"
+              }
+            },
+            {
+              $match: {
+                _id: new MDB.ObjectID(props.id)
+              }
+            }
+          ])
+          .toArray((e: any, result: any) => {
+            if (e) {
+              callback(errorMessage({ action: "user search", e }));
+            } else if (result.length === 0) {
+              // not found
+              callback(notFound("user"));
+            } else if (result.length > 1) {
+              // houston, we've got problem
+              callback(tooManyResultsMessage("user search"));
+            } else {
+              // bingo
+              // allowed?
+              if (isSuper || result[0]._id == props.userRequested) {
+                // return result
+                callback({
+                  status: true,
+                  message: `User ${result[0]._id}`,
+                  code: 200,
+                  payload: result[0]
+                });
+              } else {
+                // no rights
+                callback(notAllowedToGetResultsMessage("get this information"));
+              }
+            }
+          });
+      }
+    });
+  });
+};
+/**
+ * Check if user exists of new
+ * @function isUserNew
+ * @param { string } user - User email
+ * @returns {} - Uses callback function to send apiResponseTYPE
+ */
+const isUserNew = (
+  user: IncLoginTYPE,
+  callback: (arg0: apiResponseTYPE) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    const db: any = MDB.client.db(dbName);
+    db.collection("dev")
+      .aggregate([
+        {
+          $match: {
+            _id: new MDB.ObjectID(user.location)
+          }
+        },
+        {
+          $unwind: {
+            path: "$users",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$users"
+          }
+        },
+        {
+          $match: {
+            email: user.email
+          }
+        }
+      ])
+      .toArray((err: any, result: any) => {
+        // no result
+        console.log("isUserNew?");
+        console.log(result);
+        let response: apiResponseTYPE = {
+          status: false,
+          message: "User not found (email is not registered)",
+          code: 200
+        };
+        if (result.length > 1) {
+          // if too many results
+          response.message = "Contact administrator (too many results)";
+          response.code = 500;
+        } else if (result.length === 1) {
+          // match
+
+          response = {
+            status: true,
+            message: "User found",
+            code: 200,
+            payload: { id: result[0]._id }
+          };
+        }
+        callback(response);
+      });
+  });
+};
+// ** done
+/**
+ * Check if user is a super
+ * @function isUserSuper
+ * @param {string} userId - ID of interest
+ * @return {boolean} - Answer if user is a super one
+ */
+export const isUserSuper = (
+  userId: string,
+  callback: (arg0: boolean) => void
+) => {
+  MDB.client.connect(async (err: Error) => {
+    const database: any = MDB.client.db(dbName).collection("app");
+    database
+      .findOne({
+        "su._id": new MDB.ObjectID(userId)
+      })
+      .then((document: any) => {
+        let isSuper = false;
+        if (document) {
+          isSuper = true;
+        }
+        callback(isSuper);
+      });
+  });
+  // return isSU
+};
+
 /**
  * Create user in the system and authenticate it
  * @function create
  * @param { object } user - User object as per { name: string, email: string, pass: string }
- * @returns {} - Uses callback function to send apiResponseTYPE
+ * @callback createCallback - Function to return result (apiResponseTYPE)
  */
 export const create = (
   request: IncUserCreateTYPE,
@@ -199,335 +347,6 @@ export const create = (
     }
   });
 };
-
-//           })
-
-//       });
-//     } else {
-//     }
-//   });
-// };
-// /**
-//  * Check token for existence and validity, zero it in DB if not valid
-//  * @function checkToken
-//  * @param { string } token - User ID
-//  * @returns {} - Uses callback function to send apiResponseTYPE
-//  */
-// export const checkToken = (
-//   token: string,
-//   callback: (arg0: apiResponseTYPE) => void
-// ) => {
-// MDB.client.connect(err => {
-//   assert.equal(null, err);
-//   const db: any = MDB.client.db(dbName);
-
-//   db.collection("dev")
-//     .aggregate([
-//       {
-//         $unwind: {
-//           path: "$users",
-//           preserveNullAndEmptyArrays: true
-//         }
-//       },
-//       {
-//         $match: {
-//           "users.token": token
-//         }
-//       },
-//       {
-//         $project: {
-//           "users.location": "$_id",
-//           "users.authDate": 1,
-//           "users.fName": 1,
-//           "users._id": 1
-//         }
-//       },
-//       {
-//         $replaceRoot: {
-//           newRoot: "$users"
-//         }
-//       }
-//     ])
-//     .toArray((err: any, result: any) => {
-//       // if error return error
-//       console.log("check token");
-//       console.log(result);
-//       if (err) {
-//         callback({
-//           status: false,
-//           message: `Contact administrator (${err.toString()})`,
-//           code: 500
-//         });
-//       }
-//       // if no token found
-//       else if (result.length === 0) {
-//         callback({
-//           status: false,
-//           message: `Unauthorized (token not found)`,
-//           code: 401
-//         });
-//       } else {
-//         // if token found
-//         const authDate = result[0].authDate;
-//         const today: any = new Date();
-//         const authedHours = Math.round((today - authDate) / 3600000);
-//         // check time validity
-//         if (authedHours < 210 && authedHours >= 0) {
-//           // if valid
-//           callback({
-//             status: true,
-//             message: "Authorized",
-//             code: 200,
-//             payload: {
-//               id: result[0]._id,
-//               location: result[0].location,
-//               name: result[0].fname
-//             }
-//           });
-//         } else {
-//           // if not
-//           updateUser(
-//             result[0]._id,
-//             {
-//               "users.$.token": "",
-//               "users.$.authDate": ""
-//             },
-//             (updateUserResponse: apiResponseTYPE) => {
-//               let response: apiResponseTYPE = {
-//                 status: false,
-//                 message: "Unauthorized (token expired)",
-//                 code: 401
-//               };
-//               if (authedHours < 0) {
-//                 response.message =
-//                   "Unauthorized (token expired, authDate in DB later than today)";
-//               }
-//               callback(response);
-//             }
-//           );
-//         }
-//       }
-//     });
-// }
-// );
-// };
-/**
- * Get user details by user ID
- * @function get
- * @param { object } props - Search ID and ID of user, requested the information
- * @returns {} - Uses callback function to send apiResponseTYPE
- */
-export const get = (
-  props: { id: string; userRequested: string },
-  callback: (arg0: apiResponseTYPE) => void
-) => {
-  // check if userRequested is a SU
-  MDB.client.connect(err => {
-    assert.equal(null, err);
-    let database: any = MDB.client.db(dbName).collection("app");
-    database
-      .findOne({ "su._id": new MDB.ObjectID(props.userRequested) })
-      .then((document: any) => {
-        let userIsSuper = false;
-        if (document) {
-          userIsSuper = true;
-        }
-        let database: any = MDB.client.db(dbName).collection("dev");
-        database
-          .aggregate([
-            {
-              $match: {
-                "users._id": new MDB.ObjectID(props.id)
-              }
-            },
-            {
-              $unwind: {
-                path: "$users",
-                preserveNullAndEmptyArrays: true
-              }
-            },
-            {
-              $replaceRoot: {
-                newRoot: "$users"
-              }
-            },
-            {
-              $match: {
-                _id: new MDB.ObjectID(props.id)
-              }
-            }
-          ])
-          .toArray((e: any, result: any) => {
-            if (e) {
-              errorMessage({ action: "user search", e });
-            } else if (result.length === 0) {
-              // not found
-              callback(notFound("user"));
-            } else if (result.length > 1) {
-              // houston, we've got problem
-              callback(tooManyResultsMessage("user search"));
-            } else {
-              // bingo
-              // allowed?
-              if (userIsSuper || result[0]._id === props.userRequested) {
-                // return result
-                callback({
-                  status: true,
-                  message: `User ${result[0]._id}`,
-                  code: 200,
-                  payload: result[0]
-                });
-              } else {
-                // no rights
-                callback(notAllowedToGetResultsMessage("get this information"));
-              }
-            }
-          });
-      });
-  });
-};
-/**
- * Check if user exists of new
- * @function isUserNew
- * @param { string } user - User email
- * @returns {} - Uses callback function to send apiResponseTYPE
- */
-const isUserNew = (
-  user: IncLoginTYPE,
-  callback: (arg0: apiResponseTYPE) => void
-) => {
-  MDB.client.connect(err => {
-    assert.equal(null, err);
-    const db: any = MDB.client.db(dbName);
-    db.collection("dev")
-      .aggregate([
-        {
-          $match: {
-            _id: new MDB.ObjectID(user.location)
-          }
-        },
-        {
-          $unwind: {
-            path: "$users",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $replaceRoot: {
-            newRoot: "$users"
-          }
-        },
-        {
-          $match: {
-            email: user.email
-          }
-        }
-      ])
-      .toArray((err: any, result: any) => {
-        // no result
-        console.log("isUserNew?");
-        console.log(result);
-        let response: apiResponseTYPE = {
-          status: false,
-          message: "User not found (email is not registered)",
-          code: 200
-        };
-        if (result.length > 1) {
-          // if too many results
-          response.message = "Contact administrator (too many results)";
-          response.code = 500;
-        } else if (result.length === 1) {
-          // match
-
-          response = {
-            status: true,
-            message: "User found",
-            code: 200,
-            payload: { id: result[0]._id }
-          };
-        }
-        callback(response);
-      });
-  });
-};
-
-// export const suCheckToken = (
-//   token: string,
-//   callback: (arg0: apiResponseTYPE) => void
-// ) => {
-//   MDB.client.connect(err => {
-//     // assert.equal(null, err);
-//     const db: any = MDB.client.db(dbName);
-//     db.collection("app")
-//       .aggregate([
-//         {
-//           $match: {
-//             "su.token": token
-//           }
-//         }
-//       ])
-//       .toArray((err: any, result: any) => {
-//         let response: apiResponseTYPE = {
-//           status: false,
-//           message: "Please, re-login and repeat",
-//           code: 203
-//         };
-//         if (result.length > 0) {
-//           // if token found
-//           const id = result[0]._id;
-//           const authDate = result[0].su.authDate;
-//           const today: any = new Date();
-//           const authedHours = Math.round((today - authDate) / 3600000);
-//           // check time validity
-//           if (authedHours < 720 && authedHours >= 0) {
-//             // if valid
-//             const expireDate = new Date(today.setDate(today.getDate() + 30));
-//             callback({
-//               status: true,
-//               message: "Authorized",
-//               code: 200,
-//               payload: {
-//                 id: result[0]._id,
-//                 expire: expireDate
-//               },
-//               level: "su"
-//             });
-//           } else {
-//             // if not valid
-//             db.collection("app")
-//               .updateOne(
-//                 { _id: new MDB.ObjectID(id) },
-//                 { $set: { "su.token": "", "su.authDate": "" } }
-//               )
-//               .then((document: any) => {
-//                 // default response
-//                 response.message = "Error in expired SU token reset";
-//                 response.code = 500;
-
-//                 // if OK
-//                 if (
-//                   document.result.nModified === 1 &&
-//                   document.result.ok === 1
-//                 ) {
-//                   response = {
-//                     status: true,
-//                     message: "SU token expired and was reset",
-//                     code: 401
-//                   };
-//                 }
-//                 callback(response);
-//               })
-//               .catch((e: any) => console.log(e));
-//           }
-//         } else {
-//           // if not
-//           callback(response);
-//         }
-//       });
-//   });
-// };
-
-// ** done
 /**
  * Login user
  * @function login
@@ -610,6 +429,8 @@ export const suLoginAttempt = (
               user.pass,
               result[0].su.pass,
               (response: boolean | apiResponseTYPE) => {
+                // console.log(hash)
+                // console.log(result[0].su.pass);
                 if (typeof response === "boolean") {
                   // if it's true/false
                   if (response) {
@@ -618,6 +439,7 @@ export const suLoginAttempt = (
                       positiveMessage({
                         subj: "SU login is OK",
                         payload: {
+                          level: "su",
                           payload: {
                             id: result[0].su._id
                           }

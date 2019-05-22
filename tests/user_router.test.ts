@@ -22,16 +22,6 @@ it("Can't login with missing credentials", async () => {
   expect(response.data.message).toBe("Location is missing");
 });
 
-// it("Can't login with missing credentials #2", async () => {
-//   const request = `login?location=5ce2a3c945e5451171394b35&email=${process.env.SU_EMAIL}`;
-//   const response = await callAPI(request);
-//   expect(typeof response).toBe("object");
-//   console.log(response)
-  // expect(response.data.status).toBe(false);
-  // expect(response.status).toBe(400);
-  // expect(response.data.message).toBe("Location is missing");
-// });
-
 it("Logins as SU", async () => {
   const request =
     `login?pass=${process.env.SU_PASS}&location=5ce2a3c945e5451171394b35&email=${process.env.SU_EMAIL}`;

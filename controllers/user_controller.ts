@@ -1,15 +1,14 @@
 import * as User from "../models/user_model";
-import { checkToken } from "../modules/check_token";
+// import { checkToken } from "../modules/check_token";
 
 import {
   apiResponseTYPE,
   IncUserCreateTYPE,
-  IncUserIdTYPE,
-  NewUserTYPE
+  // IncUserIdTYPE,
+  // NewUserTYPE
 } from "../src/types";
-
 import {
-  checkFields,
+  // checkFields,
   checkFieldsLogin,
   checkID
 } from "../modules/check_strings";
@@ -42,41 +41,27 @@ export const get = (
     callback(modelResponse);
   });
 };
-// checkToken(props.token, (r: apiResponseTYPE) => {
-//   if (!r.status) {
-//     callback(r);
-//   } else {
-//     // check if ID is malformed
-//     const idCheckResult = checkID(props.id);
-//     if (idCheckResult.status) {
-//       // request User model
 
-// } else {
-//   callback(idCheckResult);
-// }
-// }
+// /**
+//  * @param  {string} token
+//  * @param  {(arg0:apiResponseTYPE)=>void} callback
+//  */
+// export const check = (
+//   token: string,
+//   callback: (arg0: apiResponseTYPE) => void
+// ) => {
+//   // check auth
+//   checkToken(token, (r: apiResponseTYPE) => {
+//     callback(r);
 //   });
 // };
-/**
- * @param  {string} token
- * @param  {(arg0:apiResponseTYPE)=>void} callback
- */
-export const check = (
-  token: string,
-  callback: (arg0: apiResponseTYPE) => void
-) => {
-  // check auth
-  checkToken(token, (r: apiResponseTYPE) => {
-    callback(r);
-  });
-};
 
 /** Login function
  * @param  {object} props - Query and token
  * @return {} - Returns data with callback function
  */
 export const login = (
-  props: { query: { [index: string]: string }; token: string },
+  props: { query: { [index: string]: string }},
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   // check fields
