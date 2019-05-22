@@ -2,7 +2,7 @@ const express = require("express");
 
 import * as UserController from "../controllers/user_controller";
 
-import { hashedString, checkToken, cookieFactory } from "../modules/security";
+import { checkToken, cookieFactory } from "../modules/security";
 import { showRequest } from "../modules/show_request";
 import { apiResponseTYPE } from "../src/types";
 

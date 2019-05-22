@@ -39,15 +39,15 @@ export const create = (
   const tokenLength = checkTokenLength(dropQuotes(props.token));
   if (tokenCheckResult && tokenLength.status) {
     // check if su
-    User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
-      if (modelResponse.status) {
+    // User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
+    //   if (modelResponse.status) {
         Location.create(props.query, (modelResponse: apiResponseTYPE) => {
           callback(modelResponse);
         });
-      } else {
-        callback(modelResponse);
-      }
-    });
+      // } else {
+      //   callback(modelResponse);
+      // }
+    // });
   } else {
     callback(tokenLength);
   }
@@ -83,16 +83,16 @@ export const update = (
   const tokenLength = checkTokenLength(dropQuotes(props.token));
   if (tokenCheckResult && tokenLength.status) {
     // check if su
-    User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
-      if (modelResponse.status) {
+    // User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
+    //   if (modelResponse.status) {
         const query = { location: props.location, fields: { ...props.query } };
         Location.update(query, (modelResponse: apiResponseTYPE) => {
           callback(modelResponse);
         });
-      } else {
-        callback(modelResponse);
-      }
-    });
+      // } else {
+      //   callback(modelResponse);
+      // }
+    // });
   } else {
     callback(tokenLength);
   }
@@ -109,18 +109,18 @@ export const deleteLocation = (
   const tokenLength = checkTokenLength(dropQuotes(props.token));
   if (tokenCheckResult && tokenLength.status) {
     // check if su
-    User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
-      if (modelResponse.status) {
+    // User.suCheckToken(props.token, (modelResponse: apiResponseTYPE) => {
+    //   if (modelResponse.status) {
         Location.deleteLocation(
           props.location,
           (modelResponse: apiResponseTYPE) => {
             callback(modelResponse);
           }
         );
-      } else {
-        callback(modelResponse);
-      }
-    });
+      // } else {
+      //   callback(modelResponse);
+      // }
+    // });
   } else {
     callback(tokenLength);
   }

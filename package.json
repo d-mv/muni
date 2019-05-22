@@ -11,7 +11,7 @@
     "prestart": "npm build",
     "dev": "npm run build:live",
     "build": "tsc ./src/*.ts --outDir ./dist",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/start.ts",
+    "build:live": "nodemon --watch '**/**/*.ts' --exec 'ts-node' src/start.ts",
     "full": "npm run dev & npm run client",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run build",
     "client": "npm start --prefix client",
@@ -72,7 +72,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "lint-staged && typedoc",
       "pre-push": "jest"
     }
   },

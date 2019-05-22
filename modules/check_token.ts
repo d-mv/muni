@@ -30,17 +30,17 @@ export const checkToken = (
       callback(checkLength);
     } else {
       // check with DB
-      User.suCheckToken(token, (sUmodelResponse: apiResponseTYPE) => {
-        // if SU
-        if (sUmodelResponse.status && sUmodelResponse.level === "su") {
-          callback(sUmodelResponse);
-        } else {
-          // if Not
-          User.checkToken(token, (modelResponse: apiResponseTYPE) => {
-            callback(modelResponse);
-          });
-        }
-      });
+      // User.suCheckToken(token, (sUmodelResponse: apiResponseTYPE) => {
+      //   // if SU
+      //   if (sUmodelResponse.status && sUmodelResponse.level === "su") {
+      //     callback(sUmodelResponse);
+      //   } else {
+      //     // if Not
+      //     User.checkToken(token, (modelResponse: apiResponseTYPE) => {
+      //       callback(modelResponse);
+      //     });
+      //   }
+      // });
     }
   }
 };

@@ -2,16 +2,60 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
 
-import { apiResponseTYPE } from "../src/types";
+import { errorMessage } from "./response_message";
+import { apiResponseTYPE, intApiResponseTYPE } from "../src/types";
 
 const dotEnv = dotenv.config();
 const passPhrase: any = process.env.SECRET;
 
-export const hashedString = async (text: string) => {
-  return await bcrypt.hash(text, 10);
+/**
+ * Encode a string
+ * @function encodeString
+ * @param  {string} text - A string of text to encode
+ * @callback encodeStringCallback - Function to return result or error message (apiResponseTYPE | intApiResponseTYPE)
+ */
+export const encodeString = (
+  text: string,
+  callback: (arg0: apiResponseTYPE | intApiResponseTYPE) => void
+) => {
+  // generate salt
+  bcrypt.genSalt(10, (saltErr: Error, salt: string) => {
+    if (saltErr) {
+      // if error
+      callback(errorMessage({ action: "salt generation", e: saltErr }));
+    } else {
+      // generate hash
+      bcrypt.hash(text, salt, (hashErr: Error, hash: string) => {
+        // if error
+        if (hashErr) {
+          callback(errorMessage({ action: "hash generation", e: hashErr }));
+        } else {
+          callback({ status: true, payload: hash });
+        }
+      });
+    }
+  });
 };
-export const phrase = process.env.SECRET;
-
+/**
+ * Compare a string with encoded string
+ * @function compareStringToHash
+ * @param  {string} text - A string of text to compare
+ * @param  {string} hash - A hash of text to compare
+ * @callback compareStringToHashCallback - Function to return result or error message (apiResponseTYPE | boolean)
+ */
+export const compareStringToHash = (
+  text: string,
+  hash: string,
+  callback: (arg0: boolean | apiResponseTYPE) => void
+) => {
+  bcrypt.compare(text, hash, (err: Error, res: boolean) => {
+    if (err) {
+      callback(errorMessage({ action: "hash compare", e: err }));
+    } else {
+      callback(res);
+    }
+  });
+};
 export const checkToken = (
   token: string,
   callback: (arg0?: any, arg?: any) => void

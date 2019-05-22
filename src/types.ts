@@ -7,6 +7,10 @@ export interface apiResponseTYPE {
   payload?: any;
   level?: string;
 }
+export interface intApiResponseTYPE {
+  status: boolean;
+  payload?: any;
+}
 
 export interface IncPostsListTYPE {
   query: {

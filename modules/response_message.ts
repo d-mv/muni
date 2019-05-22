@@ -70,3 +70,22 @@ export const requestError = (subj: string) => {
     code: 400
   };
 };
+export const generalError = (props: { subj: string; code: number }) => {
+  return {
+    status: false,
+    message: props.subj,
+    code: props.code
+  };
+};
+export const positiveMessage = (props: {
+  subj: string;
+  code?: number;
+  payload?: any;
+}) => {
+  return {
+    status: true,
+    message: props.subj,
+    code: props.code || 200,
+    ...props.payload
+  };
+};

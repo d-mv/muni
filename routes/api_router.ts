@@ -2,7 +2,7 @@ const express = require("express");
 import jwt from "jsonwebtoken";
 
 import { showRequest } from "../modules/show_request";
-import { hashedString, phrase, cookieFactory } from "../modules/security";
+import { cookieFactory } from "../modules/security";
 
 import * as UsersController from "../controllers/user_controller";
 
