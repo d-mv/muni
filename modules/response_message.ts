@@ -95,12 +95,17 @@ export const generalError = (props: { subj: string; code: number }) => {
 export const positiveMessage = (props: {
   subj: string;
   code?: number;
-  payload?: any;
+  payload?: [] | any;
 }) => {
-  return {
+  console.log(props)
+  let message = {
     status: true,
     message: props.subj,
-    code: props.code || 200,
-    ...props.payload
+    code: props.code || 200
   };
+  if (Array.isArray(props.payload)) {
+    return { ...message, payload: props.payload };
+  } else {
+    return { ...message, ...props.payload };
+  }
 };

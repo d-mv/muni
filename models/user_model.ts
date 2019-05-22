@@ -1,6 +1,8 @@
 import * as assert from "assert";
+import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
+
 import { dropQuotes } from "../modules/check_strings";
 import { compareStringToHash, encodeString } from "../modules/security";
 import {
@@ -22,7 +24,14 @@ import {
   IncUserCreateTYPE
 } from "../src/types";
 
-const dbName = "muni";
+// constant variables
+const dotEnv = dotenv.config();
+// db
+const dbName = process.env.MONGO_DB || "muni";
+// collections
+const dbcApp = process.env.MONGO_COL_APP || "app";
+const dbcMain = process.env.MONGO_COL_MAIN || 'dev';
+
 
 /**
  * Update user fields
@@ -38,10 +47,10 @@ const updateUser = (
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const database: any = MDB.client.db(dbName).collection("dev");
+    const database: any = MDB.client.db(dbName).collection(dbcMain);
     database
       .updateOne(
-        { "users._id": new MDB.ObjectID(id) },
+        { "users._id": new MDB.ObjectId(id) },
         { $set: newFields },
         { upsert: true, multi: false }
       )
@@ -67,7 +76,7 @@ const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
-    db.collection("dev")
+    db.collection(dbcMain)
       .aggregate([
         {
           $match: {
@@ -111,6 +120,7 @@ export const get = (
   props: { id: string; userRequested: string },
   callback: (arg0: apiResponseTYPE) => void
 ) => {
+  console.log(props);
   // check if userRequested is a SU
   isUserSuper(props.userRequested, (isSuper: boolean) => {
     // get requested user
@@ -118,12 +128,12 @@ export const get = (
       if (err) {
         callback(errorMessage({ action: "connection to DB", e: err }));
       } else {
-        let database: any = MDB.client.db(dbName).collection("dev");
+        let database: any = MDB.client.db(dbName).collection(dbcMain);
         database
           .aggregate([
             {
               $match: {
-                "users._id": new MDB.ObjectID(props.id)
+                "users._id": new MDB.ObjectId(props.id)
               }
             },
             {
@@ -139,7 +149,7 @@ export const get = (
             },
             {
               $match: {
-                _id: new MDB.ObjectID(props.id)
+                _id: new MDB.ObjectId(props.id)
               }
             }
           ])
@@ -159,9 +169,11 @@ export const get = (
                 // return result
                 callback({
                   status: true,
-                  message: `User ${result[0]._id}`,
+                  message: `User ${result[0]._id}, found ${
+                    result[0].posts.length
+                  } post(s)`,
                   code: 200,
-                  payload: result[0]
+                  payload: result[0].posts
                 });
               } else {
                 // no rights
@@ -186,11 +198,11 @@ const isUserNew = (
   MDB.client.connect(err => {
     assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
-    db.collection("dev")
+    db.collection(dbcMain)
       .aggregate([
         {
           $match: {
-            _id: new MDB.ObjectID(user.location)
+            _id: new MDB.ObjectId(user.location)
           }
         },
         {
@@ -249,10 +261,10 @@ export const isUserSuper = (
   callback: (arg0: boolean) => void
 ) => {
   MDB.client.connect(async (err: Error) => {
-    const database: any = MDB.client.db(dbName).collection("app");
+    const database: any = MDB.client.db(dbName).collection(dbcApp);
     database
       .findOne({
-        "su._id": new MDB.ObjectID(userId)
+        "su._id": new MDB.ObjectId(userId)
       })
       .then((document: any) => {
         let isSuper = false;
@@ -276,7 +288,7 @@ export const create = (
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   // const token = Generate.token();
-  const id = new MDB.ObjectID();
+  const id = new MDB.ObjectId();
   checkIfEmailNew(request.email, (emailIsNew: boolean) => {
     if (emailIsNew) {
       encodeString(
@@ -304,10 +316,10 @@ export const create = (
               if (err) {
                 callback(errorMessage({ action: "connection to DB", e: err }));
               } else {
-                const database: any = MDB.client.db(dbName).collection("dev");
+                const database: any = MDB.client.db(dbName).collection(dbcMain);
                 database
                   .updateOne(
-                    { _id: new MDB.ObjectID(request.location) },
+                    { _id: new MDB.ObjectId(request.location) },
                     { $push: { users: createUser } }
                   )
                   .then((dbReply: any) => {
@@ -406,7 +418,7 @@ export const suLoginAttempt = (
     if (err) {
       callback(errorMessage({ action: "connection to DB", e: err }));
     } else {
-      const database: any = MDB.client.db(dbName).collection("app");
+      const database: any = MDB.client.db(dbName).collection(dbcApp);
       // check if user exists
       database
         .aggregate([
@@ -486,12 +498,12 @@ export const loginAttempt = (
     if (err) {
       callback(errorMessage({ action: "connection to DB", e: err }));
     } else {
-      const database: any = MDB.client.db(dbName).collection("dev");
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
       database
         .aggregate([
           {
             $match: {
-              _id: new MDB.ObjectID(user.location)
+              _id: new MDB.ObjectId(user.location)
             }
           },
           {
@@ -507,7 +519,7 @@ export const loginAttempt = (
           },
           {
             $match: {
-              _id: new MDB.ObjectID(id),
+              _id: new MDB.ObjectId(id),
               email: user.email
             }
           },

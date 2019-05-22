@@ -13,14 +13,9 @@ export interface intApiResponseTYPE {
 }
 
 export interface IncPostsListTYPE {
-  query: {
-    location: string;
-    options?: {
-      byUser: boolean;
-      userId: string;
-    };
-  };
-  token: string;
+  location: string;
+  user: string;
+  level: string;
 }
 export interface TokenTYPE {
   location: string;
@@ -62,18 +57,14 @@ export interface IncLoginTYPE {
 
 export interface IncNewLocationTYPE {
   name: {
-    en: string;
-    he: string;
-    other?: {};
+    [index: string]: string;
   };
   photo: string;
 }
 export interface LocationTYPE {
   _id?: ObjectId;
-  lang: {
-    en: string;
-    he: string;
-    other?: {};
+  name: {
+    [index: string]: string;
   };
   photo: string;
 }

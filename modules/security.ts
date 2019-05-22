@@ -68,11 +68,7 @@ export const compareStringToHash = (
  * @param {string} token
  * @callback callback - Callback function to return the message w/payload or not
  */
-export const checkToken = (
-  token: string,
-  callback: (arg0?: any, arg?: any) => void
-) => {
-  console.log(token);
+export const checkToken = (token: string, callback: (arg0: any) => void) => {
   jwt.verify(token, passPhrase, (err: any, decoded: any) => {
     if (err) {
       callback(errorMessage({ action: "reading token", e: err }));
@@ -89,10 +85,8 @@ export const checkToken = (
           code: 200
         };
         User.isUserSuper(decoded.id, (modelResponse: boolean) => {
-          if (modelResponse) {
-            response.level = "su";
-          }
-          callback(response, decoded.id);
+          response.level = modelResponse ? "su" : "";
+          callback({ ...response, payload: { id: decoded.id } });
         });
       } else if (authedHours > 720) {
         // unauth

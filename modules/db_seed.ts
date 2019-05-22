@@ -19,7 +19,7 @@ const update = (props: { id: string; fields: any }) => {
     db.collection("dev")
       .updateOne(
         {
-          _id: new MDB.ObjectID(props.id)
+          _id: new MDB.ObjectId(props.id)
         },
         { $set: { users: props.fields } },
         { upsert: true }
@@ -54,7 +54,7 @@ const dbSeed = (callback: any) => {
       for (let i = 0; i < users; i++) {
         // new user
         const user: any = {
-          _id: new MDB.ObjectID(),
+          _id: new MDB.ObjectId(),
           fName: faker.name.firstName(),
           lName: faker.name.lastName(),
           avatar: "https://picsum.photos/200/300?random=1",
@@ -70,13 +70,13 @@ const dbSeed = (callback: any) => {
         for (let n = 0; n < posts; n++) {
           // new post
           const post: any = {
-            _id: new MDB.ObjectID(),
+            _id: new MDB.ObjectId(),
             title: faker.lorem.sentence(),
             text: faker.lorem.paragraphs(5),
             photo: "https://picsum.photos/200/300?random=2",
             link: faker.internet.url(),
-            newsId: new MDB.ObjectID(),
-            createdBy: new MDB.ObjectID(),
+            newsId: new MDB.ObjectId(),
+            createdBy: new MDB.ObjectId(),
             date: faker.date.between("2019-01-01", "2019-05-15"),
             status: "active",
             votes: {
@@ -93,7 +93,7 @@ const dbSeed = (callback: any) => {
       }
       // ! call to update the DB
       update({
-        id: "5ce2a3c945e5451171394b35",
+        id: "5ce44caad0d0d7ee3c1e6ae6",
         fields: block
       });
       // report

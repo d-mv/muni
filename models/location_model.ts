@@ -1,214 +1,225 @@
 import * as assert from "assert";
+import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
-import * as Generate from "../modules/token_gen";
-import { dropQuotes } from "../modules/check_strings";
+
+import {
+  errorMessage,
+  generalError,
+  notFound,
+  positiveMessage,
+  tooManyResultsMessage,
+  alreadyExistsMessage,
+  updateMessage
+} from "../modules/response_message";
 import {
   apiResponseTYPE,
   IncNewLocationTYPE,
   LocationTYPE
 } from "../src/types";
 
-const dbName = "muni";
+// constant variables
+const dotEnv = dotenv.config();
+// db
+const dbName = process.env.MONGO_DB || "muni";
+// collections
+const dbcApp = process.env.MONGO_COL_APP || "app";
+const dbcMain = process.env.MONGO_COL_MAIN || 'dev';
 
+/**
+ * Function to list all locations (without users/posts). Need for login.
+ * @function list
+ * @callback callback - Callback function to return the response
+ */
 export const list = (callback: (arg0: apiResponseTYPE) => void) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const db: any = MDB.client.db(dbName);
-    db.collection("dev")
+    const database: any = MDB.client.db(dbName).collection(dbcMain);
+    database
       .aggregate([
         {
           $project: {
-            "lang.en": 1,
-            "lang.he": 1,
+            lang: 1,
             photo: 1
           }
         }
       ])
-      .toArray((err: any, result: any) => {
-        let response: apiResponseTYPE = {
-          status: false,
-          message: "No locations in the DB",
-          code: 203
-        };
-        if (err) {
-          response.message = `Error: ${err}`;
-          response.code = 500;
+      .toArray((e: any, result: any) => {
+        if (e) {
+          callback(errorMessage({ action: "locations fetch", e }));
         } else if (result.length > 0) {
-          response = {
-            status: true,
-            message: "Locations found",
-            code: 200,
-            payload: result
-          };
+          console.log(result);
+          callback(
+            positiveMessage({
+              subj: "Locations found",
+              code: 200,
+              payload: result
+            })
+          );
+        } else {
+          callback(notFound("locations"));
         }
-        callback(response);
       });
   });
 };
+
+/**
+ * Function to create a location
+ * @function create
+ * @param {object} query - A set of fields for the new location
+ * @callback callback - Callback function to return the response
+ */
 export const create = (
   query: IncNewLocationTYPE,
   callback: (arg0: apiResponseTYPE) => void
 ) => {
-  const createLocation: LocationTYPE = {
-    lang: {
-      en: query.name.en,
-      he: query.name.en,
-      ...query.name.other
-    },
-    photo: query.photo
-  };
+  console.log(Object.keys(query));
 
   MDB.client.connect(err => {
     assert.equal(null, err);
+    const database: any = MDB.client.db(dbName).collection(dbcMain);
+    // check the names availability
+    const search = { name: query.name };
+    database.find(search).toArray((e: any, documents: any) => {
+      console.log(documents);
+      if (e) {
+        callback(errorMessage({ action: "location (similar) search", e }));
+      } else if (documents.length > 1) {
+        // houston, we've got problem
+        callback(tooManyResultsMessage("location (similar) search"));
+      } else if (documents.length === 1) {
+        // already exists
+        callback(alreadyExistsMessage("Location"));
+      } else {
+        // no result
 
-    const db: any = MDB.client.db(dbName);
-    db.collection("dev")
-      .insertOne({ ...createLocation })
-      .then((dbReply: any) => {
-        if (dbReply.insertedCount === 1) {
-          callback({
-            status: true,
-            message: "Location created",
-            code: 200,
-            payload: { id: dbReply.insertedId }
-          });
-        } else {
-          callback({
-            status: false,
-            message: "Location not created",
-            code: 500
-          });
-        }
-      })
-      .catch((e: any) =>
-        callback({
-          status: false,
-          message: `Error: ${e}`,
-          code: 500
-        })
-      );
+        // set the object for creation
+        const createLocation: LocationTYPE = {
+          _id: new MDB.ObjectId(),
+          ...query
+        };
+        database
+          .insertOne({ ...createLocation })
+          .then((dbReply: any) => {
+            if (dbReply.insertedCount === 1) {
+              callback(
+                positiveMessage({
+                  subj: "Location created",
+                  payload: { payload: { id: dbReply.insertedId } }
+                })
+              );
+            } else {
+              callback(
+                generalError({ subj: "Location was not created", code: 500 })
+              );
+            }
+          })
+          .catch((e: any) =>
+            callback(errorMessage({ action: "location creation", e }))
+          );
+      }
+    });
+    //
   });
 };
-
+/**
+ * Function to update a location
+ * @function update
+ * @param {string} location - A set of fields for the updated location
+ * @param {object} fields - A set of fields for the updated location
+ * @callback callback - Callback function to return the response
+ */
 export const update = (
-  props: { location: string; fields: { [index: string]: string } },
+  location: string,
+  fields: { [index: string]: string },
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   // check is location available
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const database = MDB.client.db("muni").collection("dev");
+    const database = MDB.client.db("muni").collection(dbcMain);
     database
-      .aggregate([{ $match: { _id: new MDB.ObjectID(props.location) } }])
-      .toArray((err: any, result: any) => {
-        // if not
-        let response: apiResponseTYPE = {
-          status: false,
-          message: "No location found",
-          code: 203
-        };
-        if (err) {
-          response.message = `Error: ${err}`;
-          response.code = 500;
-          callback(response);
-        } else if (result.length === 0) {
-          callback(response);
+      .find({ _id: new MDB.ObjectId(location) })
+      .toArray((e: any, documents: any) => {
+        console.log(documents);
+        if (e) {
+          callback(errorMessage({ action: "location (by ID) search", e }));
+        } else if (documents.length > 1) {
+          // houston, we've got problem
+          callback(tooManyResultsMessage("location (by ID) search"));
+        } else if (documents.length === 0) {
+          // does not exist
+          callback(notFound("Location"));
         } else {
           database
-            .updateOne(
-              { _id: new MDB.ObjectID(result[0]._id) },
-              { $set: { ...props.fields } }
-            )
+            .updateOne({ _id: new MDB.ObjectId(location) }, { $set: fields })
             .then((document: any) => {
-              // default response
-              
-              response.message = "Error in updating the DB";
-              response.code = 500;
-              console.log(document);
-              // if OK
-              if (document.result.ok === 1) {
-                // set response
-                response = {
-                  status: true,
-                  message: "Location has been updated",
-                  code: 200
-                };
-                // if not updated
-                if (document.result.nModified === 0) {
-                  response.message =
-                    "Location data is the same, no modifications done";
-                }
-                callback(response);
-              } else {
-                // if not
-                callback(response);
-              }
+              // process response
+              callback(
+                updateMessage({
+                  subj: "Location",
+                  document: {
+                    ok: document.result.ok,
+                    nModified: document.result.nModified
+                  }
+                })
+              );
             })
             .catch((e: any) =>
-              callback({
-                status: false,
-                message: `Contact administrator (${e.toString()})`,
-                code: 500
-              })
+              callback(errorMessage({ action: "location update", e }))
             );
         }
       });
   });
 };
+/**
+ * Function to delete location
+ * @function deleteLocation
+ * @param {string} location - ID of location
+ * @callback callback - Callback function to return the response
+ */
 export const deleteLocation = (
   location: string,
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   // check is location available
   MDB.client.connect(err => {
-    assert.equal(null, err);
-    const database = MDB.client.db("muni").collection("dev");
-    database
-      .aggregate([{ $match: { _id: new MDB.ObjectID(location) } }])
-      .toArray((err: any, result: any) => {
-        // if not
-        let response: apiResponseTYPE = {
-          status: false,
-          message: "No location found",
-          code: 203
-        };
-        if (err) {
-          response.message = `Error: ${err}`;
-          response.code = 500;
-          callback(response);
-        } else if (result.length === 0) {
-          callback(response);
-        } else {
-          database
-            .deleteOne({ _id: new MDB.ObjectID(result[0]._id) })
-            .then((document: any) => {
-              // default response
-              response.message = "Error in updating the DB";
-              response.code = 500;
-              console.log(document);
-              // if OK
-              if (document.result.ok === 1) {
-                // set response
-                response = {
-                  status: true,
-                  message: "Location has been deleted",
-                  code: 200
-                };
-                callback(response);
-              } else {
-                // if not
-                callback(response);
-              }
-            })
-            .catch((e: any) =>
-              callback({
-                status: false,
-                message: `Contact administrator (${e.toString()})`,
-                code: 500
+    if (err) {
+      callback(errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      const database = MDB.client.db("muni").collection(dbcMain);
+      database
+        .find({ _id: new MDB.ObjectId(location) })
+        .toArray((e: any, documents: any) => {
+          if (e) {
+            callback(errorMessage({ action: "location (by ID) search", e }));
+          } else if (documents.length > 1) {
+            // houston, we've got problem
+            callback(tooManyResultsMessage("location (by ID) search"));
+          } else if (documents.length === 0) {
+            // does not exist
+            callback(notFound("Location"));
+          } else {
+            database
+              .deleteOne({ _id: new MDB.ObjectId(location) })
+              .then((document: any) => {
+                console.log(document);
+                // process response
+                callback(
+                  updateMessage({
+                    subj: "Location",
+                    document: {
+                      ok: document.result.ok,
+                      nModified: document.result.nModified
+                    }
+                  })
+                );
               })
-            );
-        }
-      });
+              .catch((e: any) =>
+                callback(errorMessage({ action: "location delete", e }))
+              );
+          }
+        });
+    }
   });
 };

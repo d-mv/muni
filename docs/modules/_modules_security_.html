@@ -97,7 +97,7 @@
 					<div class="tsd-signature tsd-kind-icon">dot<wbr>Env<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DotenvConfigOutput</span><span class="tsd-signature-symbol"> =&nbsp;dotenv.config()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/security.ts#L8">modules/security.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/security.ts#L14">modules/security.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -107,7 +107,7 @@
 					<div class="tsd-signature tsd-kind-icon">pass<wbr>Phrase<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;process.env.SECRET</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/security.ts#L9">modules/security.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/security.ts#L15">modules/security.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -124,9 +124,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/security.ts#L59">modules/security.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/security.ts#L71">modules/security.ts:71</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to decipher the token and check it for validity, expiry and if owner is SU</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -137,17 +142,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, arg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5><span class="tsd-flag ts-flagOptional">Optional</span> arg0: <span class="tsd-signature-type">any</span></h5>
-														</li>
-														<li>
-															<h5><span class="tsd-flag ts-flagOptional">Optional</span> arg: <span class="tsd-signature-type">any</span></h5>
+															<h5>arg0: <span class="tsd-signature-type">any</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -171,7 +173,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/security.ts#L46">modules/security.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/security.ts#L52">modules/security.ts:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -233,16 +235,29 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/security.ts#L96">modules/security.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/security.ts#L111">modules/security.ts:111</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to create encoded cookies</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <a href="../interfaces/_src_types_.apiresponsetype.html" class="tsd-signature-type">apiResponseTYPE</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>User details</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<ul>
+								<li>Returns object with token, cookie options, result code &amp; message from input</li>
+							</ul>
 							<ul class="tsd-parameters">
 								<li class="tsd-parameter">
 									<h5>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
@@ -281,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/security.ts#L17">modules/security.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/security.ts#L23">modules/security.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -385,7 +400,7 @@
 						<a href="_routes_index_.html">"routes/index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_routes_loc_router_.html">"routes/loc_<wbr>router"</a>
+						<a href="_routes_location_router_.html">"routes/location_<wbr>router"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_routes_post_router_.html">"routes/post_<wbr>router"</a>

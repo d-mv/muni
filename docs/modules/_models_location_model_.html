@@ -74,6 +74,9 @@
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_location_model_.html#dbname" class="tsd-kind-icon">db<wbr>Name</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_location_model_.html#dbcapp" class="tsd-kind-icon">dbc<wbr>App</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_location_model_.html#dbcmain" class="tsd-kind-icon">dbc<wbr>Main</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_location_model_.html#dotenv" class="tsd-kind-icon">dot<wbr>Env</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -93,10 +96,40 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="dbname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> db<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">db<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"muni"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;muni&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">db<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_DB || &quot;muni&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/models/location_model.ts#L12">models/location_model.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L24">models/location_model.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dbcapp" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dbc<wbr>App</h3>
+					<div class="tsd-signature tsd-kind-icon">dbc<wbr>App<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_COL_APP || &quot;app&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L26">models/location_model.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dbcmain" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dbc<wbr>Main</h3>
+					<div class="tsd-signature tsd-kind-icon">dbc<wbr>Main<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_COL_MAIN || &#x27;dev&#x27;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L27">models/location_model.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dotenv" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dot<wbr>Env</h3>
+					<div class="tsd-signature tsd-kind-icon">dot<wbr>Env<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DotenvConfigOutput</span><span class="tsd-signature-symbol"> =&nbsp;dotenv.config()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L22">models/location_model.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -113,13 +146,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/models/location_model.ts#L49">models/location_model.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L72">models/location_model.ts:72</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to create a location</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>query: <a href="../interfaces/_src_types_.incnewlocationtype.html" class="tsd-signature-type">IncNewLocationTYPE</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>A set of fields for the new location</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>callback: <span class="tsd-signature-type">function</span></h5>
@@ -157,13 +200,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/models/location_model.ts#L159">models/location_model.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L181">models/location_model.ts:181</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to delete location</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>location: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>ID of location</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>callback: <span class="tsd-signature-type">function</span></h5>
@@ -201,9 +254,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/models/location_model.ts#L14">models/location_model.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L34">models/location_model.ts:34</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to list all locations (without users/posts). Need for login.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -236,30 +294,40 @@
 					<a name="update" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> update</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/models/location_model.ts#L94">models/location_model.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/models/location_model.ts#L132">models/location_model.ts:132</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to update a location</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>props: <span class="tsd-signature-type">object</span></h5>
+									<h5>location: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>A set of fields for the updated location</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5>fields: <span class="tsd-signature-type">object</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>A set of fields for the updated location</p>
+										</div>
+									</div>
 									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-index-signature">
-													<h5><span class="tsd-signature-symbol">[</span>index: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></h5>
-												</li>
-											</ul>
-										</li>
-										<li class="tsd-parameter">
-											<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										<li class="tsd-parameter-index-signature">
+											<h5><span class="tsd-signature-symbol">[</span>index: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -349,7 +417,7 @@
 						<a href="_routes_index_.html">"routes/index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_routes_loc_router_.html">"routes/loc_<wbr>router"</a>
+						<a href="_routes_location_router_.html">"routes/location_<wbr>router"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_routes_post_router_.html">"routes/post_<wbr>router"</a>
@@ -375,6 +443,15 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_models_location_model_.html#dbname" class="tsd-kind-icon">db<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_location_model_.html#dbcapp" class="tsd-kind-icon">dbc<wbr>App</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_location_model_.html#dbcmain" class="tsd-kind-icon">dbc<wbr>Main</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_location_model_.html#dotenv" class="tsd-kind-icon">dot<wbr>Env</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_models_location_model_.html#create" class="tsd-kind-icon">create</a>

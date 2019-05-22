@@ -25,44 +25,47 @@ export const posts = (
   callback: (arg0: apiResponseTYPE) => void
 ) => {
   // check token
-  checkToken(props.token, (r: apiResponseTYPE) => {
-    // if token is bad
-    if (!r.status) {
-      callback(r);
-    } else {
-      // authorized
-      let access = false;
-      //  if level is super-user or location requested === location of user
-      if (
-        (r.level && r.level === "su") ||
-        r.payload.location == props.query.location
-      ) {
-        access = true;
-      }
-      //  if access granted
-      if (access) {
-        const query = {
-          location: props.query.location,
-          options: {
-            byUser: !r.level || r.level !== "su",
-            userId: r.payload.id
-          }
-        };
-        Post.list(query, (modelResponse: apiResponseTYPE) => {
+  // checkToken(props.token, (r: apiResponseTYPE) => {
+  //   // if token is bad
+  //   if (!r.status) {
+  //     callback(r);
+  //   } else {
+  //     // authorized
+  //     let access = false;
+  //     //  if level is super-user or location requested === location of user
+  //     if (
+  //       (r.level && r.level === "su") ||
+  //       r.payload.location == props.query.location
+  //     ) {
+  //       access = true;
+  //     }
+  //     //  if access granted
+  //     if (access) {
+        // const query = {
+        //   location: props.query.location,
+        //   options: {
+        //     byUser: !r.level || r.level !== "su",
+        //     userId: r.payload.id
+        //   }
+        // };
+  Post.list(props, (modelResponse: apiResponseTYPE) => {
+          console.log('object')
           callback(modelResponse);
         });
       }
       //  if access not granted
-      else {
-        callback({
-          status: false,
-          message: "Location is not authorized",
-          code: 401
-        });
-      }
-    }
-  });
-};
+      // else {
+      //   callback({
+      //     status: false,
+      //     message: "Location is not authorized",
+      //     code: 401
+      //   });
+  //     }
+  //   }
+  // });
+// };
+
+
 /** Update existing post
  *@function update
  * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token

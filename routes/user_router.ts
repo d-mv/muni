@@ -119,8 +119,7 @@ router.get("/:id", (req: any, res: any, next: any) => {
         UserController.get(
           { id: req.params.id, userRequested: id },
           (controllerResponse: apiResponseTYPE) => {
-            if (controllerResponse.payload)
-              delete controllerResponse.payload.posts;
+            if (controllerResponse.payload) delete controllerResponse.payload;
             res.status(controllerResponse.code).send(controllerResponse);
           }
         );
@@ -150,7 +149,8 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
   } else {
     // token is present
     // check if token valid
-    checkToken(req.headers.token, (checkTokenResponse: any, id?: any) => {
+    checkToken(req.headers.token, (checkTokenResponse) => {
+      console.log(checkTokenResponse);
       // reassign code
       const code = checkTokenResponse.code;
       delete checkTokenResponse.code;
@@ -160,11 +160,9 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
         ng(code, checkTokenResponse);
       } else {
         UserController.get(
-          { id: req.params.id, userRequested: id },
+          { id: req.params.id, userRequested: checkTokenResponse.payload.id },
           (controllerResponse: apiResponseTYPE) => {
-            res
-              .status(controllerResponse.code)
-              .send(controllerResponse.payload.posts);
+            res.status(controllerResponse.code).send(controllerResponse);
           }
         );
       }

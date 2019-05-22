@@ -77,11 +77,13 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#errormessage" class="tsd-kind-icon">error<wbr>Message</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#generalerror" class="tsd-kind-icon">general<wbr>Error</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#notallowedtogetresultsmessage" class="tsd-kind-icon">not<wbr>Allowed<wbr>ToGet<wbr>Results<wbr>Message</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#notauthmessage" class="tsd-kind-icon">not<wbr>Auth<wbr>Message</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#notfound" class="tsd-kind-icon">not<wbr>Found</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#positivemessage" class="tsd-kind-icon">positive<wbr>Message</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#requesterror" class="tsd-kind-icon">request<wbr>Error</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#toomanyresultsmessage" class="tsd-kind-icon">too<wbr>Many<wbr>Results<wbr>Message</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#updatemessage" class="tsd-kind-icon">update<wbr>Message</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_response_message_.html#wrongdbmessage" class="tsd-kind-icon">wrong<wbr>DbMessage</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,7 +101,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L44">modules/response_message.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L52">modules/response_message.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -133,7 +135,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L28">modules/response_message.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L28">modules/response_message.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -175,7 +177,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L73">modules/response_message.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L88">modules/response_message.ts:88</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -217,7 +219,41 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L51">modules/response_message.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L59">modules/response_message.ts:59</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>subj: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="notauthmessage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> not<wbr>Auth<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">not<wbr>Auth<wbr>Message<span class="tsd-signature-symbol">(</span>subj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L66">modules/response_message.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -251,7 +287,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L59">modules/response_message.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L74">modules/response_message.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -285,7 +321,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L80">modules/response_message.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L95">modules/response_message.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -297,7 +333,7 @@
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> code<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> payload<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span></h5>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> payload<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>subj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
@@ -319,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L66">modules/response_message.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L81">modules/response_message.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -353,7 +389,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L37">modules/response_message.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L37">modules/response_message.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -387,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/3dc257a/modules/response_message.ts#L3">modules/response_message.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L3">modules/response_message.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -413,6 +449,40 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_src_types_.apiresponsetype.html" class="tsd-signature-type">apiResponseTYPE</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="wrongdbmessage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> wrong<wbr>DbMessage</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">wrong<wbr>DbMessage<span class="tsd-signature-symbol">(</span>subj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/response_message.ts#L44">modules/response_message.ts:44</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>subj: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -476,7 +546,7 @@
 						<a href="_routes_index_.html">"routes/index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_routes_loc_router_.html">"routes/loc_<wbr>router"</a>
+						<a href="_routes_location_router_.html">"routes/location_<wbr>router"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_routes_post_router_.html">"routes/post_<wbr>router"</a>
@@ -513,6 +583,9 @@
 						<a href="_modules_response_message_.html#notallowedtogetresultsmessage" class="tsd-kind-icon">not<wbr>Allowed<wbr>ToGet<wbr>Results<wbr>Message</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_modules_response_message_.html#notauthmessage" class="tsd-kind-icon">not<wbr>Auth<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_modules_response_message_.html#notfound" class="tsd-kind-icon">not<wbr>Found</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
@@ -526,6 +599,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_modules_response_message_.html#updatemessage" class="tsd-kind-icon">update<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_modules_response_message_.html#wrongdbmessage" class="tsd-kind-icon">wrong<wbr>DbMessage</a>
 					</li>
 				</ul>
 			</nav>

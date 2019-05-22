@@ -42,20 +42,6 @@ export const get = (
   });
 };
 
-// /**
-//  * @param  {string} token
-//  * @param  {(arg0:apiResponseTYPE)=>void} callback
-//  */
-// export const check = (
-//   token: string,
-//   callback: (arg0: apiResponseTYPE) => void
-// ) => {
-//   // check auth
-//   checkToken(token, (r: apiResponseTYPE) => {
-//     callback(r);
-//   });
-// };
-
 /** Login function
  * @param  {object} props - Query and token
  * @return {} - Returns data with callback function

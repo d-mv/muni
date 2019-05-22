@@ -1,99 +1,122 @@
 import * as assert from "assert";
+import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
-import * as Generate from "../modules/token_gen";
-import { dropQuotes } from "../modules/check_strings";
 import {
-  updateMessage,
   errorMessage,
+  generalError,
   notFound,
+  positiveMessage,
+  tooManyResultsMessage,
+  notAllowedToGetResultsMessage,
+  alreadyExistsMessage,
+  updateMessage,
   requestError
 } from "../modules/response_message";
 import { apiResponseTYPE, IncPostsListToModelTYPE } from "../src/types";
-import { Db } from "mongodb";
+
+// constant variables
+const dotEnv = dotenv.config();
+// db
+const dbName = process.env.MONGO_DB || "muni";
+// collections
+const dbcApp = process.env.MONGO_COL_APP || "app";
+const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 
 export const list = (query: any, callback: (arg0: apiResponseTYPE) => void) => {
   console.log("post model");
   console.log(query);
+
   MDB.client.connect(err => {
-    assert.equal(null, err);
-    const database = MDB.client.db("muni").collection("dev");
-    // request for user's posts
-    const request: any = [
-      {
-        $match: {
-          _id: new MDB.ObjectID(query.location)
-        }
-      },
-      {
-        $unwind: {
-          path: "$users",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $match: {
-          "users._id": new MDB.ObjectID(query.options.userId)
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          list: "$users.posts"
-        }
-      }
-    ];
-    // request for all posts
-    const requestSu: any = [
-      {
-        $match: {
-          _id: new MDB.ObjectID(query.location)
-        }
-      },
-      {
-        $unwind: {
-          path: "$users",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          list: "$users.posts"
-        }
-      }
-    ];
-    // if it's a user - his posts, if SU - all posts
-    const ask = query.options.byUser ? request : requestSu;
-    database.aggregate(ask).toArray((err: any, result: any) => {
-      // if 0
-      let response: apiResponseTYPE = {
-        status: false,
-        message: "No posts in the DB",
-        code: 203
-      };
-      // if err
-      if (err) {
-        response.message = `Error getting list of posts: ${err}`;
-        response.code = 500;
-        // if many
-      } else if (result.length > 0) {
-        // process result
-        const payload: any = [];
-        result.forEach((block: any) => {
-          block.list.forEach((set: any) => {
-            payload.push(set);
-          });
+    if (err) {
+      callback(errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      const database = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $match: {
+              _id: new MDB.ObjectId(query.location)
+            }
+          },
+          {
+            $unwind: {
+              path: "$users",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$users"
+            }
+          },
+          {
+            $unwind: {
+              path: "$posts",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              posts: 1
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$posts"
+            }
+          }
+        ])
+        .toArray((e: any, result: any) => {
+          console.log(result);
+          if (e) {
+            // if error
+            callback(errorMessage({ action: "posts (by location) search", e }));
+          } else if (result.length === 0) {
+            // not found
+            callback(notFound("posts"));
+          } else {
+            // bingo
+
+            // return result
+            callback(
+              positiveMessage({
+                subj: `Found ${result.length} post(s)`,
+                payload: result
+              })
+            );
+          }
         });
-        response = {
-          status: true,
-          message: "Posts found",
-          code: 200,
-          payload: payload
-        };
-      }
-      callback(response);
-    });
+      //   // if 0
+      //   let response: apiResponseTYPE = {
+      //     status: false,
+      //     message: "No posts in the DB",
+      //     code: 203
+      //   };
+      //   // if err
+      //   if (err) {
+      //     response.message = `Error getting list of posts: ${err}`;
+      //     response.code = 500;
+      //     // if many
+      //   } else if (result.length > 0) {
+      //     // process result
+      //     const payload: any = [];
+      //     result.forEach((block: any) => {
+      //       block.list.forEach((set: any) => {
+      //         payload.push(set);
+      //       });
+      //     });
+      //     response = {
+      //       status: true,
+      //       message: "Posts found",
+      //       code: 200,
+      //       payload: payload
+      //     };
+      //   }
+      //   callback(response);
+      // });
+    }
   });
 };
 
@@ -109,7 +132,7 @@ export const update = (
   // check is post is available
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const database = MDB.client.db("muni").collection("dev");
+    const database = MDB.client.db(dbName).collection(dbcMain);
     database
       .aggregate([
         {
@@ -142,7 +165,7 @@ export const update = (
         },
         {
           $match: {
-            "posts._id": new MDB.ObjectID(props.id)
+            "posts._id": new MDB.ObjectId(props.id)
           }
         },
         {
@@ -165,7 +188,7 @@ export const update = (
               .updateMany(
                 {},
                 { $set: { ...setRequest } },
-                { arrayFilters: [{ "reply._id": new MDB.ObjectID(props.id) }] }
+                { arrayFilters: [{ "reply._id": new MDB.ObjectId(props.id) }] }
               )
               .then((document: any) => {
                 callback(
@@ -205,7 +228,7 @@ export const deletePost = (
   // check is post is available
   MDB.client.connect(err => {
     assert.equal(null, err);
-    const database = MDB.client.db("muni").collection("dev");
+    const database = MDB.client.db(dbName).collection(dbcMain);
     database
       .aggregate([
         {
@@ -238,7 +261,7 @@ export const deletePost = (
         },
         {
           $match: {
-            "posts._id": new MDB.ObjectID(props.post)
+            "posts._id": new MDB.ObjectId(props.post)
           }
         },
         {
@@ -255,10 +278,10 @@ export const deletePost = (
             // remove item
             database
               .update(
-                { "users.posts._id": new MDB.ObjectID(props.post) },
+                { "users.posts._id": new MDB.ObjectId(props.post) },
                 {
                   $pull: {
-                    "users.$[].posts": { _id: new MDB.ObjectID(props.post) }
+                    "users.$[].posts": { _id: new MDB.ObjectId(props.post) }
                   }
                 }
               )
