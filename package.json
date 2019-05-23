@@ -69,12 +69,7 @@
     "mongodb": "^3.2.4",
     "ts-jest": ">=24.0.2",
     "ts-node": "^8.1.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "jest",
-      "pre-commit": "lint-staged && typedoc --out docs"
-    }
+  }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
