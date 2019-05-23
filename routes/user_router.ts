@@ -5,7 +5,7 @@ import * as UserController from "../controllers/user_controller";
 
 import { checkToken, cookieFactory } from "../modules/security";
 import { showRequest } from "../modules/show_request";
-import { apiResponseTYPE } from "../src/types";
+import { apiResponse } from "../src/types";
 
 const router = express.Router();
 
@@ -56,7 +56,7 @@ router.post("/create", (req: any, res: any, next: any) => {
   console.log("create");
   showRequest(req.headers, req.query);
 
-  UserController.create(req.query, (controllerResponse: apiResponseTYPE) => {
+  UserController.create(req.query, (controllerResponse: apiResponse) => {
     if (controllerResponse.status) {
       // created, need to issue token
       const response = cookieFactory(controllerResponse);
@@ -76,7 +76,7 @@ router.get("/login", (req: any, res: any, next: any) => {
   // const token = req.headers.token ? req.headers.token.toString() : "";
   UserController.login(
     { query: req.query },
-    (controllerResponse: apiResponseTYPE) => {
+    (controllerResponse: apiResponse) => {
       // process token/cookie
       const response = cookieFactory(controllerResponse);
       console.log("login reposne");
@@ -122,7 +122,7 @@ router.get("/:id", (req: any, res: any, next: any) => {
       } else {
         UserController.get(
           { id: req.params.id, userRequested: id },
-          (controllerResponse: apiResponseTYPE) => {
+          (controllerResponse: apiResponse) => {
             if (controllerResponse.payload) delete controllerResponse.payload;
             res.status(controllerResponse.code).send(controllerResponse);
           }
@@ -165,7 +165,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
       } else {
         UserController.get(
           { id: req.params.id, userRequested: checkTokenResponse.payload.id },
-          (controllerResponse: apiResponseTYPE) => {
+          (controllerResponse: apiResponse) => {
             res.status(controllerResponse.code).send(controllerResponse);
           }
         );

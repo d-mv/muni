@@ -2,28 +2,14 @@ import * as assert from "assert";
 import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
-
-import {
-  errorMessage,
-  generalError,
-  notFound,
-  positiveMessage,
-  tooManyResultsMessage,
-  alreadyExistsMessage,
-  updateMessage
-} from "../modules/response_message";
-import {
-  apiResponseTYPE,
-  IncNewLocationTYPE,
-  LocationTYPE
-} from "../src/types";
+import * as Message from "../modules/response_message";
+import * as TYPE from "../src/types";
 
 // constant variables
 const dotEnv = dotenv.config();
 // db
 const dbName = process.env.MONGO_DB || "muni";
 // collections
-const dbcApp = process.env.MONGO_COL_APP || "app";
 const dbcMain = process.env.MONGO_COL_MAIN || 'dev';
 
 /**
@@ -31,7 +17,7 @@ const dbcMain = process.env.MONGO_COL_MAIN || 'dev';
  * @function list
  * @callback callback - Callback function to return the response
  */
-export const list = (callback: (arg0: apiResponseTYPE) => void) => {
+export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
     const database: any = MDB.client.db(dbName).collection(dbcMain);
@@ -46,18 +32,18 @@ export const list = (callback: (arg0: apiResponseTYPE) => void) => {
       ])
       .toArray((e: any, result: any) => {
         if (e) {
-          callback(errorMessage({ action: "locations fetch", e }));
+          callback(Message.errorMessage({ action: "locations fetch", e }));
         } else if (result.length > 0) {
           console.log(result);
           callback(
-            positiveMessage({
+            Message.positiveMessage({
               subj: "Locations found",
               code: 200,
               payload: result
             })
           );
         } else {
-          callback(notFound("locations"));
+          callback(Message.notFound("locations"));
         }
       });
   });
@@ -70,8 +56,8 @@ export const list = (callback: (arg0: apiResponseTYPE) => void) => {
  * @callback callback - Callback function to return the response
  */
 export const create = (
-  query: IncNewLocationTYPE,
-  callback: (arg0: apiResponseTYPE) => void
+  query: TYPE.IncNewLocationTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
@@ -81,18 +67,20 @@ export const create = (
     database.find(search).toArray((e: any, documents: any) => {
       console.log(documents);
       if (e) {
-        callback(errorMessage({ action: "location (similar) search", e }));
+        callback(
+          Message.errorMessage({ action: "location (similar) search", e })
+        );
       } else if (documents.length > 1) {
         // houston, we've got problem
-        callback(tooManyResultsMessage("location (similar) search"));
+        callback(Message.tooManyResultsMessage("location (similar) search"));
       } else if (documents.length === 1) {
         // already exists
-        callback(alreadyExistsMessage("Location"));
+        callback(Message.alreadyExistsMessage("Location"));
       } else {
         // no result
 
         // set the object for creation
-        const createLocation: LocationTYPE = {
+        const createLocation: TYPE.LocationTYPE = {
           _id: new MDB.ObjectId(),
           ...query
         };
@@ -101,19 +89,22 @@ export const create = (
           .then((dbReply: any) => {
             if (dbReply.insertedCount === 1) {
               callback(
-                positiveMessage({
+                Message.positiveMessage({
                   subj: "Location created",
                   payload: { payload: { id: dbReply.insertedId } }
                 })
               );
             } else {
               callback(
-                generalError({ subj: "Location was not created", code: 500 })
+                Message.generalError({
+                  subj: "Location was not created",
+                  code: 500
+                })
               );
             }
           })
           .catch((e: any) =>
-            callback(errorMessage({ action: "location creation", e }))
+            callback(Message.errorMessage({ action: "location creation", e }))
           );
       }
     });
@@ -130,7 +121,7 @@ export const create = (
 export const update = (
   location: string,
   fields: { [index: string]: string },
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check is location available
   MDB.client.connect(err => {
@@ -141,20 +132,22 @@ export const update = (
       .toArray((e: any, documents: any) => {
         console.log(documents);
         if (e) {
-          callback(errorMessage({ action: "location (by ID) search", e }));
+          callback(
+            Message.errorMessage({ action: "location (by ID) search", e })
+          );
         } else if (documents.length > 1) {
           // houston, we've got problem
-          callback(tooManyResultsMessage("location (by ID) search"));
+          callback(Message.tooManyResultsMessage("location (by ID) search"));
         } else if (documents.length === 0) {
           // does not exist
-          callback(notFound("Location"));
+          callback(Message.notFound("Location"));
         } else {
           database
             .updateOne({ _id: new MDB.ObjectId(location) }, { $set: fields })
             .then((document: any) => {
               // process response
               callback(
-                updateMessage({
+                Message.updateMessage({
                   subj: "Location",
                   document: {
                     ok: document.result.ok,
@@ -164,7 +157,7 @@ export const update = (
               );
             })
             .catch((e: any) =>
-              callback(errorMessage({ action: "location update", e }))
+              callback(Message.errorMessage({ action: "location update", e }))
             );
         }
       });
@@ -178,25 +171,27 @@ export const update = (
  */
 export const deleteLocation = (
   location: string,
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check is location available
   MDB.client.connect(err => {
     if (err) {
-      callback(errorMessage({ action: "connection to DB", e: err }));
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database = MDB.client.db("muni").collection(dbcMain);
       database
         .find({ _id: new MDB.ObjectId(location) })
         .toArray((e: any, documents: any) => {
           if (e) {
-            callback(errorMessage({ action: "location (by ID) search", e }));
+            callback(
+              Message.errorMessage({ action: "location (by ID) search", e })
+            );
           } else if (documents.length > 1) {
             // houston, we've got problem
-            callback(tooManyResultsMessage("location (by ID) search"));
+            callback(Message.tooManyResultsMessage("location (by ID) search"));
           } else if (documents.length === 0) {
             // does not exist
-            callback(notFound("Location"));
+            callback(Message.notFound("Location"));
           } else {
             database
               .deleteOne({ _id: new MDB.ObjectId(location) })
@@ -204,7 +199,7 @@ export const deleteLocation = (
                 console.log(document);
                 // process response
                 callback(
-                  updateMessage({
+                  Message.updateMessage({
                     subj: "Location",
                     document: {
                       ok: document.result.ok,
@@ -214,7 +209,7 @@ export const deleteLocation = (
                 );
               })
               .catch((e: any) =>
-                callback(errorMessage({ action: "location delete", e }))
+                callback(Message.errorMessage({ action: "location delete", e }))
               );
           }
         });

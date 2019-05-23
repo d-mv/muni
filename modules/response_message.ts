@@ -1,10 +1,10 @@
-import { apiResponseTYPE } from "../src/types";
+import { apiResponse } from "../src/types";
 
 export const updateMessage = (props: {
   subj: string;
   document: { ok: number; nModified: number };
 }) => {
-  let response: apiResponseTYPE = {
+  let response: apiResponse = {
     status: false,
     message: "Error in updating the DB",
     code: 500

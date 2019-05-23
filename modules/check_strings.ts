@@ -1,4 +1,4 @@
-import { apiResponseTYPE, UserTYPE } from "../src/types";
+import * as TYPE from "../src/types";
 
 /**
  * Drop single/double quote marks
@@ -31,8 +31,8 @@ const stringIsEmpty = (field: string): boolean => {
 const fieldsCheckIfEmpty = (
   fields: { [index: string]: string },
   scoreMax: number = 3
-): apiResponseTYPE => {
-  let response: apiResponseTYPE;
+): TYPE.apiResponse => {
+  let response: TYPE.apiResponse;
   let score = 0;
 
   Object.keys(fields).map((field: any) => {
@@ -61,7 +61,7 @@ const fieldsCheckIfEmpty = (
 export const checkFields = (props: { query: any | {} }) => {
   const fields =
     "name" in props.query && "email" in props.query && "pass" in props.query;
-  let response: apiResponseTYPE;
+  let response: TYPE.apiResponse;
   if (fields) {
     response = fieldsCheckIfEmpty(props.query);
   } else {
@@ -76,7 +76,7 @@ export const checkFields = (props: { query: any | {} }) => {
 
 export const checkFieldsLogin = (props: { query: any | {} }) => {
   const fields = "email" in props.query && "pass" in props.query;
-  let response: apiResponseTYPE;
+  let response: TYPE.apiResponse;
   if (fields) {
     response = fieldsCheckIfEmpty(props.query, 2);
   } else {
@@ -95,7 +95,7 @@ export const checkFieldsLogin = (props: { query: any | {} }) => {
  * @returns {object} - {status: boolean, message: string}
  */
 export const checkID = (id: string) => {
-  let response: apiResponseTYPE = {
+  let response: TYPE.apiResponse = {
     status: false,
     message: "ID is malformed (shorter/longer)",
     code: 400
@@ -112,7 +112,7 @@ export const checkID = (id: string) => {
  * @returns {object} - {status: boolean, message: string}
  */
 export const checkTokenLength = (token: string) => {
-  let response: apiResponseTYPE = {
+  let response: TYPE.apiResponse = {
     status: false,
     message: "Token is malformed (shorter/longer)",
     code: 400

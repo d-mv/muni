@@ -3,13 +3,8 @@ import * as bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
 
 import * as User from "../models/user_model";
-import {
-  errorMessage,
-  notAuthMessage,
-  wrongDbMessage
-} from "./response_message";
-
-import { apiResponseTYPE, intApiResponseTYPE } from "../src/types";
+import * as Message from "./response_message";
+import * as TYPE from "../src/types";
 
 const dotEnv = dotenv.config();
 const passPhrase: any = process.env.SECRET;
@@ -18,23 +13,28 @@ const passPhrase: any = process.env.SECRET;
  * Encode a string
  * @function encodeString
  * @param  {string} text - A string of text to encode
- * @callback callback - Function to return result or error message (apiResponseTYPE | intApiResponseTYPE)
+ * @callback - Function to return result or error message (apiResponseTYPE | intApiResponseTYPE)
  */
 export const encodeString = (
   text: string,
-  callback: (arg0: apiResponseTYPE | intApiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse | TYPE.intApiResponseTYPE) => void
 ) => {
   // generate salt
   bcrypt.genSalt(10, (saltErr: Error, salt: string) => {
     if (saltErr) {
       // if error
-      callback(errorMessage({ action: "salt generation", e: saltErr }));
+      callback(Message.errorMessage({ action: "salt generation", e: saltErr }));
     } else {
       // generate hash
       bcrypt.hash(text, salt, (hashErr: Error, hash: string) => {
         // if error
         if (hashErr) {
-          callback(errorMessage({ action: "hash generation", e: hashErr }));
+          callback(
+            Message.errorMessage({
+              action: "hash generation",
+              e: hashErr
+            })
+          );
         } else {
           callback({ status: true, payload: hash });
         }
@@ -47,16 +47,16 @@ export const encodeString = (
  * @function compareStringToHash
  * @param  {string} text - A string of text to compare
  * @param  {string} hash - A hash of text to compare
- * @callback callback - Function to return result or error message (apiResponseTYPE | boolean)
+ * @callback - Function to return result or error message (apiResponse | boolean)
  */
 export const compareStringToHash = (
   text: string,
   hash: string,
-  callback: (arg0: boolean | apiResponseTYPE) => void
+  callback: (arg0: boolean | TYPE.apiResponse) => void
 ) => {
   bcrypt.compare(text, hash, (err: Error, res: boolean) => {
     if (err) {
-      callback(errorMessage({ action: "hash compare", e: err }));
+      callback(Message.errorMessage({ action: "hash compare", e: err }));
     } else {
       callback(res);
     }
@@ -65,13 +65,17 @@ export const compareStringToHash = (
 
 /**
  * Function to decipher the token and check it for validity, expiry and if owner is SU
+ *@function checkToken
  * @param {string} token
- * @callback callback - Callback function to return the message w/payload or not
+ * @callback - Callback function to return the message w/payload or not
  */
-export const checkToken = (token: string, callback: (arg0: apiResponseTYPE) => void) => {
+export const checkToken = (
+  token: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
   jwt.verify(token, passPhrase, (err: any, decoded: any) => {
     if (err) {
-      callback(errorMessage({ action: "reading token", e: err }));
+      callback(Message.errorMessage({ action: "reading token", e: err }));
     } else {
       const now: any = new Date();
       const expiry: any = new Date(decoded.exp * 1000);
@@ -79,7 +83,7 @@ export const checkToken = (token: string, callback: (arg0: apiResponseTYPE) => v
       // check time validity
       if (authedHours <= 720 && authedHours >= 0) {
         // good
-        let response: apiResponseTYPE = {
+        let response: TYPE.apiResponse = {
           status: true,
           message: "Token is valid",
           code: 200
@@ -90,11 +94,11 @@ export const checkToken = (token: string, callback: (arg0: apiResponseTYPE) => v
         });
       } else if (authedHours > 720) {
         // unauth
-        callback(notAuthMessage("token expired"));
+        callback(Message.notAuthMessage("token expired"));
       } else {
         // smth wrong
         callback(
-          wrongDbMessage(
+          Message.wrongDbMessage(
             "The difference between 'issued' and 'expired' is wrong"
           )
         );
@@ -105,10 +109,11 @@ export const checkToken = (token: string, callback: (arg0: apiResponseTYPE) => v
 
 /**
  * Function to create encoded cookies
+ * @function cookieFactory
  * @param {object} message - User details
  * @return {object} - Returns object with token, cookie options, result code & message from input
  */
-export const cookieFactory = (message: apiResponseTYPE) => {
+export const cookieFactory = (message: TYPE.apiResponse) => {
   const code = message.code;
   let token = "";
   let expire = "";

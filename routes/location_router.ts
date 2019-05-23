@@ -6,7 +6,7 @@ import * as LocationController from "../controllers/location_controller";
 import * as PostController from "../controllers/post_controller";
 import { checkToken, cookieFactory } from "../modules/security";
 import { notAuthMessage } from "../modules/response_message";
-import { apiResponseTYPE } from "../src/types";
+import { apiResponse } from "../src/types";
 
 const router = express.Router();
 const dotEnv = dotenv.config();
@@ -15,7 +15,7 @@ const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 // GET request of list of locations
 router.get("/list", (req: any, res: any, next: any) => {
   showRequest(req.headers, req.query);
-  LocationController.list((controllerResponse: apiResponseTYPE) => {
+  LocationController.list((controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
@@ -57,7 +57,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
             user: checkTokenResponse.payload.id,
             level: checkTokenResponse.level || ""
           },
-          (controllerResponse: apiResponseTYPE) => {
+          (controllerResponse: apiResponse) => {
             res.status(controllerResponse.code).send(controllerResponse);
           }
         );
@@ -102,7 +102,7 @@ router.post("/create", (req: any, res: any, next: any) => {
           // if SU
           LocationController.create(
             req.body,
-            (controllerResponse: apiResponseTYPE) => {
+            (controllerResponse: apiResponse) => {
               res.status(controllerResponse.code).send(controllerResponse);
             }
           );
@@ -163,7 +163,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
             // location, new data to update
             req.params.id,
             req.body,
-            (controllerResponse: apiResponseTYPE) => {
+            (controllerResponse: apiResponse) => {
               res.status(controllerResponse.code).send(controllerResponse);
             }
           );
@@ -223,7 +223,7 @@ router.delete("/:id", (req: any, res: any, next: any) => {
           // if SU
           LocationController.deleteLocation(
             req.params.id,
-            (controllerResponse: apiResponseTYPE) => {
+            (controllerResponse: apiResponse) => {
               res.status(controllerResponse.code).send(controllerResponse);
             }
           );

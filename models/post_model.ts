@@ -1,10 +1,11 @@
 import * as dotenv from "dotenv";
+
 import * as MDB from "../modules/db_connect";
+import findPostById from "./find_post_by_id";
+import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
 
-import findPostById from "./find_post_by_id";
-import findPostByTitle from "./find_post_by_title";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -21,7 +22,7 @@ const dbcMain = process.env.MONGO_COL_MAIN || "dev";
  */
 export const list = (
   query: any,
-  callback: (arg0: TYPE.apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
     if (err) {
@@ -96,13 +97,13 @@ export const list = (
  */
 export const create = (
   request: { post: TYPE.newPostTYPE; location: string; user: string },
-  callback: (arg0: TYPE.apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
   findPostByTitle(
     request.location,
     request.post.title,
-    (findPostResult: TYPE.apiResponseTYPE) => {
+    (findPostResult: TYPE.apiResponse) => {
       // if status true inform, that user exists
       // if status false, proceed with creation
       if (findPostResult.code !== 203) {
@@ -171,10 +172,10 @@ export const update = (
     postId: string;
     user: any;
   },
-  callback: (arg0: TYPE.apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
-  findPostById(request.postId, (findPostResult: TYPE.apiResponseTYPE) => {
+  findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
     // if status true inform, that user exists
     // if status false, proceed with creation
 
@@ -249,10 +250,10 @@ export const deletePost = (
     postId: string;
     user: any;
   },
-  callback: (arg0: TYPE.apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
-  findPostById(request.postId, (findPostResult: TYPE.apiResponseTYPE) => {
+  findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
     // if status true inform, that user exists
     // if status false, proceed with creation
     if (findPostResult.code !== 200) {

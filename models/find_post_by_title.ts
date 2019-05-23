@@ -22,7 +22,7 @@ const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 const findPostByTitle = (
   location: string,
   title: string,
-  callback: (arg0: TYPE.apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
   MDB.client.connect(err => {
