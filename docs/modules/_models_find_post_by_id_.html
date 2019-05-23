@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;src/start&quot; | muni-dev</title>
+	<title>&quot;models/find_post_by_id&quot; | muni-dev</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_src_start_.html">&quot;src/start&quot;</a>
+					<a href="_models_find_post_by_id_.html">&quot;models/find_post_by_id&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;src/start&quot;</h1>
+			<h1>External module &quot;models/find_post_by_id&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -73,16 +73,15 @@
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_start_.html#port" class="tsd-kind-icon">port</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_start_.html#server" class="tsd-kind-icon">server</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_find_post_by_id_.html#dbname" class="tsd-kind-icon">db<wbr>Name</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_find_post_by_id_.html#dbcmain" class="tsd-kind-icon">dbc<wbr>Main</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_find_post_by_id_.html#dotenv" class="tsd-kind-icon">dot<wbr>Env</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_start_.html#normalizeport" class="tsd-kind-icon">normalize<wbr>Port</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_start_.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_start_.html#onlistening" class="tsd-kind-icon">on<wbr>Listening</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_models_find_post_by_id_.html#findpostbyid" class="tsd-kind-icon">find<wbr>Post<wbr>ById</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,92 +90,88 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="port" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> port</h3>
-					<div class="tsd-signature tsd-kind-icon">port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> =&nbsp;normalizePort(process.env.PORT || &quot;3000&quot;)</span></div>
+					<a name="dbname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> db<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">db<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_DB || &quot;muni&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/ef0618e/src/start.ts#L54">src/start.ts:54</a></li>
+							<li>Defined in models/find_post_by_id.ts:10</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="server" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> server</h3>
-					<div class="tsd-signature tsd-kind-icon">server<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Server</span><span class="tsd-signature-symbol"> =&nbsp;http.createServer(app)</span></div>
+					<a name="dbcmain" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dbc<wbr>Main</h3>
+					<div class="tsd-signature tsd-kind-icon">dbc<wbr>Main<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_COL_MAIN || &quot;dev&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/ef0618e/src/start.ts#L7">src/start.ts:7</a></li>
+							<li>Defined in models/find_post_by_id.ts:12</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dotenv" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dot<wbr>Env</h3>
+					<div class="tsd-signature tsd-kind-icon">dot<wbr>Env<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DotenvConfigOutput</span><span class="tsd-signature-symbol"> =&nbsp;dotenv.config()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in models/find_post_by_id.ts:8</li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="normalizeport" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> normalize<wbr>Port</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Port<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="findpostbyid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> find<wbr>Post<wbr>ById</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Post<wbr>ById<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/ef0618e/src/start.ts#L9">src/start.ts:9</a></li>
+									<li>Defined in models/find_post_by_id.ts:20</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Function to find posts by ID, to verify existing posts</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Post ID</p>
+										</div>
+									</div>
 								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">number</span>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">false</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="onerror" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> on<wbr>Error</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Error<span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/ef0618e/src/start.ts#L25">src/start.ts:25</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
 								<li>
-									<h5>error: <span class="tsd-signature-type">any</span></h5>
+									<h5>callback: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_types_.apiresponsetype.html" class="tsd-signature-type">apiResponseTYPE</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>arg0: <a href="../interfaces/_src_types_.apiresponsetype.html" class="tsd-signature-type">apiResponseTYPE</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="onlistening" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> on<wbr>Listening</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Listening<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/ef0618e/src/start.ts#L48">src/start.ts:48</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -190,26 +185,23 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_src_start_.html">"src/start"</a>
+						<a href="_models_find_post_by_id_.html">"models/find_<wbr>post_<wbr>by_<wbr>id"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_src_start_.html#port" class="tsd-kind-icon">port</a>
+						<a href="_models_find_post_by_id_.html#dbname" class="tsd-kind-icon">db<wbr>Name</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_src_start_.html#server" class="tsd-kind-icon">server</a>
+						<a href="_models_find_post_by_id_.html#dbcmain" class="tsd-kind-icon">dbc<wbr>Main</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_src_start_.html#normalizeport" class="tsd-kind-icon">normalize<wbr>Port</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_find_post_by_id_.html#dotenv" class="tsd-kind-icon">dot<wbr>Env</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_src_start_.html#onerror" class="tsd-kind-icon">on<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_src_start_.html#onlistening" class="tsd-kind-icon">on<wbr>Listening</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_models_find_post_by_id_.html#findpostbyid" class="tsd-kind-icon">find<wbr>Post<wbr>ById</a>
 					</li>
 				</ul>
 			</nav>

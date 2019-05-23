@@ -73,8 +73,6 @@ export const create = (
   query: IncNewLocationTYPE,
   callback: (arg0: apiResponseTYPE) => void
 ) => {
-  console.log(Object.keys(query));
-
   MDB.client.connect(err => {
     assert.equal(null, err);
     const database: any = MDB.client.db(dbName).collection(dbcMain);

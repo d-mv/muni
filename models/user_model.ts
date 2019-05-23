@@ -71,6 +71,7 @@ const updateUser = (
       });
   });
 };
+
 // find user by email
 const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
   MDB.client.connect(err => {

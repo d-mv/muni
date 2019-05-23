@@ -7,6 +7,27 @@ export interface apiResponseTYPE {
   payload?: any;
   level?: string;
 }
+
+export interface votesTYPE {
+  up: number;
+  down: number;
+}
+export interface newPostTYPE {
+  title: string;
+  text: string;
+  photo: string;
+  link: string;
+  type: string;
+  newsId: string;
+  status: boolean;
+  votes: votesTYPE;
+}
+
+export interface newPostTYPE {
+  post: newPostTYPE;
+  user: string;
+}
+
 export interface intApiResponseTYPE {
   status: boolean;
   payload?: any;

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-axios.defaults.baseURL = `${process.env.MYSELF}/api`;
+axios.defaults.baseURL = `${process.env.SELF}/api`;
 
 /**
  * (async) Call API with provided url and return API response

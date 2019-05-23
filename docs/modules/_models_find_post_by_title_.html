@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;modules/check_token&quot; | muni-dev</title>
+	<title>&quot;models/find_post_by_title&quot; | muni-dev</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_modules_check_token_.html">&quot;modules/check_token&quot;</a>
+					<a href="_models_find_post_by_title_.html">&quot;models/find_post_by_title&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;modules/check_token&quot;</h1>
+			<h1>External module &quot;models/find_post_by_title&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -70,49 +70,99 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Variables</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_find_post_by_title_.html#dbname" class="tsd-kind-icon">db<wbr>Name</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_find_post_by_title_.html#dbcmain" class="tsd-kind-icon">dbc<wbr>Main</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_models_find_post_by_title_.html#dotenv" class="tsd-kind-icon">dot<wbr>Env</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_modules_check_token_.html#checktoken" class="tsd-kind-icon">check<wbr>Token</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_models_find_post_by_title_.html#findpostbytitle" class="tsd-kind-icon">find<wbr>Post<wbr>ByTitle</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dbname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> db<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">db<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_DB || &quot;muni&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in models/find_post_by_title.ts:10</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dbcmain" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dbc<wbr>Main</h3>
+					<div class="tsd-signature tsd-kind-icon">dbc<wbr>Main<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.env.MONGO_COL_MAIN || &quot;dev&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in models/find_post_by_title.ts:12</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="dotenv" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dot<wbr>Env</h3>
+					<div class="tsd-signature tsd-kind-icon">dot<wbr>Env<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DotenvConfigOutput</span><span class="tsd-signature-symbol"> =&nbsp;dotenv.config()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in models/find_post_by_title.ts:8</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="checktoken" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> check<wbr>Token</h3>
+					<a name="findpostbytitle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> find<wbr>Post<wbr>ByTitle</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">check<wbr>Token<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Post<wbr>ByTitle<span class="tsd-signature-symbol">(</span>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/a092873/modules/check_token.ts#L15">modules/check_token.ts:15</a></li>
+									<li>Defined in models/find_post_by_title.ts:22</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Check if token is valid</p>
+									<p>Function to find posts by title, to verify existing posts</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>token: <span class="tsd-signature-type">string</span></h5>
+									<h5>location: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Location ID - posts at different locations might have the same title</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5>title: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Title of the post to search</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>callback: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-										</div>
-									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+											<ul class="tsd-signatures tsd-kind-type-literal">
 												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_types_.apiresponsetype.html" class="tsd-signature-type">apiResponseTYPE</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
@@ -142,84 +192,24 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_controllers_location_controller_.html">"controllers/location_<wbr>controller"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_controllers_post_controller_.html">"controllers/post_<wbr>controller"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_controllers_user_controller_.html">"controllers/user_<wbr>controller"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_models_location_model_.html">"models/location_<wbr>model"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_models_post_model_.html">"models/post_<wbr>model"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_models_user_model_.html">"models/user_<wbr>model"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_check_strings_.html">"modules/check_<wbr>strings"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_modules_check_token_.html">"modules/check_<wbr>token"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_db_connect_.html">"modules/db_<wbr>connect"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_db_seed_.html">"modules/db_<wbr>seed"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_response_message_.html">"modules/response_<wbr>message"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_security_.html">"modules/security"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_show_request_.html">"modules/show_<wbr>request"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_status_code_.html">"modules/status_<wbr>code"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_token_gen_.html">"modules/token_<wbr>gen"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_routes_api_router_.html">"routes/api_<wbr>router"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_routes_index_.html">"routes/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_routes_location_router_.html">"routes/location_<wbr>router"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_routes_post_router_.html">"routes/post_<wbr>router"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_routes_user_router_.html">"routes/user_<wbr>router"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_src_defaults_.html">"src/defaults"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_src_server_.html">"src/server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_src_start_.html">"src/start"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_src_types_.html">"src/types"</a>
+						<a href="_models_find_post_by_title_.html">"models/find_<wbr>post_<wbr>by_<wbr>title"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_find_post_by_title_.html#dbname" class="tsd-kind-icon">db<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_find_post_by_title_.html#dbcmain" class="tsd-kind-icon">dbc<wbr>Main</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_models_find_post_by_title_.html#dotenv" class="tsd-kind-icon">dot<wbr>Env</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_modules_check_token_.html#checktoken" class="tsd-kind-icon">check<wbr>Token</a>
+						<a href="_models_find_post_by_title_.html#findpostbytitle" class="tsd-kind-icon">find<wbr>Post<wbr>ByTitle</a>
 					</li>
 				</ul>
 			</nav>

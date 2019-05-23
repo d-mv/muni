@@ -1,4 +1,5 @@
 const express = require("express");
+import * as dotenv from "dotenv";
 
 import { showRequest } from "../modules/show_request";
 import * as LocationController from "../controllers/location_controller";
@@ -8,6 +9,8 @@ import { notAuthMessage } from "../modules/response_message";
 import { apiResponseTYPE } from "../src/types";
 
 const router = express.Router();
+const dotEnv = dotenv.config();
+const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 // GET request of list of locations
 router.get("/list", (req: any, res: any, next: any) => {
@@ -235,8 +238,12 @@ router.delete("/:id", (req: any, res: any, next: any) => {
   }
 });
 
+// rest
 router.get("/*", (req: any, res: any, next: any) => {
-  res.send();
+  res.redirect(308, redirectUrl);
+});
+router.post("/*", (req: any, res: any, next: any) => {
+  res.redirect(308, redirectUrl);
 });
 
 export default router;

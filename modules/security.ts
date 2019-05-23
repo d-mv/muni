@@ -68,7 +68,7 @@ export const compareStringToHash = (
  * @param {string} token
  * @callback callback - Callback function to return the message w/payload or not
  */
-export const checkToken = (token: string, callback: (arg0: any) => void) => {
+export const checkToken = (token: string, callback: (arg0: apiResponseTYPE) => void) => {
   jwt.verify(token, passPhrase, (err: any, decoded: any) => {
     if (err) {
       callback(errorMessage({ action: "reading token", e: err }));

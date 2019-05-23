@@ -14,7 +14,7 @@ it("Server requires token", async () => {
 
 it("Can't login with missing credentials", async () => {
   const request =
-    `login?pass=${process.env.SU_PASS}&email=${process.env.SU_EMAIL}`;
+    `user/login?pass=${process.env.SU_PASS}&email=${process.env.SU_EMAIL}`;
   const response = await callAPI(request);
   expect(typeof response).toBe("object");
   expect(response.data.status).toBe(false);
@@ -24,7 +24,7 @@ it("Can't login with missing credentials", async () => {
 
 it("Logins as SU", async () => {
   const request =
-    `login?pass=${process.env.SU_PASS}&location=5ce2a3c945e5451171394b35&email=${process.env.SU_EMAIL}`;
+    `user/login?pass=${process.env.SU_PASS}&location=5ce2a3c945e5451171394b35&email=${process.env.SU_EMAIL}`;
   const response = await callAPI(request);
   expect(typeof response).toBe("object");
   expect(response.status).toBe(true);

@@ -76,7 +76,7 @@ const dbSeed = (callback: any) => {
             photo: "https://picsum.photos/200/300?random=2",
             link: faker.internet.url(),
             newsId: new MDB.ObjectId(),
-            createdBy: new MDB.ObjectId(),
+            createdBy: user._id,
             date: faker.date.between("2019-01-01", "2019-05-15"),
             status: "active",
             votes: {

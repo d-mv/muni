@@ -1,6 +1,6 @@
 import * as User from "../models/user_model";
 import * as Location from "../models/location_model";
-import { checkToken } from "../modules/check_token";
+// import { checkToken } from "../modules/check_token";
 import { requestError } from "../modules/response_message";
 import { apiResponseTYPE, IncNewLocationTYPE } from "../src/types";
 

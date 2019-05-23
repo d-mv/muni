@@ -56,6 +56,14 @@ export const alreadyExistsMessage = (subj: string) => {
     code: 400
   };
 };
+export const foundMessage = (subj: string,payload?:any) => {
+  return {
+    status: true,
+    message: `${subj} found.`,
+    code: 200,
+    ...payload
+  };
+};
 export const notAllowedToGetResultsMessage = (subj: string) => {
   return {
     status: false,

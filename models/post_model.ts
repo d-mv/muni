@@ -1,35 +1,31 @@
-import * as assert from "assert";
 import * as dotenv from "dotenv";
-
 import * as MDB from "../modules/db_connect";
-import {
-  errorMessage,
-  generalError,
-  notFound,
-  positiveMessage,
-  tooManyResultsMessage,
-  notAllowedToGetResultsMessage,
-  alreadyExistsMessage,
-  updateMessage,
-  requestError
-} from "../modules/response_message";
-import { apiResponseTYPE, IncPostsListToModelTYPE } from "../src/types";
+import * as Message from "../modules/response_message";
+import * as TYPE from "../src/types";
+
+import findPostById from "./find_post_by_id";
+import findPostByTitle from "./find_post_by_title";
 
 // constant variables
 const dotEnv = dotenv.config();
 // db
 const dbName = process.env.MONGO_DB || "muni";
 // collections
-const dbcApp = process.env.MONGO_COL_APP || "app";
 const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 
-export const list = (query: any, callback: (arg0: apiResponseTYPE) => void) => {
-  console.log("post model");
-  console.log(query);
-
+/**
+ * Function to return list of posts
+ * @function list
+ * @param {object} query - Contains location
+ * @callback callback - Callback function to return response
+ */
+export const list = (
+  query: any,
+  callback: (arg0: TYPE.apiResponseTYPE) => void
+) => {
   MDB.client.connect(err => {
     if (err) {
-      callback(errorMessage({ action: "connection to DB", e: err }));
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database = MDB.client.db(dbName).collection(dbcMain);
       database
@@ -69,225 +65,82 @@ export const list = (query: any, callback: (arg0: apiResponseTYPE) => void) => {
           }
         ])
         .toArray((e: any, result: any) => {
-          console.log(result);
           if (e) {
             // if error
-            callback(errorMessage({ action: "posts (by location) search", e }));
+            callback(
+              Message.errorMessage({ action: "posts (by location) search", e })
+            );
           } else if (result.length === 0) {
             // not found
-            callback(notFound("posts"));
+            callback(Message.notFound("posts"));
           } else {
             // bingo
 
             // return result
             callback(
-              positiveMessage({
+              Message.positiveMessage({
                 subj: `Found ${result.length} post(s)`,
                 payload: result
               })
             );
           }
         });
-      //   // if 0
-      //   let response: apiResponseTYPE = {
-      //     status: false,
-      //     message: "No posts in the DB",
-      //     code: 203
-      //   };
-      //   // if err
-      //   if (err) {
-      //     response.message = `Error getting list of posts: ${err}`;
-      //     response.code = 500;
-      //     // if many
-      //   } else if (result.length > 0) {
-      //     // process result
-      //     const payload: any = [];
-      //     result.forEach((block: any) => {
-      //       block.list.forEach((set: any) => {
-      //         payload.push(set);
-      //       });
-      //     });
-      //     response = {
-      //       status: true,
-      //       message: "Posts found",
-      //       code: 200,
-      //       payload: payload
-      //     };
-      //   }
-      //   callback(response);
-      // });
     }
   });
 };
+/**
+ * Function to create post
+ * @function create
+ * @param {object} request - New post fields and user ID
+ * @callback callback - Callback function to return response
+ */
+export const create = (
+  request: { post: TYPE.newPostTYPE; location: string; user: string },
+  callback: (arg0: TYPE.apiResponseTYPE) => void
+) => {
+  // check if post title is available
+  findPostByTitle(
+    request.location,
+    request.post.title,
+    (findPostResult: TYPE.apiResponseTYPE) => {
+      // if status true inform, that user exists
+      // if status false, proceed with creation
+      if (findPostResult.code !== 203) {
+        // send message
+        callback(findPostResult);
+      } else {
+        // proceed
 
-export const update = (
-  props: {
-    id: string;
-    user: string;
-    level: string;
-    fields: { [index: string]: string };
-  },
-  callback: (arg0: apiResponseTYPE) => void
-) => {
-  // check is post is available
-  MDB.client.connect(err => {
-    assert.equal(null, err);
-    const database = MDB.client.db(dbName).collection(dbcMain);
-    database
-      .aggregate([
-        {
-          $unwind: {
-            path: "$users",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $replaceRoot: {
-            newRoot: "$users"
-          }
-        },
-        {
-          $unwind: {
-            path: "$posts",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            fName: 0,
-            lName: 0,
-            email: 0,
-            pass: 0,
-            authDate: 0,
-            token: 0
-          }
-        },
-        {
-          $match: {
-            "posts._id": new MDB.ObjectId(props.id)
-          }
-        },
-        {
-          $project: {
-            post: "$posts"
-          }
-        }
-      ])
-      .toArray((err: any, result: any) => {
-        // if there is a result
-        if (result.length === 1) {
-          // if the user can have access to it
-          if (props.level === "su" || result[0].post.createdBy === props.user) {
-            const setRequest: any = {};
-            // prepare the request
-            Object.keys(props.fields).forEach((key: string) => {
-              setRequest[`users.$[].posts.$[reply].${key}`] = props.fields[key];
-            });
-            database
-              .updateMany(
-                {},
-                { $set: { ...setRequest } },
-                { arrayFilters: [{ "reply._id": new MDB.ObjectId(props.id) }] }
-              )
-              .then((document: any) => {
-                callback(
-                  updateMessage({
-                    subj: "Post",
-                    document: {
-                      ok: document.result.ok,
-                      nModified: document.result.nModified
-                    }
-                  })
-                );
-              })
-              .catch((e: any) => {
-                callback(errorMessage({ action: "post update", e }));
-              });
-          } else {
+        // call db and create post
+        MDB.client.connect(err => {
+          if (err) {
+            // return error with connection
             callback(
-              requestError(
-                "User doesn't have enough rights to modify the post."
-              )
+              Message.errorMessage({ action: "connection to DB (1)", e: err })
             );
-          }
-        } else {
-          callback(notFound("post"));
-        }
-      });
-  });
-};
-export const deletePost = (
-  props: {
-    post: string;
-    user: string;
-    level: string;
-  },
-  callback: (arg0: apiResponseTYPE) => void
-) => {
-  // check is post is available
-  MDB.client.connect(err => {
-    assert.equal(null, err);
-    const database = MDB.client.db(dbName).collection(dbcMain);
-    database
-      .aggregate([
-        {
-          $unwind: {
-            path: "$users",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $replaceRoot: {
-            newRoot: "$users"
-          }
-        },
-        {
-          $unwind: {
-            path: "$posts",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            fName: 0,
-            lName: 0,
-            email: 0,
-            pass: 0,
-            authDate: 0,
-            token: 0
-          }
-        },
-        {
-          $match: {
-            "posts._id": new MDB.ObjectId(props.post)
-          }
-        },
-        {
-          $project: {
-            post: "$posts"
-          }
-        }
-      ])
-      .toArray((err: any, result: any) => {
-        // if there is a result
-        if (result.length === 1) {
-          // if the user can have access to it
-          if (props.level === "su" || result[0].post.createdBy === props.user) {
-            // remove item
+          } else {
+            // set database
+            const database: any = MDB.client.db(dbName).collection(dbcMain);
+            // set document to insert
+            const newDocument = {
+              _id: new MDB.ObjectId(),
+              createdBy: new MDB.ObjectId(request.user),
+              date: new Date(),
+              ...request.post
+            };
+            // insert document
             database
               .update(
-                { "users.posts._id": new MDB.ObjectId(props.post) },
                 {
-                  $pull: {
-                    "users.$[].posts": { _id: new MDB.ObjectId(props.post) }
-                  }
-                }
+                  _id: new MDB.ObjectId(request.location),
+                  "users._id": new MDB.ObjectId(request.user)
+                },
+                { $push: { "users.$.posts": newDocument } }
               )
               .then((document: any) => {
+                // process response
                 callback(
-                  updateMessage({
+                  Message.updateMessage({
                     subj: "Post",
                     document: {
                       ok: document.result.ok,
@@ -296,19 +149,163 @@ export const deletePost = (
                   })
                 );
               })
-              .catch((e: any) => {
-                callback(errorMessage({ action: "post update", e: e }));
-              });
-          } else {
-            callback(
-              requestError(
-                "User doesn't have enough rights to modify the post."
-              )
-            );
+              .catch((e: any) =>
+                callback(Message.errorMessage({ action: "post create", e }))
+              );
           }
+        });
+      }
+    }
+  );
+};
+
+/**
+ * Function to update post
+ * @function update
+ * @param {object} request - New post fields,location ID and user ID
+ * @callback callback - Callback function to return response
+ */
+export const update = (
+  request: {
+    fields: { [index: string]: string };
+    postId: string;
+    user: any;
+  },
+  callback: (arg0: TYPE.apiResponseTYPE) => void
+) => {
+  // check if post title is available
+  findPostById(request.postId, (findPostResult: TYPE.apiResponseTYPE) => {
+    // if status true inform, that user exists
+    // if status false, proceed with creation
+
+    if (findPostResult.code !== 200) {
+      // send message
+      callback(findPostResult);
+    } else if (
+      // checking authorization
+      request.user.level === "su" ||
+      findPostResult.payload.createdBy == request.user.payload.id
+    ) {
+      // authenticated
+      const setRequest: any = {};
+      // prepare the request
+      Object.keys(request.fields).forEach((key: string) => {
+        setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
+      });
+      MDB.client.connect(err => {
+        if (err) {
+          // return error with connection
+          callback(
+            Message.errorMessage({ action: "connection to DB (5)", e: err })
+          );
         } else {
-          callback(notFound("post"));
+          // set database
+          const database: any = MDB.client.db(dbName).collection(dbcMain);
+          // update
+          database
+            .updateMany(
+              { "users.posts._id": new MDB.ObjectId(request.postId) },
+              { $set: { ...setRequest } },
+              {
+                arrayFilters: [
+                  { "reply._id": new MDB.ObjectId(request.postId) }
+                ]
+              }
+            )
+            .then((document: any) => {
+              // process response
+              callback(
+                Message.updateMessage({
+                  subj: "Post",
+                  document: {
+                    ok: document.result.ok,
+                    nModified: document.result.nModified
+                  }
+                })
+              );
+            })
+            .catch((e: any) => {
+              callback(Message.errorMessage({ action: "post update", e }));
+            });
         }
       });
+    } else {
+      callback(
+        Message.notAuthMessage(
+          "You need to be either owner or administrator to edit this post"
+        )
+      );
+    }
+  });
+};
+/**
+ * Function to delete post
+ * @function deletePost
+ * @param {object} request - New post fields,location ID and user ID
+ * @callback callback - Callback function to return response
+ */
+export const deletePost = (
+  request: {
+    postId: string;
+    user: any;
+  },
+  callback: (arg0: TYPE.apiResponseTYPE) => void
+) => {
+  // check if post title is available
+  findPostById(request.postId, (findPostResult: TYPE.apiResponseTYPE) => {
+    // if status true inform, that user exists
+    // if status false, proceed with creation
+    if (findPostResult.code !== 200) {
+      // send message
+      callback(findPostResult);
+    } else if (
+      // checking authorization
+      request.user.level === "su" ||
+      findPostResult.payload.createdBy == request.user.payload.id
+    ) {
+      // authenticated
+      MDB.client.connect(err => {
+        if (err) {
+          // return error with connection
+          callback(
+            Message.errorMessage({ action: "connection to DB (5)", e: err })
+          );
+        } else {
+          // set database
+          const database: any = MDB.client.db(dbName).collection(dbcMain);
+          // update
+          database
+            .update(
+              { "users.posts._id": new MDB.ObjectId(request.postId) },
+              {
+                $pull: {
+                  "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
+                }
+              }
+            )
+            .then((document: any) => {
+              // process response
+              callback(
+                Message.updateMessage({
+                  subj: "Post",
+                  document: {
+                    ok: document.result.ok,
+                    nModified: document.result.nModified
+                  }
+                })
+              );
+            })
+            .catch((e: any) => {
+              callback(Message.errorMessage({ action: "post update", e }));
+            });
+        }
+      });
+    } else {
+      callback(
+        Message.notAuthMessage(
+          "You need to be either owner or administrator to edit this post"
+        )
+      );
+    }
   });
 };

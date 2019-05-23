@@ -1,49 +1,58 @@
 const express = require("express");
+import * as dotenv from "dotenv";
 
-import { showRequest } from "../modules/show_request";
 import * as PostController from "../controllers/post_controller";
-
 import { apiResponseTYPE } from "../src/types";
-
 const router = express.Router();
+// redirect to home for rest of routes
+const dotEnv = dotenv.config();
+const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
-// update
-router.patch("/:id", (req: any, res: any, next: any) => {
-  showRequest(req.headers, [req.body, req.headers.token]);
-  const token = req.headers.token ? req.headers.token.toString() : "";
-  PostController.update(
-    { id: req.params.id, query: req.body, token: token },
-    (controllerResponse: apiResponseTYPE) => {
-      res.status(controllerResponse.code).send(controllerResponse);
-    }
-  );
+/**
+ * Route to create post, using POST method with object in body
+ * @function router.post
+ * @param {object} req - Post ID in header, data in body
+ * @param {object} res
+ * @param {object} next
+ */
+router.post("/create", (req: any, res: any, next: any) => {
+  PostController.createPost(req, (controllerResponse: apiResponseTYPE) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
 });
-// create
-// router.post("/create", (req: any, res: any, next: any) => {
-//   showRequest(req.headers, [req.body, req.headers.token]);
-//   const token = req.headers.token ? req.headers.token.toString() : "";
-//   PostController.create(
-//     { query: req.body, token: token },
-//     (controllerResponse: apiResponseTYPE) => {
-//       res.status(controllerResponse.code).send(controllerResponse);
-//     }
-//   );
-// });
-// delete
+
+/**
+ * Route to update post, using PATCH method with object in body
+ * @function router.patch
+ * @param {object} req - Post ID in parameters + token in header
+ * @param {object} res
+ * @param {object} next
+ */
+router.patch("/:id", (req: any, res: any, next: any) => {
+  PostController.updatePost(req, (controllerResponse: apiResponseTYPE) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
+});
+
+/**
+ * Route to delete post, using DELETE method
+ * @function router.delete
+ * @param {object} req - Post ID in parameters + token in header
+ * @param {object} res
+ * @param {object} next
+ */
 router.delete("/:id", (req: any, res: any, next: any) => {
-  showRequest(req.headers, [req.body, req.headers.token]);
-  const token = req.headers.token ? req.headers.token.toString() : "";
-  PostController.deletePost(
-    { post: req.params.id, token: token },
-    (controllerResponse: apiResponseTYPE) => {
-      res.status(controllerResponse.code).send(controllerResponse);
-    }
-  );
+  PostController.deletePost(req, (controllerResponse: apiResponseTYPE) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
 });
 
 // rest
 router.get("/*", (req: any, res: any, next: any) => {
-  res.send();
+  res.redirect(308, redirectUrl);
+});
+router.post("/*", (req: any, res: any, next: any) => {
+  res.redirect(308, redirectUrl);
 });
 
 export default router;
