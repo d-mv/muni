@@ -3,7 +3,7 @@ import * as mongodb from "mongodb";
 import * as MDB from "./db_connect";
 
 import { encodeString } from "./security";
-import { intApiResponseTYPE } from "src/types";
+import * as TYPE from "../src/types";
 const dbName = "muni";
 
 /**
@@ -45,7 +45,7 @@ const dbSeed = (callback: any) => {
     max: 10
   });
   // generate has for password
-  encodeString("1234567", (encoded: intApiResponseTYPE) => {
+  encodeString("1234567", (encoded: TYPE.intApiResponseTYPE) => {
     if (!encoded.status) {
       callback({ status: false, message: "Something went wrong", code: 500 });
     } else {
