@@ -6,11 +6,12 @@ import style from "./CityContainer.module.scss";
 
 const CityContainer = () => {
   return (
-    <main className={style.horizontalScrollWrapper}>
-      <City city='Haifa' />
-      <City city='Tel-Aviv' />
-      <City city='Jerusalem' />;
-    </main>
+    <button className={style.butt}>*******</button>
+    // <main className={style.horizontalScrollWrapper}>
+    //   <City city='Haifa' />
+    //   <City city='Tel-Aviv' />
+    //   <City city='Jerusalem' />;
+    // </main>
   );
 };
 
