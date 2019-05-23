@@ -9,10 +9,50 @@ import { apiResponseTYPE, IncPostsListTYPE } from "../src/types";
 import { requestError } from "../modules/response_message";
 
 /**
- * Function to create post
+ * Function to create post. _Example of the body_:
+ *
+ *```
+ * { "post":
+ *          {
+ *            "title": "Post title",
+ *            "text": "Lorem ipsum dolor sit amet...",
+ *            "photo": "http://...",
+ *            "link": "http://...",
+ *            "type": "post",
+ *            "newsId": "5ce2a3c945e5451171394b35", // - this can be 000 for empty
+ *            "status": true,
+ *            "votes": {
+ *                        "up": 0,
+ *                        "down": 0
+ *             }
+ *           },
+ *   "location": "5ce2a3c945e5451171394b35"
+ * }
+ * ```
+ *
  * @function createPost
  * @param {object} props - Incoming feed from router
- * @callback callback - Callback function to return response
+ * @returns {callback} - Callback function to return response
+ *
+ * @example Example of the body
+ *
+ * { "post":
+ *          {
+ *            "title": "Post title",
+ *            "text": "Lorem ipsum dolor sit amet...",
+ *            "photo": "http://...",
+ *            "link": "http://...",
+ *            "type": "post",
+ *            "newsId": "5ce2a3c945e5451171394b35", // - this can be 000 for empty
+ *            "status": true,
+ *            "votes": {
+ *                        "up": 0,
+ *                        "down": 0
+ *             }
+ *           },
+ *   "location": "5ce2a3c945e5451171394b35"
+ * }
+ *
  */
 export const createPost = (
   props: any,
@@ -60,7 +100,7 @@ export const createPost = (
  * Function to update post
  * @function updatePost
  * @param {object} props - Incoming feed from router
- * @callback callback - Callback function to return response
+ * @return {callback} - Callback function to return response
  */
 export const updatePost = (
   props: any,
@@ -105,7 +145,7 @@ export const updatePost = (
  * Function to delete post
  * @function deletePost
  * @param {object} props - Incoming feed from router
- * @callback callback - Callback function to return response
+ * @return {callback} - Callback function to return response
  */
 export const deletePost = (
   props: any,
@@ -145,7 +185,7 @@ export const deletePost = (
 /** Get the list of locations
  * @function posts
  * @param  {object} props - Request in the form of IncPostsListTYPE
- * @return {} - Uses callback to return standard apiResponseTYPE
+ * @return {callback} - Callback function to return response
  */
 export const posts = (
   props: IncPostsListTYPE,
@@ -156,117 +196,3 @@ export const posts = (
     callback(modelResponse);
   });
 };
-
-// /** Update existing post
-//  *@function update
-//  * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token
-//  * @return {} - Returns response through callback function
-//  */
-// export const update = (
-//   props: {
-//     id: string;
-//     query: { [index: string]: string };
-//     token: string;
-//   },
-//   callback: (arg0: apiResponseTYPE) => void
-// ) => {
-//   // check malformed ID
-//   const idCheckResult = checkID(props.id);
-//   if (!idCheckResult.status) {
-//     callback(idCheckResult);
-//   } else {
-//     // check token
-//     checkToken(props.token, (r: apiResponseTYPE) => {
-//       // if token is bad
-//       if (!r.status) {
-//         callback(r);
-//       } else {
-//         // request User model
-//         const query = {
-//           id: props.id,
-//           user: r.payload.id,
-//           level: r.level || "",
-//           fields: { ...props.query }
-//         };
-//         // Post.update(query, (modelResponse: apiResponseTYPE) => {
-//         //   callback(modelResponse);
-//         // });
-//       }
-//     });
-//   }
-// };
-
-/** Update existing post
- *@function update
- * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token
- * @return {} - Returns response through callback function
- */
-// export const create = (
-//   props: {
-//     id: string;
-//     query: { [index: string]: string };
-//     token: string;
-//   },
-//   callback: (arg0: apiResponseTYPE) => void
-// ) => {
-//   // check malformed ID
-//   const idCheckResult = checkID(props.id);
-//   if (!idCheckResult.status) {
-//     callback(idCheckResult);
-//   } else {
-//     // check token
-//     checkToken(props.token, (r: apiResponseTYPE) => {
-//       // if token is bad
-//       if (!r.status) {
-//         callback(r);
-//       } else {
-//         // request User model
-//         const query = {
-//           id: props.id,
-//           user: r.payload.id,
-//           level: r.level || "",
-//           fields: { ...props.query }
-//         };
-//         Post.update(query, (modelResponse: apiResponseTYPE) => {
-//           callback(modelResponse);
-//         });
-//       }
-//     });
-//   }
-// };
-// /** Update existing post
-//  *@function update
-//  * @param  {id:string;query:{[index:string]:string};token:string} props - Post id, query with fields and token
-//  * @return {} - Returns response through callback function
-//  */
-// export const deletePost = (
-//   props: {
-//     post: string;
-//     token: string;
-//   },
-//   callback: (arg0: apiResponseTYPE) => void
-// ) => {
-//   // check malformed ID
-//   const idCheckResult = checkID(props.post);
-//   if (!idCheckResult.status) {
-//     callback(idCheckResult);
-//   } else {
-//     // check token
-//     checkToken(props.token, (r: apiResponseTYPE) => {
-//       // if token is bad
-//       if (!r.status) {
-//         callback(r);
-//       } else {
-//         // request User model
-//         const query = {
-//           post: props.post,
-//           user: r.payload.id,
-//           level: r.level || ""
-//         };
-//         Post.deletePost(query, (modelResponse: apiResponseTYPE) => {
-//           callback(modelResponse);
-//         });
-//       }
-//     });
-//   }
-// };

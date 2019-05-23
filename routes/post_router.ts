@@ -10,10 +10,12 @@ const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 /**
  * Route to create post, using POST method with object in body
+ *
  * @function router.post
  * @param {object} req - Post ID in header, data in body
  * @param {object} res
  * @param {object} next
+ *
  */
 router.post("/create", (req: any, res: any, next: any) => {
   PostController.createPost(req, (controllerResponse: apiResponseTYPE) => {
