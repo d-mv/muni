@@ -1,28 +1,16 @@
-import express from "express";
-
-import { showRequest } from "../modules/show_request";
-import * as UsersController from "../controllers/user_controller";
-
-import { apiResponseTYPE } from "../src/types";
+const express = require("express");
+import * as dotenv from "dotenv";
 
 const router = express.Router();
 
-// login
-router.get("/login", (req, res, next) => {
-    console.log("login");
+const dotEnv = dotenv.config();
+const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
-  showRequest(req.headers, req.query);
-  const token = req.headers.token ? req.headers.token.toString() : "";
-  UsersController.login(
-    { query: req.query, token: token },
-    (controllerResponse: apiResponseTYPE) => {
-      res.send(controllerResponse);
-    }
-  );
-});
 // rest
-router.get("/*", (req, res, next) => {
-  res.send({ status: true, message: "Welcome to the API" });
+router.get("/*", (req: any, res: any, next: any) => {
+  res.redirect(308, redirectUrl);
 });
-
+router.post("/*", (req: any, res: any, next: any) => {
+  res.redirect(308, redirectUrl);
+});
 export default router;

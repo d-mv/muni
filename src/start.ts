@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import app from "./server"
-import debug from "debug"
-import http from "http"
+import app from "./server";
+import debug from "debug";
+import * as http from "http";
 
 const server = http.createServer(app);
 
@@ -20,10 +20,10 @@ const normalizePort = (value: string) => {
   }
 
   return false;
-}
+};
 
 const onError = (error: any) => {
-  console.log(error)
+  console.log(error);
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -43,13 +43,13 @@ const onError = (error: any) => {
     default:
       throw error;
   }
-}
+};
 
 const onListening = () => {
   const addr: any = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
-}
+};
 
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);

@@ -1,61 +1,60 @@
-import express from "express";
+const express = require("express");
+import * as dotenv from "dotenv";
 
-import { showRequest } from "../modules/show_request";
 import * as PostController from "../controllers/post_controller";
-
 import { apiResponseTYPE } from "../src/types";
-
 const router = express.Router();
+// redirect to home for rest of routes
+const dotEnv = dotenv.config();
+const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
-/** GET request to list all the posts for the required city
- * @param  {} req
- * @param  {} res
- * @param  {} next
+/**
+ * Route to create post, using POST method with object in body
+ *
+ * @function router.post
+ * @param {object} req - Post ID in header, data in body
+ * @param {object} res
+ * @param {object} next
+ *
  */
-// router.get("/list", (req, res, next) => {
-//   showRequest(req.headers, req.query);
-//   const token = req.headers.token ? req.headers.token.toString() : "";
-//   LocationController.list(
-//     { query: req.query, token: token },
-//     (controllerResponse: apiResponseTYPE) => {
-//       res.status(controllerResponse.code).send(controllerResponse);
-//     }
-//   );
-// });
+router.post("/create", (req: any, res: any, next: any) => {
+  PostController.createPost(req, (controllerResponse: apiResponseTYPE) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
+});
 
-// router.get("/create", (req, res, next) => {
-//   showRequest(req.headers, req.query);
-//   const token = req.headers.token ? req.headers.token.toString() : "";
-//   LocationController.create(
-//     { query: req.query, token: token },
-//     (controllerResponse: apiResponseTYPE) => {
-//       res.send(controllerResponse);
-//     }
-//   );
-// });
-// // check if token login available
-// router.get("/check", (req, res, next) => {
-//   showRequest(req.headers, req.query);
-//   const token = req.headers.token ? req.headers.token.toString() : "";
-//   LocationController.check(token, (controllerResponse: apiResponseTYPE) => {
-//     res.send(controllerResponse);
-//   });
-// });
+/**
+ * Route to update post, using PATCH method with object in body
+ * @function router.patch
+ * @param {object} req - Post ID in parameters + token in header
+ * @param {object} res
+ * @param {object} next
+ */
+router.patch("/:id", (req: any, res: any, next: any) => {
+  PostController.updatePost(req, (controllerResponse: apiResponseTYPE) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
+});
 
-// get
-// router.get("/:id", (req, res, next) => {
-//   showRequest(req.headers, req.params.id);
-//   const token = req.headers.token ? req.headers.token.toString() : "";
-//   LocationController.get(
-//     { id: req.params.id, token: token },
-//     (controllerResponse: apiResponseTYPE) => {
-//       res.send(controllerResponse);
-//     }
-//   );
-// });
+/**
+ * Route to delete post, using DELETE method
+ * @function router.delete
+ * @param {object} req - Post ID in parameters + token in header
+ * @param {object} res
+ * @param {object} next
+ */
+router.delete("/:id", (req: any, res: any, next: any) => {
+  PostController.deletePost(req, (controllerResponse: apiResponseTYPE) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
+});
+
 // rest
-router.get("/*", (req, res, next) => {
-  res.send();
+router.get("/*", (req: any, res: any, next: any) => {
+  res.redirect(308, redirectUrl);
+});
+router.post("/*", (req: any, res: any, next: any) => {
+  res.redirect(308, redirectUrl);
 });
 
 export default router;

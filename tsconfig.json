@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
     "strict": true,
     "baseUrl": "./",
-    "outDir": "build",
+    "outDir": "./dist",
     "removeComments": true,
     "experimentalDecorators": true,
     "target": "es5",
@@ -12,17 +16,25 @@
     "importHelpers": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2015", "dom", "dom.iterable", "esnext"],
     "jsx": "preserve",
-        "types": ["jest", "node"]
+    "types": ["jest", "node"]
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["./src/public/", "node_modules"]
+  "include": [
+    "./src/*.ts",
+    "./routes/*.ts",
+    "./models/*.ts",
+    "./modules/*.ts",
+    "./controllers/*.ts"
+  ],
+  "exclude": ["./src/public/", "node_modules", "jest.config.js", "client"],
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
+  }
 }

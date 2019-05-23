@@ -1,19 +1,42 @@
+import { ObjectId } from 'bson';
+
 export interface apiResponseTYPE {
   status: boolean;
   message: string;
   code: number;
   payload?: any;
+  level?: string;
+}
+
+export interface votesTYPE {
+  up: number;
+  down: number;
+}
+export interface newPostTYPE {
+  title: string;
+  text: string;
+  photo: string;
+  link: string;
+  type: string;
+  newsId: string;
+  status: boolean;
+  votes: votesTYPE;
+}
+
+export interface newPostTYPE {
+  post: newPostTYPE;
+  user: string;
+}
+
+export interface intApiResponseTYPE {
+  status: boolean;
+  payload?: any;
 }
 
 export interface IncPostsListTYPE {
-  query: {
-    location: string;
-    options?: {
-      byUser: boolean;
-      userId: string;
-    };
-  };
-  token: string;
+  location: string;
+  user: string;
+  level: string;
 }
 export interface TokenTYPE {
   location: string;
@@ -28,14 +51,24 @@ export interface IncPostsListToModelTYPE {
 }
 
 export interface IncUserCreateTYPE {
-  query: { name: string; email: string; pass: string } | {};
-  token: string | undefined;
+  fName: string;
+  lName: string;
+  avatar: string;
+  email: string;
+  pass: string;
+  posts?: [];
+  settings?: {};
+  location: string;
 }
 
 export interface UserTYPE {
-  name: string;
+  fName: string;
+  lName: string;
+  avatar: string;
   email: string;
   pass: string;
+  posts?: [];
+  settings?: {};
 }
 export interface IncLoginTYPE {
   email: string;
@@ -43,12 +76,29 @@ export interface IncLoginTYPE {
   location?: string;
 }
 
+export interface IncNewLocationTYPE {
+  name: {
+    [index: string]: string;
+  };
+  photo: string;
+}
+export interface LocationTYPE {
+  _id?: ObjectId;
+  name: {
+    [index: string]: string;
+  };
+  photo: string;
+}
+
 export interface NewUserTYPE {
-  name: string;
+  _id: ObjectId;
+  fName: string;
+  lName: string;
+  avatar: string;
   email: string;
   pass: string;
-  token: string;
-  authDate: Date;
+  posts: [];
+  settings: {};
 }
 
 export interface IncUserIdTYPE {
