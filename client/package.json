@@ -1,53 +1,35 @@
 {
-  "name": "muni-client",
+  "name": "muni-app-client",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
   "author": "Dmitry Melnikov",
   "description": "Muni Project",
   "license": "UNLICENSED",
   "repository": "",
   "homepage": "",
   "dependencies": {
-    "@types/dotenv": ">=6.1.1",
-    "@types/enzyme": "^3.9.1",
-    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "24.0.13",
     "@types/node": "12.0.2",
-    "@types/react": "16.8.17",
+    "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
-    "@types/react-redux": "^7.0.8",
-    "@types/react-router-dom": "^4.3.3",
-    "@types/redux-promise": "^0.5.28",
     "axios": "^0.18.0",
-    "dotenv": "^8.0.0",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
-    "react-cookie": "^4.0.0",
     "react-dom": "^16.8.6",
-    "react-redux": "^7.0.2",
-    "react-router-dom": "^5.0.0",
+    "react-redux": "^7.0.3",
     "react-scripts": "3.0.1",
-    "react-swipeable": "^5.2.1",
     "redux": "^4.0.1",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-promise": "^0.6.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "typescript": "3.4.5"
-  },
-  "devDependencies": {
-    "@types/redux-logger": "^3.0.7",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
-    "husky": "^2.1.0",
-    "jest-enzyme": "^7.0.2",
-    "lint-staged": "^8.1.5",
-    "prettier": "^1.17.0",
-    "redux-logger": "^3.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs:style": "sassdoc ./src/styles --config ./sassdoc.json",
+    "docs:code": "typedoc"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -63,5 +45,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-redux": "^7.0.9",
+    "@types/redux-logger": "^3.0.7",
+    "react-cookie": "^4.0.0",
+    "react-testing-library": "^7.0.1"
   }
 }

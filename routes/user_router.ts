@@ -22,6 +22,7 @@ let options = {
 
 // check if token valid
 router.get("/check", (req: any, res: any, next: any) => {
+  console.log(req.headers)
   console.log("check");
   console.log(req.headers.token);
   // check if token is present

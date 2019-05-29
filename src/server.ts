@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require("path");
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 import * as mongodb from 'mongodb';
@@ -9,7 +10,7 @@ import * as dotenv from 'dotenv';
 const compression = require('compression');
 
 // routes
-import router from '../routes';
+// import router from '../routes';
 import apiRouter from '../routes/api_router';
 import userRouter from '../routes/user_router';
 import locationRouter from '../routes/location_router';
@@ -29,7 +30,30 @@ app.use('/api/user', userRouter);
 app.use('/api/location', locationRouter);
 app.use('/api/post', postRouter);
 app.use('/api', apiRouter);
-app.use('/', router);
+// app.use('/', router);
+
+// * React
+
+//Static file declaration
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+//production mode
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+  //
+  app.get("/index.html", (req:any, res:any) => {
+    res.sendfile(path.join((__dirname = "../client/build/index.html")));
+  });
+}
+
+//build mode
+app.get("/index.html", (req: any, res: any) => {
+  res.sendFile(path.join(__dirname + "../client/public/index.html"));
+});
+
+// * end of React
+
+
 
 // set up db
 // Connection URL
