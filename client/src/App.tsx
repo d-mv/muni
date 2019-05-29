@@ -1,11 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
 import { withCookies, Cookies } from "react-cookie";
+import { connect } from "react-redux";
 
 import { AppState } from "./store";
 import { setToken, checkToken, login } from "./store/users/actions";
 
+import Welcome from "./views/Welcome";
 import Navigation from "./components/Navigation/Navigation";
+import Login from "./views/Login";
+
+import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
   console.log(props);
@@ -29,19 +33,20 @@ const App = (props: any) => {
   //     </button>
   //   </div>
   // );
-  // return <div />;
-  const welcome = <div data-testid='welcome' />;
-  const login = <div data-testid='login' />;
   const home = <div data-testid='home' />;
   let show = home;
   switch (props.module) {
     case "welcome":
-      show = welcome;
+      show = <Welcome />;
+      break;
+    case "login":
+      show = <Login />;
+      break;
   }
   return (
-    <div>
-      <Navigation mode={props.module === "welcome" ? props.module : "nav"} />
+    <div className={style.appWrapper}>
       {show}
+      <Navigation />
     </div>
   );
 };

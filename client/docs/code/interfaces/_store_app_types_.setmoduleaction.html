@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>apiResponse | muni-app-client</title>
+	<title>setModuleAction | muni-app-client</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,51 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_store_users_types_.html">&quot;store/users/types&quot;</a>
+					<a href="../modules/_store_app_types_.html">&quot;store/app/types&quot;</a>
 				</li>
 				<li>
-					<a href="_store_users_types_.apiresponse.html">apiResponse</a>
+					<a href="_store_app_types_.setmoduleaction.html">setModuleAction</a>
 				</li>
 			</ul>
-			<h1>Interface apiResponse</h1>
+			<h1>Interface setModuleAction</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>API response type</p>
-					</div>
-					<dl class="tsd-comment-tags">
-						<dt>typedef</dt>
-						<dd><p>{Object} apiResponse</p>
-						</dd>
-						<dt>property</dt>
-						<dd><p>{boolean} status - Status for the action</p>
-						</dd>
-						<dt>property</dt>
-						<dd><p>{string} message - Message with response, including errors</p>
-						</dd>
-						<dt>property</dt>
-						<dd><p>{number} code - HTTP code for the response</p>
-						</dd>
-						<dt>property</dt>
-						<dd><p>{string} [level] -Optional, required to forward super-user status</p>
-						</dd>
-						<dt>property</dt>
-						<dd><p>{object} [payload] -Optional payload - ID, posts and etc.</p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">apiResponse</span>
+						<span class="target">setModuleAction</span>
 					</li>
 				</ul>
 			</section>
@@ -111,11 +84,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_users_types_.apiresponse.html#code" class="tsd-kind-icon">code</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_users_types_.apiresponse.html#level" class="tsd-kind-icon">level</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_users_types_.apiresponse.html#message" class="tsd-kind-icon">message</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_users_types_.apiresponse.html#payload" class="tsd-kind-icon">payload</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_users_types_.apiresponse.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_app_types_.setmoduleaction.html#module" class="tsd-kind-icon">module</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_store_app_types_.setmoduleaction.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -124,52 +94,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="code" class="tsd-anchor"></a>
-					<h3>code</h3>
-					<div class="tsd-signature tsd-kind-icon">code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="module" class="tsd-anchor"></a>
+					<h3>module</h3>
+					<div class="tsd-signature tsd-kind-icon">module<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/users/types.ts#L17">store/users/types.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/app/types.ts#L3">store/app/types.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="level" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> level</h3>
-					<div class="tsd-signature tsd-kind-icon">level<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"SET"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/users/types.ts#L18">store/users/types.ts:18</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="message" class="tsd-anchor"></a>
-					<h3>message</h3>
-					<div class="tsd-signature tsd-kind-icon">message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/users/types.ts#L16">store/users/types.ts:16</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="payload" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> payload</h3>
-					<div class="tsd-signature tsd-kind-icon">payload<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/users/types.ts#L19">store/users/types.ts:19</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="status" class="tsd-anchor"></a>
-					<h3>status</h3>
-					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/users/types.ts#L15">store/users/types.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/bf32bda/client/src/store/app/types.ts#L2">store/app/types.ts:2</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -205,7 +145,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_store_app_reducers_.html">"store/app/reducers"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_store_app_types_.html">"store/app/types"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -220,7 +160,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_store_users_reducers_.html">"store/users/reducers"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_store_users_types_.html">"store/users/types"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -245,53 +185,23 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_store_users_types_.actionsresponse.html" class="tsd-kind-icon">actions<wbr>Response</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_store_users_types_.apiresponse.html" class="tsd-kind-icon">api<wbr>Response</a>
+						<a href="_store_app_types_.setmoduleaction.html" class="tsd-kind-icon">set<wbr>Module<wbr>Action</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_store_users_types_.apiresponse.html#code" class="tsd-kind-icon">code</a>
+								<a href="_store_app_types_.setmoduleaction.html#module" class="tsd-kind-icon">module</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_store_users_types_.apiresponse.html#level" class="tsd-kind-icon">level</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_store_users_types_.apiresponse.html#message" class="tsd-kind-icon">message</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_store_users_types_.apiresponse.html#payload" class="tsd-kind-icon">payload</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_store_users_types_.apiresponse.html#status" class="tsd-kind-icon">status</a>
+								<a href="_store_app_types_.setmoduleaction.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_store_users_types_.checktokenaction.html" class="tsd-kind-icon">check<wbr>Token<wbr>Action</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_store_users_types_.loginaction.html" class="tsd-kind-icon">login<wbr>Action</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_store_users_types_.settokenaction.html" class="tsd-kind-icon">set<wbr>Token<wbr>Action</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_store_users_types_.tokenstate.html" class="tsd-kind-icon">token<wbr>State</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_store_users_types_.html#action" class="tsd-kind-icon">Action</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_store_users_types_.html#check" class="tsd-kind-icon">CHECK</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_store_users_types_.html#set" class="tsd-kind-icon">SET</a>
+						<a href="../modules/_store_app_types_.html#action" class="tsd-kind-icon">Action</a>
 					</li>
 				</ul>
 			</nav>

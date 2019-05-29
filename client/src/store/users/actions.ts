@@ -2,6 +2,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Action, checkTokenAction, apiResponse, SET, CHECK } from "./types";
 import { AnyAction } from "redux";
+// import {setModule} from '../app/actions'
 
 /**
  * Action function to set the token in the state
@@ -48,6 +49,12 @@ export const checkToken = (
       });
   };
 };
+
+export const setModuleU = (module: string): Action => {
+  console.log(module);
+  return { type: "SET_MODULE", module };
+};
+
 /**
  * Action function to login with API
  * @function login
@@ -60,24 +67,24 @@ export const login = (props: {
   pass: string;
   location: string;
 }): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/user/login?pass=${props.pass}&email=${props.email}&location=${
-    props.location
-  }`;
+  const url = `/user/login?pass=${props.pass}&email=${props.email}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     axios({
       method: "get",
-      url,
-      withCredentials: true
+      url
+      // withCredentials: true
     })
       .then(response => {
-        console.log(response);
+        // if successful change page
+        const module = "home";
+        dispatch({ type: "SET_MODULE", module });
         dispatch({
           type: "LOGIN",
           payload: { ...response.data, code: response.status }
         });
       })
       .catch(error => {
-        const payload = error.response?error.response.data:error.toString()
+        const payload = error.response ? error.response.data : error.toString();
         dispatch({
           type: "LOGIN",
           payload

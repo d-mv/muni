@@ -7,5 +7,7 @@ import { Action } from "./types";
  * @return {Object} - Returns object of action type and token
  */
 export const setModule = (module: string): Action => {
+  console.log(module)
   return { type: "SET", module };
 };
+

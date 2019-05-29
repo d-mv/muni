@@ -80,12 +80,12 @@ router.get("/login", (req: any, res: any, next: any) => {
     (controllerResponse: apiResponse) => {
       // process token/cookie
       const response = cookieFactory(controllerResponse);
-      console.log("login reposne");
+      console.log("login response");
       console.log(response);
       res
         .cookie("token", response.token, response.options)
         .status(response.code)
-        .send(response.message);
+        .send({...response.message,token: response.token});
     }
   );
 });

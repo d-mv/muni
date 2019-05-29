@@ -4,7 +4,7 @@ import axios from "axios";
 import { logger } from "redux-logger";
 
 import { setModule } from "./app/reducers";
-import { setToken, checkToken, login } from "./users/reducers";
+import { setToken, checkToken, login, setModuleU } from "./users/reducers";
 import { apiResponse } from "./users/types";
 import { apiState } from "./defaults";
 
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   token: setToken,
   checkTokenResult: checkToken,
   login: login,
-  module: setModule
+  module: setModuleU || setModule
 });
 export type AppState = ReturnType<typeof rootReducer>;
 

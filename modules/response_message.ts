@@ -53,7 +53,7 @@ export const alreadyExistsMessage = (subj: string) => {
   return {
     status: false,
     message: `${subj} already exists.`,
-    code: 400
+    code: 200
   };
 };
 export const foundMessage = (subj: string,payload?:any) => {
@@ -90,7 +90,7 @@ export const requestError = (subj: string) => {
   return {
     status: false,
     message: `Error. ${subj}`,
-    code: 400
+    code: 406
   };
 };
 export const generalError = (props: { subj: string; code: number }) => {

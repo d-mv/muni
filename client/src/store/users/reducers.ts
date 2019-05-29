@@ -25,3 +25,12 @@ export const login = (state = apiState, action: Action) => {
   }
   return { ...state };
 };
+
+export const setModuleU = (state = "", action: Action): string => {
+  console.log('reducer')
+  switch (action.type) {
+    case "SET_MODULE":
+      return action.module ? action.module : state;
+  }
+  return state;
+};

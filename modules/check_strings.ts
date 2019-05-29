@@ -98,7 +98,7 @@ export const checkID = (id: string) => {
   let response: TYPE.apiResponse = {
     status: false,
     message: "ID is malformed (shorter/longer)",
-    code: 400
+    code: 406
   };
   if (id.length === 24) {
     response = { status: true, message: "ID is in proper format", code: 200 };

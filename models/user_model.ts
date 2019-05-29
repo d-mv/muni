@@ -188,7 +188,18 @@ const isUserNew = (
       .aggregate([
         {
           $match: {
-            _id: new MDB.ObjectId(user.location)
+            "users.email": user.email
+          }
+        },
+        {
+          $addFields: {
+            "users.location": "$_id"
+          }
+        },
+        {
+          $project: {
+            name: 0,
+            "users.posts": 0
           }
         },
         {
@@ -215,7 +226,7 @@ const isUserNew = (
         let response: TYPE.apiResponse = {
           status: false,
           message: "User not found (email is not registered)",
-          code: 200
+          code: 404
         };
         if (result.length > 1) {
           // if too many results
@@ -228,7 +239,7 @@ const isUserNew = (
             status: true,
             message: "User found",
             code: 200,
-            payload: { id: result[0]._id }
+            payload: result[0]
           };
         }
         callback(response);
@@ -366,13 +377,43 @@ export const login = (
       // check if user exists
       isUserNew(user, (newUserResponse: TYPE.apiResponse) => {
         // if 1 only user found, attempt to login
+        console.log("newUserResponse");
+        console.log(newUserResponse);
         if (newUserResponse.status) {
-          // attempt to login
-          loginAttempt(
-            user,
-            newUserResponse.payload.id,
-            (loginAttemptResponse: TYPE.apiResponse) => {
-              callback(loginAttemptResponse);
+          // check login data
+          // if found > check password
+          compareStringToHash(
+            user.pass,
+            newUserResponse.payload.pass,
+            (response: boolean | TYPE.apiResponse) => {
+              if (typeof response === "boolean") {
+                // if it's true/false
+                if (response) {
+                  // if matching
+                  callback(
+                    Message.positiveMessage({
+                      subj: "User login is OK",
+                      payload: {
+                        payload: {
+                          id: newUserResponse.payload._id,
+                          location: newUserResponse.payload.location
+                        }
+                      }
+                    })
+                  );
+                } else {
+                  // if not matching
+                  callback(
+                    Message.generalError({
+                      subj: "User: wrong password",
+                      code: 401
+                    })
+                  );
+                }
+              } else {
+                // if it's error
+                callback(response);
+              }
             }
           );
         } else {
@@ -490,11 +531,17 @@ export const loginAttempt = (
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database: any = MDB.client.db(dbName).collection(dbcMain);
+      console.log(user);
       database
         .aggregate([
           {
             $match: {
               _id: new MDB.ObjectId(user.location)
+            }
+          },
+          {
+            $addFields: {
+              "users.location": "$_id"
             }
           },
           {
@@ -520,7 +567,8 @@ export const loginAttempt = (
               lName: 1,
               avatar: 1,
               email: 1,
-              pass: 1
+              pass: 1,
+              location: 1
             }
           }
         ])
@@ -549,7 +597,8 @@ export const loginAttempt = (
                         subj: "User login is OK",
                         payload: {
                           payload: {
-                            id: result[0]._id
+                            id: result[0]._id,
+                            location: result[0].location
                           }
                         }
                       })

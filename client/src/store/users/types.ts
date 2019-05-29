@@ -40,8 +40,15 @@ export interface loginAction {
   type: "LOGIN";
   payload:apiResponse
 }
-
+export interface setModuleUAction {
+  type: "SET_MODULE";
+  module: string;
+}
 export const CHECK = "CHECK";
 export const SET = "SET";
 
-export type Action = setTokenAction | checkTokenAction | loginAction;
+export type Action =
+  | setTokenAction
+  | checkTokenAction
+  | loginAction
+  | setModuleUAction;

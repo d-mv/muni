@@ -20,7 +20,7 @@ const NavButton = (props: {
     <button
       data-testid={testId}
       className={buttonStyle}
-      onClick={() => props.action()}>
+      onClick={() => props.action(props.mode)}>
       {props.children}
     </button>
   );

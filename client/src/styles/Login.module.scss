@@ -1,0 +1,32 @@
+@import './animations';
+
+.form {
+  width: 80%;
+  height: 100%;
+  padding: 20px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.formLeft {
+  @extend .form;
+  text-align: left;
+
+}
+
+.formRight {
+  @extend .form;
+  text-align: right;
+}
+
+.block {
+  margin: 10px 0;
+}
+
+.message {
+  width: 100%;
+  height: auto;
+  font-size: 1rem;
+  transition: $boxTransition;
+}

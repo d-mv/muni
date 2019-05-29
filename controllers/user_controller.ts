@@ -47,26 +47,26 @@ export const login = (
 ) => {
   // check fields
   const reply: TYPE.apiResponse = checkFieldsLogin({ query: props.query });
-  let idCheckResult = {
-    status: false,
-    message: "Location is missing",
-    code: 400
-  };
-  if (props.query.location) {
-    idCheckResult = checkID(props.query.location);
-  } else {
-    callback(idCheckResult);
-  }
-  const check = reply.status && idCheckResult.status;
+  // let idCheckResult = {
+  //   status: false,
+  //   message: "Location is missing",
+  //   code: 406
+  // };
+  // if (props.query.location) {
+  //   idCheckResult = checkID(props.query.location);
+  // } else {
+  //   callback(idCheckResult);
+  // }
+  // const check = reply.status && idCheckResult.status;
   // if negative reply immediately
-  if (!check) {
-    reply ? callback(idCheckResult) : callback(reply);
-  } else {
+  // if (!check) {
+  //   reply ? callback(idCheckResult) : callback(reply);
+  // } else {
     // assign value to avoid 'or empty' type clause
     const user: any = props.query;
     // request User model
     User.login(user, (modelResponse: TYPE.apiResponse) => {
       callback(modelResponse);
     });
-  }
+  // }
 };
