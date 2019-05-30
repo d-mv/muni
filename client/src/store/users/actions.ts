@@ -1,8 +1,11 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios from "axios";
-import { Action, checkTokenAction, apiResponse, SET, CHECK } from "./types";
+import { Action, checkTokenAction, SET, CHECK } from "./types";
+import * as TYPE from "../types";
+import locationsList from "../../modules/locations_list";
+
 import { AnyAction } from "redux";
-import {apiState} from '../defaults'
+import { apiState } from "../defaults";
 // import {setModule} from '../app/actions'
 
 /**
@@ -63,19 +66,17 @@ export const setModuleU = (module: string): Action => {
  * @param {string} pass - Password
  * @return {Promise} - Returns promise resolved with the help of Thunk
  */
-export const login = (props: {
-  email: string;
-  pass: string;
-  location: string;
-}): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+export const login = (
+  props: TYPE.login
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/user/login?pass=${props.pass}&email=${props.email}`;
-
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state
     dispatch({
       type: "LOGIN",
       payload: apiState
     });
+    // proceed with request
     axios({
       method: "get",
       url
@@ -117,11 +118,20 @@ export const fetchLocations = (): ThunkAction<
       url
     })
       .then(response => {
-        console.log(response)
-        dispatch({
-          type: "FETCH_LOCATIONS",
-          payload: { ...response.data, code: response.status }
-        });
+        // locations
+        let locations: Array<any>[];
+        if (response.data.status && response.data.payload) {
+          locations = locationsList(response.data.payload, "en");
+          dispatch({
+            type: "FETCH_LOCATIONS",
+            payload: { payload:locations, code: response.status }
+          });
+        } else {
+          dispatch({
+            type: "FETCH_LOCATIONS",
+            payload: { code: response.status }
+          });
+        }
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();

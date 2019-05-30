@@ -1,4 +1,4 @@
-import { Action, tokenState, apiResponse, actionsResponse } from "./types";
+import { Action, tokenState, actionsResponse } from "./types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action): string => {

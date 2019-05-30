@@ -11,7 +11,7 @@ import {
   setModuleU,
   fetchLocations
 } from "./users/reducers";
-import { apiResponse } from "./users/types";
+import * as TYPE from "./types";
 import { apiState } from "./defaults";
 
 // set default url for API
@@ -35,9 +35,9 @@ export default function configureStore() {
   interface state {
     token: string;
     checkTokenResult: any;
-    login: apiResponse;
+    login: TYPE.apiResponse;
     module: string;
-    locations: apiResponse;
+    locations: TYPE.apiResponse;
   }
 
   const initialState: state = {

@@ -17,14 +17,14 @@ import Login from "./views/Login";
 import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
-  console.log(props);
+  // console.log(props);
   // fetch locations
   React.useEffect(() => {
     props.fetchLocations();
   }, [props.login]);
 
   const { cookies } = props;
-  console.log(cookies.get("token"));
+  // console.log(cookies.get("token"));
   const useToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjZTQ1MGE1ZDBkMGQ3ZWUzYzFlNmFlNyIsImlhdCI6MTU1ODUzNjU0MCwiZXhwIjoxNTYxMTI4NTQwfQ.2lP2928uxs11n0ZyfBnCeQ2FtAPi7Xq0hsy1Mx7G7RI";
   // cookies.set('token',useToken)

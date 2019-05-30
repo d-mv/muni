@@ -25,7 +25,7 @@ export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
       .aggregate([
         {
           $project: {
-            lang: 1,
+            name: 1,
             photo: 1
           }
         }
