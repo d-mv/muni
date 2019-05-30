@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { setModuleU,setLoading } from "../../store/users/actions";
+import { setModule,setLoading } from "../../store/users/actions";
 
 import NavButton from "./NavButton";
 
@@ -19,14 +19,15 @@ const Navigation = (props: any) => {
   const action = (module: string) => {
     switch (module) {
       case "enter":
-        props.setModuleU("login");
+        props.setModule("login");
         break;
       case "login":
-        props.setModuleU("welcome");
-        props.setLoading(false)
+        props.setModule("welcome");
         break;
+      case 'confirmation':
+        props.setModule("confirmation");
       default:
-        props.setModuleU(module);
+        props.setModule(module);
     }
   };
   // set the variable
@@ -46,6 +47,15 @@ const Navigation = (props: any) => {
       component = (
         <nav className={style.header}>
           <NavButton mode='login' action={action}>
+            return
+          </NavButton>
+        </nav>
+      );
+      break;
+    case 'confirmation':
+      component = (
+        <nav className={style.header}>
+          <NavButton mode='confirmation' action={action}>
             return
           </NavButton>
         </nav>
@@ -80,5 +90,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setModuleU,setLoading }
+  { setModule,setLoading }
 )(Navigation);

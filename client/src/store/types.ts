@@ -25,6 +25,24 @@ export interface login {
   email: string;
   pass: string;
 }
+/**
+ * Login type
+ * @typedef {Object} register
+ * @property {string} location - Location ID
+ * @property {string} fName - User's first name
+ * @property {string} lName - User's last name
+ * @property {string} email - User's email
+ * @property {string} pass - User's password
+ * @property {string} avatar - Avatar's URL
+ */
+export interface register {
+  location: string;
+  fName: string;
+  lName: string;
+  email: string;
+  pass: string;
+  avatar: string;
+}
 
 /**
  * Standard indexed object type

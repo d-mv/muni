@@ -4,9 +4,7 @@ import Select from "react-select";
 
 import { AppState } from "../store";
 import * as TYPE from "../store/types";
-import { login } from "../store/users/actions";
-
-// import locationsList from "../modules/locations_list";
+import { login, register, setModule } from "../store/users/actions";
 
 import layout from "../styles/_layout.module.scss";
 import elements from "../styles/_elements.module.scss";
@@ -20,16 +18,18 @@ import style from "../styles/Login.module.scss";
 const Login = (props: {
   locations: TYPE.apiResponse;
   loginResult: TYPE.apiResponse;
-  loadingStatus: boolean;
+  registerResult: TYPE.apiResponse;
   login: (arg0: TYPE.login) => void;
+  register: (arg0: TYPE.register) => void;
+  setModule: (arg0: string) => void;
 }) => {
   // loading hook
   const [loading, setLoading] = React.useState(false);
   // form data hooks
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
+  const [locationLabel, setLocationLabel] = React.useState("");
   const [location, setLocation] = React.useState("");
-  const [locationId, setLocationId] = React.useState("");
   const [fName, setFname] = React.useState("");
   const [lName, setLname] = React.useState("");
   // show/hide message hook
@@ -38,8 +38,6 @@ const Login = (props: {
   const [mode, setMode] = React.useState("login");
   //  message hook
   const [message, setMessage] = React.useState("");
-  // locations hook
-  const [locations, setLocations] = React.useState(props.locations.payload);
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
     props.loginResult.code === 404 ? setMode("register") : setMode("login");
@@ -56,24 +54,48 @@ const Login = (props: {
     }
   }, [props.loginResult.message]);
 
+  React.useEffect(() => {
+    // switch off spinner
+    if (props.registerResult.code !== 100) {
+      setLoading(false);
+      // set message to display, turn on display message
+      setMessage(props.registerResult.message);
+      if (props.registerResult.status) {
+        props.setModule("confirmation");
+      }
+      setShowMessage(true);
+    }
+  }, [props.registerResult.message]);
+
   // toggle the state of loading
   const toggleLoading = () => setLoading(!loading);
+
+  const locations = props.locations.payload;
 
   // form methods
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    toggleLoading();
+    setShowMessage(false);
     if (mode === "login") {
-      setShowMessage(false);
-      toggleLoading();
       props.login({ email, pass });
     } else {
       // register
+      props.register({
+        email,
+        pass,
+        location,
+        fName,
+        lName,
+        avatar: ""
+      });
     }
   };
   // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const handleInputChange = (event: any) => {
     if (!event.target) {
-      setLocationId("5ce586e46eb133a4938298dc");
+      setLocationLabel(event.label);
+      setLocation(event.value);
     } else {
       switch (event.target.name) {
         case "fName":
@@ -103,10 +125,11 @@ const Login = (props: {
   const locationsElement =
     mode === "register" ? (
       <Select
-        value={location}
+        // value={locationLabel}
         name='location'
         options={locations}
         onChange={handleInputChange}
+        placeholder='City'
         required
       />
     ) : null;
@@ -180,11 +203,12 @@ const Login = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     loginResult: state.login,
-    locations: state.locations
+    locations: state.locations,
+    registerResult: state.register
   };
 };
 
 export default connect(
   mapStateToProps,
-  { login }
+  { login, register, setModule }
 )(Login);

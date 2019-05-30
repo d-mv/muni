@@ -6,7 +6,6 @@ import locationsList from "../../modules/locations_list";
 
 import { AnyAction } from "redux";
 import { apiState } from "../defaults";
-// import {setModule} from '../app/actions'
 
 /**
  * Action function to set the token in the state
@@ -23,7 +22,7 @@ export const setToken = (token: string): Action => {
  * @param {boolean} loading
  * @return {Object} - Returns object of action type and token
  */
-export const setLoading = (loading:boolean = false): Action => {
+export const setLoading = (loading: boolean = false): Action => {
   return { type: "SET_LOADING", loading };
 };
 
@@ -63,7 +62,7 @@ export const checkToken = (
   };
 };
 
-export const setModuleU = (module: string): Action => {
+export const setModule = (module: string): Action => {
   console.log(module);
   return { type: "SET_MODULE", module };
 };
@@ -110,6 +109,55 @@ export const login = (
   };
 };
 /**
+ * Action function to register with API
+ * @function register
+ * @param {string} location - Location ID
+ * @param {string} fName - User's first name
+ * @param {string} lName - User's last name
+ * @param {string} email - User's email
+ * @param {string} pass - User's password
+ * @param {string} avatar - Avatar's URL
+
+ * @return {Promise} - Returns promise resolved with the help of Thunk
+ */
+export const register = (
+  props: TYPE.register
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/user/create?email=${props.email}&location=${
+    props.location
+  }&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&avatar=${
+    props.avatar
+    }`;
+  console.log(url)
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // clear state
+    dispatch({
+      type: "REGISTER",
+      payload: apiState
+    });
+    // proceed with request
+    axios({
+      method: "post",
+      url
+      // withCredentials: true
+    })
+      .then(response => {
+        dispatch({
+          type: "REGISTER",
+          payload: { ...response.data, code: response.status }
+        });
+      })
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "REGISTER",
+          payload
+        });
+      });
+  };
+};
+
+/**
  * Action function to fetch list of locations from API
  * @function fetchLocations
  * @return {Promise} - Returns promise resolved with the help of Thunk
@@ -133,7 +181,7 @@ export const fetchLocations = (): ThunkAction<
           locations = locationsList(response.data.payload, "en");
           dispatch({
             type: "FETCH_LOCATIONS",
-            payload: { payload:locations, code: response.status }
+            payload: { payload: locations, code: response.status }
           });
         } else {
           dispatch({

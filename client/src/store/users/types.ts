@@ -27,6 +27,10 @@ export interface loginAction {
   type: "LOGIN";
   payload: TYPE.apiResponse;
 }
+export interface registerAction {
+  type: "REGISTER";
+  payload: TYPE.apiResponse;
+}
 export interface setModuleUAction {
   type: "SET_MODULE";
   module: string;
@@ -44,4 +48,5 @@ export type Action =
   | loginAction
   | setModuleUAction
   | fetchLocationsAction
-  | setLoadingAction;
+  | setLoadingAction
+  | registerAction;

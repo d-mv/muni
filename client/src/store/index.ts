@@ -9,7 +9,9 @@ import {
   checkToken,
   login,
   setModuleU,
-  fetchLocations,setLoading
+  register,
+  fetchLocations,
+  setLoading
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState } from "./defaults";
@@ -25,8 +27,8 @@ const rootReducer = combineReducers({
   login: login,
   module: setModuleU,
   locations: fetchLocations,
-  loading: setLoading
-
+  loading: setLoading,
+  register: register
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -40,7 +42,8 @@ export default function configureStore() {
     login: TYPE.apiResponse;
     module: string;
     locations: TYPE.apiResponse;
-    loading:boolean
+    loading: boolean;
+    register: TYPE.apiResponse;
   }
 
   const initialState: state = {
@@ -49,7 +52,8 @@ export default function configureStore() {
     login: apiState,
     module: "welcome",
     locations: apiState,
-    loading:false
+    loading: false,
+    register: apiState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

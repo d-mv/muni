@@ -31,6 +31,14 @@ export const login = (state = apiState, action: Action) => {
   }
   return { ...state };
 };
+
+export const register = (state = apiState, action: Action) => {
+  switch (action.type) {
+    case "REGISTER":
+      return { ...state, ...action.payload };
+  }
+  return { ...state };
+};
 export const fetchLocations = (state = apiState, action: Action) => {
   switch (action.type) {
     case "FETCH_LOCATIONS":
