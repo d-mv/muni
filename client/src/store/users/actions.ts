@@ -2,6 +2,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Action, checkTokenAction, apiResponse, SET, CHECK } from "./types";
 import { AnyAction } from "redux";
+import {apiState} from '../defaults'
 // import {setModule} from '../app/actions'
 
 /**
@@ -68,7 +69,13 @@ export const login = (props: {
   location: string;
 }): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/user/login?pass=${props.pass}&email=${props.email}`;
+
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // clear state
+    dispatch({
+      type: "LOGIN",
+      payload: apiState
+    });
     axios({
       method: "get",
       url
@@ -87,6 +94,39 @@ export const login = (props: {
         const payload = error.response ? error.response.data : error.toString();
         dispatch({
           type: "LOGIN",
+          payload
+        });
+      });
+  };
+};
+/**
+ * Action function to fetch list of locations from API
+ * @function fetchLocations
+ * @return {Promise} - Returns promise resolved with the help of Thunk
+ */
+export const fetchLocations = (): ThunkAction<
+  Promise<void>,
+  {},
+  {},
+  AnyAction
+> => {
+  const url = "/location/list";
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    axios({
+      method: "get",
+      url
+    })
+      .then(response => {
+        console.log(response)
+        dispatch({
+          type: "FETCH_LOCATIONS",
+          payload: { ...response.data, code: response.status }
+        });
+      })
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "FETCH_LOCATIONS",
           payload
         });
       });

@@ -3,7 +3,12 @@ import { withCookies, Cookies } from "react-cookie";
 import { connect } from "react-redux";
 
 import { AppState } from "./store";
-import { setToken, checkToken, login } from "./store/users/actions";
+import {
+  setToken,
+  checkToken,
+  login,
+  fetchLocations
+} from "./store/users/actions";
 
 import Welcome from "./views/Welcome";
 import Navigation from "./components/Navigation/Navigation";
@@ -13,6 +18,11 @@ import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
   console.log(props);
+  // fetch locations
+  React.useEffect(() => {
+    props.fetchLocations();
+  }, [props.login]);
+
   const { cookies } = props;
   console.log(cookies.get("token"));
   const useToken =
@@ -56,11 +66,13 @@ const mapStateToProps = (state: AppState) => {
     token: state.token,
     check: state.checkTokenResult,
     login: state.login,
-    module: state.module
+    module: state.module,
+    locations: state.locations,
+    loginResult: state.login
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setToken, checkToken, login }
+  { setToken, checkToken, login, fetchLocations }
 )(withCookies(App));

@@ -2,7 +2,6 @@ import { Action, tokenState, apiResponse, actionsResponse } from "./types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action): string => {
-  console.log(action);
   switch (action.type) {
     case "SET":
       return action.token ? action.token : state;
@@ -25,12 +24,20 @@ export const login = (state = apiState, action: Action) => {
   }
   return { ...state };
 };
+export const fetchLocations = (state = apiState, action: Action) => {
+  switch (action.type) {
+    case "FETCH_LOCATIONS":
+      return { ...state, ...action.payload };
+  }
+  return { ...state };
+};
 
 export const setModuleU = (state = "", action: Action): string => {
-  console.log('reducer')
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;
   }
   return state;
 };
+
+

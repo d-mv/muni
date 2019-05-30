@@ -4,7 +4,13 @@ import axios from "axios";
 import { logger } from "redux-logger";
 
 import { setModule } from "./app/reducers";
-import { setToken, checkToken, login, setModuleU } from "./users/reducers";
+import {
+  setToken,
+  checkToken,
+  login,
+  setModuleU,
+  fetchLocations
+} from "./users/reducers";
 import { apiResponse } from "./users/types";
 import { apiState } from "./defaults";
 
@@ -17,7 +23,8 @@ const rootReducer = combineReducers({
   token: setToken,
   checkTokenResult: checkToken,
   login: login,
-  module: setModuleU || setModule
+  module: setModuleU,
+  locations: fetchLocations
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -30,13 +37,15 @@ export default function configureStore() {
     checkTokenResult: any;
     login: apiResponse;
     module: string;
+    locations: apiResponse;
   }
 
   const initialState: state = {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "welcome"
+    module: "welcome",
+    locations: apiState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

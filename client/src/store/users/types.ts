@@ -44,6 +44,10 @@ export interface setModuleUAction {
   type: "SET_MODULE";
   module: string;
 }
+export interface fetchLocationsAction {
+  type: "FETCH_LOCATIONS";
+  payload: apiResponse;
+}
 export const CHECK = "CHECK";
 export const SET = "SET";
 
@@ -51,4 +55,5 @@ export type Action =
   | setTokenAction
   | checkTokenAction
   | loginAction
-  | setModuleUAction;
+  | setModuleUAction
+  | fetchLocationsAction;

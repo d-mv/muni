@@ -9,31 +9,58 @@ import elements from "../styles/_elements.module.scss";
 import style from "../styles/Login.module.scss";
 
 const Login = (props: any) => {
-  console.log(props);
   // login/register mode hook
   const [mode, setMode] = React.useState("login");
+  // change mode upon if the code from API is 404 (user not found)
+  React.useEffect(() => {
+    props.loginResult.code === 404 ? setMode("register") : setMode("login");
+  }, [props.loginResult.code]);
+  // switch off loading when message received
+  React.useEffect(() => {
+    if (props.loginResult.message !== "") {
+      toggleLoading();
+    }
+  }, [props.loginResult.message]);
+
+  // message hook
+  const [message, setMessage] = React.useState('')
+
+  // update message
+  React.useEffect(() => {
+    if (props.loginResult.code !== 404) {
+      setMessage(props.loginResult.message);
+      setShowMessage(true)
+    }
+  }, [props.loginResult.message]);
+
   // loading hook
   const [loading, setLoading] = React.useState(
     props.loginResult.status ? true : false
   );
+  // toggle the state of loading
+  const toggleLoading = () => setLoading(!loading);
+
   // form data hooks
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
 
-  // toggle the state of loading
-  const toggleLoading = () => setLoading(!loading);
+  // show/hide message hook
+  const [showMessage, setShowMessage] = React.useState(true)
 
-  // if mode === login don't show reg fields/buttons
+  // set the form elements
+  const title =
+    mode === "login" ? "Please, enter your login details:" : "New user:";
   const buttonName = mode === "login" ? "Login" : "Register";
   const showElement = loading ? <div className={elements.loading} /> : null;
   const messageElement =
-    props.loginResult.message && props.loginResult.code !== 404 ? (
-      <div className={style.message}>{props.loginResult.message}</div>
+    showMessage ? (
+      <div className={style.message}>{message}</div>
     ) : null;
-  
+
   // form methods
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setShowMessage(false);
     toggleLoading();
     props.login({ email, pass });
   };
@@ -54,7 +81,7 @@ const Login = (props: any) => {
   return (
     <main className={layout.mainOpposite}>
       <form className={style.formRight} onSubmit={handleSubmit}>
-        Please, enter your login details:
+        {title}
         <label className={style.block}>
           <span className={style.label}>Email</span>
           <input
@@ -81,7 +108,12 @@ const Login = (props: any) => {
         {messageElement}
         {showElement}
         <button className={style.submit} aria-label={buttonName}>
-          <input type='button' value={buttonName} id='submit_button' />
+          <input
+            type='button'
+            disabled={loading}
+            value={buttonName}
+            id='submit_button'
+          />
         </button>
       </form>
     </main>
@@ -90,7 +122,8 @@ const Login = (props: any) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    loginResult: state.login
+    loginResult: state.login,
+    locations: state.locations
   };
 };
 

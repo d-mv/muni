@@ -7,8 +7,8 @@
   position: absolute;
   left: 0;
   right: 0;
+  background-color:white;
   box-shadow: $pageShadow;
-  background-color: red;
 }
 
 /// Button template
@@ -27,6 +27,5 @@
   @extend .main-template;
   bottom: 0;
   border-radius: 40px 40px 0 0;
-  box-shadow: $pageShadowOpposite;
   animation: $aniSlideFromTop;
 }
