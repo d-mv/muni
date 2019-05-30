@@ -11,7 +11,7 @@ export const assignCode = (action: string = "", status: boolean = false) => {
       response = status ? 200 : 500;
       break;
     case "fetch_req":
-      response = status ? 200 : 400;
+      response = status ? 200 : 406;
       break;
     case "delete":
       response = status ? 200 : 500;

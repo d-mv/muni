@@ -2,7 +2,7 @@ const express = require("express");
 import * as dotenv from "dotenv";
 
 import * as PostController from "../controllers/post_controller";
-import { apiResponseTYPE } from "../src/types";
+import { apiResponse } from "../src/types";
 const router = express.Router();
 // redirect to home for rest of routes
 const dotEnv = dotenv.config();
@@ -18,7 +18,7 @@ const redirectUrl = process.env.SELF || "httpL//localhost:8080";
  *
  */
 router.post("/create", (req: any, res: any, next: any) => {
-  PostController.createPost(req, (controllerResponse: apiResponseTYPE) => {
+  PostController.createPost(req, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
@@ -31,7 +31,7 @@ router.post("/create", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.patch("/:id", (req: any, res: any, next: any) => {
-  PostController.updatePost(req, (controllerResponse: apiResponseTYPE) => {
+  PostController.updatePost(req, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
@@ -44,7 +44,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.delete("/:id", (req: any, res: any, next: any) => {
-  PostController.deletePost(req, (controllerResponse: apiResponseTYPE) => {
+  PostController.deletePost(req, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });

@@ -32,9 +32,5 @@
     "./modules/*.ts",
     "./controllers/*.ts"
   ],
-  "exclude": ["./src/public/", "node_modules", "jest.config.js", "client"],
-  "typedocOptions": {
-    "mode": "modules",
-    "out": "docs"
-  }
+  "exclude": ["./src/public/", "node_modules", "jest.config.js", "client"]
 }

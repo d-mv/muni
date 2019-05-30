@@ -1,10 +1,10 @@
-import { apiResponseTYPE } from "../src/types";
+import { apiResponse } from "../src/types";
 
 export const updateMessage = (props: {
   subj: string;
   document: { ok: number; nModified: number };
 }) => {
-  let response: apiResponseTYPE = {
+  let response: apiResponse = {
     status: false,
     message: "Error in updating the DB",
     code: 500
@@ -53,7 +53,7 @@ export const alreadyExistsMessage = (subj: string) => {
   return {
     status: false,
     message: `${subj} already exists.`,
-    code: 400
+    code: 200
   };
 };
 export const foundMessage = (subj: string,payload?:any) => {
@@ -90,7 +90,7 @@ export const requestError = (subj: string) => {
   return {
     status: false,
     message: `Error. ${subj}`,
-    code: 400
+    code: 406
   };
 };
 export const generalError = (props: { subj: string; code: number }) => {

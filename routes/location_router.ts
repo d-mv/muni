@@ -6,7 +6,7 @@ import * as LocationController from "../controllers/location_controller";
 import * as PostController from "../controllers/post_controller";
 import { checkToken, cookieFactory } from "../modules/security";
 import { notAuthMessage } from "../modules/response_message";
-import { apiResponseTYPE } from "../src/types";
+import { apiResponse } from "../src/types";
 
 const router = express.Router();
 const dotEnv = dotenv.config();
@@ -15,7 +15,7 @@ const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 // GET request of list of locations
 router.get("/list", (req: any, res: any, next: any) => {
   showRequest(req.headers, req.query);
-  LocationController.list((controllerResponse: apiResponseTYPE) => {
+  LocationController.list((controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
@@ -37,7 +37,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
   // check if token is available
   if (!req.headers.token) {
     // if not present, clear cookies and send code/message
-    ng(400, "Token is missing");
+    ng(406, "Token is missing");
   } else {
     // token is present
     // check if token valid
@@ -57,7 +57,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
             user: checkTokenResponse.payload.id,
             level: checkTokenResponse.level || ""
           },
-          (controllerResponse: apiResponseTYPE) => {
+          (controllerResponse: apiResponse) => {
             res.status(controllerResponse.code).send(controllerResponse);
           }
         );
@@ -71,7 +71,7 @@ router.post("/create", (req: any, res: any, next: any) => {
   showRequest(req.headers, [req.body, req.query]);
   // if request is missing
   if (req.body === {}) {
-    res.status(400).send({ status: false, message: "Wrong/malformed request" });
+    res.status(406).send({ status: false, message: "Wrong/malformed request" });
   } else {
     const ng = (code: number, packageToSend?: any, message?: string) => {
       res
@@ -86,7 +86,7 @@ router.post("/create", (req: any, res: any, next: any) => {
     // check if token is available
     if (!req.headers.token) {
       // if not present, clear cookies and send code/message
-      ng(400, "Token is missing");
+      ng(406, "Token is missing");
     } else {
       // token is present
       // check if token valid
@@ -102,7 +102,7 @@ router.post("/create", (req: any, res: any, next: any) => {
           // if SU
           LocationController.create(
             req.body,
-            (controllerResponse: apiResponseTYPE) => {
+            (controllerResponse: apiResponse) => {
               res.status(controllerResponse.code).send(controllerResponse);
             }
           );
@@ -121,7 +121,7 @@ router.post("/create", (req: any, res: any, next: any) => {
 router.patch("/:id", (req: any, res: any, next: any) => {
   // if request is missing
   if (req.body === {}) {
-    res.status(400).send({
+    res.status(406).send({
       status: false,
       message: "Wrong/malformed request"
     });
@@ -144,7 +144,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
     // check if token is available
     if (!req.headers.token) {
       // if not present, clear cookies and send code/message
-      ng(400, "Token is missing");
+      ng(406, "Token is missing");
     } else {
       // token is present
       // check if token valid
@@ -163,7 +163,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
             // location, new data to update
             req.params.id,
             req.body,
-            (controllerResponse: apiResponseTYPE) => {
+            (controllerResponse: apiResponse) => {
               res.status(controllerResponse.code).send(controllerResponse);
             }
           );
@@ -183,7 +183,7 @@ router.delete("/:id", (req: any, res: any, next: any) => {
   showRequest(req.headers, [req.body, req.headers.token]);
   // if request is missing
   if (req.body === {}) {
-    res.status(400).send({
+    res.status(406).send({
       status: false,
       message: "Wrong/malformed request"
     });
@@ -206,7 +206,7 @@ router.delete("/:id", (req: any, res: any, next: any) => {
     // check if token is available
     if (!req.headers.token) {
       // if not present, clear cookies and send code/message
-      ng(400, "Token is missing");
+      ng(406, "Token is missing");
     } else {
       // token is present
       // check if token valid
@@ -223,7 +223,7 @@ router.delete("/:id", (req: any, res: any, next: any) => {
           // if SU
           LocationController.deleteLocation(
             req.params.id,
-            (controllerResponse: apiResponseTYPE) => {
+            (controllerResponse: apiResponse) => {
               res.status(controllerResponse.code).send(controllerResponse);
             }
           );

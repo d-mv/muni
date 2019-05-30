@@ -1,0 +1,69 @@
+@import './colors';
+@import './_typography';
+@import './_animations.scss';
+
+/// Button template
+/// @group Layout
+.nav-template {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+}
+
+.footer {
+  @extend .nav-template;
+  bottom: 0;
+  height: 10%;
+}
+
+.header {
+  @extend .nav-template;
+  top: 0;
+  height: 10%;
+}
+
+
+/// Button template
+/// @group UI-elements
+.button-template {
+  // disable default
+  background: none;
+  border: none;
+  outline: none;
+  // set new properties
+  height: 45px;
+  border-radius: 6px;
+  transition: $boxTransition;
+  // box-shadow: $boxShadow;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+}
+
+/// Primary button
+/// @group UI-elements
+.navButton {
+  @extend .button-template;
+  width: 100px;
+  background-color: $colorPrimary;
+}
+
+/// Primary button
+/// @group UI-elements
+.welcomeButton {
+  @extend .button-template;
+  // width: 100%;
+  // height: 100%;
+  font: $textButtonEnter;
+  color: white;
+  letter-spacing: 2px;
+  text-align: center;
+  animation: $aniAppear;
+  opacity: 0;
+}

@@ -1,24 +1,64 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { withCookies } from "react-cookie";
+import { connect } from "react-redux";
 
-import City from "./components/City";
-import CityContainer from './CityContainer'
-import "./styles/App.module.scss";
+import { AppState } from "./store";
+import {
+  setToken,
+  checkToken,
+  login,
+  fetchLocations
+} from "./store/users/actions";
 
-const App: React.FC = () => {
-  const haifa = () => <City city='Haifa' />;
-  const telAviv = () => <City city='Tel-Aviv' />;
-  const Jerusalem = () => <City city='Jerusalem' />;
-  // https://github.com/alvarotrigo/fullPage.js/
-  // https://codepen.io/ananyaneogi/pen/mYmodx
+import Welcome from "./views/Welcome";
+import Navigation from "./components/Navigation/Navigation";
+import Login from "./views/Login";
+import Confirmation from "./views/Confirmation";
+
+import style from "./styles/App.module.scss";
+
+const App = (props: any) => {
+  const { login } = props;
+  // fetch locations
+  React.useEffect(() => {
+    props.fetchLocations();
+  }, [login]);
+
+  const home = <div data-testid='home' />;
+
+  let show = home;
+  switch (props.module) {
+    case "welcome":
+      show = <Welcome />;
+      break;
+    case "login":
+      show = <Login />;
+      break;
+    case "confirmation":
+      show = <Confirmation />;
+      break;
+  }
+
   return (
-    <Router>
-      <Route path='/' exact component={CityContainer} />
-      <Route path='/haifa' exact component={haifa} />
-      <Route path='/tel-aviv' component={telAviv} />
-      <Route path='/Jerusalem' component={Jerusalem} />
-    </Router>
+    <div className={style.appWrapper}>
+      {show}
+      <Navigation />
+    </div>
   );
 };
 
-export default App;
+const mapStateToProps = (state: AppState) => {
+  return {
+    token: state.token,
+    check: state.checkTokenResult,
+    login: state.login,
+    module: state.module,
+    locations: state.locations,
+    loginResult: state.login
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { setToken, checkToken, login, fetchLocations }
+)(withCookies(App));

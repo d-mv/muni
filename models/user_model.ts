@@ -2,27 +2,11 @@ import * as assert from "assert";
 import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
-
 import { dropQuotes } from "../modules/check_strings";
 import { compareStringToHash, encodeString } from "../modules/security";
-import {
-  errorMessage,
-  generalError,
-  notFound,
-  positiveMessage,
-  tooManyResultsMessage,
-  notAllowedToGetResultsMessage,
-  alreadyExistsMessage,
-  updateMessage
-} from "../modules/response_message";
 
-import {
-  apiResponseTYPE,
-  intApiResponseTYPE,
-  NewUserTYPE,
-  IncLoginTYPE,
-  IncUserCreateTYPE
-} from "../src/types";
+import * as Message from "../modules/response_message";
+import * as TYPE from "../src/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -30,20 +14,19 @@ const dotEnv = dotenv.config();
 const dbName = process.env.MONGO_DB || "muni";
 // collections
 const dbcApp = process.env.MONGO_COL_APP || "app";
-const dbcMain = process.env.MONGO_COL_MAIN || 'dev';
-
+const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 
 /**
  * Update user fields
  * @function updateUser
  * @param {string} id - User ID, found before (double check)
  * @param { object } newFields - New fields to update
- * @returns {} - Uses callback function to send apiResponseTYPE
+ * @returns {} - Uses callback function to send TYPE.apiResponse
  */
 const updateUser = (
   id: string,
   newFields: { [index: string]: string | Date | number },
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
@@ -57,7 +40,7 @@ const updateUser = (
       .then((document: any) => {
         // check if result is positive adn callback result
         callback(
-          updateMessage({
+          Message.updateMessage({
             subj: "User",
             document: {
               ok: document.result.ok,
@@ -67,7 +50,7 @@ const updateUser = (
         );
       })
       .catch((e: any) => {
-        callback(errorMessage({ action: "user update", e }));
+        callback(Message.errorMessage({ action: "user update", e }));
       });
   });
 };
@@ -115,11 +98,11 @@ const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
  * Get user details by user ID
  * @function get
  * @param { object } props - Search ID and ID of user, requested the information
- * @returns {} - Uses callback function to send apiResponseTYPE
+ * @returns {} - Uses callback function to send TYPE.apiResponse
  */
 export const get = (
   props: { id: string; userRequested: string },
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   console.log(props);
   // check if userRequested is a SU
@@ -127,7 +110,7 @@ export const get = (
     // get requested user
     MDB.client.connect(err => {
       if (err) {
-        callback(errorMessage({ action: "connection to DB", e: err }));
+        callback(Message.errorMessage({ action: "connection to DB", e: err }));
       } else {
         let database: any = MDB.client.db(dbName).collection(dbcMain);
         database
@@ -156,13 +139,13 @@ export const get = (
           ])
           .toArray((e: any, result: any) => {
             if (e) {
-              callback(errorMessage({ action: "user search", e }));
+              callback(Message.errorMessage({ action: "user search", e }));
             } else if (result.length === 0) {
               // not found
-              callback(notFound("user"));
+              callback(Message.notFound("user"));
             } else if (result.length > 1) {
               // houston, we've got problem
-              callback(tooManyResultsMessage("user search"));
+              callback(Message.tooManyResultsMessage("user search"));
             } else {
               // bingo
               // allowed?
@@ -178,7 +161,9 @@ export const get = (
                 });
               } else {
                 // no rights
-                callback(notAllowedToGetResultsMessage("get this information"));
+                callback(
+                  Message.notAllowedToGetResultsMessage("get this information")
+                );
               }
             }
           });
@@ -190,11 +175,11 @@ export const get = (
  * Check if user exists of new
  * @function isUserNew
  * @param { string } user - User email
- * @returns {} - Uses callback function to send apiResponseTYPE
+ * @returns {} - Uses callback function to send TYPE.apiResponse
  */
 const isUserNew = (
-  user: IncLoginTYPE,
-  callback: (arg0: apiResponseTYPE) => void
+  user: TYPE.IncLoginTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
@@ -203,7 +188,18 @@ const isUserNew = (
       .aggregate([
         {
           $match: {
-            _id: new MDB.ObjectId(user.location)
+            "users.email": user.email
+          }
+        },
+        {
+          $addFields: {
+            "users.location": "$_id"
+          }
+        },
+        {
+          $project: {
+            name: 0,
+            "users.posts": 0
           }
         },
         {
@@ -227,10 +223,10 @@ const isUserNew = (
         // no result
         console.log("isUserNew?");
         console.log(result);
-        let response: apiResponseTYPE = {
+        let response: TYPE.apiResponse = {
           status: false,
           message: "User not found (email is not registered)",
-          code: 200
+          code: 404
         };
         if (result.length > 1) {
           // if too many results
@@ -243,7 +239,7 @@ const isUserNew = (
             status: true,
             message: "User found",
             code: 200,
-            payload: { id: result[0]._id }
+            payload: result[0]
           };
         }
         callback(response);
@@ -282,11 +278,11 @@ export const isUserSuper = (
  * Create user in the system and authenticate it
  * @function create
  * @param { object } user - User object as per { name: string, email: string, pass: string }
- * @callback createCallback - Function to return result (apiResponseTYPE)
+ * @callback createCallback - Function to return result (TYPE.apiResponse)
  */
 export const create = (
-  request: IncUserCreateTYPE,
-  callback: (arg0: apiResponseTYPE) => void
+  request: TYPE.IncUserCreateTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // const token = Generate.token();
   const id = new MDB.ObjectId();
@@ -294,15 +290,15 @@ export const create = (
     if (emailIsNew) {
       encodeString(
         dropQuotes(request.pass),
-        (encoded: apiResponseTYPE | intApiResponseTYPE) => {
+        (encoded: TYPE.apiResponse | TYPE.intApiResponseTYPE) => {
           if (!encoded.status) {
             // if error - callback error
-            //  @ts-ignore - in this case it's always apiResponseTYPE
+            //  @ts-ignore - in this case it's always TYPE.apiResponse
             callback(encoded);
           } else {
             // if created - proceed with creating
             // set a user variable
-            const createUser: NewUserTYPE = {
+            const createUser: TYPE.NewUserTYPE = {
               _id: id,
               fName: dropQuotes(request.fName),
               lName: dropQuotes(request.lName),
@@ -315,7 +311,9 @@ export const create = (
             // store it database
             MDB.client.connect(err => {
               if (err) {
-                callback(errorMessage({ action: "connection to DB", e: err }));
+                callback(
+                  Message.errorMessage({ action: "connection to DB", e: err })
+                );
               } else {
                 const database: any = MDB.client.db(dbName).collection(dbcMain);
                 database
@@ -347,7 +345,7 @@ export const create = (
                     }
                   })
                   .catch((e: any) =>
-                    callback(errorMessage({ action: "user create", e }))
+                    callback(Message.errorMessage({ action: "user create", e }))
                   );
               }
             });
@@ -356,7 +354,7 @@ export const create = (
       );
     } else {
       // if already exists
-      callback(alreadyExistsMessage("Email"));
+      callback(Message.alreadyExistsMessage("Email"));
     }
   });
 };
@@ -364,28 +362,58 @@ export const create = (
  * Login user
  * @function login
  * @param { object } user - User in format {email: string, pass: string}
- * @callback loginCallback - Function to return result (apiResponseTYPE)
+ * @callback loginCallback - Function to return result (TYPE.apiResponse)
  */
 export const login = (
-  user: IncLoginTYPE,
-  callback: (arg0: apiResponseTYPE) => void
+  user: TYPE.IncLoginTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // try login as SU
-  suLoginAttempt(user, (suCheckResponse: apiResponseTYPE) => {
+  suLoginAttempt(user, (suCheckResponse: TYPE.apiResponse) => {
     // callback if logged in or wrong password
     if (suCheckResponse.status || suCheckResponse.code === 401) {
       callback(suCheckResponse);
     } else {
       // check if user exists
-      isUserNew(user, (newUserResponse: apiResponseTYPE) => {
+      isUserNew(user, (newUserResponse: TYPE.apiResponse) => {
         // if 1 only user found, attempt to login
+        console.log("newUserResponse");
+        console.log(newUserResponse);
         if (newUserResponse.status) {
-          // attempt to login
-          loginAttempt(
-            user,
-            newUserResponse.payload.id,
-            (loginAttemptResponse: apiResponseTYPE) => {
-              callback(loginAttemptResponse);
+          // check login data
+          // if found > check password
+          compareStringToHash(
+            user.pass,
+            newUserResponse.payload.pass,
+            (response: boolean | TYPE.apiResponse) => {
+              if (typeof response === "boolean") {
+                // if it's true/false
+                if (response) {
+                  // if matching
+                  callback(
+                    Message.positiveMessage({
+                      subj: "User login is OK",
+                      payload: {
+                        payload: {
+                          id: newUserResponse.payload._id,
+                          location: newUserResponse.payload.location
+                        }
+                      }
+                    })
+                  );
+                } else {
+                  // if not matching
+                  callback(
+                    Message.generalError({
+                      subj: "User: wrong password",
+                      code: 401
+                    })
+                  );
+                }
+              } else {
+                // if it's error
+                callback(response);
+              }
             }
           );
         } else {
@@ -408,16 +436,16 @@ export const login = (
  * Attempt to login as super-user
  * @function suLoginAttempt
  * @param { IncLoginTYPE } user - Attempt to login with {@link IncLoginType}
- * @callback suLoginAttemptCallback - Function to return result (apiResponseTYPE)
+ * @callback suLoginAttemptCallback - Function to return result (TYPE.apiResponse)
  */
 export const suLoginAttempt = (
-  user: IncLoginTYPE,
-  callback: (arg0: apiResponseTYPE) => void
+  user: TYPE.IncLoginTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // connect to DB
   MDB.client.connect(err => {
     if (err) {
-      callback(errorMessage({ action: "connection to DB", e: err }));
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database: any = MDB.client.db(dbName).collection(dbcApp);
       // check if user exists
@@ -432,16 +460,16 @@ export const suLoginAttempt = (
         .toArray((err: any, result: any) => {
           if (err) {
             // if error
-            callback(errorMessage({ action: "SU match", e: err }));
+            callback(Message.errorMessage({ action: "SU match", e: err }));
           } else if (result.length === 0) {
             // if no - response
-            callback(notFound("SU not found"));
+            callback(Message.notFound("SU not found"));
           } else {
             // try to login if yes
             compareStringToHash(
               user.pass,
               result[0].su.pass,
-              (response: boolean | apiResponseTYPE) => {
+              (response: boolean | TYPE.apiResponse) => {
                 // console.log(hash)
                 // console.log(result[0].su.pass);
                 if (typeof response === "boolean") {
@@ -449,7 +477,7 @@ export const suLoginAttempt = (
                   if (response) {
                     // if matching
                     callback(
-                      positiveMessage({
+                      Message.positiveMessage({
                         subj: "SU login is OK",
                         payload: {
                           level: "su",
@@ -462,7 +490,10 @@ export const suLoginAttempt = (
                   } else {
                     // if not matching
                     callback(
-                      generalError({ subj: "SU: wrong password", code: 401 })
+                      Message.generalError({
+                        subj: "SU: wrong password",
+                        code: 401
+                      })
                     );
                   }
                 } else {
@@ -488,23 +519,29 @@ export const suLoginAttempt = (
  * @function suLoginAttempt
  * @param { IncLoginTYPE } user - Attempt to login with {@link IncLoginType}
  * @param {string} id - Location ID
- * @callback loginAttemptCallback - Function to return result (apiResponseTYPE)
+ * @callback loginAttemptCallback - Function to return result (TYPE.apiResponse)
  */
 export const loginAttempt = (
-  user: IncLoginTYPE,
+  user: TYPE.IncLoginTYPE,
   id: string,
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
     if (err) {
-      callback(errorMessage({ action: "connection to DB", e: err }));
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database: any = MDB.client.db(dbName).collection(dbcMain);
+      console.log(user);
       database
         .aggregate([
           {
             $match: {
               _id: new MDB.ObjectId(user.location)
+            }
+          },
+          {
+            $addFields: {
+              "users.location": "$_id"
             }
           },
           {
@@ -530,36 +567,38 @@ export const loginAttempt = (
               lName: 1,
               avatar: 1,
               email: 1,
-              pass: 1
+              pass: 1,
+              location: 1
             }
           }
         ])
         .toArray((err: any, result: any) => {
           if (err) {
             // if error
-            callback(errorMessage({ action: "user match", e: err }));
+            callback(Message.errorMessage({ action: "user match", e: err }));
           } else if (result.length === 0) {
             // if no - response
-            callback(notFound("user not found"));
+            callback(Message.notFound("user not found"));
           } else if (result.length > 1) {
             // if too many results
-            callback(tooManyResultsMessage("user matching"));
+            callback(Message.tooManyResultsMessage("user matching"));
           } else {
             // if found > check password
             compareStringToHash(
               user.pass,
               result[0].pass,
-              (response: boolean | apiResponseTYPE) => {
+              (response: boolean | TYPE.apiResponse) => {
                 if (typeof response === "boolean") {
                   // if it's true/false
                   if (response) {
                     // if matching
                     callback(
-                      positiveMessage({
+                      Message.positiveMessage({
                         subj: "User login is OK",
                         payload: {
                           payload: {
-                            id: result[0]._id
+                            id: result[0]._id,
+                            location: result[0].location
                           }
                         }
                       })
@@ -567,7 +606,7 @@ export const loginAttempt = (
                   } else {
                     // if not matching
                     callback(
-                      generalError({
+                      Message.generalError({
                         subj: "User: wrong password",
                         code: 401
                       })
@@ -584,4 +623,3 @@ export const loginAttempt = (
     }
   });
 };
-// ** end-of-done

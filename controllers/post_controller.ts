@@ -4,7 +4,7 @@ import * as Post from "../models/post_model";
 import { checkToken } from "../modules/security";
 import { checkID } from "../modules/check_strings";
 import checkPostFields from "../modules/check_post";
-import { apiResponseTYPE, IncPostsListTYPE } from "../src/types";
+import * as TYPE from "../src/types";
 
 import { requestError } from "../modules/response_message";
 
@@ -34,29 +34,10 @@ import { requestError } from "../modules/response_message";
  * @param {object} props - Incoming feed from router
  * @returns {callback} - Callback function to return response
  *
- * @example Example of the body
- *
- * { "post":
- *          {
- *            "title": "Post title",
- *            "text": "Lorem ipsum dolor sit amet...",
- *            "photo": "http://...",
- *            "link": "http://...",
- *            "type": "post",
- *            "newsId": "5ce2a3c945e5451171394b35", // - this can be 000 for empty
- *            "status": true,
- *            "votes": {
- *                        "up": 0,
- *                        "down": 0
- *             }
- *           },
- *   "location": "5ce2a3c945e5451171394b35"
- * }
- *
  */
 export const createPost = (
   props: any,
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   if (Object.keys(props.body).length === 0) {
     // if request body is empty
@@ -72,7 +53,7 @@ export const createPost = (
       callback(requestError("Token is missing"));
     } else {
       // token is present, check it
-      checkToken(props.headers.token, (checkTokenResponse: apiResponseTYPE) => {
+      checkToken(props.headers.token, (checkTokenResponse: TYPE.apiResponse) => {
         // check if code is not positive
         if (checkTokenResponse.code !== 200) {
           // negative code
@@ -85,7 +66,7 @@ export const createPost = (
               location: props.body.location,
               user: checkTokenResponse.payload.id
             },
-            (modelResponse: apiResponseTYPE) => {
+            (modelResponse: TYPE.apiResponse) => {
               // callback with response
               callback(modelResponse);
             }
@@ -104,7 +85,7 @@ export const createPost = (
  */
 export const updatePost = (
   props: any,
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
     if (Object.keys(props.body).length === 0) {
       // if request body is empty
@@ -117,7 +98,7 @@ export const updatePost = (
         // token is present, check it
         checkToken(
           props.headers.token,
-          (checkTokenResponse: apiResponseTYPE) => {
+          (checkTokenResponse: TYPE.apiResponse) => {
             // check if code is not positive
             if (checkTokenResponse.code !== 200) {
               // negative code
@@ -130,7 +111,7 @@ export const updatePost = (
                   postId: props.params.id,
                   user: checkTokenResponse
                 },
-                (modelResponse: apiResponseTYPE) => {
+                (modelResponse: TYPE.apiResponse) => {
                   // callback with response
                   callback(modelResponse);
                 }
@@ -149,7 +130,7 @@ export const updatePost = (
  */
 export const deletePost = (
   props: any,
-  callback: (arg0: apiResponseTYPE) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
       if (!props.headers.token) {
         // if token is not present send code/message
@@ -158,7 +139,7 @@ export const deletePost = (
         // token is present, check it
         checkToken(
           props.headers.token,
-          (checkTokenResponse: apiResponseTYPE) => {
+          (checkTokenResponse: TYPE.apiResponse) => {
             // check if code is not positive
             if (checkTokenResponse.code !== 200) {
               // negative code
@@ -170,7 +151,7 @@ export const deletePost = (
                   postId: props.params.id,
                   user: checkTokenResponse
                 },
-                (modelResponse: apiResponseTYPE) => {
+                (modelResponse: TYPE.apiResponse) => {
                   // callback with response
                   callback(modelResponse);
                 }
@@ -188,10 +169,10 @@ export const deletePost = (
  * @return {callback} - Callback function to return response
  */
 export const posts = (
-  props: IncPostsListTYPE,
-  callback: (arg0: apiResponseTYPE) => void
+  props: TYPE.IncPostsListTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  Post.list(props, (modelResponse: apiResponseTYPE) => {
+  Post.list(props, (modelResponse: TYPE.apiResponse) => {
     console.log("object");
     callback(modelResponse);
   });
