@@ -26,6 +26,7 @@
 .mainOpposite {
   @extend .main-template;
   bottom: 0;
+  height:90%;
   border-radius: 40px 40px 0 0;
   animation: $aniSlideFromTop;
 }

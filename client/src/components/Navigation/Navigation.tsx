@@ -6,7 +6,6 @@ import { setModule,setLoading } from "../../store/users/actions";
 
 import NavButton from "./NavButton";
 
-import layout from "../../styles/_layout.module.scss";
 import style from "../../styles/Navigation.module.scss";
 /**
  * Functional component to display a footer wrapper with buttons
@@ -26,6 +25,7 @@ const Navigation = (props: any) => {
         break;
       case 'confirmation':
         props.setModule("confirmation");
+        break;
       default:
         props.setModule(module);
     }

@@ -10,9 +10,32 @@ import layout from "../styles/_layout.module.scss";
 import elements from "../styles/_elements.module.scss";
 import style from "../styles/Login.module.scss";
 
+/**
+ * Function to set the names of form elements, based on the mode
+ * @function names
+ * @param {string} mode - Mode of operation
+ * @returns {object} - Object with title and button names
+ */
+const names = (mode: string): { title: string; button: string } => {
+  let result = {
+    title: "Please, enter your login details:",
+    button: "Login"
+  };
+  if (mode === "register") {
+    result.title = "New user:";
+    result.button = "Register";
+  }
+  return result;
+};
+
 /** Functional component to render login/register page
  * @function Login
- * @param { location:()=>void, login: (arg0:TYPE.login)=>void,loginResult:TYPE.apiResponse} props - Object, containing functions & state from redux
+ * @param { locations: TYPE.apiResponse;
+ * loginResult: TYPE.apiResponse;
+ * registerResult: TYPE.apiResponse;
+ * login: (arg0: TYPE.login) => void;
+ * register: (arg0: TYPE.register) => void;
+ * setModule: (arg0: string) => void;} props - Object, containing functions & state from redux
  * @returns {JSX.Element} - Login page
  */
 const Login = (props: {
@@ -38,10 +61,12 @@ const Login = (props: {
   const [mode, setMode] = React.useState("login");
   //  message hook
   const [message, setMessage] = React.useState("");
+
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
     props.loginResult.code === 404 ? setMode("register") : setMode("login");
   }, [props.loginResult.code]);
+
   // update message
   React.useEffect(() => {
     // switch off spinner
@@ -54,6 +79,7 @@ const Login = (props: {
     }
   }, [props.loginResult.message]);
 
+  // register result
   React.useEffect(() => {
     // switch off spinner
     if (props.registerResult.code !== 100) {
@@ -67,15 +93,10 @@ const Login = (props: {
     }
   }, [props.registerResult.message]);
 
-  // toggle the state of loading
-  const toggleLoading = () => setLoading(!loading);
-
-  const locations = props.locations.payload;
-
   // form methods
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    toggleLoading();
+    setLoading(!loading);
     setShowMessage(false);
     if (mode === "login") {
       props.login({ email, pass });
@@ -115,9 +136,6 @@ const Login = (props: {
   };
 
   // set the form elements
-  const title =
-    mode === "login" ? "Please, enter your login details:" : "New user:";
-  const buttonName = mode === "login" ? "Login" : "Register";
   const showElement = loading ? <div className={elements.loading} /> : null;
   const messageElement = showMessage ? (
     <div className={style.message}>{message}</div>
@@ -125,11 +143,10 @@ const Login = (props: {
   const locationsElement =
     mode === "register" ? (
       <Select
-        // value={locationLabel}
         name='location'
-        options={locations}
+        options={props.locations.payload}
         onChange={handleInputChange}
-        placeholder='City'
+        placeholder='Location'
         required
       />
     ) : null;
@@ -159,7 +176,7 @@ const Login = (props: {
   return (
     <main className={layout.mainOpposite}>
       <form className={style.formRight} onSubmit={handleSubmit}>
-        {title}
+        {names(mode).title}
         {locationsElement}
         {namesElement}
         <label className={style.block}>
@@ -187,11 +204,11 @@ const Login = (props: {
         </label>
         {messageElement}
         {showElement}
-        <button className={style.submit} aria-label={buttonName}>
+        <button className={style.submit} aria-label={names(mode).button}>
           <input
             type='button'
             disabled={loading}
-            value={buttonName}
+            value={names(mode).button}
             id='submit_button'
           />
         </button>

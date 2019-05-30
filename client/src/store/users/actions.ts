@@ -1,6 +1,6 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios from "axios";
-import { Action, checkTokenAction, SET, CHECK } from "./types";
+import { Action } from "./types";
 import * as TYPE from "../types";
 import locationsList from "../../modules/locations_list";
 
@@ -14,7 +14,7 @@ import { apiState } from "../defaults";
  * @return {Object} - Returns object of action type and token
  */
 export const setToken = (token: string): Action => {
-  return { type: SET, token };
+  return { type: "SET", token };
 };
 /**
  * Action function to set the token in the state
@@ -52,7 +52,7 @@ export const checkToken = (
         }
         // if negative - return the data
         dispatch({
-          type: CHECK,
+          type: "CHECK",
           payload: { ...response.data, code: response.status }
         });
       })
@@ -117,7 +117,6 @@ export const login = (
  * @param {string} email - User's email
  * @param {string} pass - User's password
  * @param {string} avatar - Avatar's URL
-
  * @return {Promise} - Returns promise resolved with the help of Thunk
  */
 export const register = (

@@ -27,12 +27,14 @@ export const locationsList = (
     unsortedResult[el.name[language]] = el._id;
     // add to array of locations to be sorted
     locationsList.push(el.name[language]);
+    return null;
   });
   // sort locations and push appropriate pair to the result
   const result: Array<indexedObj> = [];
   locationsList.sort().map((el: any) => {
     // add a pair to the resulting array
     result.push({ value: unsortedResult[el], label: el });
+    return null;
   });
   return result;
 };
