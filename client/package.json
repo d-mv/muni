@@ -26,7 +26,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "typescript": "3.4.5",
-    "react-cookie": "^4.0.0"
+    "react-cookie": "^4.0.0",
+    "react-testing-library": "^7.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,7 +52,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "react-testing-library": "^7.0.1"
-  }
+  "devDependencies": {}
 }
