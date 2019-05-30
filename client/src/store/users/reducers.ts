@@ -1,4 +1,4 @@
-import { Action, tokenState, actionsResponse } from "./types";
+import { Action } from "./types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action): string => {
@@ -7,6 +7,13 @@ export const setToken = (state = "", action: Action): string => {
       return action.token ? action.token : state;
   }
   return state;
+};
+export const setLoading = (state = false, action: Action): boolean => {
+  switch (action.type) {
+    case "SET_LOADING":
+      return action.loading ? action.loading : false;
+  }
+  return false;
 };
 
 export const checkToken = (state = { token: "" }, action: Action) => {
@@ -39,5 +46,3 @@ export const setModuleU = (state = "", action: Action): string => {
   }
   return state;
 };
-
-

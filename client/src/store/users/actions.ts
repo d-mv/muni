@@ -17,6 +17,15 @@ import { apiState } from "../defaults";
 export const setToken = (token: string): Action => {
   return { type: SET, token };
 };
+/**
+ * Action function to set the token in the state
+ * @function setLoading
+ * @param {boolean} loading
+ * @return {Object} - Returns object of action type and token
+ */
+export const setLoading = (loading:boolean = false): Action => {
+  return { type: "SET_LOADING", loading };
+};
 
 /**
  * Action function to verify the token with API

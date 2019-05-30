@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { setModuleU } from "../../store/users/actions";
+import { setModuleU,setLoading } from "../../store/users/actions";
 
 import NavButton from "./NavButton";
 
@@ -23,6 +23,7 @@ const Navigation = (props: any) => {
         break;
       case "login":
         props.setModuleU("welcome");
+        props.setLoading(false)
         break;
       default:
         props.setModuleU(module);
@@ -79,5 +80,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setModuleU }
+  { setModuleU,setLoading }
 )(Navigation);

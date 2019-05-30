@@ -18,6 +18,10 @@ export interface setTokenAction {
   type: "SET";
   token: string;
 }
+export interface setLoadingAction {
+  type: "SET_LOADING";
+  loading: boolean;
+}
 
 export interface loginAction {
   type: "LOGIN";
@@ -39,4 +43,5 @@ export type Action =
   | checkTokenAction
   | loginAction
   | setModuleUAction
-  | fetchLocationsAction;
+  | fetchLocationsAction
+  | setLoadingAction;

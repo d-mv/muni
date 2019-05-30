@@ -20,6 +20,7 @@ import style from "../styles/Login.module.scss";
 const Login = (props: {
   locations: TYPE.apiResponse;
   loginResult: TYPE.apiResponse;
+  loadingStatus: boolean;
   login: (arg0: TYPE.login) => void;
 }) => {
   // loading hook
@@ -46,10 +47,10 @@ const Login = (props: {
   // update message
   React.useEffect(() => {
     // switch off spinner
-    if (props.loginResult.code !== 100) toggleLoading();
+    if (props.loginResult.code !== 100) setLoading(false);
     // if this is not new user
-    if (props.loginResult.code !== 404) {
-      // set meesage to display, turn on display message
+    if (props.loginResult.code !== 404 && email !== "") {
+      // set message to display, turn on display message
       setMessage(props.loginResult.message);
       setShowMessage(true);
     }
@@ -61,19 +62,20 @@ const Login = (props: {
   // form methods
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setShowMessage(false);
-    toggleLoading();
-    props.login({ email, pass });
+    if (mode === "login") {
+      setShowMessage(false);
+      toggleLoading();
+      props.login({ email, pass });
+    } else {
+      // register
+    }
   };
   // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const handleInputChange = (event: any) => {
-    console.log(event);
     if (!event.target) {
       setLocationId("5ce586e46eb133a4938298dc");
     } else {
       switch (event.target.name) {
-        case "location":
-          break;
         case "fName":
           setFname(event.target.value);
           break;
@@ -98,7 +100,6 @@ const Login = (props: {
   const messageElement = showMessage ? (
     <div className={style.message}>{message}</div>
   ) : null;
-  console.log(location);
   const locationsElement =
     mode === "register" ? (
       <Select
