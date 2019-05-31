@@ -1,5 +1,12 @@
 /// Base font
-$fontBasic: "'M PLUS Rounded 1c', Arial, sans-serif";
+$fontBasic: 'M PLUS Rounded 1c',
+Arial,
+sans-serif;
 /// Button name
-$textButton: normal 400 1.2rem $fontBasic;
+$textButton: normal 700 1.2rem $fontBasic;
 $textButtonEnter: normal 700 3rem $fontBasic;
+/// Fields
+$textFormField: normal 400 1rem $fontBasic;
+$textFormFieldPrompt: normal 300 0.8rem $fontBasic;
+$textFormFieldName: normal 500 0.8rem $fontBasic;
+$textFormMessage: normal 300 0.9rem $fontBasic;

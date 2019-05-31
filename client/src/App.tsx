@@ -14,7 +14,6 @@ import Welcome from "./views/Welcome";
 import Navigation from "./components/Navigation/Navigation";
 import Login from "./views/Login";
 import Confirmation from "./views/Confirmation";
-
 import style from "./styles/App.module.scss";
 
 const App = (props: any) => {

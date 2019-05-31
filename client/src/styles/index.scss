@@ -1,0 +1,27 @@
+:root {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #444;
+
+  textarea,
+  button,
+  select,
+  option,
+  input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    outline: none;
+
+    &:active {
+      text-decoration: none;
+      outline: none;
+    }
+
+    &:focus {
+      text-decoration: none;
+      outline: none;
+    }
+  }
+}

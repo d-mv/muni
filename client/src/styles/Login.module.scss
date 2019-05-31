@@ -1,36 +1,6 @@
 @import './animations';
 
-/// Form template
-/// @group Login
-.form-template {
-  width: 80%;
-  height: 90%;
-  padding: 20px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-}
 
-/// Form alignment for left-to-right languages
-/// @group Login
-.formLeft {
-  @extend .form-template;
-  text-align: left;
-
-}
-
-/// Form alignment for right-to-left languages
-/// @group Login
-.formRight {
-  @extend .form-template;
-  text-align: right;
-}
-
-/// Block of label and input of the form
-/// @group Login
-.block {
-  margin: 10px 0;
-}
 
 /// Message, shown on the form
 /// @group Login

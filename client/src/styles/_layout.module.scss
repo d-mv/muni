@@ -16,7 +16,7 @@
 .mainTop {
   @extend .main-template;
   top: 0;
-  border-radius: 0 0 40px 40px;
+  border-radius: 0 0 4vh 4vh;
   box-shadow: $pageShadow;
   animation: $aniSlideToTop;
 }
@@ -25,9 +25,8 @@
 /// @group Layout
 .mainOpposite {
   @extend .main-template;
-  bottom: 0;
-  height:90%;
-  border-radius: 40px 40px 0 0;
+  position: initial;
+  border-radius: 4vh 4vh 0 0;
   animation: $aniSlideFromTop;
 }
 

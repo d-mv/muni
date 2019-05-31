@@ -6,8 +6,12 @@ import { AppState } from "../store";
 import * as TYPE from "../store/types";
 import { login, register, setModule } from "../store/users/actions";
 
+import Loading from "../components/Loading";
+
 import layout from "../styles/_layout.module.scss";
 import elements from "../styles/_elements.module.scss";
+import form from "../styles/_form.module.scss";
+import button from "../styles/Button.module.scss";
 import style from "../styles/Login.module.scss";
 
 /**
@@ -16,17 +20,17 @@ import style from "../styles/Login.module.scss";
  * @param {string} mode - Mode of operation
  * @returns {object} - Object with title and button names
  */
-const names = (mode: string): { title: string; button: string } => {
-  let result = {
-    title: "Please, enter your login details:",
-    button: "Login"
-  };
-  if (mode === "register") {
-    result.title = "New user:";
-    result.button = "Register";
-  }
-  return result;
-};
+// const names = (mode: string): { title: string; button: string } => {
+//   let result = {
+//     title: "Please, enter your login details:",
+//     button: "Login"
+//   };
+//   if (mode === "register") {
+//     result.title = "New user:";
+//     result.button = "Register";
+//   }
+//   return result;
+// };
 
 /** Functional component to render login/register page
  * @function Login
@@ -51,8 +55,11 @@ const Login = (props: {
   // form data hooks
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
-  const [locationLabel, setLocationLabel] = React.useState("");
-  const [location, setLocation] = React.useState("");
+  const [locationLabel, setLocationLabel] = React.useState(
+    props.locations.payload[0].label
+  );
+  const [location, setLocation] = React.useState(
+    props.locations.payload[0].value);
   const [fName, setFname] = React.useState("");
   const [lName, setLname] = React.useState("");
   // show/hide message hook
@@ -60,7 +67,9 @@ const Login = (props: {
   // login/register mode hook
   const [mode, setMode] = React.useState("login");
   //  message hook
-  const [message, setMessage] = React.useState("");
+  const [message, setMessage] = React.useState(
+    "Please, enter your login details"
+  );
 
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
@@ -134,84 +143,122 @@ const Login = (props: {
       }
     }
   };
-
+  const handleSelectChange = (event: any) => {
+    console.log(event.target.value);
+  };
   // set the form elements
-  const showElement = loading ? <div className={elements.loading} /> : null;
+  const showElement = loading ? (
+    <div className={form.loading}>
+      <Loading />
+    </div>
+  ) : (
+    <div className={form.loading} />
+  );
   const messageElement = showMessage ? (
-    <div className={style.message}>{message}</div>
-  ) : null;
-  const locationsElement =
-    mode === "register" ? (
-      <Select
-        name='location'
-        options={props.locations.payload}
-        onChange={handleInputChange}
-        placeholder='Location'
-        required
-      />
-    ) : null;
-  const namesElement =
+    <div className={form.message}>{message}</div>
+  ) : (
+    <div className={form.message} />
+    );
+
+  const fNameElement =
     mode === "login" ? null : (
-      <label className={style.block}>
-        <span className={style.label}>First and Last names</span>
+      <section className={form.section}>
+        <label>FIRST NAME</label>
         <input
           type='text'
           name='fName'
           value={fName}
-          placeholder='First name'
           onChange={handleInputChange}
           required
         />
+        <div className={form.prompt}>
+          {fName ? "" : "enter your first name"}
+        </div>
+      </section>
+    );
+
+  const lNameElement =
+    mode === "login" ? null : (
+      <section className={form.section}>
+        <label>LAST NAME</label>
         <input
           type='text'
           name='lName'
           value={lName}
-          placeholder='Last name'
           onChange={handleInputChange}
           required
         />
-      </label>
+        <div className={form.prompt}>{lName ? "" : "enter your last name"}</div>
+      </section>
+    );
+
+  const locationsElement =
+    mode === "login" ? null : (
+      <section className={form.section} onChange={handleSelectChange}>
+        <label>LOCATION</label>
+        <select>
+          {props.locations.payload.map(
+            (location: { [index: string]: string }) => {
+              return (
+                <option key={location.value} value={location.value}>
+                  {location.label}
+                </option>
+              );
+            }
+          )}
+        </select>
+      </section>
     );
 
   return (
     <main className={layout.mainOpposite}>
-      <form className={style.formRight} onSubmit={handleSubmit}>
-        {names(mode).title}
+      <form className={form.right} onSubmit={handleSubmit}>
         {locationsElement}
-        {namesElement}
-        <label className={style.block}>
-          <span className={style.label}>Email</span>
+        {fNameElement}
+        {lNameElement}
+        {/* <section className={form.section} onChange={handleSelectChange}>
+          <select>
+            <option value='city'>City</option>
+            <option value='town'>Town</option>
+          </select>
+        </section> */}
+        <section className={form.section}>
+          <label>EMAIL</label>
           <input
             type='email'
             name='uMail'
             value={email}
-            placeholder='Email'
             onChange={handleInputChange}
             required
           />
-        </label>
-        <label className={style.block}>
-          <span className={style.label}>Password</span>
+          <div className={form.prompt}>
+            {email ? "" : "enter your email address"}
+          </div>
+        </section>
+        <section className={form.section}>
+          <label>PASSWORD</label>
           <input
             type='password'
             minLength={7}
             name='uPass'
             value={pass}
-            placeholder='Password'
             onChange={handleInputChange}
             required
           />
-        </label>
+          <div className={form.prompt}>{pass ? "" : "enter your password"}</div>
+        </section>
         {messageElement}
         {showElement}
-        <button className={style.submit} aria-label={names(mode).button}>
+        <button className={form.buttonArea} aria-label='Submit'>
           <input
+            className={form.buttonPrimary}
             type='button'
             disabled={loading}
-            value={names(mode).button}
+            value='SUBMIT'
             id='submit_button'
           />
         </button>
+        <button className={form.buttonSecondary}>REGISTER</button>
       </form>
     </main>
   );
