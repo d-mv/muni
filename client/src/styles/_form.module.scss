@@ -1,0 +1,150 @@
+@import './colors';
+@import './typography';
+
+/// Form template with elements
+/// @group Form
+.form-template {
+  width: 80%;
+  height: fit-content;
+  padding: 1em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  .section {
+    margin: 1em 0;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font: $textFormFieldName;
+      margin: 5px 0;
+      letter-spacing: 1px;
+    }
+
+    input,
+    select {
+      border: 1px solid $colorGrey;
+      border-radius: 4px;
+      background: none;
+      font: $textFormField;
+      padding: 5px 8px;
+      z-index: 10;
+      user-select: none;
+
+      &:focus {
+        border: none;
+        border: 1px solid $colorPrimary;
+      }
+    }
+
+    .prompt {
+      z-index: 1;
+      margin-top: -1.7rem;
+      width: 95%;
+      padding-left: 0.5rem;
+      min-height: 1.5em;
+      font: $textFormFieldPrompt;
+      color: $colorGrey;
+    }
+  }
+}
+
+/// Form alignment for left-to-right languages
+/// @group Form
+.left {
+  @extend .form-template;
+  text-align: left;
+}
+
+/// Form alignment for right-to-left languages
+/// @group Form
+.right {
+  @extend .form-template;
+  text-align: right;
+
+  input,
+  select {
+    direction: rtl;
+    //  text-align: right;
+  }
+
+  option {
+    padding-right: 2%;
+  }
+}
+
+/// Button area in the form
+/// @group Form
+.buttonArea {
+  border: none;
+  background: none;
+  width: fit-content;
+  margin: 10px auto;
+  padding: 0;
+}
+
+/// Button template
+/// @group Form
+.button-template {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: none;
+  width: fit-content;
+  font: $textButton;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/// Primary button - SUBMIT button
+/// @group Form
+.buttonPrimary {
+  @extend .button-template;
+  color: white;
+  background-color: $colorPrimary;
+}
+
+/// Joining features of the area and button
+/// @group Form
+.add-button {
+  @extend .buttonArea;
+  @extend .button-template;
+  margin-top: 1rem;
+}
+
+/// Secondary button
+/// @group Form
+.buttonSecondary {
+  @extend .add-button;
+  color: white;
+  background-color: $colorSecondary;
+}
+
+/// Message style
+/// @group Form
+.message {
+  margin: 15px auto;
+  height: fit-content;
+  min-height: 1.3em;
+  width: 100%;
+  text-align: center;
+  font: $textFormMessage;
+  color: $colorDarkGrey;
+}
+
+/// Loading indicator wrapper
+/// @group Form
+.loading {
+  min-height: 1.3em;
+
+  margin: {
+    top: -1.8em;
+    left: auto;
+    right: auto;
+    bottom: 1em;
+  }
+}

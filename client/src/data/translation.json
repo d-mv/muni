@@ -1,0 +1,32 @@
+{
+  "language": {
+    "en": {
+      "name": "English",
+      "direction": "ltr",
+      "text": {
+        "welcome.enter": "ENTER",
+        "login.label.email": "EMAIL",
+        "login.prompt.email": "enter your email address",
+        "login.label.password": "PASSWORD",
+        "login.prompt.password": "enter your password",
+        "login.button.submit": "SUBMIT",
+        "login.button.register": "REGISTER",
+        "login.message.default": "Please, enter your login details"
+      }
+    },
+    "עב": {
+      "name": "עברית",
+      "direction": "rtl",
+      "text": {
+        "welcome.enter": "כניסה",
+        "login.label.email": "דוא\"ל",
+        "login.prompt.email": " הזן את כתובת הדוא\"ל שלך",
+        "login.label.password": "סיסמה",
+        "login.prompt.password": "הכנס סיסמתך",
+        "login.button.submit": "שלח",
+        "login.button.register": "חשבון חדש",
+        "login.message.default": "אנא, הזן את פרטי הכניסה שלך"
+      }
+    }
+  }
+}

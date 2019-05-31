@@ -7,10 +7,7 @@ import "./styles/index.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import configureStore from "./store";
-
 const store = configureStore();
-
-
 
 ReactDOM.render(
   <CookiesProvider>

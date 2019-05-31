@@ -38,7 +38,7 @@ const Navigation = (props: any) => {
       component = (
         <nav className={style.footer}>
           <NavButton mode='enter' action={action}>
-            enter
+            ENTER
           </NavButton>
         </nav>
       );
@@ -47,7 +47,7 @@ const Navigation = (props: any) => {
       component = (
         <nav className={style.header}>
           <NavButton mode='login' action={action}>
-            return
+            RETURN
           </NavButton>
         </nav>
       );
@@ -56,7 +56,7 @@ const Navigation = (props: any) => {
       component = (
         <nav className={style.header}>
           <NavButton mode='confirmation' action={action}>
-            return
+            RETURN
           </NavButton>
         </nav>
       );

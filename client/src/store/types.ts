@@ -52,3 +52,11 @@ export interface register {
 export interface indexedObj {
   [index: string]: string;
 }
+/**
+ * Standard indexed object type with any values
+ * @typedef {Object} indexedObjAny
+ * @property {string} index - Indexed string pair
+ */
+export interface indexedObjAny {
+  [index: string]: any;
+}

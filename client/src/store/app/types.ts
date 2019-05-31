@@ -1,6 +1,12 @@
-export interface setModuleAction {
-  type: "SET";
-  module: string;
+export interface loadDataAction {
+  type: "LOAD_DATA";
+  data: {[index:string]:any};
 }
-
-export type Action = setModuleAction
+export interface setLanguageAction {
+  type: "SET_LANGUAGE";
+  data: {[index:string]:any};
+}
+export interface data {
+  [index:string]:any
+}
+export type Action = loadDataAction | setLanguageAction;
