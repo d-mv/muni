@@ -59,7 +59,8 @@ const Login = (props: {
     props.locations.payload[0].label
   );
   const [location, setLocation] = React.useState(
-    props.locations.payload[0].value);
+    props.locations.payload[0].value
+  );
   const [fName, setFname] = React.useState("");
   const [lName, setLname] = React.useState("");
   // show/hide message hook
@@ -144,7 +145,7 @@ const Login = (props: {
     }
   };
   const handleSelectChange = (event: any) => {
-    console.log(event.target.value);
+    setLocation(event.target.value);
   };
   // set the form elements
   const showElement = loading ? (
@@ -158,10 +159,14 @@ const Login = (props: {
     <div className={form.message}>{message}</div>
   ) : (
     <div className={form.message} />
-    );
+  );
 
-  const fNameElement =
-    mode === "login" ? null : (
+  let fNameElement = null;
+  let lNameElement = null;
+  let locationsElement = null;
+  // register mode is on
+  if (mode === "register") {
+    fNameElement = (
       <section className={form.section}>
         <label>FIRST NAME</label>
         <input
@@ -177,8 +182,7 @@ const Login = (props: {
       </section>
     );
 
-  const lNameElement =
-    mode === "login" ? null : (
+    lNameElement = (
       <section className={form.section}>
         <label>LAST NAME</label>
         <input
@@ -192,8 +196,7 @@ const Login = (props: {
       </section>
     );
 
-  const locationsElement =
-    mode === "login" ? null : (
+    locationsElement = (
       <section className={form.section} onChange={handleSelectChange}>
         <label>LOCATION</label>
         <select>
@@ -209,6 +212,7 @@ const Login = (props: {
         </select>
       </section>
     );
+  }
 
   return (
     <main className={layout.mainOpposite}>
@@ -216,12 +220,6 @@ const Login = (props: {
         {locationsElement}
         {fNameElement}
         {lNameElement}
-        {/* <section className={form.section} onChange={handleSelectChange}>
-          <select>
-            <option value='city'>City</option>
-            <option value='town'>Town</option>
-          </select>
-        </section> */}
         <section className={form.section}>
           <label>EMAIL</label>
           <input

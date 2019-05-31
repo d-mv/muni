@@ -34,6 +34,7 @@
   background: none;
   border: none;
   outline: none;
+  padding: 0;
   // set new properties
   height: 45px;
   border-radius: 6px;
@@ -58,12 +59,13 @@
 /// @group UI-elements
 .welcomeButton {
   @extend .button-template;
-  // width: 100%;
-  // height: 100%;
+  width: 100%;
+  height: 100%;
   font: $textButtonEnter;
   color: white;
-  letter-spacing: 2px;
+  letter-spacing: 1vh;
   text-align: center;
+  vertical-align: middle;
   animation: $aniAppear;
   opacity: 0;
 }

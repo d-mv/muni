@@ -4,9 +4,11 @@ Arial,
 sans-serif;
 /// Button name
 $textButton: normal 700 1.2rem $fontBasic;
-$textButtonEnter: normal 700 3rem $fontBasic;
+$textButtonEnter: normal 700 2rem $fontBasic;
 /// Fields
 $textFormField: normal 400 1rem $fontBasic;
 $textFormFieldPrompt: normal 300 0.8rem $fontBasic;
 $textFormFieldName: normal 500 0.8rem $fontBasic;
 $textFormMessage: normal 300 0.9rem $fontBasic;
+/// Messages
+$textCentralMessage: normal 400 1.3rem $fontBasic;
