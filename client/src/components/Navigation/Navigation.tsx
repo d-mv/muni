@@ -56,7 +56,7 @@ const Navigation = (props: any) => {
       component = (
         <nav className={style.header}>
           <NavButton mode='confirmation' action={action}>
-            return
+            RETURN
           </NavButton>
         </nav>
       );

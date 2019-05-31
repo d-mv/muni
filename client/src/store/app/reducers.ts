@@ -1,16 +1,30 @@
-import { Action } from "./types";
+import { Action, data } from "./types";
 
 /**
- * Reducer function to process the setModule action
- * @function setModule
+ * Reducer function to process the loadData action
+ * @function loadData
  * @param state
  * @param action
  * @returns {string}
  */
-export const setModule = (state = "", action: Action): string => {
+export const loadData = (state = {}, action: Action): data => {
   switch (action.type) {
-    case "SET":
-      return action.module ? action.module : state;
+    case "LOAD_DATA":
+      return { ...action.data };
+  }
+  return state;
+};
+/**
+ * Reducer function to process the setLanguage action
+ * @function setLanguage
+ * @param state
+ * @param action
+ * @returns {string}
+ */
+export const setLanguage = (state = {}, action: Action): data => {
+  switch (action.type) {
+    case "SET_LANGUAGE":
+      return { ...action.data };
   }
   return state;
 };

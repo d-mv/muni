@@ -1,63 +1,51 @@
 import React from "react";
 import { connect } from "react-redux";
-import Select from "react-select";
 
 import { AppState } from "../store";
 import * as TYPE from "../store/types";
+import { setLanguage } from "../store/app/actions";
 import { login, register, setModule } from "../store/users/actions";
 
 import Loading from "../components/Loading";
 
 import layout from "../styles/_layout.module.scss";
-import elements from "../styles/_elements.module.scss";
 import form from "../styles/_form.module.scss";
-import button from "../styles/Button.module.scss";
 import style from "../styles/Login.module.scss";
-
-/**
- * Function to set the names of form elements, based on the mode
- * @function names
- * @param {string} mode - Mode of operation
- * @returns {object} - Object with title and button names
- */
-// const names = (mode: string): { title: string; button: string } => {
-//   let result = {
-//     title: "Please, enter your login details:",
-//     button: "Login"
-//   };
-//   if (mode === "register") {
-//     result.title = "New user:";
-//     result.button = "Register";
-//   }
-//   return result;
-// };
 
 /** Functional component to render login/register page
  * @function Login
  * @param { locations: TYPE.apiResponse;
- * loginResult: TYPE.apiResponse;
+ *  loginResult: TYPE.apiResponse;
  * registerResult: TYPE.apiResponse;
+ * language: TYPE.indexedObjAny;
+ * data: TYPE.indexedObjAny;
  * login: (arg0: TYPE.login) => void;
  * register: (arg0: TYPE.register) => void;
- * setModule: (arg0: string) => void;} props - Object, containing functions & state from redux
+ * setModule: (arg0: string) => void;
+ * setLanguage: (arg0: string) => void} props - Object, containing functions & state from Redux
  * @returns {JSX.Element} - Login page
  */
 const Login = (props: {
   locations: TYPE.apiResponse;
   loginResult: TYPE.apiResponse;
   registerResult: TYPE.apiResponse;
+  language: TYPE.indexedObjAny;
+  data: TYPE.indexedObjAny;
   login: (arg0: TYPE.login) => void;
   register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
+  setLanguage: (arg0: string) => void;
 }) => {
+  // get the language
+  const { text, direction } = props.language;
   // loading hook
   const [loading, setLoading] = React.useState(false);
   // form data hooks
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
-  const [locationLabel, setLocationLabel] = React.useState(
-    props.locations.payload[0].label
-  );
+  // ? const [locationLabel, setLocationLabel] = React.useState(
+  //   props.locations.payload[0].label
+  // );
   const [location, setLocation] = React.useState(
     props.locations.payload[0].value
   );
@@ -68,9 +56,7 @@ const Login = (props: {
   // login/register mode hook
   const [mode, setMode] = React.useState("login");
   //  message hook
-  const [message, setMessage] = React.useState(
-    "Please, enter your login details"
-  );
+  const [message, setMessage] = React.useState("");
 
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
@@ -103,7 +89,8 @@ const Login = (props: {
     }
   }, [props.registerResult.message]);
 
-  // form methods
+  // * form methods
+  // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(!loading);
@@ -122,31 +109,38 @@ const Login = (props: {
       });
     }
   };
-  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const handleInputChange = (event: any) => {
-    if (!event.target) {
-      setLocationLabel(event.label);
-      setLocation(event.value);
-    } else {
-      switch (event.target.name) {
-        case "fName":
-          setFname(event.target.value);
-          break;
-        case "lName":
-          setLname(event.target.value);
-          break;
-        case "uPass":
-          setPass(event.target.value);
-          break;
-        default:
-          setEmail(event.target.value);
-          break;
-      }
+  // handle fields input changes
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //? const handleInputChange = (event: any) => {
+    //? if (!event.target) {
+    //?   setLocationLabel(event.label);
+    //?   setLocation(event.value);
+    //? } else {
+    switch (event.target.name) {
+      case "fName":
+        setFname(event.target.value);
+        break;
+      case "lName":
+        setLname(event.target.value);
+        break;
+      case "uPass":
+        setPass(event.target.value);
+        break;
+      default:
+        setEmail(event.target.value);
+        break;
     }
+    // }
   };
+  // handle location choice
   const handleSelectChange = (event: any) => {
     setLocation(event.target.value);
   };
+  // handle change of language
+  const handleLangChange = (e: any) => {
+    props.setLanguage(e.target.value);
+  };
+
   // set the form elements
   const showElement = loading ? (
     <div className={form.loading}>
@@ -156,7 +150,9 @@ const Login = (props: {
     <div className={form.loading} />
   );
   const messageElement = showMessage ? (
-    <div className={form.message}>{message}</div>
+    <div className={form.message}>
+      {message ? message : text["login.message.default"]}
+    </div>
   ) : (
     <div className={form.message} />
   );
@@ -216,12 +212,14 @@ const Login = (props: {
 
   return (
     <main className={layout.mainOpposite}>
-      <form className={form.right} onSubmit={handleSubmit}>
+      <form
+        className={direction === "rtl" ? form.right : form.left}
+        onSubmit={handleSubmit}>
         {locationsElement}
         {fNameElement}
         {lNameElement}
         <section className={form.section}>
-          <label>EMAIL</label>
+          <label>{text["login.label.email"]}</label>
           <input
             type='email'
             name='uMail'
@@ -230,11 +228,11 @@ const Login = (props: {
             required
           />
           <div className={form.prompt}>
-            {email ? "" : "enter your email address"}
+            {email ? "" : text["login.prompt.email"]}
           </div>
         </section>
         <section className={form.section}>
-          <label>PASSWORD</label>
+          <label>{text["login.label.password"]}</label>
           <input
             type='password'
             minLength={7}
@@ -243,7 +241,9 @@ const Login = (props: {
             onChange={handleInputChange}
             required
           />
-          <div className={form.prompt}>{pass ? "" : "enter your password"}</div>
+          <div className={form.prompt}>
+            {pass ? "" : text["login.prompt.password"]}
+          </div>
         </section>
         {messageElement}
         {showElement}
@@ -252,12 +252,20 @@ const Login = (props: {
             className={form.buttonPrimary}
             type='button'
             disabled={loading}
-            value='SUBMIT'
+            value={text["login.button.submit"]}
             id='submit_button'
           />
         </button>
-        <button className={form.buttonSecondary}>REGISTER</button>
+        <button className={form.buttonSecondary}>
+          {text["login.button.register"]}
+        </button>
       </form>
+      {/* language switcher */}
+      <select className={style.langChanger} onChange={handleLangChange}>
+        {Object.keys(props.data.language).map((lang: string) => (
+          <option key={lang}>{lang}</option>
+        ))}
+      </select>
     </main>
   );
 };
@@ -266,11 +274,13 @@ const mapStateToProps = (state: AppState) => {
   return {
     loginResult: state.login,
     locations: state.locations,
-    registerResult: state.register
+    registerResult: state.register,
+    language: state.language,
+    data: state.data
   };
 };
 
 export default connect(
   mapStateToProps,
-  { login, register, setModule }
+  { login, register, setModule, setLanguage }
 )(Login);

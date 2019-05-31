@@ -73,7 +73,8 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_store_app_reducers_.html#setmodule" class="tsd-kind-icon">set<wbr>Module</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_store_app_reducers_.html#loaddata" class="tsd-kind-icon">load<wbr>Data</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_store_app_reducers_.html#setlanguage" class="tsd-kind-icon">set<wbr>Language</a></li>
 							</ul>
 						</section>
 					</div>
@@ -82,33 +83,68 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="setmodule" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> set<wbr>Module</h3>
+					<a name="loaddata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> load<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Module<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, action<span class="tsd-signature-symbol">: </span><a href="_store_users_types_.html#action" class="tsd-signature-type">Action</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">load<wbr>Data<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span>, action<span class="tsd-signature-symbol">: </span><a href="_store_app_types_.html#action" class="tsd-signature-type">Action</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_store_app_types_.data.html" class="tsd-signature-type">data</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/ad8d95c/client/src/store/app/reducers.ts#L10">store/app/reducers.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/d20f38a/client/src/store/app/reducers.ts#L10">store/app/reducers.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Reducer function to process the setModule action</p>
+									<p>Reducer function to process the loadData action</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> state: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> state: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<ul class="tsd-parameters">
+									</ul>
 								</li>
 								<li>
-									<h5>action: <a href="_store_users_types_.html#action" class="tsd-signature-type">Action</a></h5>
+									<h5>action: <a href="_store_app_types_.html#action" class="tsd-signature-type">Action</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_store_app_types_.data.html" class="tsd-signature-type">data</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="setlanguage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> set<wbr>Language</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Language<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span>, action<span class="tsd-signature-symbol">: </span><a href="_store_app_types_.html#action" class="tsd-signature-type">Action</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_store_app_types_.data.html" class="tsd-signature-type">data</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/d20f38a/client/src/store/app/reducers.ts#L24">store/app/reducers.ts:24</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reducer function to process the setLanguage action</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> state: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<ul class="tsd-parameters">
+									</ul>
+								</li>
+								<li>
+									<h5>action: <a href="_store_app_types_.html#action" class="tsd-signature-type">Action</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_store_app_types_.data.html" class="tsd-signature-type">data</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -120,87 +156,18 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_app_.html">"<wbr>App"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_components_button_.html">"components/<wbr>Button"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_components_navigation_navbutton_.html">"components/<wbr>Navigation/<wbr>Nav<wbr>Button"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_components_navigation_navigation_.html">"components/<wbr>Navigation/<wbr>Navigation"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_index_.html">"index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_modules_locations_list_.html">"modules/locations_<wbr>list"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_serviceworker_.html">"service<wbr>Worker"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_app_actions_.html">"store/app/actions"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_store_app_reducers_.html">"store/app/reducers"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_app_types_.html">"store/app/types"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_defaults_.html">"store/defaults"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_index_.html">"store/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_types_.html">"store/types"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_users_actions_.html">"store/users/actions"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_users_reducers_.html">"store/users/reducers"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_store_users_types_.html">"store/users/types"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tests_app_test_.html">"tests/<wbr>App.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tests_button_test_.html">"tests/<wbr>Button.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tests_navbutton_test_.html">"tests/<wbr>Nav<wbr>Button.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tests_navigation_test_.html">"tests/<wbr>Navigation.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tests__rendercomponent_.html">"tests/_<wbr>render<wbr>Component"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tests_locations_list_test_.html">"tests/locations_<wbr>list.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_views_confirmation_.html">"views/<wbr>Confirmation"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_views_login_.html">"views/<wbr>Login"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_views_welcome_.html">"views/<wbr>Welcome"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_store_app_reducers_.html#setmodule" class="tsd-kind-icon">set<wbr>Module</a>
+						<a href="_store_app_reducers_.html#loaddata" class="tsd-kind-icon">load<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_store_app_reducers_.html#setlanguage" class="tsd-kind-icon">set<wbr>Language</a>
 					</li>
 				</ul>
 			</nav>

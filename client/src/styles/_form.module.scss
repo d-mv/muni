@@ -1,7 +1,7 @@
 @import './colors';
 @import './typography';
 
-/// Form template
+/// Form template with elements
 /// @group Form
 .form-template {
   width: 80%;
@@ -42,7 +42,8 @@
     .prompt {
       z-index: 1;
       margin-top: -1.7rem;
-      width: 98%;
+      width: 95%;
+      padding-left: 0.5rem;
       min-height: 1.5em;
       font: $textFormFieldPrompt;
       color: $colorGrey;
@@ -63,15 +64,19 @@
   @extend .form-template;
   text-align: right;
 
-  input,select {
+  input,
+  select {
     direction: rtl;
     //  text-align: right;
   }
+
   option {
     padding-right: 2%;
   }
 }
 
+/// Button area in the form
+/// @group Form
 .buttonArea {
   border: none;
   background: none;
@@ -95,25 +100,32 @@
   }
 }
 
-
+/// Primary button - SUBMIT button
+/// @group Form
 .buttonPrimary {
   @extend .button-template;
   color: white;
   background-color: $colorPrimary;
 }
 
+/// Joining features of the area and button
+/// @group Form
 .add-button {
   @extend .buttonArea;
   @extend .button-template;
   margin-top: 1rem;
 }
 
+/// Secondary button
+/// @group Form
 .buttonSecondary {
   @extend .add-button;
   color: white;
   background-color: $colorSecondary;
 }
 
+/// Message style
+/// @group Form
 .message {
   margin: 15px auto;
   height: fit-content;
@@ -124,6 +136,8 @@
   color: $colorDarkGrey;
 }
 
+/// Loading indicator wrapper
+/// @group Form
 .loading {
   min-height: 1.3em;
 
@@ -133,5 +147,4 @@
     right: auto;
     bottom: 1em;
   }
-
 }
