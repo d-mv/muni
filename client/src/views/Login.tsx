@@ -4,7 +4,12 @@ import { connect } from "react-redux";
 import { AppState } from "../store";
 import * as TYPE from "../store/types";
 import { setLanguage } from "../store/app/actions";
-import { login, register, setModule } from "../store/users/actions";
+import {
+  login,
+  register,
+  setModule,
+  fetchLocations
+} from "../store/users/actions";
 
 import Loading from "../components/Loading";
 
@@ -35,6 +40,7 @@ const Login = (props: {
   register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
   setLanguage: (arg0: string) => void;
+  fetchLocations: () => void;
 }) => {
   // get the language
   const { text, direction } = props.language;
@@ -57,6 +63,11 @@ const Login = (props: {
   const [mode, setMode] = React.useState("login");
   //  message hook
   const [message, setMessage] = React.useState("");
+
+  // fetch locations
+  // React.useEffect(() => {
+  //   props.fetchLocations();
+  // });
 
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
@@ -271,6 +282,7 @@ const Login = (props: {
 };
 
 const mapStateToProps = (state: AppState) => {
+  console.log(state);
   return {
     loginResult: state.login,
     locations: state.locations,
@@ -282,5 +294,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { login, register, setModule, setLanguage }
+  { login, register, setModule, setLanguage, fetchLocations }
 )(Login);

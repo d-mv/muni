@@ -11,7 +11,8 @@
         "login.prompt.password": "enter your password",
         "login.button.submit": "SUBMIT",
         "login.button.register": "REGISTER",
-        "login.message.default": "Please, enter your login details"
+        "login.message.default": "Please, enter your login details",
+        "confirmation.message": "We have sent you the confirmation email. Please, click on 'Verify' button in the email and then you can login with your provided credentials"
       }
     },
     "עב": {
@@ -25,7 +26,8 @@
         "login.prompt.password": "הכנס סיסמתך",
         "login.button.submit": "שלח",
         "login.button.register": "חשבון חדש",
-        "login.message.default": "אנא, הזן את פרטי הכניסה שלך"
+        "login.message.default": "אנא, הזן את פרטי הכניסה שלך",        "confirmation.message": "We have sent you the confirmation email. Please, click on 'Verify' button in the email and then you can login with your provided credentials"
+
       }
     }
   }

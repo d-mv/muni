@@ -35,6 +35,7 @@ export const setLoading = (loading: boolean = false): Action => {
 export const checkToken = (
   token: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  console.log('check: '+token)
   const url = "/user/check";
 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -93,7 +94,9 @@ export const login = (
       .then(response => {
         // if successful change page
         const module = "home";
+        const token = response.data.token
         dispatch({ type: "SET_MODULE", module });
+        dispatch({ type: "SET", token });
         dispatch({
           type: "LOGIN",
           payload: { ...response.data, code: response.status }

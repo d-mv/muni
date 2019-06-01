@@ -5,12 +5,14 @@ import { connect } from "react-redux";
 import { AppState } from "./store";
 import { loadData } from "./store/app/actions";
 import {
+  setModule,
   setToken,
   checkToken,
   login,
   fetchLocations
 } from "./store/users/actions";
 
+import Loading from "./views/Loading";
 import Welcome from "./views/Welcome";
 import Navigation from "./components/Navigation/Navigation";
 import Login from "./views/Login";
@@ -18,9 +20,35 @@ import Confirmation from "./views/Confirmation";
 import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
-  
-  const { login } = props;
+  const [loading, setLoading] = React.useState(true);
 
+  const { login } = props;
+  const { cookies } = props;
+
+  // check token cookie and if present - check token
+  React.useEffect(() => {
+    const cookieToken = cookies.get("token");
+    // if token is set > go home
+    if (props.token !== "") {
+      props.setModule("home");
+      setLoading(false);
+    }
+    // if no token, but there is non-empty cookie - check it
+    else if (cookieToken && cookies.get("token").length > 0) {
+      props.checkToken(cookies.get("token"));
+    }
+    // if no token, no cookie - show welcome
+    else {
+      setLoading(false);
+    }
+  }, [props.module === "welcome"]);
+
+  // set cookies if token changes
+  React.useEffect(() => {
+    cookies.set("token");
+    props.setModule("home");
+    setLoading(false);
+  }, [props.login.code === 200 && props.login.token]);
   // fetch locations
   React.useEffect(() => {
     props.fetchLocations();
@@ -43,8 +71,8 @@ const App = (props: any) => {
 
   return (
     <div className={style.appWrapper}>
-      {show}
-      <Navigation />
+      {loading ? <Loading /> : show}
+      {loading ? null : <Navigation />}
     </div>
   );
 };
@@ -63,5 +91,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setToken, checkToken, login, fetchLocations, loadData }
+  { setModule, setToken, checkToken, login, fetchLocations, loadData }
 )(withCookies(App));
