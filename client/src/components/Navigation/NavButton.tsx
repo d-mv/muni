@@ -33,7 +33,9 @@ const NavButton = (props: {
     <button
       data-testid={testId}
       className={style}
-      onClick={() => props.action(props.mode)}>
+      onClick={() =>
+        props.action(props.mode === "nav" ? props.icon : props.mode)
+      }>
       {props.mode === "nav" ? component : props.children}
     </button>
   );
@@ -60,7 +62,7 @@ const NavButton = (props: {
         <div
           className={style.enter}
           data-testid={testId}
-          onClick={() => props.action(props.mode)}>
+          onClick={() => props.action("login")}>
           <span>ENTRANCE</span>
           <span>כניסה</span>
           <span>دخول</span>

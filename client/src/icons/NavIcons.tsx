@@ -98,7 +98,7 @@ export const homeActive = (
   <svg
     width='100%'
     height='100%'
-    viewBox='0 0 400 400'
+    viewBox='0 0 500 500'
     fillRule='evenodd'
     clipRule='evenodd'
     strokeLinejoin='round'
