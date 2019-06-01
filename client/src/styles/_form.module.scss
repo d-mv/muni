@@ -41,9 +41,10 @@
 
     .prompt {
       z-index: 1;
+      margin: 0 auto;
       margin-top: -1.7rem;
-      width: 95%;
-      padding-left: 0.5rem;
+      width: 97%;
+      padding: 0 0.5rem;
       min-height: 1.5em;
       font: $textFormFieldPrompt;
       color: $colorGrey;
@@ -63,6 +64,10 @@
 .right {
   @extend .form-template;
   text-align: right;
+
+  label {
+    font-size: .9rem !important;
+  }
 
   input,
   select {
