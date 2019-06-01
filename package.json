@@ -8,7 +8,7 @@
   "repository": "",
   "scripts": {
     "start": "node ./dist/src/start.js",
-    "prestart": "npm build",
+    "prestart": "npm run build",
     "dev": "npm run build:live",
     "build": "tsc ./src/*.ts --outDir ./dist",
     "build:live": "nodemon --watch '**/**/*.ts' --exec 'ts-node' src/start.ts",
