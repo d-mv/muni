@@ -63,17 +63,11 @@ const Navigation = (props: any) => {
       break;
     default:
       component = (
-        <nav className={style.footer}>
+        <nav className={style.footerNav}>
           <NavButton mode='nav' icon='municipality' action={action} />
-          <NavButton mode='nav' icon='home' action={action}>
-            home
-          </NavButton>
-          <NavButton mode='nav' icon='new' action={action}>
-            create
-          </NavButton>
-          <NavButton mode='nav' icon='profile' active={true} action={action}>
-            profile
-          </NavButton>
+          <NavButton mode='nav' icon='home' action={action} />
+          <NavButton mode='nav' icon='new' action={action} />
+          <NavButton mode='nav' icon='profile' active={true} action={action} />
         </nav>
       );
   }

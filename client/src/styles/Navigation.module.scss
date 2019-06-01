@@ -10,7 +10,7 @@
   right: 0;
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
 
 }
 
@@ -18,6 +18,10 @@
   @extend .nav-template;
   bottom: 0;
   height: 10%;
+}
+
+.footerNav {
+  @extend .footer;
 }
 
 .header {
@@ -52,7 +56,7 @@
 .navButton {
   @extend .button-template;
   width: 100px;
-  background-color: $colorPrimary;
+  border-radius:0;
 }
 
 /// Primary button

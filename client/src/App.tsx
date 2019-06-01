@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 
@@ -13,10 +13,8 @@ import {
 } from "./store/users/actions";
 
 import Loading from "./views/Loading";
-import Welcome from "./views/Welcome";
 import Navigation from "./components/Navigation/Navigation";
-import Login from "./views/Login";
-import Confirmation from "./views/Confirmation";
+
 import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
@@ -42,31 +40,77 @@ const App = (props: any) => {
       setLoading(false);
     }
   }, [props.module === "welcome"]);
-
+  
   // set cookies if token changes
   React.useEffect(() => {
     cookies.set("token");
     props.setModule("home");
     setLoading(false);
   }, [props.login.code === 200 && props.login.token]);
+
   // fetch locations
   React.useEffect(() => {
     props.fetchLocations();
   }, [login]);
 
-  const home = <div data-testid='home' />;
 
-  let show = home;
+  let show;
   switch (props.module) {
     case "welcome":
-      show = <Welcome />;
+      const Welcome = React.lazy(() => import("./views/Welcome"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Welcome />
+        </Suspense>
+      );
       break;
     case "login":
-      show = <Login />;
+      const Login = React.lazy(() => import("./views/Login"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Login />
+        </Suspense>
+      );
       break;
     case "confirmation":
-      show = <Confirmation />;
+      const Confirmation = React.lazy(() => import("./views/Confirmation"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Confirmation />;
+        </Suspense>
+      );
       break;
+    case "municipality":
+      const Municipality = React.lazy(() => import("./views/Municipality"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Municipality />
+        </Suspense>
+      );
+      break;
+    case "new":
+      const New = React.lazy(() => import("./views/New"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <New />
+        </Suspense>
+      );
+      break;
+    case "profile":
+      const Profile = React.lazy(() => import("./views/Profile"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Profile />
+        </Suspense>
+      );
+      break;
+    default:
+      const Home = React.lazy(() => import("./views/Home"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Home />
+        </Suspense>
+      );
   }
 
   return (
