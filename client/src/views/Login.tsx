@@ -282,7 +282,6 @@ const Login = (props: {
 };
 
 const mapStateToProps = (state: AppState) => {
-  console.log(state);
   return {
     loginResult: state.login,
     locations: state.locations,

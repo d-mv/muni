@@ -1,20 +1,25 @@
   /// Primary color
   $colorPrimary: #478FDF;
-  $colorPrimaryTrans: rgba(71, 143, 223,0.3);
+  $colorPrimaryTrans: rgba(71, 143, 223, 0.3);
+  $colorPrimaryLight:#aed2f9;
   /// Secondary color
   $colorSecondary: #03AD24;
   /// Dark
   $colorDark: #444;
+  $colorDarkTrans: rgba(68, 68, 68, 0.3);
   /// Light grey
   $colorGrey: #d3d3d3;
   /// Dark grey
   $colorDarkGrey: #376ca8;
-  /// Box shadow
+  /// Third-transparent white
+  $colorWhiteThird:rgba(255, 255, 255, .3); /// Box shadow
   $boxShadow: 0 1px 3px rgba(0, 0, 0, 0.12),
   0 1px 2px rgba(0, 0, 0, 0.24);
   /// Page bottom shadow
   $pageShadow: 0 2px 3px rgba(0, 0, 0, 0.12),
   0 1px 2px rgba(0, 0, 0, 0.24);
+  /// Light shadow around
+  $elementShadow: 0 0px 5px rgba(68, 68, 68, .3);
   $pageShadowOpposite: 0 -5px 3px rgba(0, 0, 0, 0.12),
   0 -3px 2px rgba(0, 0, 0, 0.24);
   /// Box shadow on hover

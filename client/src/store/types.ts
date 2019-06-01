@@ -60,3 +60,42 @@ export interface indexedObj {
 export interface indexedObjAny {
   [index: string]: any;
 }
+
+/**
+ * Votes object type
+ * @typedef {Object} Votes
+ * @property {number} up
+ * @property {number} down
+ */
+export interface Votes {
+  up: number;
+  down: number;
+}
+
+/**
+ * Standard user post object type
+ * @typedef {Object} post
+ * @property {string} _id
+ * @property {string} title
+ * @property {string} text
+ * @property {string} photo
+ * @property {string} link
+ * @property {string} createdBy
+ * @property {Date} date
+ * @property {boolean} status
+ * @property {Votes} votes
+ * @property {string} [newsId]
+ */
+export interface post {
+  _id: string;
+  category: string;
+  title: string;
+  text: string;
+  photo: string;
+  link: string;
+  createdBy: string;
+  date: string;
+  status: string;
+  votes: Votes;
+  newsId?: string;
+}
