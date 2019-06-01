@@ -1,5 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 
+import { AppState } from "../../store";
+
+import * as ICON from "../../icons/NavIcons";
 import style from "../../styles/Navigation.module.scss";
 
 /**
@@ -10,7 +14,10 @@ import style from "../../styles/Navigation.module.scss";
  */
 const NavButton = (props: {
   mode: string;
-  children: any;
+  active?: boolean;
+  icon?: string;
+  module: string;
+  children?: any;
   action: (arg0?: any) => void;
 }) => {
   // set testid
@@ -18,18 +25,32 @@ const NavButton = (props: {
 
   /**
    * Function to create button element
-   * @function button
+   * @function buttonFactory
    * @param {string} style - Style of the element
    * @returns {object} - React component
    */
-  const button = (style: string) => (
+  const buttonFactory = (style: string, component?: any) => (
     <button
       data-testid={testId}
       className={style}
       onClick={() => props.action(props.mode)}>
-      {props.children}
+      {props.mode === "nav" ? component : props.children}
     </button>
   );
+
+  /** Function to create icon
+   * @function iconFactory
+   * @param {string} name
+   * @param {boolean} active
+   * @return {object} ReactElement
+   */
+  const iconFactory = () => {
+    const iconName = `${props.icon}${
+      props.module === props.icon ? "Active" : "Regular"
+    }`;
+    const icons: any = ICON;
+    return icons[iconName];
+  };
 
   let component;
   // define style and/or component, based on mode
@@ -47,12 +68,22 @@ const NavButton = (props: {
       );
       break;
     case "nav":
-      component = button(style.navButton);
+      const active = props.active ? props.active : false;
+      component = buttonFactory(style.navButton, iconFactory());
       break;
     default:
-      component = button(style.welcomeButton);
+      component = buttonFactory(style.welcomeButton);
   }
   return component;
 };
 
-export default NavButton;
+const mapStateToProps = (state: AppState) => {
+  return {
+    module: state.module
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(NavButton);

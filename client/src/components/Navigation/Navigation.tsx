@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { setModule,setLoading } from "../../store/users/actions";
+import { setModule, setLoading } from "../../store/users/actions";
 
 import NavButton from "./NavButton";
 
@@ -23,7 +23,7 @@ const Navigation = (props: any) => {
       case "login":
         props.setModule("welcome");
         break;
-      case 'confirmation':
+      case "confirmation":
         props.setModule("confirmation");
         break;
       default:
@@ -52,7 +52,7 @@ const Navigation = (props: any) => {
         </nav>
       );
       break;
-    case 'confirmation':
+    case "confirmation":
       component = (
         <nav className={style.header}>
           <NavButton mode='confirmation' action={action}>
@@ -64,16 +64,14 @@ const Navigation = (props: any) => {
     default:
       component = (
         <nav className={style.footer}>
-          <NavButton mode='nav' action={action}>
-            municipality
-          </NavButton>
-          <NavButton mode='nav' action={action}>
+          <NavButton mode='nav' icon='municipality' action={action} />
+          <NavButton mode='nav' icon='home' action={action}>
             home
           </NavButton>
-          <NavButton mode='nav' action={action}>
+          <NavButton mode='nav' icon='new' action={action}>
             create
           </NavButton>
-          <NavButton mode='nav' action={action}>
+          <NavButton mode='nav' icon='profile' active={true} action={action}>
             profile
           </NavButton>
         </nav>
@@ -90,5 +88,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setModule,setLoading }
+  { setModule, setLoading }
 )(Navigation);
