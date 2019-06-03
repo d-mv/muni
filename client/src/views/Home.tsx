@@ -8,12 +8,12 @@ const Home = () => {
   // ! dev
   const postTemp = {
     _id: "5ce565513783cc776bbc489e",
-    category: 'category',
+    category: "category",
     title:
       "Consectetur non assumenda asperiores et odio consectetur similique.",
     text:
       "Reiciendis sed reiciendis atque sequi in et quo ea. Voluptatem sequi v...",
-    photo: "https://picsum.photos/200/300?random=1",
+    photo: "https://picsum.photos/id/37/300/200",
     link: "http://dagmar.net",
     newsId: "5ce565513783cc776bbc489f",
     createdBy: "5ce565513783cc776bbc48a0",

@@ -1,0 +1,34 @@
+@import './typography';
+@import './colors';
+
+.voters {
+  height: 2.2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+
+  .icon {
+    padding-top: .2rem;
+    margin: 0 .4rem;
+    width: 1.3rem;
+  }
+
+  .number {
+    margin: 0 .1rem;
+    font: $textVotersNumber;
+  }
+
+  .text {
+    margin: 0 .1rem;
+    letter-spacing: 0.5px;
+    color: $colorDarkGrey;
+    font: $textVotersText;
+  }
+}
+
+.votersRight {
+  @extend .voters;
+  flex-direction: row-reverse;
+}

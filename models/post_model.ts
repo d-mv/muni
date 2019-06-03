@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
@@ -5,7 +6,6 @@ import findPostById from "./find_post_by_id";
 import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
-
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -25,6 +25,7 @@ export const list = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
@@ -114,6 +115,7 @@ export const create = (
 
         // call db and create post
         MDB.client.connect(err => {
+          assert.equal(null, err);
           if (err) {
             // return error with connection
             callback(
@@ -194,6 +196,7 @@ export const update = (
         setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
       });
       MDB.client.connect(err => {
+        assert.equal(null, err);
         if (err) {
           // return error with connection
           callback(
@@ -266,6 +269,7 @@ export const deletePost = (
     ) {
       // authenticated
       MDB.client.connect(err => {
+        assert.equal(null, err);
         if (err) {
           // return error with connection
           callback(

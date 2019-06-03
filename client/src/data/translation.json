@@ -9,13 +9,19 @@
         "login.prompt.email": "enter your email address",
         "login.label.password": "PASSWORD",
         "login.prompt.password": "enter your password",
+        "login.label.fname": "FIRST NAME",
+        "login.prompt.fname": "enter your given name",
+        "login.label.lname": "LAST NAME",
+        "login.prompt.lname": "enter your surname",
         "login.button.submit": "SUBMIT",
         "login.button.register": "REGISTER",
         "login.message.default": "Please, enter your login details",
         "confirmation.message": "We have sent you the confirmation email. Please, click on 'Verify' button in the email and then you can login with your provided credentials",
         "card.button.vote": "vote",
         "post.age.day": "day",
-        "post.age.days": "days"
+        "post.age.days": "days",
+        "post.voter": "voter",
+        "post.voters": "voters"
       }
     },
     "עב": {
@@ -27,13 +33,19 @@
         "login.prompt.email": " הזן את כתובת הדוא\"ל שלך",
         "login.label.password": "סיסמה",
         "login.prompt.password": "הכנס סיסמתך",
+        "login.label.fname": "שם פרטי",
+        "login.prompt.fname": "הזן את השם הנתון",
+        "login.label.lname": "שם משפחה",
+        "login.prompt.lname": "הזן את שם המשפחה שלך",
         "login.button.submit": "שלח",
         "login.button.register": "חשבון חדש",
         "login.message.default": "אנא, הזן את פרטי הכניסה שלך",
-        "confirmation.message": "We have sent you the confirmation email. Please, click on 'Verify' button in the email and then you can login with your provided credentials",
+        "confirmation.message": "הודעת אימות נשלחה לכתובת הדוא\"ל שלך. תוכל להמשיך עם הכניסה לאחר האימות.",
         "card.button.vote": "vote",
         "post.age.day": "day",
-        "post.age.days": "days"
+        "post.age.days": "days",
+        "post.voter": "voter",
+        "post.voters": "voters"
       }
     }
   }

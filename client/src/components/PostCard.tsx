@@ -3,46 +3,56 @@ import CardVoteButton from "./Post/CardVoteButton";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import postDays from '../modules/post_days'
 import { post, indexedObjAny } from "../store/types";
-import style from "./Post/Card.module.scss";
 
+import Voters from "./Post/Voters";
+import postDays from "../modules/post_days";
+import style from "../styles/PostCard.module.scss";
 
-const PostCard = (props: { post: post, language: indexedObjAny }) => {
-  const {text} = props.language
-//   const today:any = new Date()
-//   const dbDate:any = new Date(props.post.date)
-//   const postDays: number = Math.round((today - dbDate) / 1000 / 60 / 60 / 24)
-// const ageElement =
-//   postDays === 1
-//     ? `${postDays} ${text["post.age.day"]}`
-//     : `${postDays} ${text["post.age.days"]}`;
+const PostCard = (props: { post: post; language: indexedObjAny }) => {
+  const { text } = props.language;
+  // const { direction } = props.language;
+  const direction = 'rtl'
 
-  const age = postDays(
-    props.post.date,
-    text["post.age.day"],
-    text["post.age.days"]
-  );
+  const age = postDays(props.post.date);
+
+  const voterText =
+    props.post.votes.up === 1 ? text["post.voter"] : text["post.voters"];
+
+  const image = {
+    background:
+      `url(${props.post.photo}) no-repeat scroll center center / cover`
+  };
 
   return (
     <article className={style.card}>
-      <img
-        src={props.post.photo}
-        alt='Photo for the petition'
+      <div
+        style={image}
         className={style.photo}
       />
-      <section>
+      <section className={direction === 'rtl' ? style.informationRight: style.information}>
         <div id='category' className={style.category}>
           {props.post.category}
         </div>
-        <div id='title' className={style.title}>
+        <h2 id='title' className={direction === "rtl" ? style.titleRight:style.title}>
           {props.post.title}
-        </div>
-        <div id='age' className={style.age}>
-          {age}
-        </div>
-        <div id='voters' className={style.voters}>
-          {props.post.votes.up}
+        </h2>
+        <div
+          id='age'
+          className={
+            direction === "rtl" ? style.thirdLineRight : style.thirdLine
+          }>
+          <p>
+            {age.toLocaleString()}
+            <span className={style.ageText}>
+              {age === 1 ? text["post.age.day"] : text["post.age.days"]}
+            </span>
+          </p>
+          <Voters
+            number={props.post.votes.up}
+            text={voterText}
+            direction={direction}
+          />
         </div>
         <CardVoteButton />
       </section>
@@ -52,12 +62,11 @@ const PostCard = (props: { post: post, language: indexedObjAny }) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-
     language: state.language
   };
 };
 
 export default connect(
   mapStateToProps,
-  { }
+  {}
 )(PostCard);

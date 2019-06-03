@@ -2,6 +2,11 @@
   font-family: 'M PLUS Rounded 1c', 'Tajawal', sans-serif;
   color: #444;
 
+  p {
+    margin: 0;
+  }
+
+
   textarea,
   button,
   select,
@@ -13,6 +18,8 @@
     -o-appearance: none;
     appearance: none;
     outline: none;
+    border: none;
+
 
     &:active {
       text-decoration: none;
@@ -23,5 +30,12 @@
       text-decoration: none;
       outline: none;
     }
+  }
+
+  button {
+    // align-items: none;
+    // text-align: none;
+    // cursor: default;
+    // color: none;
   }
 }

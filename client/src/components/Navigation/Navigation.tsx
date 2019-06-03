@@ -5,8 +5,10 @@ import { AppState } from "../../store";
 import { setModule, setLoading } from "../../store/users/actions";
 
 import NavButton from "./NavButton";
+import EntranceButton from "./EntranceButton";
 
 import style from "../../styles/Navigation.module.scss";
+import utils from "../../styles/_utils.module.scss";
 /**
  * Functional component to display a footer wrapper with buttons
  * @function Navigation
@@ -17,12 +19,6 @@ const Navigation = (props: any) => {
   // toggle module to show
   const action = (module: string) => {
     switch (module) {
-      case "enter":
-        props.setModule("login");
-        break;
-      case "login":
-        props.setModule("welcome");
-        break;
       case "confirmation":
         props.setModule("confirmation");
         break;
@@ -37,18 +33,16 @@ const Navigation = (props: any) => {
     case "welcome":
       component = (
         <nav className={style.footer}>
-          <NavButton mode='enter' action={action}>
-            ENTER
-          </NavButton>
+          <EntranceButton action={action} />
         </nav>
       );
       break;
     case "login":
       component = (
         <nav className={style.header}>
-          <NavButton mode='login' action={action}>
-            RETURN
-          </NavButton>
+          <NavButton mode='return-welcome' action={action} />
+          <h1>"App Name"</h1>
+          <span className={utils.spacer10pct} />
         </nav>
       );
       break;

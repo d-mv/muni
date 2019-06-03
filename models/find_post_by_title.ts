@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import * as dotenv from "dotenv";
 import * as MDB from "../modules/db_connect";
 
@@ -25,7 +26,8 @@ const findPostByTitle = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
-  MDB.client.connect(err => {
+    MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       // return error with connection
       callback(Message.errorMessage({ action: "connection to DB (3)", e: err }));

@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import * as faker from "faker";
 import * as mongodb from "mongodb";
 import * as MDB from "./db_connect";
@@ -14,6 +15,7 @@ const dbName = "muni";
  */
 const update = (props: { id: string; fields: any }) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     // assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection("dev")

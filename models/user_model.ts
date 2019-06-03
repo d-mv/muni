@@ -59,6 +59,7 @@ const updateUser = (
 const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
+    assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection(dbcMain)
       .aggregate([
@@ -109,6 +110,7 @@ export const get = (
   isUserSuper(props.userRequested, (isSuper: boolean) => {
     // get requested user
     MDB.client.connect(err => {
+      assert.equal(null, err);
       if (err) {
         callback(Message.errorMessage({ action: "connection to DB", e: err }));
       } else {
@@ -182,6 +184,7 @@ const isUserNew = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection(dbcMain)
@@ -310,6 +313,7 @@ export const create = (
             };
             // store it database
             MDB.client.connect(err => {
+              assert.equal(null, err);
               if (err) {
                 callback(
                   Message.errorMessage({ action: "connection to DB", e: err })
@@ -444,6 +448,7 @@ export const suLoginAttempt = (
 ) => {
   // connect to DB
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
@@ -527,6 +532,7 @@ export const loginAttempt = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {

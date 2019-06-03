@@ -18,6 +18,7 @@ import Navigation from "./components/Navigation/Navigation";
 import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
+  console.log(props);
   const [loading, setLoading] = React.useState(true);
 
   const { login } = props;
@@ -28,11 +29,12 @@ const App = (props: any) => {
     const cookieToken = cookies.get("token");
     // if token is set > go home
     if (props.token !== "") {
+      console.log("hi");
       props.setModule("home");
       setLoading(false);
     }
     // if no token, but there is non-empty cookie - check it
-    else if (cookieToken && cookies.get("token").length > 0) {
+    else if (cookieToken !== undefined && cookies.get("token").length > 0) {
       props.checkToken(cookies.get("token"));
     }
     // if no token, no cookie - show welcome
@@ -40,19 +42,22 @@ const App = (props: any) => {
       setLoading(false);
     }
   }, [props.module === "welcome"]);
-  
+
   // set cookies if token changes
   React.useEffect(() => {
-    cookies.set("token");
-    props.setModule("home");
-    setLoading(false);
+    if (props.login.code === 200 && props.login.token) {
+      cookies.set("token");
+      props.setModule("home");
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
   }, [props.login.code === 200 && props.login.token]);
 
   // fetch locations
   React.useEffect(() => {
     props.fetchLocations();
   }, [login]);
-
 
   let show;
   switch (props.module) {
@@ -104,7 +109,7 @@ const App = (props: any) => {
         </Suspense>
       );
       break;
-    default:
+    case "home":
       const Home = React.lazy(() => import("./views/Home"));
       show = (
         <Suspense fallback={<Loading />}>
