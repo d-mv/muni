@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "./store";
 import { loadData } from "./store/app/actions";
+
 import {
   setModule,
   setToken,
@@ -14,22 +15,26 @@ import {
 
 import Loading from "./views/Loading";
 import Navigation from "./components/Navigation/Navigation";
-
 import style from "./styles/App.module.scss";
+
+import Welcome from "./views/Welcome";
+import Login from './views/Login'
 
 const App = (props: any) => {
   console.log(props);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+  const [auth, setAuth] = React.useState(false);
 
   const { login } = props;
   const { cookies } = props;
+  // const cookieToken = cookies.get("token");
 
+  // console.log(cookieToken);
   // check token cookie and if present - check token
   React.useEffect(() => {
     const cookieToken = cookies.get("token");
     // if token is set > go home
     if (props.token !== "") {
-      console.log("hi");
       props.setModule("home");
       setLoading(false);
     }
@@ -41,40 +46,47 @@ const App = (props: any) => {
     else {
       setLoading(false);
     }
-  }, [props.module === "welcome"]);
+  }, []);
 
   // set cookies if token changes
   React.useEffect(() => {
-    if (props.login.code === 200 && props.login.token) {
-      cookies.set("token");
+    cookies.set("token", props.token);
+    if (props.token !== "") {
+      console.log("changing token");
       props.setModule("home");
       setLoading(false);
-    } else {
-      setLoading(false);
+      setAuth(true);
     }
-  }, [props.login.code === 200 && props.login.token]);
+  }, [props.token]);
+
+  React.useEffect(() => {
+    if (auth && !props.login.status && !props.token) {
+      cookies.set("token", "");
+      console.log("clearing token");
+    }
+  }, [props.login.status]);
 
   // fetch locations
   React.useEffect(() => {
     props.fetchLocations();
-  }, [login]);
+  },[]);
 
   let show;
   switch (props.module) {
     case "welcome":
-      const Welcome = React.lazy(() => import("./views/Welcome"));
+      // const Welcome = React.lazy(() => import("./views/Welcome"));
       show = (
-        <Suspense fallback={<Loading />}>
+        // <Suspense fallback={<Loading />}>
           <Welcome />
-        </Suspense>
+        // </Suspense>
       );
       break;
     case "login":
-      const Login = React.lazy(() => import("./views/Login"));
+      // const Login = React.lazy(() => import("./views/Login"));
       show = (
-        <Suspense fallback={<Loading />}>
+        // <Suspense fallback={<Loading />}>
           <Login />
-        </Suspense>
+        // </Suspense>
       );
       break;
     case "confirmation":
@@ -132,7 +144,7 @@ const mapStateToProps = (state: AppState) => {
     check: state.checkTokenResult,
     login: state.login,
     module: state.module,
-    locations: state.locations,
+    // locations: state.locations,
     loginResult: state.login,
     language: state.language
   };

@@ -57,3 +57,7 @@ app.set("port", port);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
+
+process.on("uncaughtException", function(err) {
+  console.log("Caught exception: " + err);
+});

@@ -19,6 +19,12 @@ import postRouter from "../routes/post_router";
 const dotEnv = dotenv.config();
 const app = express();
 
+process.on("uncaughtException", function(err) {
+  console.log("Caught exception: " + err);
+});
+
+
+
 app.use(compression());
 app.use(cors());
 app.use(express.json());

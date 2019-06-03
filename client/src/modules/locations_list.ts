@@ -11,7 +11,6 @@ export const locationsList = (
   locations: Array<any> = [],
   language: string = ""
 ): Array<any> => {
-  console.log(locations)
   // return empty array if empty params supplied
   if (locations.length === 0 || language === "") return [];
   // check if names contain language requested

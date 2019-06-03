@@ -14,7 +14,7 @@ const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 // GET request of list of locations
 router.get("/list", (req: any, res: any, next: any) => {
-  showRequest(req.headers, req.query);
+    showRequest("loc.list", req.headers, [req.body, req.headers.token]);
   LocationController.list((controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
@@ -22,7 +22,7 @@ router.get("/list", (req: any, res: any, next: any) => {
 
 // GET request for list of posts
 router.get("/:id/posts", (req: any, res: any, next: any) => {
-  showRequest(req.headers, [req.query, req.params.id]);
+    showRequest("loc.get_posts", req.headers, [req.body, req.headers.token]);
 
   const ng = (code: number, packageToSend?: any, message?: string) => {
     res
@@ -68,7 +68,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
 
 // create
 router.post("/create", (req: any, res: any, next: any) => {
-  showRequest(req.headers, [req.body, req.query]);
+    showRequest("loc.create", req.headers, [req.body, req.headers.token]);
   // if request is missing
   if (req.body === {}) {
     res.status(406).send({ status: false, message: "Wrong/malformed request" });
@@ -119,6 +119,8 @@ router.post("/create", (req: any, res: any, next: any) => {
 
 // update
 router.patch("/:id", (req: any, res: any, next: any) => {
+    showRequest("loc.patch", req.headers, [req.body, req.headers.token]);
+
   // if request is missing
   if (req.body === {}) {
     res.status(406).send({
@@ -180,7 +182,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
 
 // delete
 router.delete("/:id", (req: any, res: any, next: any) => {
-  showRequest(req.headers, [req.body, req.headers.token]);
+  showRequest("loc_delete",req.headers, [req.body, req.headers.token]);
   // if request is missing
   if (req.body === {}) {
     res.status(406).send({

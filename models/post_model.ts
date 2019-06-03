@@ -152,8 +152,10 @@ export const create = (
                   })
                 );
               })
-              .catch((e: any) =>
+              .catch((e: any) => {
+                assert.equal(null, e);
                 callback(Message.errorMessage({ action: "post create", e }))
+              }
               );
           }
         });
@@ -229,6 +231,7 @@ export const update = (
               );
             })
             .catch((e: any) => {
+              assert.equal(null, e);
               callback(Message.errorMessage({ action: "post update", e }));
             });
         }
@@ -301,6 +304,7 @@ export const deletePost = (
               );
             })
             .catch((e: any) => {
+              assert.equal(null, e);
               callback(Message.errorMessage({ action: "post update", e }));
             });
         }

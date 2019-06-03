@@ -35,7 +35,7 @@ export const setLoading = (loading: boolean = false): Action => {
 export const checkToken = (
   token: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log('check: '+token)
+  console.log("check: " + token);
   const url = "/user/check";
 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -94,7 +94,7 @@ export const login = (
       .then(response => {
         // if successful change page
         const module = "home";
-        const token = response.data.token
+        const token = response.data.token;
         dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET", token });
         dispatch({
@@ -111,6 +111,24 @@ export const login = (
       });
   };
 };
+
+export const logOff =(): ThunkAction<
+  Promise<void>,
+  {},
+  {},
+  AnyAction
+> => {
+
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({ type: "SET_MODULE", module: "welcome" });
+    dispatch({ type: "SET", token: "" });
+    dispatch({
+      type: "LOGIN",
+      payload: { ...apiState }
+    });
+  };
+};
+
 /**
  * Action function to register with API
  * @function register
@@ -129,8 +147,8 @@ export const register = (
     props.location
   }&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&avatar=${
     props.avatar
-    }`;
-  console.log(url)
+  }`;
+  console.log(url);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state
     dispatch({

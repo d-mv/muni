@@ -30,6 +30,7 @@ const update = (props: { id: string; fields: any }) => {
         console.log(document);
       })
       .catch((e: any) => {
+        assert.equal(null, e);
         console.log(e);
       });
   });

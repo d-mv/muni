@@ -45,7 +45,8 @@ export default function configureStore() {
     checkTokenResult: any;
     login: TYPE.apiResponse;
     module: string;
-    locations: TYPE.apiResponse;
+    locations: any;
+    // locations: TYPE.apiResponse;
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
@@ -57,7 +58,7 @@ export default function configureStore() {
     checkTokenResult: "",
     login: apiState,
     module: "welcome",
-    locations: apiState,
+    locations: '',
     loading: false,
     register: apiState,
     data: data,

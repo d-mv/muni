@@ -105,7 +105,8 @@ export const create = (
             }
           })
           .catch((e: any) =>
-            callback(Message.errorMessage({ action: "location creation", e }))
+            {assert.equal(null, e);
+            callback(Message.errorMessage({ action: "location creation", e }))}
           );
       }
     });
@@ -158,8 +159,10 @@ export const update = (
                 })
               );
             })
-            .catch((e: any) =>
+            .catch((e: any) => {
+              assert.equal(null, e);
               callback(Message.errorMessage({ action: "location update", e }))
+            }
             );
         }
       });
@@ -211,8 +214,10 @@ export const deleteLocation = (
                   })
                 );
               })
-              .catch((e: any) =>
+              .catch((e: any) => {
+                assert.equal(null, e);
                 callback(Message.errorMessage({ action: "location delete", e }))
+              }
               );
           }
         });

@@ -50,6 +50,7 @@ const updateUser = (
         );
       })
       .catch((e: any) => {
+        assert.equal(null, e);
         callback(Message.errorMessage({ action: "user update", e }));
       });
   });
@@ -348,8 +349,10 @@ export const create = (
                       });
                     }
                   })
-                  .catch((e: any) =>
+                  .catch((e: any) => {
+                    assert.equal(null, e);
                     callback(Message.errorMessage({ action: "user create", e }))
+                  }
                   );
               }
             });
@@ -446,6 +449,7 @@ export const suLoginAttempt = (
   user: TYPE.IncLoginTYPE,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
+  console.log('inside syLoginAttempt')
   // connect to DB
   MDB.client.connect(err => {
     assert.equal(null, err);

@@ -12,7 +12,8 @@ import {
 } from "../store/users/actions";
 
 import Loading from "../components/Loading";
-
+import LangSwitch from "../components/LangSwitch";
+import { down } from "../icons/Icons";
 import layout from "../styles/_layout.module.scss";
 import form from "../styles/_form.module.scss";
 import style from "../styles/Login.module.scss";
@@ -44,17 +45,14 @@ const Login = (props: {
 }) => {
   // get the language
   const { text, direction } = props.language;
+  // const locations = props.fetchLocations();
+
   // loading hook
   const [loading, setLoading] = React.useState(false);
   // form data hooks
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
-  // ? const [locationLabel, setLocationLabel] = React.useState(
-  //   props.locations.payload[0].label
-  // );
-  const [location, setLocation] = React.useState(
-    props.locations.payload[0].value
-  );
+  const [location, setLocation] = React.useState("");
   const [fName, setFname] = React.useState("");
   const [lName, setLname] = React.useState("");
   // show/hide message hook
@@ -62,12 +60,8 @@ const Login = (props: {
   // login/register mode hook
   const [mode, setMode] = React.useState("login");
   //  message hook
-  const [message, setMessage] = React.useState("");
-
-  // fetch locations
-  // React.useEffect(() => {
-  //   props.fetchLocations();
-  // });
+  // const [message, setMessage] = React.useState('');
+  // const [message, setMessage] = React.useState(text["login.message.default"]);
 
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
@@ -76,13 +70,8 @@ const Login = (props: {
 
   // update message
   React.useEffect(() => {
-    // switch off spinner
-    if (props.loginResult.code !== 100) setLoading(false);
-    // if this is not new user
-    if (props.loginResult.code !== 404 && email !== "") {
-      // set message to display, turn on display message
-      setMessage(props.loginResult.message);
-      setShowMessage(true);
+    if (props.loginResult.message !== "") {
+      setLoading(false);
     }
   }, [props.loginResult.message]);
 
@@ -92,7 +81,8 @@ const Login = (props: {
     if (props.registerResult.code !== 100) {
       setLoading(false);
       // set message to display, turn on display message
-      setMessage(props.registerResult.message);
+      // setMessage(props.registerResult.message);
+      setShowMessage(false);
       if (props.registerResult.status) {
         props.setModule("confirmation");
       }
@@ -104,8 +94,8 @@ const Login = (props: {
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(!loading);
     setShowMessage(false);
+    setLoading(true);
     if (mode === "login") {
       props.login({ email, pass });
     } else {
@@ -147,10 +137,6 @@ const Login = (props: {
   const handleSelectChange = (event: any) => {
     setLocation(event.target.value);
   };
-  // handle change of language
-  const handleLangChange = (e: any) => {
-    props.setLanguage(e.target.value);
-  };
 
   // set the form elements
   const showElement = loading ? (
@@ -161,9 +147,7 @@ const Login = (props: {
     <div className={form.loading} />
   );
   const messageElement = showMessage ? (
-    <div className={form.message}>
-      {message ? message : text["login.message.default"]}
-    </div>
+    <div className={form.message}>{props.loginResult.message}</div>
   ) : (
     <div className={form.message} />
   );
@@ -217,6 +201,7 @@ const Login = (props: {
             }
           )}
         </select>
+        <span>{down}</span>
       </section>
     );
   }
@@ -258,25 +243,30 @@ const Login = (props: {
         </section>
         {messageElement}
         {showElement}
-        <button className={form.buttonArea} aria-label='Submit'>
-          <input
-            className={form.buttonPrimary}
-            type='button'
-            disabled={loading}
-            value={text["login.button.submit"]}
-            id='submit_button'
-          />
-        </button>
-        <button className={form.buttonSecondary}>
-          {text["login.button.register"]}
-        </button>
+        <section className={form.buttonsWrapper}>
+          <button
+            className={form.buttonArea}
+            type='submit'
+            // disabled={loading}
+            aria-label='Submit'>
+            <input
+              className={form.buttonPrimary}
+              type='button'
+              // type='submit'
+              value={text["login.button.submit"]}
+              id='submit_button'
+            />
+          </button>
+
+            <button disabled className={form.buttonSecondary}>
+              {mode === "login"
+                ? text["login.button.register"]
+                : text["login.button.login"]}
+            </button>
+
+        </section>
       </form>
-      {/* language switcher */}
-      <select className={style.langChanger} onChange={handleLangChange}>
-        {Object.keys(props.data.language).map((lang: string) => (
-          <option key={lang}>{lang}</option>
-        ))}
-      </select>
+      <LangSwitch />
     </main>
   );
 };

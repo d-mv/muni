@@ -42,31 +42,16 @@ export const get = (
  * @return {} - Returns data with callback function
  */
 export const login = (
-  props: { query: { [index: string]: string }},
+  props: { query: { [index: string]: string } },
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check fields
   const reply: TYPE.apiResponse = checkFieldsLogin({ query: props.query });
-  // let idCheckResult = {
-  //   status: false,
-  //   message: "Location is missing",
-  //   code: 406
-  // };
-  // if (props.query.location) {
-  //   idCheckResult = checkID(props.query.location);
-  // } else {
-  //   callback(idCheckResult);
-  // }
-  // const check = reply.status && idCheckResult.status;
-  // if negative reply immediately
-  // if (!check) {
-  //   reply ? callback(idCheckResult) : callback(reply);
-  // } else {
-    // assign value to avoid 'or empty' type clause
-    const user: any = props.query;
-    // request User model
-    User.login(user, (modelResponse: TYPE.apiResponse) => {
-      callback(modelResponse);
-    });
+  const user: any = props.query;
+  console.log('calling user login')
+  // request User model
+  User.login(user, (modelResponse: TYPE.apiResponse) => {
+    callback(modelResponse);
+  });
   // }
 };

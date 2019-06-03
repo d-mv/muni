@@ -2,6 +2,7 @@
   "language": {
     "en": {
       "name": "English",
+      "short": "en",
       "direction": "ltr",
       "text": {
         "welcome.enter": "ENTER",
@@ -15,6 +16,7 @@
         "login.prompt.lname": "enter your surname",
         "login.button.submit": "SUBMIT",
         "login.button.register": "REGISTER",
+        "login.button.login": "LOGIN",
         "login.message.default": "Please, enter your login details",
         "confirmation.message": "We have sent you the confirmation email. Please, click on 'Verify' button in the email and then you can login with your provided credentials",
         "card.button.vote": "vote",
@@ -26,6 +28,7 @@
     },
     "עב": {
       "name": "עברית",
+      "short": "עב",
       "direction": "rtl",
       "text": {
         "welcome.enter": "כניסה",
@@ -39,6 +42,7 @@
         "login.prompt.lname": "הזן את שם המשפחה שלך",
         "login.button.submit": "שלח",
         "login.button.register": "חשבון חדש",
+                "login.button.login": "LOGIN",
         "login.message.default": "אנא, הזן את פרטי הכניסה שלך",
         "confirmation.message": "הודעת אימות נשלחה לכתובת הדוא\"ל שלך. תוכל להמשיך עם הכניסה לאחר האימות.",
         "card.button.vote": "vote",

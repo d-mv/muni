@@ -22,7 +22,9 @@ let options = {
 
 // check if token valid
 router.get("/check", (req: any, res: any, next: any) => {
-  console.log(req.headers)
+  showRequest("usr.check", req.headers, [req.body, req.headers.token]);
+
+  console.log(req.headers);
   console.log("check");
   console.log(req.headers.token);
   // check if token is present
@@ -55,7 +57,7 @@ router.get("/check", (req: any, res: any, next: any) => {
 // create user
 router.post("/create", (req: any, res: any, next: any) => {
   console.log("create");
-  showRequest(req.headers, req.query);
+  showRequest("usr.create", req.headers, [req.body, req.headers.token]);
 
   UserController.create(req.query, (controllerResponse: apiResponse) => {
     if (controllerResponse.status) {
@@ -73,7 +75,7 @@ router.post("/create", (req: any, res: any, next: any) => {
 // login
 router.get("/login", (req: any, res: any, next: any) => {
   console.log("login");
-  showRequest(req.headers, req.query);
+  showRequest("usr.login", req.headers, [req.body, req.headers.token]);
   // const token = req.headers.token ? req.headers.token.toString() : "";
   UserController.login(
     { query: req.query },
@@ -85,14 +87,14 @@ router.get("/login", (req: any, res: any, next: any) => {
       res
         .cookie("token", response.token, response.options)
         .status(response.code)
-        .send({...response.message,token: response.token});
+        .send({ ...response.message, token: response.token });
     }
   );
 });
 // get user
 router.get("/:id", (req: any, res: any, next: any) => {
   console.log("id");
-  showRequest(req.headers, req.params.id);
+  showRequest("usr.id", req.headers, [req.body, req.headers.token]);
 
   const ng = (code: number, packageToSend?: any, message?: string) => {
     res
@@ -135,7 +137,7 @@ router.get("/:id", (req: any, res: any, next: any) => {
 // get user's posts
 router.get("/:id/posts", (req: any, res: any, next: any) => {
   console.log("id with posts");
-  showRequest(req.headers, req.params.id);
+  showRequest("usr.posts", req.headers, [req.body, req.headers.token]);
 
   const ng = (code: number, packageToSend?: any, message?: string) => {
     res
@@ -154,7 +156,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
   } else {
     // token is present
     // check if token valid
-    checkToken(req.headers.token, (checkTokenResponse) => {
+    checkToken(req.headers.token, checkTokenResponse => {
       console.log(checkTokenResponse);
       // reassign code
       const code = checkTokenResponse.code;

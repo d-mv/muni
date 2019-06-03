@@ -1,10 +1,10 @@
 import { Action } from "./types";
 import { apiState } from "../defaults";
 
-export const setToken = (state = "", action: Action): string => {
+export const setToken = (state = "", action: Action) => {
   switch (action.type) {
     case "SET":
-      return action.token ? action.token : state;
+      return action.token;
   }
   return state;
 };
@@ -42,7 +42,7 @@ export const register = (state = apiState, action: Action) => {
 export const fetchLocations = (state = apiState, action: Action) => {
   switch (action.type) {
     case "FETCH_LOCATIONS":
-      return { ...state, ...action.payload };
+      return action.payload;
   }
   return { ...state };
 };
