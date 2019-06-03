@@ -1,5 +1,5 @@
 import React from "react";
-import CardVoteButton from "./Post/CardVoteButton";
+import CardVoteButton from "./Post/VoteButton";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
@@ -11,8 +11,8 @@ import style from "../styles/PostCard.module.scss";
 
 const PostCard = (props: { post: post; language: indexedObjAny }) => {
   const { text } = props.language;
-  // const { direction } = props.language;
-  const direction = 'rtl'
+  const { direction } = props.language;
+  // const direction = "rtl";
 
   const age = postDays(props.post.date);
 
@@ -20,41 +20,41 @@ const PostCard = (props: { post: post; language: indexedObjAny }) => {
     props.post.votes.up === 1 ? text["post.voter"] : text["post.voters"];
 
   const image = {
-    background:
-      `url(${props.post.photo}) no-repeat scroll center center / cover`
+    background: `url(${
+      props.post.photo
+    }) no-repeat scroll center center / cover`
   };
 
   return (
-    <article className={style.card}>
-      <div
-        style={image}
-        className={style.photo}
-      />
-      <section className={direction === 'rtl' ? style.informationRight: style.information}>
+    <article className={direction === "rtl" ? style.cardRight : style.card}>
+      <div style={image} className={style.photo} />
+      <section className={style.information}>
         <div id='category' className={style.category}>
           {props.post.category}
         </div>
-        <h2 id='title' className={direction === "rtl" ? style.titleRight:style.title}>
+        <h2 id='title' className={style.title}>
           {props.post.title}
         </h2>
-        <div
-          id='age'
-          className={
-            direction === "rtl" ? style.thirdLineRight : style.thirdLine
-          }>
-          <p>
-            {age.toLocaleString()}
-            <span className={style.ageText}>
-              {age === 1 ? text["post.age.day"] : text["post.age.days"]}
+        <section id='age' className={style.thirdLine}>
+          <div>
+            <p>
+              {age.toLocaleString()}
+              <span className={style.ageText}>
+                {age === 1 ? text["post.age.day"] : text["post.age.days"]}
+              </span>
+            </p>
+            <span className={style.voters}>
+              <Voters
+                number={props.post.votes.up}
+                text={voterText}
+                direction={direction}
+              />
             </span>
-          </p>
-          <Voters
-            number={props.post.votes.up}
-            text={voterText}
-            direction={direction}
-          />
-        </div>
-        <CardVoteButton />
+          </div>
+          <span className={style.voteButton}>
+            <CardVoteButton />
+          </span>
+        </section>
       </section>
     </article>
   );

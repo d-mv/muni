@@ -24,9 +24,7 @@ const Home = () => {
 
   return (
     <main className={layout.page}>
-      <div>
         <PostCard post={postTemp} />
-      </div>
     </main>
   );
 };

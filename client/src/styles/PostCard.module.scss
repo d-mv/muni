@@ -2,68 +2,94 @@
 @import './colors';
 
 .card {
-  width: 90%;
-  height: 40vh;
+  width: 95%;
+  height: 35vh;
   margin: 1vh auto;
   box-shadow: $boxShadow;
+
+  .information {
+    padding: 1rem 1rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .category {
+      border-radius: 3px;
+      border: 1px solid $colorDark;
+      width: fit-content;
+      padding: 2px 5px;
+      font: $textPostCardCategory;
+    }
+
+    .title {
+      margin: .3rem 0;
+      font: $textPostCardTitle;
+    }
+
+    .thirdLine {
+
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      div {
+        // width: 0%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .ageText {
+          margin: 0 .2rem;
+          color: $colorDarkGrey;
+          font: $textVotersText;
+        }
+
+        p {
+          display: flex;
+          font: $textVotersNumber;
+        }
+
+        .voters {
+          margin: 0 2rem;
+        }
+      }
+
+      .voteButton {
+        margin-top: -1.4rem;
+      }
+    }
+  }
 }
 
-.thirdLine {
-  display: flex;
-  flex-direction: row;
-  width: 65%;
-  justify-content: space-between;
-  align-items: center;
+.cardRight {
+  @extend .card;
 
-  .ageText {
-    margin: 0 .2rem;
-    color: $colorDarkGrey;
-    font: $textVotersText;
+  .information {
+    align-items: flex-end;
+    text-align: right;
   }
 
-  p {
-    font: $textVotersNumber;
+  .thirdLine {
+    flex-direction: row-reverse;
+
+    div {
+      flex-direction: row-reverse;
+
+      .ageText {
+        text-align: left;
+
+      }
+
+      p {
+        flex-direction: row-reverse;
+      }
+    }
   }
-}
-
-.thirdLineRight {
-  flex-direction: row-reverse;
-}
-
-.title {
-  margin: .3rem 0;
-  width: 90%;
-  font: $textPostCardTitle;
-}
-
-.titleRight {
-  @extend .title;
-  text-align:right;
-}
-
-.category {
-  border-radius: 3px;
-  border: 1px solid $colorDark;
-  width: fit-content;
-  padding: 2px 5px;
-  margin: .3rem 0;
-  font: $textPostCardCategory;
-}
-
-.information {
-  padding: .5rem 1rem;
-  width: 100%;
-  height: 45%;
-}
-
-.informationRight {
-  @extend .information;
-  // direction:rtl;
 }
 
 .photo {
   width: 100%;
-  height: 55%;
+  height: 50%;
   background-color: white;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -71,4 +97,3 @@
   background-size: cover;
   object-fit: cover;
 }
-

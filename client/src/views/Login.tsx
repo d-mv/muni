@@ -258,15 +258,16 @@ const Login = (props: {
             />
           </button>
 
-            <button disabled className={form.buttonSecondary}>
-              {mode === "login"
-                ? text["login.button.register"]
-                : text["login.button.login"]}
-            </button>
-
+          <button disabled className={form.buttonSecondary}>
+            {mode === "login"
+              ? text["login.button.register"]
+              : text["login.button.login"]}
+          </button>
         </section>
       </form>
-      <LangSwitch />
+      <div className={style.langSwitch}>
+        <LangSwitch />
+      </div>
     </main>
   );
 };

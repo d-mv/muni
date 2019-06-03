@@ -24,6 +24,11 @@
   @extend .footer;
 }
 
+.footerRight {
+  @extend .footer; flex-direction: row-reverse;
+
+}
+
 .header {
   @extend .nav-template;
   top: 0;
@@ -35,16 +40,17 @@
   h1 {
     width: 80%;
     text-align: center;
-    color:white;
+    color: white;
   }
 }
 
 .headerRight {
   @extend .header;
-flex-direction:row-reverse;
-svg {
-  transform: rotate(180deg);
-}
+  flex-direction: row-reverse;
+
+  svg {
+    transform: rotate(180deg);
+  }
 }
 
 

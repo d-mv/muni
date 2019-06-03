@@ -16,6 +16,8 @@ import utils from "../../styles/_utils.module.scss";
  * @returns {object} - React Element - JSX functional component
  */
 const Navigation = (props: any) => {
+const { direction } = props.language
+
   // toggle module to show
   const action = (module: string) => {
     switch (module) {
@@ -57,7 +59,12 @@ const Navigation = (props: any) => {
       break;
     default:
       component = (
-        <nav className={style.footerNav}>
+        <nav
+          className={
+            direction === "rtl"
+              ? style.footerRight
+              : style.footerNav
+          }>
           <NavButton mode='nav' icon='municipality' action={action} />
           <NavButton mode='nav' icon='home' action={action} />
           <NavButton mode='nav' icon='new' action={action} />
@@ -70,7 +77,8 @@ const Navigation = (props: any) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    module: state.module
+    module: state.module,
+    language: state.language
   };
 };
 
