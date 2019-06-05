@@ -1,0 +1,15 @@
+@import './colors';
+@import './typography';
+
+.title {
+  color: $colorPrimary;
+  text-align: center;
+  font: $textPageTitle;
+}
+
+.titleR {
+  @extend .title;
+  // font: $textPageTitleR;
+  font-family: $fontBasic;
+  
+}

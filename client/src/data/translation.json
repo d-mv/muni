@@ -42,7 +42,7 @@
         "login.prompt.lname": "הזן את שם המשפחה שלך",
         "login.button.submit": "שלח",
         "login.button.register": "חשבון חדש",
-                "login.button.login": "LOGIN",
+        "login.button.login": "LOGIN",
         "login.message.default": "אנא, הזן את פרטי הכניסה שלך",
         "confirmation.message": "הודעת אימות נשלחה לכתובת הדוא\"ל שלך. תוכל להמשיך עם הכניסה לאחר האימות.",
         "card.button.vote": "vote",

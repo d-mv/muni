@@ -2,4 +2,13 @@
 @import './_typography';
 @import './_animations.scss';
 
-.button {}
+.button {
+  height:60%;
+  width:10vw;
+  margin: 0 1vw;
+  transition: $boxTransition;
+
+  &:active{
+  transform:scale(.95);
+  }
+}
