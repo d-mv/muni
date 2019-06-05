@@ -23,7 +23,9 @@ const normalizePort = (value: string) => {
 };
 
 const onError = (error: any) => {
-  console.log(error);
+  console.log(new Date())
+    console.log(error);
+
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -58,6 +60,7 @@ server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 
-process.on("uncaughtException", function(err) {
-  console.log("Caught exception: " + err);
+process.on("uncaughtException", err => {
+  console.log("start - Caught exception: ");
+  console.log(err);
 });

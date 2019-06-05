@@ -56,7 +56,7 @@ export const alreadyExistsMessage = (subj: string) => {
     code: 200
   };
 };
-export const foundMessage = (subj: string,payload?:any) => {
+export const foundMessage = (subj: string, payload?: any) => {
   return {
     status: true,
     message: `${subj} found.`,
@@ -105,7 +105,6 @@ export const positiveMessage = (props: {
   code?: number;
   payload?: [] | any;
 }) => {
-  console.log(props)
   let message = {
     status: true,
     message: props.subj,

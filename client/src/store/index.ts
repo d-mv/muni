@@ -11,7 +11,9 @@ import {
   setModuleU,
   register,
   fetchLocations,
-  setLoading
+  setLoading,
+  setAuth,
+  setLocationData
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState } from "./defaults";
@@ -32,7 +34,9 @@ const rootReducer = combineReducers({
   loading: setLoading,
   register: register,
   data: loadData,
-  language: setLanguage
+  language: setLanguage,
+  locationData: setLocationData,
+  auth: setAuth
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -51,6 +55,8 @@ export default function configureStore() {
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
     language: TYPE.indexedObjAny;
+    locationData: TYPE.data;
+    auth: boolean;
   }
 
   const initialState: state = {
@@ -58,11 +64,13 @@ export default function configureStore() {
     checkTokenResult: "",
     login: apiState,
     module: "welcome",
-    locations: '',
+    locations: "",
     loading: false,
     register: apiState,
     data: data,
-    language: data.language.en
+    language: data.language.en,
+    locationData: {},
+    auth: false
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

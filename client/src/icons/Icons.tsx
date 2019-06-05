@@ -1,5 +1,10 @@
 import React from "react";
 
+const color = {
+  primary: "",
+  secondary: ""
+};
+
 export const votersSecondary = (
   <svg
     width='100%'
@@ -73,3 +78,9 @@ export const down = (
     />
   </svg>
 );
+
+export const iconCreateNew = () => <svg />;
+export const iconEdit = (color: string) => <svg />;
+export const iconHelp = (color: string) => <svg />;
+export const iconComplain = (color: string) => <svg />;
+export const iconClose = (color: string) => <svg />;

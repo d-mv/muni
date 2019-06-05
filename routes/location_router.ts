@@ -12,17 +12,57 @@ const router = express.Router();
 const dotEnv = dotenv.config();
 const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
+let replyCache: any = {
+  list: { time: new Date(), req: "", reply: "" }
+  // create: { time: new Date(), req: "" },
+  // login: { time: new Date(), req: "" },
+  // id: { time: new Date(), req: "" },
+  // posts: { time: new Date(), req: "" }
+};
+
+// storing
+const caching = (cacheId: string, req: any, reply: any) => {
+  const time = new Date();
+  replyCache[cacheId] = { time, req, reply };
+};
+
+// check if request is double
+const double = (cacheId: string, req: any, time: number) => {
+  const cache = replyCache[cacheId];
+  const last: any = cache.time;
+  const now: any = new Date();
+  const diff = now - last;
+
+  let reply = diff < 1000 * time && cache.reply !== "" && req === cache.req;
+  // if return list
+  if (req === "") {
+    reply = diff < 1000 * time && cache.reply !== "";
+  }
+  return reply;
+};
+
 // GET request of list of locations
 router.get("/list", (req: any, res: any, next: any) => {
-    showRequest("loc.list", req.headers, [req.body, req.headers.token]);
-  LocationController.list((controllerResponse: apiResponse) => {
-    res.status(controllerResponse.code).send(controllerResponse);
-  });
+  // information
+  console.log(`§ get location list...`);
+  // showRequest("lcn.check", req.headers, [req.body, req.headers]);
+
+  if (double("list", "", 600)) {
+    console.log("~> consider double");
+    res
+      .status(replyCache["list"].reply.code)
+      .send(replyCache["list"].reply);
+  } else {
+    LocationController.list((controllerResponse: apiResponse) => {
+      caching("list", "", controllerResponse);
+      res.status(controllerResponse.code).send(controllerResponse);
+    });
+  }
 });
 
 // GET request for list of posts
 router.get("/:id/posts", (req: any, res: any, next: any) => {
-    showRequest("loc.get_posts", req.headers, [req.body, req.headers.token]);
+  showRequest("loc.get_posts", req.headers, [req.body, req.headers.token]);
 
   const ng = (code: number, packageToSend?: any, message?: string) => {
     res
@@ -68,7 +108,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
 
 // create
 router.post("/create", (req: any, res: any, next: any) => {
-    showRequest("loc.create", req.headers, [req.body, req.headers.token]);
+  showRequest("loc.create", req.headers, [req.body, req.headers.token]);
   // if request is missing
   if (req.body === {}) {
     res.status(406).send({ status: false, message: "Wrong/malformed request" });
@@ -119,7 +159,7 @@ router.post("/create", (req: any, res: any, next: any) => {
 
 // update
 router.patch("/:id", (req: any, res: any, next: any) => {
-    showRequest("loc.patch", req.headers, [req.body, req.headers.token]);
+  showRequest("loc.patch", req.headers, [req.body, req.headers.token]);
 
   // if request is missing
   if (req.body === {}) {
@@ -182,7 +222,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
 
 // delete
 router.delete("/:id", (req: any, res: any, next: any) => {
-  showRequest("loc_delete",req.headers, [req.body, req.headers.token]);
+  showRequest("loc_delete", req.headers, [req.body, req.headers.token]);
   // if request is missing
   if (req.body === {}) {
     res.status(406).send({
@@ -242,11 +282,11 @@ router.delete("/:id", (req: any, res: any, next: any) => {
 
 // rest
 router.get("/*", (req: any, res: any, next: any) => {
-  console.log('loc-redir')
+  console.log("loc-redir");
   res.redirect(308, redirectUrl);
 });
 router.post("/*", (req: any, res: any, next: any) => {
-    console.log("loc-redir");
+  console.log("loc-redir");
 
   res.redirect(308, redirectUrl);
 });

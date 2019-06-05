@@ -61,16 +61,16 @@ export interface indexedObjAny {
   [index: string]: any;
 }
 
-/**
- * Votes object type
- * @typedef {Object} Votes
- * @property {number} up
- * @property {number} down
- */
-export interface Votes {
-  up: number;
-  down: number;
-}
+// /**
+//  * Votes object type
+//  * @typedef {Object} Votes
+//  * @property {number} up
+//  * @property {number} down
+//  */
+// export interface Votes {
+//   up: number;
+//   down: number;
+// }
 
 /**
  * Standard user post object type
@@ -83,7 +83,7 @@ export interface Votes {
  * @property {string} createdBy
  * @property {Date} date
  * @property {boolean} status
- * @property {Votes} votes
+ * @property {number} votes
  * @property {string} [newsId]
  */
 export interface post {
@@ -96,6 +96,15 @@ export interface post {
   createdBy: string;
   date: string;
   status: string;
-  votes: Votes;
+  votes: number;
   newsId?: string;
+}
+
+/**
+ * Standard data object type
+ * @typedef {Object} data
+ * @property {index} any
+ */
+export interface data {
+  [index: string]: any;
 }

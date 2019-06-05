@@ -1,57 +1,52 @@
 import React from "react";
-import CardVoteButton from "./Post/VoteButton";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
 import { post, indexedObjAny } from "../store/types";
 
 import Voters from "./Post/Voters";
-import postDays from "../modules/post_days";
+import CardVoteButton from "./Post/VoteButton";
+import Photo from "./Post/Photo";
+import Category from "./Post/Category";
+import Title from "./Post/Title";
+import Age from "./Post/Age";
+
 import style from "../styles/PostCard.module.scss";
 
 const PostCard = (props: { post: post; language: indexedObjAny }) => {
+console.log(props.post)
+
+
   const { text } = props.language;
   const { direction } = props.language;
-  // const direction = "rtl";
 
-  const age = postDays(props.post.date);
-
-  const voterText =
-    props.post.votes.up === 1 ? text["post.voter"] : text["post.voters"];
-
-  const image = {
-    background: `url(${
-      props.post.photo
-    }) no-repeat scroll center center / cover`
-  };
+  // const votesMissing = props.post.votes ? true : false
+  // let voterText;
+  // if (props.post.votes){
+    const voterText =
+      props.post.votes === 1 ? text["post.voter"] : text["post.voters"];
+  // }
 
   return (
     <article className={direction === "rtl" ? style.cardRight : style.card}>
-      <div style={image} className={style.photo} />
+      <Photo photo={props.post.photo} />
       <section className={style.information}>
-        <div id='category' className={style.category}>
-          {props.post.category}
-        </div>
-        <h2 id='title' className={style.title}>
-          {props.post.title}
-        </h2>
-        <section id='age' className={style.thirdLine}>
-          <div>
-            <p>
-              {age.toLocaleString()}
-              <span className={style.ageText}>
-                {age === 1 ? text["post.age.day"] : text["post.age.days"]}
-              </span>
-            </p>
-            <span className={style.voters}>
-              <Voters
-                number={props.post.votes.up}
-                text={voterText}
-                direction={direction}
-              />
-            </span>
-          </div>
-          <span className={style.voteButton}>
+        <Category category={props.post.category} />
+        <Title title={props.post.title} />
+        <section id='age' className={style.data}>
+          <Age
+            date={props.post.date}
+            text={[text["post.age.day"], text["post.age.days"]]}
+            direction={direction}
+          />
+          {/* {props.post.votes ? */}
+          <Voters
+            number={props.post.votes}
+            text={voterText}
+            direction={direction}
+          />
+          {/* : null} */}
+          <span className={style.button}>
             <CardVoteButton />
           </span>
         </section>

@@ -3,7 +3,7 @@ import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 
 import { AppState } from "./store";
-import { loadData } from "./store/app/actions";
+import { loadData, setLocationData } from "./store/app/actions";
 
 import {
   setModule,
@@ -18,58 +18,60 @@ import Navigation from "./components/Navigation/Navigation";
 import style from "./styles/App.module.scss";
 
 import Welcome from "./views/Welcome";
-import Login from './views/Login'
+import Login from "./views/Login";
 
 const App = (props: any) => {
-  console.log(props);
+  const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [auth, setAuth] = React.useState(false);
 
   const { login } = props;
   const { cookies } = props;
+  console.log(cookies.get("token"));
   // const cookieToken = cookies.get("token");
-
-  // console.log(cookieToken);
-  // check token cookie and if present - check token
-  React.useEffect(() => {
-    const cookieToken = cookies.get("token");
-    // if token is set > go home
-    if (props.token !== "") {
-      props.setModule("home");
-      setLoading(false);
-    }
-    // if no token, but there is non-empty cookie - check it
-    else if (cookieToken !== undefined && cookies.get("token").length > 0) {
-      props.checkToken(cookies.get("token"));
-    }
-    // if no token, no cookie - show welcome
-    else {
-      setLoading(false);
-    }
-  }, []);
 
   // set cookies if token changes
   React.useEffect(() => {
-    cookies.set("token", props.token);
-    if (props.token !== "") {
-      console.log("changing token");
+console.log('hi')
+    // if 'clear'
+    if (props.token === "clear") {
+      cookies.set("token", "");
+      setToken("");
+    } else if (props.token !== "" && props.token !== "clear") {
+      // if token IS
+      cookies.set("token", props.token);
+      // setToken(props.token);
+      console.log(5);
       props.setModule("home");
       setLoading(false);
       setAuth(true);
+    } else if (
+      cookies.get("token") &&
+      cookies.get("token").length > 0
+    ) {
+      console.log(2);
+      props.checkToken(cookies.get("token"));
     }
   }, [props.token]);
 
-  React.useEffect(() => {
-    if (auth && !props.login.status && !props.token) {
-      cookies.set("token", "");
-      console.log("clearing token");
-    }
-  }, [props.login.status]);
+  // React.useEffect(() => {
+  //   console.log(6);
+  //   if (props.auth && !props.login.status && !props.token) {
+  //     console.log(7);
+  //     cookies.set("token", "");
+  //     console.log("clearing token");
+  //   }
+  // }, [props.login.status]);
 
   // fetch locations
   React.useEffect(() => {
     props.fetchLocations();
-  },[]);
+  }, []);
+
+  // React.useEffect(() => {
+  //   if (props.auth) props.setModule("home");
+  //   if (!props.auth) props.setModule("welcome");
+  // }, [props.auth]);
 
   let show;
   switch (props.module) {
@@ -77,7 +79,7 @@ const App = (props: any) => {
       // const Welcome = React.lazy(() => import("./views/Welcome"));
       show = (
         // <Suspense fallback={<Loading />}>
-          <Welcome />
+        <Welcome />
         // </Suspense>
       );
       break;
@@ -85,7 +87,7 @@ const App = (props: any) => {
       // const Login = React.lazy(() => import("./views/Login"));
       show = (
         // <Suspense fallback={<Loading />}>
-          <Login />
+        <Login />
         // </Suspense>
       );
       break;
@@ -142,15 +144,25 @@ const mapStateToProps = (state: AppState) => {
   return {
     token: state.token,
     check: state.checkTokenResult,
-    login: state.login,
+    // login: state.login,
     module: state.module,
     // locations: state.locations,
     loginResult: state.login,
-    language: state.language
+    language: state.language,
+    locationData: state.locationData,
+    auth: state.auth
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setModule, setToken, checkToken, login, fetchLocations, loadData }
+  {
+    setModule,
+    setToken,
+    checkToken,
+    login,
+    fetchLocations,
+    loadData,
+    setLocationData
+  }
 )(withCookies(App));

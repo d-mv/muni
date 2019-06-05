@@ -19,11 +19,11 @@ import postRouter from "../routes/post_router";
 const dotEnv = dotenv.config();
 const app = express();
 
-process.on("uncaughtException", function(err) {
-  console.log("Caught exception: " + err);
+process.on("uncaughtException", err => {
+  console.log("server - Caught exception: ");
+  console.log(new Date());
+  console.log(err);
 });
-
-
 
 app.use(compression());
 app.use(cors());
@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === "production") {
   //
   app.get("/index.html", (req: any, res: any) => {
     console.log(path.join(__dirname, "../../client/build/index.html"));
-    res.sendFile(path.join(__dirname,"../../client/build/index.html"));
+    res.sendFile(path.join(__dirname, "../../client/build/index.html"));
   });
 }
 
@@ -74,9 +74,7 @@ const client = new MongoClient(connectUrl, { useNewUrlParser: true });
 const connect = client.connect(err => {
   assert.equal(null, err);
   console.log("Connected successfully to DB server");
-
   const db = client.db(dbName);
-
   client.close();
 });
 

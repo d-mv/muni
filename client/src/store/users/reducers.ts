@@ -1,4 +1,5 @@
 import { Action } from "./types";
+import { data } from "../types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action) => {
@@ -51,6 +52,22 @@ export const setModuleU = (state = "", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;
+  }
+  return state;
+};
+
+export const setAuth = (state = false, action: Action): boolean => {
+  switch (action.type) {
+    case "SET_AUTH":
+      return action ? true : false;
+  }
+  return state;
+};
+
+export const setLocationData = (state = {}, action: Action): data => {
+  switch (action.type) {
+    case "SET_LOCATION_DATA":
+      return { ...action.data };
   }
   return state;
 };

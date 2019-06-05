@@ -2,11 +2,7 @@ import * as User from "../models/user_model";
 // import { checkToken } from "../modules/check_token";
 
 import * as TYPE from "../src/types";
-import {
-  // checkFields,
-  checkFieldsLogin,
-  checkID
-} from "../modules/check_strings";
+import { checkFieldsLogin } from "../modules/check_strings";
 
 /**
  * @param  {IncUserCreateTYPE} props
@@ -48,7 +44,7 @@ export const login = (
   // check fields
   const reply: TYPE.apiResponse = checkFieldsLogin({ query: props.query });
   const user: any = props.query;
-  console.log('calling user login')
+  console.log("calling user login");
   // request User model
   User.login(user, (modelResponse: TYPE.apiResponse) => {
     callback(modelResponse);

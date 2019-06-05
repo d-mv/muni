@@ -35,6 +35,14 @@ export interface setModuleUAction {
   type: "SET_MODULE";
   module: string;
 }
+export interface setAuthAction {
+  type: "SET_AUTH";
+  status: boolean
+}
+export interface setLocationDataAction {
+  type: "SET_LOCATION_DATA";
+  data: TYPE.data;
+}
 export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
   payload: TYPE.apiResponse;
@@ -49,4 +57,6 @@ export type Action =
   | setModuleUAction
   | fetchLocationsAction
   | setLoadingAction
-  | registerAction;
+  | registerAction
+  | setAuthAction
+  | setLocationDataAction;

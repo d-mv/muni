@@ -1,0 +1,9 @@
+@import './typography';
+@import './colors';
+
+.title {
+  margin: .3rem 0;
+  width: 90%;
+  color: $colorDarkGrey;
+  font: $textPostCardTitle;
+}

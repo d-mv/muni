@@ -1,10 +1,16 @@
 import React from "react";
+import { connect } from "react-redux";
 
+import { AppState } from "../store";
 import PostCard from "../components/PostCard";
 
 import layout from "../styles/_layout.module.scss";
 
-const Home = () => {
+const Home = (props: any) => {
+  // const { posts } = props.locationData.payload
+  const [posts, setPosts] = React.useState(
+    props.locationData.payload ? props.locationData.payload.posts : []
+  );
   // ! dev
   const postTemp = {
     _id: "5ce565513783cc776bbc489e",
@@ -21,12 +27,31 @@ const Home = () => {
     status: "active",
     votes: { up: 76481, down: 1632 }
   };
-
+  console.log(props.locationData.posts ? true : false);
+  React.useEffect(() => {
+    if (props.locationData.posts) {
+      setPosts(props.locationData.posts);
+    }
+  }, [props.locationData.payload]);
   return (
     <main className={layout.page}>
-        <PostCard post={postTemp} />
+      <div className={layout.content}>
+        {posts.map((post: any) => (
+          <PostCard key={post._id} post={post} />
+        ))}
+      </div>
     </main>
   );
 };
 
-export default Home;
+const mapStateToProps = (state: AppState) => {
+  return {
+    language: state.language,
+    locationData: state.locationData
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Home);

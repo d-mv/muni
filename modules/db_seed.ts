@@ -47,6 +47,10 @@ const dbSeed = (callback: any) => {
     min: 5,
     max: 10
   });
+  // categories
+  const categories = [
+    'important','cat1','cat2','other'
+  ]
   // generate has for password
   encodeString("1234567", (encoded: TYPE.intApiResponseTYPE) => {
     if (!encoded.status) {
@@ -54,10 +58,16 @@ const dbSeed = (callback: any) => {
     } else {
       // set the block of data
       let block = [];
+      // generate user ids
+      let userIds = []
+      for (let i = 0; i < users; i++) {
+        userIds.push(new MDB.ObjectId());
+       }
+
       for (let i = 0; i < users; i++) {
         // new user
         const user: any = {
-          _id: new MDB.ObjectId(),
+          _id: userIds[i],
           fName: faker.name.firstName(),
           lName: faker.name.lastName(),
           avatar: "https://picsum.photos/200/300?random=1",
@@ -67,10 +77,13 @@ const dbSeed = (callback: any) => {
         };
         // qty of post per this user
         const posts = faker.random.number({
-          min: 4,
-          max: 20
+          min: 2,
+          max: 5
         });
         for (let n = 0; n < posts; n++) {
+          const createdBy = userIds[Math.floor(Math.random() * userIds.length)];
+          const category =
+            categories[Math.floor(Math.random() * categories.length)];
           // new post
           const post: any = {
             _id: new MDB.ObjectId(),
@@ -79,15 +92,13 @@ const dbSeed = (callback: any) => {
             photo: "https://picsum.photos/200/300?random=2",
             link: faker.internet.url(),
             newsId: new MDB.ObjectId(),
-            createdBy: user._id,
+            createdBy,
+            category,
             date: faker.date.between("2019-01-01", "2019-05-15"),
             status: "active",
-            votes: {
-              up: faker.random.number(),
-              down: faker.random.number()
-            }
+            votes: faker.random.number(),
           };
-          console.log(post);
+          // console.log(post);
           // push the post to user
           user.posts.push(post);
         }
@@ -96,7 +107,7 @@ const dbSeed = (callback: any) => {
       }
       // ! call to update the DB
       update({
-        id: "5ce44caad0d0d7ee3c1e6ae6",
+        id: "5ce2a3c945e5451171394b35",
         fields: block
       });
       // report

@@ -1,4 +1,5 @@
-import { Action, data } from "./types";
+import { Action } from "./types";
+import { data } from "../types";
 
 /**
  * Reducer function to process the loadData action
@@ -28,3 +29,17 @@ export const setLanguage = (state = {}, action: Action): data => {
   }
   return state;
 };
+/**
+ * Reducer function to process the setLocationData action
+ * @function setLocationData
+ * @param state
+ * @param action
+ * @returns {string}
+ */
+// export const setLocationData = (state = {}, action: Action): data => {
+//   switch (action.type) {
+//     case "SET_LOCATION_DATA":
+//       return { ...action.data };
+//   }
+//   return state;
+// };

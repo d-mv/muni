@@ -46,10 +46,22 @@ export const checkToken = (
     })
       .then(response => {
         const payload = response.data;
+        console.log(response.data);
+        console.log("checktoken - payload.status: " + payload.status);
         if (payload.status) {
           // if positive - save token, and return the data
-          console.log("status positive");
-          dispatch(setToken(token));
+          dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
+          dispatch({ type: "SET", token });
+          dispatch({ type: "SET_AUTH", status: true });
+          // dispatch({type:"SET_MODULE",})
+        } else {
+          dispatch({
+            type: "SET_LOCATION_DATA",
+            data: ""
+          });
+          dispatch({ type: "SET", token: "clear" });
+          dispatch({ type: "SET_AUTH", status: false });
+          dispatch({ type: "SET_MODULE", module: "login" });
         }
         // if negative - return the data
         dispatch({
@@ -96,7 +108,9 @@ export const login = (
         const module = "home";
         const token = response.data.token;
         dispatch({ type: "SET_MODULE", module });
-        dispatch({ type: "SET", token });
+        dispatch({ type: "SET_AUTH", status: true });
+        dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+        dispatch({ type: "SET", token: response.data.token });
         dispatch({
           type: "LOGIN",
           payload: { ...response.data, code: response.status }
@@ -112,16 +126,11 @@ export const login = (
   };
 };
 
-export const logOff =(): ThunkAction<
-  Promise<void>,
-  {},
-  {},
-  AnyAction
-> => {
-
+export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({ type: "SET_AUTH", status: false });
     dispatch({ type: "SET_MODULE", module: "welcome" });
-    dispatch({ type: "SET", token: "" });
+    dispatch({ type: "SET", token: "clear" });
     dispatch({
       type: "LOGIN",
       payload: { ...apiState }

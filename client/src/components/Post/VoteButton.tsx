@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { AppState } from "../../store";
 import { indexedObjAny } from "../../store/types";
 
-import style from "./VoteButton.module.scss";
+import style from "../../styles/VoteButton.module.scss";
 
 const CardVoteButton = (props: { language: indexedObjAny }) => {
   const { text } = props.language;

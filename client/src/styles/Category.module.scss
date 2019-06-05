@@ -1,0 +1,10 @@
+@import './typography';
+@import './colors';
+
+.category {
+  border-radius: 3px;
+  border: 1px solid $colorDark;
+  width: fit-content;
+  padding: 2px 5px;
+  font: $textPostCardCategory;
+}
