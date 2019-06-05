@@ -9,14 +9,14 @@ import Button from "../components/Button";
  * @param {string} message - To receive button name as message
  * @return {}
  */
-const mockFn = (message: string) => {};
+const mockFn = () => {};
 
 afterEach(cleanup);
 
 describe("Button", () => {
   it("should render button with name", () => {
     const { getByText } = render(
-      <Button mode='primary' name='Welcome' action={mockFn} />
+      <Button action={mockFn}>Hello</Button>
     );
     getByText("Welcome");
   });
