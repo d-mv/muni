@@ -67,6 +67,7 @@ const { direction } = props.language
           }>
           <NavButton mode='nav' icon='municipality' action={action} />
           <NavButton mode='nav' icon='home' action={action} />
+          <NavButton mode='empty'/>
           <NavButton mode='nav' icon='new' action={action} />
           <NavButton mode='nav' icon='profile' active={true} action={action} />
         </nav>

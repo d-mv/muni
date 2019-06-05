@@ -34,10 +34,14 @@ const NavButton = (props: {
   icon?: string;
   module: string;
   children?: any;
-  action: (arg0?: any) => void;
+  action?: (arg0?: any) => void;
 }) => {
   const { mode } = props;
   const testId = `${mode}__button`;
+
+  const actionHandler = (action?: any) => {
+    if (props.action) props.action(action);
+  };
 
   /**
    * Function to create button element
@@ -49,7 +53,7 @@ const NavButton = (props: {
     <button
       data-testid={testId}
       className={style}
-      onClick={() => props.action(action)}>
+      onClick={() => actionHandler(action)}>
       {children}
     </button>
   );
@@ -57,6 +61,9 @@ const NavButton = (props: {
   let component;
   // build component
   switch (mode) {
+    case "empty":
+      component = <button data-testid={testId} className={style.navButton} />;
+      break;
     case "nav":
       const icon = props.icon || "";
       component = buttonFactory(

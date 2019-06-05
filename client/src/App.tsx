@@ -19,6 +19,8 @@ import style from "./styles/App.module.scss";
 
 import Welcome from "./views/Welcome";
 import Login from "./views/Login";
+import NewButton from './components/NewButton'
+
 
 const App = (props: any) => {
   const [token, setToken] = React.useState("");
@@ -32,7 +34,7 @@ const App = (props: any) => {
 
   // set cookies if token changes
   React.useEffect(() => {
-console.log('hi')
+    console.log("hi");
     // if 'clear'
     if (props.token === "clear") {
       cookies.set("token", "");
@@ -45,10 +47,7 @@ console.log('hi')
       props.setModule("home");
       setLoading(false);
       setAuth(true);
-    } else if (
-      cookies.get("token") &&
-      cookies.get("token").length > 0
-    ) {
+    } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
     }
@@ -75,20 +74,15 @@ console.log('hi')
 
   let show;
   switch (props.module) {
+
     case "welcome":
-      // const Welcome = React.lazy(() => import("./views/Welcome"));
       show = (
-        // <Suspense fallback={<Loading />}>
         <Welcome />
-        // </Suspense>
       );
       break;
     case "login":
-      // const Login = React.lazy(() => import("./views/Login"));
       show = (
-        // <Suspense fallback={<Loading />}>
         <Login />
-        // </Suspense>
       );
       break;
     case "confirmation":
@@ -120,6 +114,7 @@ console.log('hi')
       show = (
         <Suspense fallback={<Loading />}>
           <Profile />
+          <NewButton />
         </Suspense>
       );
       break;
@@ -128,6 +123,7 @@ console.log('hi')
       show = (
         <Suspense fallback={<Loading />}>
           <Home />
+          <NewButton />
         </Suspense>
       );
   }

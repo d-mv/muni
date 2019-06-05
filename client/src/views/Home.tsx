@@ -2,8 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import PostCard from "../components/PostCard";
 
+import TopPlank from '../components/TopPlank'
+import PostList from '../components/PostList'
 import layout from "../styles/_layout.module.scss";
 
 const Home = (props: any) => {
@@ -27,7 +28,7 @@ const Home = (props: any) => {
     status: "active",
     votes: { up: 76481, down: 1632 }
   };
-  console.log(props.locationData.posts ? true : false);
+  // console.log(props.locationData.posts ? true : false);
   React.useEffect(() => {
     if (props.locationData.posts) {
       setPosts(props.locationData.posts);
@@ -35,11 +36,8 @@ const Home = (props: any) => {
   }, [props.locationData.payload]);
   return (
     <main className={layout.page}>
-      <div className={layout.content}>
-        {posts.map((post: any) => (
-          <PostCard key={post._id} post={post} />
-        ))}
-      </div>
+      <TopPlank />
+      <PostList posts={posts}/>
     </main>
   );
 };
