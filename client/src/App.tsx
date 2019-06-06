@@ -24,13 +24,14 @@ import NewButton from './components/NewButton'
 
 const App = (props: any) => {
   const [token, setToken] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [auth, setAuth] = React.useState(false);
 
   const { login } = props;
   const { cookies } = props;
   console.log(cookies.get("token"));
-  // const cookieToken = cookies.get("token");
+
+  const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
   // set cookies if token changes
   React.useEffect(() => {
@@ -50,28 +51,15 @@ const App = (props: any) => {
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
+    } else {
+      setLoading(false);
     }
   }, [props.token]);
 
-  // React.useEffect(() => {
-  //   console.log(6);
-  //   if (props.auth && !props.login.status && !props.token) {
-  //     console.log(7);
-  //     cookies.set("token", "");
-  //     console.log("clearing token");
-  //   }
-  // }, [props.login.status]);
-
   // fetch locations
   React.useEffect(() => {
-    props.fetchLocations();
+  fetch()
   }, []);
-
-  // React.useEffect(() => {
-  //   if (props.auth) props.setModule("home");
-  //   if (!props.auth) props.setModule("welcome");
-  // }, [props.auth]);
-
   let show;
   switch (props.module) {
 

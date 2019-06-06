@@ -64,7 +64,7 @@
   outline: none;
   padding: 0;
   // set new properties
-  height: 45px;
+  height: 12.5vw;
   border-radius: 6px;
   transition: $boxTransition;
 
@@ -78,7 +78,7 @@
 /// @group UI-elements
 .navButton {
   @extend .button-template;
-  width: 100px;
+  width: 80px;
   border-radius: 0;
 }
 

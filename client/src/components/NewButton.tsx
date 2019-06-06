@@ -6,9 +6,7 @@ import style from '../styles/NewButton.module.scss'
 
 const NewButton = () => {
   return (
-    // <div >
     <button className={style.new}>{iconCreateNew}</button>
-    // </div>
   );
 
 }

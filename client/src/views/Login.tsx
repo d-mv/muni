@@ -12,9 +12,9 @@ import {
 } from "../store/users/actions";
 
 import Loading from "../components/Loading";
+import Page from "../layout/Page";
 import LangSwitch from "../components/LangSwitch";
 import { down } from "../icons/Icons";
-import layout from "../styles/_layout.module.scss";
 import form from "../styles/_form.module.scss";
 import style from "../styles/Login.module.scss";
 
@@ -207,7 +207,7 @@ const Login = (props: {
   }
 
   return (
-    <main className={layout.mainOpposite}>
+    <Page opposite>
       <form
         className={direction === "rtl" ? form.right : form.left}
         onSubmit={handleSubmit}>
@@ -268,7 +268,7 @@ const Login = (props: {
       <div className={style.langSwitch}>
         <LangSwitch />
       </div>
-    </main>
+    </Page>
   );
 };
 

@@ -24,15 +24,15 @@
   animation: $aniSlideToTop;
 }
 
-/// Regular page, starting from top
-/// @group Layout
-.page {
-  @extend .main-template;
-  top: 0;
-  height: 90vh;
-  border-radius: 0 0 4vh 4vh;
-  box-shadow: $pageShadow;
-}
+// /// Regular page, starting from top
+// /// @group Layout
+// .page {
+//   @extend .main-template;
+//   top: 0;
+//   height: 90vh;
+//   border-radius: 0 0 4vh 4vh;
+//   box-shadow: $pageShadow;
+// }
 
 
 /// Page, starting from bottom

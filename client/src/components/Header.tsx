@@ -8,9 +8,9 @@ import Help from "../icons/Help";
 import Edit from "../icons/Edit";
 import PageTitle from "./PageTitle";
 
-import style from "../styles/TopPlank.module.scss";
+import style from "../styles/Header.module.scss";
 
-const TopPlank = (props: {
+const Header = (props: {
   language: indexedObj;
   locationData: indexedObjAny;
 }) => {
@@ -26,7 +26,9 @@ const TopPlank = (props: {
         <Help color='primary' />
       </Button>
       <PageTitle title={title} direction={direction} />
-      <Button action={mockFN}><Edit color='primary' /></Button>
+      <Button action={mockFN}>
+        <Edit color='primary' />
+      </Button>
     </header>
   );
 };
@@ -41,4 +43,4 @@ const mapStateToProps = (state: AppState) => {
 export default connect(
   mapStateToProps,
   {}
-)(TopPlank);
+)(Header);
