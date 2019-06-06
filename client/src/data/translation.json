@@ -23,7 +23,10 @@
         "post.age.day": "day",
         "post.age.days": "days",
         "post.voter": "voter",
-        "post.voters": "voters"
+        "post.voters": "voters",
+        "profile.text.changeLanguage": "Please, choose the app language. The language chosen is shown next to the switch button",
+        "profile.text.logOff": "Please, press the below button if you want to log off the app. You will have to log in if you want to use it again.",
+        "profile.button.logOff":"LOG OFF"
       }
     },
     "עב": {
@@ -49,7 +52,10 @@
         "post.age.day": "day",
         "post.age.days": "days",
         "post.voter": "voter",
-        "post.voters": "voters"
+        "post.voters": "voters",
+        "profile.text.changeLanguage": "בחר, בחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד לחצן המתג",
+        "profile.text.logOff": "אנא, לחץ על הלחצן למטה אם אתה רוצה להיכנס את היישום. יהיה עליך להתחבר אם ברצונך להשתמש בו שוב.",
+        "profile.button.logOff":"להתנתק"
       }
     }
   }

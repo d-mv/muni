@@ -1,0 +1,19 @@
+.line-template {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  span {
+    margin: 0 10px;
+  }
+}
+
+.line {
+  @extend .line-template;
+  flex-direction: row;
+}
+
+.lineRTL {
+  @extend .line-template;
+  flex-direction: row-reverse;
+}
