@@ -3,6 +3,7 @@ import data from "../data/translation.json";
 import { indexedObjAny } from "../store/types";
 
 const dataFile: indexedObjAny = data;
+
 /** Function to fetch from the data proper month text
  *
  * @param {string} language - Language of the text
@@ -12,6 +13,7 @@ const dataFile: indexedObjAny = data;
  */
 const getMonth = (language: string, month: number): string =>
   dataFile.language[language].months[month];
+
 
 /** Function to process date to make it look like "May 16, 2019"
  *

@@ -1,12 +1,15 @@
 import React from "react";
 
-import layout from "../styles/_layout.module.scss";
+import Page from "../layout/Page";
+import Header from "../components/Header";
+
 
 const New = () => {
   return (
-    <main className={layout.page}>
+    <Page>
+      <Header />
       <div>New</div>
-    </main>
+    </Page>
   );
 };
 

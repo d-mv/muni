@@ -1,12 +1,14 @@
 import React from "react";
 
-import layout from "../styles/_layout.module.scss";
+import Page from "../layout/Page";
+import Header from "../components/Header";
 
 const Municipality = () => {
   return (
-    <main className={layout.page}>
+    <Page>
+      <Header />
       <div>Municipality</div>
-    </main>
+    </Page>
   );
 };
 

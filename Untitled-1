@@ -1,6 +1,0 @@
-,
-  "husky": {
-    "hooks": {
-      "pre-push": "jest",
-      "pre-commit": "lint-staged && typedoc --out docs"
-    }}

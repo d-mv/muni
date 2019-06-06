@@ -15,6 +15,7 @@ export const loadData = (state = {}, action: Action): data => {
   }
   return state;
 };
+
 /**
  * Reducer function to process the setLanguage action
  * @function setLanguage

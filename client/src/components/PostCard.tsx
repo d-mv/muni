@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { AppState } from "../store";
 import { post, indexedObjAny } from "../store/types";
 
+import shortText from "../modules/short_text";
+
 import Card from "../layout/Card";
 import Voters from "./Post/Voters";
 import CardVoteButton from "./Post/VoteButton";
@@ -29,7 +31,7 @@ const PostCard = (props: { post: post; language: indexedObjAny }) => {
           direction === "rtl" ? style.informationRTL : style.information
         }>
         <Category category={props.post.category} />
-        <Title title={props.post.title} direction={direction} />
+        <Title title={shortText(props.post.title,50)} direction={direction} />
         <section
           id='age'
           className={direction === "rtl" ? style.dataRTL : style.data}>

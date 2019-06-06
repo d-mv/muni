@@ -18,8 +18,14 @@ const shortText = (text: string, symbols: number): string => {
   ) {
     return "";
   } else {
-    const excerpt = text.split("").splice(0, symbols);
-    return excerpt.join("") + "...";
+    let result =
+      text.length <= symbols
+        ? text
+        : `${text
+            .split("")
+            .splice(0, symbols)
+            .join("")}...`;
+    return result;
   }
 };
 

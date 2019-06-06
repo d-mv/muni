@@ -1,12 +1,12 @@
-import { data } from "../types";
+import { data,indexedObjAny } from "../types";
 
 export interface loadDataAction {
   type: "LOAD_DATA";
-  data: { [index: string]: any };
+  data: indexedObjAny;
 }
 export interface setLanguageAction {
   type: "SET_LANGUAGE";
-  data: { [index: string]: any };
+  data: indexedObjAny;
 }
 
 export interface setLocationDataAction {

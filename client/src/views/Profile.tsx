@@ -12,9 +12,6 @@ import Line from '../layout/Line';
 import LangSwitch from "../components/LangSwitch";
 import Button from '../elements/Button'
 
-import layout from "../styles/_layout.module.scss";
-import style from "../styles/Profile.module.scss";
-
 const Profile = (props: any) => {
   const {text,direction} = props.language
   return (
