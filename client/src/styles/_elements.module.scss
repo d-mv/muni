@@ -1,20 +1,20 @@
 @import './colors';
+@import './typography';
 
+/// Loading indicator for the form
+/// @group Elements
 .loading {
-
   width: 3em;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
 
-
   div {
     width: 0.5em;
     height: 0.5em;
     border-radius: 50%;
     background-color: $colorPrimaryTrans;
-
 
     &:nth-of-type(1) {
       transform: translateX(-100%);
@@ -44,4 +44,30 @@
       transform: translateX(100%);
     }
   }
+}
+
+/// Button template
+/// @group Elements
+.button-template {
+  margin: 20px auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: none;
+  width: fit-content;
+  font: $textButton;
+  color: $colorWhite;
+  display: block;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $boxShadowHover;
+  }
+}
+
+/// Button with Primaty color
+/// @group Elements
+.buttonPrimary {
+  @extend .button-template;
+  background-color: $colorPrimary !important;
 }

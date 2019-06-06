@@ -1,4 +1,3 @@
-
 import locationsList from "../modules/locations_list";
 
 const testData = [

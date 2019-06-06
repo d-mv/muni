@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import * as dotenv from "dotenv";
 import * as MDB from "../modules/db_connect";
 
@@ -23,9 +24,12 @@ const findPostById = (
 ) => {
   // check if post title is available
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       // return error with connection
-      callback(Message.errorMessage({ action: "connection to DB (4)", e: err }));
+      callback(
+        Message.errorMessage({ action: "connection to DB (4)", e: err })
+      );
     } else {
       // set database
       const database: any = MDB.client.db(dbName).collection(dbcMain);
@@ -83,4 +87,4 @@ const findPostById = (
   });
 };
 
-export default findPostById
+export default findPostById;

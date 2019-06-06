@@ -90,7 +90,13 @@ export const checkToken = (
         };
         User.isUserSuper(decoded.id, (modelResponse: boolean) => {
           response.level = modelResponse ? "su" : "";
-          callback({ ...response, payload: { id: decoded.id } });
+          if (!modelResponse) {
+            // user is not super
+            User.getLocationInfo(decoded.id, (modelReply: TYPE.apiResponse) => {
+              callback({ ...response, payload: { ...modelReply } });
+            })
+          } else {
+          callback({ ...response, payload: { id: decoded.id } })};
         });
       } else if (authedHours > 720) {
         // unauth
@@ -123,7 +129,7 @@ export const cookieFactory = (message: TYPE.apiResponse) => {
     secure: false
   };
   if (message.status) {
-    const id = message.payload.id;
+    const id = message.payload._id;
     const now = new Date(Date.now() + 2592000 * 1000);
     expire = now.toUTCString();
     delete message.payload;

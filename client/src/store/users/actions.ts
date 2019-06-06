@@ -35,6 +35,7 @@ export const setLoading = (loading: boolean = false): Action => {
 export const checkToken = (
   token: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  console.log("check: " + token);
   const url = "/user/check";
 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -45,10 +46,22 @@ export const checkToken = (
     })
       .then(response => {
         const payload = response.data;
+        console.log(response.data);
+        console.log("checktoken - payload.status: " + payload.status);
         if (payload.status) {
           // if positive - save token, and return the data
-          console.log("status positive");
-          dispatch(setToken(token));
+          dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
+          dispatch({ type: "SET", token });
+          dispatch({ type: "SET_AUTH", status: true });
+          // dispatch({type:"SET_MODULE",})
+        } else {
+          dispatch({
+            type: "SET_LOCATION_DATA",
+            data: ""
+          });
+          dispatch({ type: "SET", token: "clear" });
+          dispatch({ type: "SET_AUTH", status: false });
+          dispatch({ type: "SET_MODULE", module: "login" });
         }
         // if negative - return the data
         dispatch({
@@ -93,7 +106,11 @@ export const login = (
       .then(response => {
         // if successful change page
         const module = "home";
+        const token = response.data.token;
         dispatch({ type: "SET_MODULE", module });
+        dispatch({ type: "SET_AUTH", status: true });
+        dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+        dispatch({ type: "SET", token: response.data.token });
         dispatch({
           type: "LOGIN",
           payload: { ...response.data, code: response.status }
@@ -108,6 +125,19 @@ export const login = (
       });
   };
 };
+
+export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({ type: "SET_AUTH", status: false });
+    dispatch({ type: "SET_MODULE", module: "welcome" });
+    dispatch({ type: "SET", token: "clear" });
+    dispatch({
+      type: "LOGIN",
+      payload: { ...apiState }
+    });
+  };
+};
+
 /**
  * Action function to register with API
  * @function register
@@ -126,8 +156,8 @@ export const register = (
     props.location
   }&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&avatar=${
     props.avatar
-    }`;
-  console.log(url)
+  }`;
+  console.log(url);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state
     dispatch({

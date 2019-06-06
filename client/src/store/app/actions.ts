@@ -24,3 +24,12 @@ export const loadData = (): Action => {
 export const setLanguage = (lang: string): Action => {
   return { type: "SET_LANGUAGE", data: importedData.language[lang] };
 };
+
+/** Action function to store location data
+ * @function setLocationData
+ * @param {object} data - Location data
+ * @returns {object}
+ */
+export const setLocationData = (data: TYPE.data): Action => {
+  return { type: "SET_LOCATION_DATA", data };
+};

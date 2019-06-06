@@ -1,0 +1,25 @@
+@import './typography';
+@import './colors';
+
+.age {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  font: $textVotersNumber;
+
+  .text {
+    margin: 0 0.1rem;
+    color: $colorDarkGrey;
+    font: $textVotersText;
+    padding: 0;
+  }
+}
+
+.ageR {
+  @extend .age;
+  flex-direction: row-reverse;
+
+  .text {
+    text-align: left;
+  }
+}

@@ -1,0 +1,26 @@
+@import './_colors';
+@import './_animations';
+
+.new {
+  position: absolute;
+  top: 85vh;
+  left: 40vw;
+  z-index: 100;
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+  padding: 1.5vh;
+  border: 5px solid $colorWhite !important;
+  background-color: $colorSecondary !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $elementShadow;
+  transition: $boxTransition;
+  animation: $aniBeatD2s;
+
+  &:active {
+    transform: scale(.9);
+    box-shadow: 0 0px 17px rgba(68, 68, 68, .7);
+  }
+}

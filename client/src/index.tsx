@@ -9,6 +9,24 @@ import * as serviceWorker from "./serviceWorker";
 import configureStore from "./store";
 const store = configureStore();
 
+// declare global {
+// declare global {
+//   export JSX{.IntrinsicElements {
+//      content: React.DetailedHTMLProps<
+//        React.HTMLAttributes<HTMLElement>,
+//        HTMLElement
+//      >;
+//    }}
+// }
+//    export interface IntrinsicElements {
+//      content: React.DetailedHTMLProps<
+//        React.HTMLAttributes<HTMLElement>,
+//        HTMLElement
+//      >;
+//    }
+  // }
+// }
+
 ReactDOM.render(
   <CookiesProvider>
     <Provider store={store}>

@@ -1,0 +1,13 @@
+.plank {
+  width: 100%;
+  height: 7vh;
+  display: flex;
+  // flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plankRight{
+  @extend .plank;
+  flex-direction: row-reverse;
+}

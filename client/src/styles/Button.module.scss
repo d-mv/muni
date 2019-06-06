@@ -2,44 +2,13 @@
 @import './_typography';
 @import './_animations.scss';
 
-
-/// Button template
-/// @group UI-elements
-.button-template {
-  // disable default
-  background: none;
-  border: none;
-  outline: none;
-  // set new properties
-  margin: 10px auto;
-  padding: 10px 20px;
-  height: 45px;
-  border-radius: 6px;
-  color: white;
-  font: $textButton;
-  letter-spacing: 2px;
+.button {
+  height:60%;
+  width:10vw;
+  margin: 0 1vw;
   transition: $boxTransition;
-  text-align: center;
-  box-shadow: $boxShadow;
 
-  &:active {
-    transform: scale(0.98);
+  &:active{
+  transform:scale(.95);
   }
-
-}
-
-/// Primary button
-/// @group UI-elements
-.buttonPrimary {
-  @extend .button-template;
-  width: 100px;
-  background-color: $colorPrimary;
-}
-
-/// Secondary button
-/// @group UI-elements
-.buttonSecondary {
-  @extend .button-template;
-  width: 160px;
-  background-color: $colorSecondary;
 }

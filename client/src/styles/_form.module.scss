@@ -39,15 +39,33 @@
       }
     }
 
+    option {
+      padding-right: 2%;
+    }
+
+    span {
+      height: .6rem;
+      width: 5%;
+      margin-top: -1.7rem;
+      margin-bottom: 0.7rem;
+
+      // margin-left: 92%;
+    }
+
     .prompt {
       z-index: 1;
+      margin: 0 auto;
       margin-top: -1.7rem;
       width: 95%;
-      padding-left: 0.5rem;
       min-height: 1.5em;
       font: $textFormFieldPrompt;
       color: $colorGrey;
     }
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    align-items: baseline;
   }
 }
 
@@ -56,6 +74,14 @@
 .left {
   @extend .form-template;
   text-align: left;
+
+  span {
+    margin-left: 92%;
+  }
+
+  .buttonsWrapper {
+    flex-direction: row;
+  }
 }
 
 /// Form alignment for right-to-left languages
@@ -63,6 +89,10 @@
 .right {
   @extend .form-template;
   text-align: right;
+
+  label {
+    font-size: .9rem !important;
+  }
 
   input,
   select {
@@ -72,6 +102,17 @@
 
   option {
     padding-right: 2%;
+  }
+
+  span {
+    // height: .6rem;
+    // width: 5%;
+    // margin-top: -1.7rem;
+    margin-left: 2%;
+  }
+
+  .buttonsWrapper {
+    flex-direction: row-reverse;
   }
 }
 

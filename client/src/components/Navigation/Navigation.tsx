@@ -2,11 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { setModule,setLoading } from "../../store/users/actions";
+import { setModule, setLoading } from "../../store/users/actions";
 
 import NavButton from "./NavButton";
+import EntranceButton from "./EntranceButton";
 
 import style from "../../styles/Navigation.module.scss";
+import utils from "../../styles/_utils.module.scss";
 /**
  * Functional component to display a footer wrapper with buttons
  * @function Navigation
@@ -14,16 +16,12 @@ import style from "../../styles/Navigation.module.scss";
  * @returns {object} - React Element - JSX functional component
  */
 const Navigation = (props: any) => {
+const { direction } = props.language
+
   // toggle module to show
   const action = (module: string) => {
     switch (module) {
-      case "enter":
-        props.setModule("login");
-        break;
-      case "login":
-        props.setModule("welcome");
-        break;
-      case 'confirmation':
+      case "confirmation":
         props.setModule("confirmation");
         break;
       default:
@@ -37,22 +35,20 @@ const Navigation = (props: any) => {
     case "welcome":
       component = (
         <nav className={style.footer}>
-          <NavButton mode='enter' action={action}>
-            ENTER
-          </NavButton>
+          <EntranceButton action={action} />
         </nav>
       );
       break;
     case "login":
       component = (
         <nav className={style.header}>
-          <NavButton mode='login' action={action}>
-            RETURN
-          </NavButton>
+          <NavButton mode='return-welcome' action={action} />
+          <h1>"App Name"</h1>
+          <span className={utils.spacer10pct} />
         </nav>
       );
       break;
-    case 'confirmation':
+    case "confirmation":
       component = (
         <nav className={style.header}>
           <NavButton mode='confirmation' action={action}>
@@ -63,19 +59,17 @@ const Navigation = (props: any) => {
       break;
     default:
       component = (
-        <nav className={style.footer}>
-          <NavButton mode='nav' action={action}>
-            municipality
-          </NavButton>
-          <NavButton mode='nav' action={action}>
-            home
-          </NavButton>
-          <NavButton mode='nav' action={action}>
-            create
-          </NavButton>
-          <NavButton mode='nav' action={action}>
-            profile
-          </NavButton>
+        <nav
+          className={
+            direction === "rtl"
+              ? style.footerRight
+              : style.footerNav
+          }>
+          <NavButton mode='nav' icon='municipality' action={action} />
+          <NavButton mode='nav' icon='home' action={action} />
+          <NavButton mode='empty'/>
+          <NavButton mode='nav' icon='mine' action={action} />
+          <NavButton mode='nav' icon='profile' active={true} action={action} />
         </nav>
       );
   }
@@ -84,11 +78,12 @@ const Navigation = (props: any) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    module: state.module
+    module: state.module,
+    language: state.language
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setModule,setLoading }
+  { setModule, setLoading }
 )(Navigation);

@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 
 import { AppState } from "../store";
 
-import layout from "../styles/_layout.module.scss";
+import Page from "../layout/Page";
 
 const Welcome = (props: any) => {
   return (
-    <main className={layout.mainTop}>
+    <Page welcome>
       <p>{props.language.text["welcome.enter"]}</p>
-    </main>
+      <p>this is logo:</p>
+    </Page>
   );
 };
 

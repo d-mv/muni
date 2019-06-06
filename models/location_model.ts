@@ -10,7 +10,7 @@ const dotEnv = dotenv.config();
 // db
 const dbName = process.env.MONGO_DB || "muni";
 // collections
-const dbcMain = process.env.MONGO_COL_MAIN || 'dev';
+const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 
 /**
  * Function to list all locations (without users/posts). Need for login.
@@ -61,6 +61,7 @@ export const create = (
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
+    assert.equal(null, err);
     const database: any = MDB.client.db(dbName).collection(dbcMain);
     // check the names availability
     const search = { name: query.name };
@@ -104,7 +105,8 @@ export const create = (
             }
           })
           .catch((e: any) =>
-            callback(Message.errorMessage({ action: "location creation", e }))
+            {assert.equal(null, e);
+            callback(Message.errorMessage({ action: "location creation", e }))}
           );
       }
     });
@@ -125,6 +127,7 @@ export const update = (
 ) => {
   // check is location available
   MDB.client.connect(err => {
+    assert.equal(null, err);
     assert.equal(null, err);
     const database = MDB.client.db("muni").collection(dbcMain);
     database
@@ -156,8 +159,10 @@ export const update = (
                 })
               );
             })
-            .catch((e: any) =>
+            .catch((e: any) => {
+              assert.equal(null, e);
               callback(Message.errorMessage({ action: "location update", e }))
+            }
             );
         }
       });
@@ -175,6 +180,7 @@ export const deleteLocation = (
 ) => {
   // check is location available
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
@@ -208,8 +214,10 @@ export const deleteLocation = (
                   })
                 );
               })
-              .catch((e: any) =>
+              .catch((e: any) => {
+                assert.equal(null, e);
                 callback(Message.errorMessage({ action: "location delete", e }))
+              }
               );
           }
         });

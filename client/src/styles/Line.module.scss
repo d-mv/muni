@@ -1,0 +1,32 @@
+.line-template {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  span {
+    margin: 0 10px;
+  }
+}
+
+.line {
+  @extend .line-template;
+  flex-direction: row;
+}
+
+.linethin {
+  @extend .line;
+  flex-direction: row;
+  padding: 0 10px;
+}
+
+.lineRTL {
+  @extend .line-template;
+  flex-direction: row-reverse;
+}
+
+.lineRTLthin {
+  @extend .lineRTL;
+  flex-direction: row-reverse;
+  // padding: 5px;
+
+}

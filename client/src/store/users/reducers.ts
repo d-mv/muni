@@ -1,10 +1,11 @@
 import { Action } from "./types";
+import { data } from "../types";
 import { apiState } from "../defaults";
 
-export const setToken = (state = "", action: Action): string => {
+export const setToken = (state = "", action: Action) => {
   switch (action.type) {
     case "SET":
-      return action.token ? action.token : state;
+      return action.token;
   }
   return state;
 };
@@ -42,7 +43,7 @@ export const register = (state = apiState, action: Action) => {
 export const fetchLocations = (state = apiState, action: Action) => {
   switch (action.type) {
     case "FETCH_LOCATIONS":
-      return { ...state, ...action.payload };
+      return action.payload;
   }
   return { ...state };
 };
@@ -51,6 +52,22 @@ export const setModuleU = (state = "", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;
+  }
+  return state;
+};
+
+export const setAuth = (state = false, action: Action): boolean => {
+  switch (action.type) {
+    case "SET_AUTH":
+      return action ? true : false;
+  }
+  return state;
+};
+
+export const setLocationData = (state = {}, action: Action): data => {
+  switch (action.type) {
+    case "SET_LOCATION_DATA":
+      return { ...action.data };
   }
   return state;
 };

@@ -10,8 +10,7 @@
   right: 0;
   display: flex;
   justify-content: center;
-  align-content: center;
-
+  align-items: center;
 }
 
 .footer {
@@ -20,11 +19,39 @@
   height: 10%;
 }
 
+.footerNav {
+  @extend .footer;
+}
+
+.footerRight {
+  @extend .footer;
+  flex-direction: row-reverse;
+}
+
 .header {
   @extend .nav-template;
   top: 0;
   height: 10%;
+  margin: 0 auto;
+  width: 95%;
+  justify-content: space-between;
+
+  h1 {
+    width: 80%;
+    text-align: center;
+    color: white;
+  }
 }
+
+.headerRight {
+  @extend .header;
+  flex-direction: row-reverse;
+
+  svg {
+    transform: rotate(180deg);
+  }
+}
+
 
 
 /// Button template
@@ -36,10 +63,9 @@
   outline: none;
   padding: 0;
   // set new properties
-  height: 45px;
+  height: 12.5vw;
   border-radius: 6px;
   transition: $boxTransition;
-  // box-shadow: $boxShadow;
 
   &:active {
     transform: scale(0.98);
@@ -51,8 +77,8 @@
 /// @group UI-elements
 .navButton {
   @extend .button-template;
-  width: 100px;
-  background-color: $colorPrimary;
+  width: 80px;
+  border-radius: 0;
 }
 
 /// Primary button
@@ -70,30 +96,10 @@
   opacity: 0;
 }
 
-.enter {
-  width: 100%;
-  padding: 0.75rem 0;
-
-  span {
-    animation: $aniVerticalFlip;
-    color: white;
-    font: $textButtonEnter;
-    width: 100%;
-
-    letter-spacing: 1vh;
-    text-align: center;
-    vertical-align: middle;
-
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-
-    &:nth-child(2) {
-      animation-delay: 2.5s;
-    }
-
-    &:nth-child(3) {
-      animation-delay: 5s;
-    }
-  }
+.return {
+  justify-self: left;
+  background: none;
+  height: 30%;
+  text-align: left;
+  width: 10%;
 }

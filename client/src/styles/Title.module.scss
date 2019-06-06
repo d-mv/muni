@@ -1,0 +1,14 @@
+@import './typography';
+@import './colors';
+
+.title {
+  margin: .3rem 0;
+  width: 90%;
+  color: $colorDark;
+  font: $textPostCardTitle;
+}
+
+.titleRTL {
+  @extend .title;
+  direction: rtl;
+}

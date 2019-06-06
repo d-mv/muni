@@ -50,6 +50,7 @@ const updateUser = (
         );
       })
       .catch((e: any) => {
+        assert.equal(null, e);
         callback(Message.errorMessage({ action: "user update", e }));
       });
   });
@@ -58,6 +59,7 @@ const updateUser = (
 // find user by email
 const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection(dbcMain)
@@ -109,6 +111,7 @@ export const get = (
   isUserSuper(props.userRequested, (isSuper: boolean) => {
     // get requested user
     MDB.client.connect(err => {
+      assert.equal(null, err);
       if (err) {
         callback(Message.errorMessage({ action: "connection to DB", e: err }));
       } else {
@@ -177,11 +180,12 @@ export const get = (
  * @param { string } user - User email
  * @returns {} - Uses callback function to send TYPE.apiResponse
  */
-const isUserNew = (
+export const isUserNew = (
   user: TYPE.IncLoginTYPE,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection(dbcMain)
@@ -310,6 +314,7 @@ export const create = (
             };
             // store it database
             MDB.client.connect(err => {
+              assert.equal(null, err);
               if (err) {
                 callback(
                   Message.errorMessage({ action: "connection to DB", e: err })
@@ -344,9 +349,12 @@ export const create = (
                       });
                     }
                   })
-                  .catch((e: any) =>
-                    callback(Message.errorMessage({ action: "user create", e }))
-                  );
+                  .catch((e: any) => {
+                    assert.equal(null, e);
+                    callback(
+                      Message.errorMessage({ action: "user create", e })
+                    );
+                  });
               }
             });
           }
@@ -377,8 +385,6 @@ export const login = (
       // check if user exists
       isUserNew(user, (newUserResponse: TYPE.apiResponse) => {
         // if 1 only user found, attempt to login
-        console.log("newUserResponse");
-        console.log(newUserResponse);
         if (newUserResponse.status) {
           // check login data
           // if found > check password
@@ -390,16 +396,11 @@ export const login = (
                 // if it's true/false
                 if (response) {
                   // if matching
-                  callback(
-                    Message.positiveMessage({
-                      subj: "User login is OK",
-                      payload: {
-                        payload: {
-                          id: newUserResponse.payload._id,
-                          location: newUserResponse.payload.location
-                        }
-                      }
-                    })
+                  getLocationInfo(
+                    newUserResponse.payload._id,
+                    (dataResponse: TYPE.apiResponse) => {
+                      callback(dataResponse)
+                    }
                   );
                 } else {
                   // if not matching
@@ -442,8 +443,10 @@ export const suLoginAttempt = (
   user: TYPE.IncLoginTYPE,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
+  console.log("inside syLoginAttempt");
   // connect to DB
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
@@ -527,6 +530,7 @@ export const loginAttempt = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
+    assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
@@ -541,7 +545,8 @@ export const loginAttempt = (
           },
           {
             $addFields: {
-              "users.location": "$_id"
+              "users.location": "$_id",
+              "users.localPosts": "$users.posts"
             }
           },
           {
@@ -568,7 +573,9 @@ export const loginAttempt = (
               avatar: 1,
               email: 1,
               pass: 1,
-              location: 1
+              location: 1,
+              localPosts: 1,
+              pinned:1
             }
           }
         ])
@@ -592,13 +599,15 @@ export const loginAttempt = (
                   // if it's true/false
                   if (response) {
                     // if matching
+                    // getLocationInfo()
                     callback(
                       Message.positiveMessage({
                         subj: "User login is OK",
                         payload: {
                           payload: {
                             id: result[0]._id,
-                            location: result[0].location
+                            location: result[0].location,
+                            posts: result[0].localPosts
                           }
                         }
                       })
@@ -617,6 +626,68 @@ export const loginAttempt = (
                   callback(response);
                 }
               }
+            );
+          }
+        });
+    }
+  });
+};
+
+export const getLocationInfo = (
+  user: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $match: {
+              "users._id": new MDB.ObjectId(user)
+            }
+          },
+          {
+            $project: {
+              name: 1,
+              location: "$_id",
+              pinned:1,
+              _id: 0,
+              posts: {
+                $reduce: {
+                  input: "$users.posts",
+                  initialValue: [],
+                  in: {
+                    $concatArrays: ["$$value", "$$this"]
+                  }
+                }
+              }
+            }
+          }
+        ])
+        .toArray((err: any, result: any) => {
+          if (err) {
+            // if error
+            callback(Message.errorMessage({ action: "user match", e: err }));
+          } else if (result.length === 0) {
+            // if no - response
+            callback(Message.notFound("user not found"));
+          } else if (result.length > 1) {
+            // if too many results
+            callback(Message.tooManyResultsMessage("user matching"));
+          } else {
+            // if found
+
+            callback(
+              Message.positiveMessage({
+                subj: "User login is OK",
+                payload: {
+                  payload: { _id: user, ...result[0] }
+                }
+              })
             );
           }
         });

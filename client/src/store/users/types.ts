@@ -1,14 +1,5 @@
 import * as TYPE from "../types";
 
-export interface tokenState {
-  token: string;
-}
-
-export interface actionsResponse {
-  type: string;
-  payload: any;
-}
-
 export interface checkTokenAction {
   type: "CHECK";
   payload: TYPE.apiResponse;
@@ -35,12 +26,18 @@ export interface setModuleUAction {
   type: "SET_MODULE";
   module: string;
 }
+export interface setAuthAction {
+  type: "SET_AUTH";
+  status: boolean
+}
+export interface setLocationDataAction {
+  type: "SET_LOCATION_DATA";
+  data: TYPE.data;
+}
 export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
   payload: TYPE.apiResponse;
 }
-export const CHECK = "CHECK";
-export const SET = "SET";
 
 export type Action =
   | setTokenAction
@@ -49,4 +46,6 @@ export type Action =
   | setModuleUAction
   | fetchLocationsAction
   | setLoadingAction
-  | registerAction;
+  | registerAction
+  | setAuthAction
+  | setLocationDataAction;

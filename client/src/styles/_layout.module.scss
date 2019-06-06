@@ -10,6 +10,8 @@
   right: 0;
   background-color: white;
   box-shadow: $pageShadow;
+  overflow: scroll;
+
 }
 
 /// Page, starting from top
@@ -21,6 +23,17 @@
   box-shadow: $pageShadow;
   animation: $aniSlideToTop;
 }
+
+// /// Regular page, starting from top
+// /// @group Layout
+// .page {
+//   @extend .main-template;
+//   top: 0;
+//   height: 90vh;
+//   border-radius: 0 0 4vh 4vh;
+//   box-shadow: $pageShadow;
+// }
+
 
 /// Page, starting from bottom
 /// @group Layout
@@ -44,7 +57,7 @@
 .wrapper {
   width: 100%;
   height: 100%;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-content: center;
 }
