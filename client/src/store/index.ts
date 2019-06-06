@@ -20,6 +20,8 @@ import { apiState } from "./defaults";
 
 import data from "../data/translation.json";
 
+console.log(process.env.REACT_APP_SELF);
+
 // set default url for API
 axios.defaults.baseURL = process.env.REACT_APP_SELF
   ? `${process.env.REACT_APP_SELF}`
