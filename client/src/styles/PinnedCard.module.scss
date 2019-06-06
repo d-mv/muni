@@ -1,0 +1,26 @@
+@import './typography';
+@import './colors';
+
+.line {
+  padding: 5px;
+}
+
+.lineRTL {
+  @extend .line;
+  direction: rtl;
+}
+
+.title {
+  font: $textPostCardTitle;
+  padding: 7px 0 3px 0;
+  padding-top: 7px;
+}
+
+.date {
+  color: $colorDarkGrey;
+  font: $textFormMessage
+}
+
+.text {
+  font: $textFormMessage;
+}

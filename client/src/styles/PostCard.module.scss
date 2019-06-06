@@ -1,68 +1,65 @@
 @import './typography';
 @import './colors';
 
-.card {
-  width: 95vw;
-  height: fit-content;
-  // height: 35vh;
-  margin: 1vh auto;
-  box-shadow: $boxShadow;
+// .card {
+//   width: 95vw;
+//   height: fit-content;
+//   // height: 35vh;
+//   margin: 1vh auto;
+//   box-shadow: $boxShadow;
 
-  .information {
-    padding: .3rem 1rem 0 1rem;
-    height: 100%;
+.information {
+  padding: .3rem 1rem 0 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .data {
+    width: 100%;
+    max-height: 2.2rem;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
 
-    .data {
-      width: 100%;
-      max-height: 2.2rem;
+    .line {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 0;
-
-      .line {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-        width: 70%;
-      }
+      padding: 0;
+      width: 70%;
+    }
 
 
 
-      .voters {
-        margin: 0 1rem;
-        padding: 0;
+    .voters {
+      margin: 0 1rem;
+      padding: 0;
 
-      }
+    }
 
-      .button {
-        position: relative;
-        bottom: 1.4rem;
-      }
+    .button {
+      position: relative;
+      bottom: 1.4rem;
     }
   }
-
-
 }
 
-.cardRight {
-  @extend .card;
+.informationRTL {
+  @extend .information;
+  align-items: flex-end;
+  text-align: right;
+}
 
-  .information {
-    align-items: flex-end;
-    text-align: right;
-  }
+.dataRTL {
+  @extend .data;
+  flex-direction: row-reverse;
 
-  .data {
+  .lineRTL {
+    @extend .line;
     flex-direction: row-reverse;
-
-    .line {
-      flex-direction: row-reverse;
-    }
   }
 }
 
+// }

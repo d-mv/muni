@@ -4,6 +4,20 @@
       "name": "English",
       "short": "en",
       "direction": "ltr",
+      "months": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
       "text": {
         "welcome.enter": "ENTER",
         "login.label.email": "EMAIL",
@@ -26,13 +40,28 @@
         "post.voters": "voters",
         "profile.text.changeLanguage": "Please, choose the app language. The language chosen is shown next to the switch button",
         "profile.text.logOff": "Please, press the below button if you want to log off the app. You will have to log in if you want to use it again.",
-        "profile.button.logOff":"LOG OFF"
+        "profile.button.logOff": "LOG OFF"
       }
     },
     "עב": {
       "name": "עברית",
       "short": "עב",
       "direction": "rtl",
+      "months": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "מאי",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+
       "text": {
         "welcome.enter": "כניסה",
         "login.label.email": "דוא\"ל",
@@ -55,7 +84,7 @@
         "post.voters": "voters",
         "profile.text.changeLanguage": "בחר, בחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד לחצן המתג",
         "profile.text.logOff": "אנא, לחץ על הלחצן למטה אם אתה רוצה להיכנס את היישום. יהיה עליך להתחבר אם ברצונך להשתמש בו שוב.",
-        "profile.button.logOff":"להתנתק"
+        "profile.button.logOff": "להתנתק"
       }
     }
   }

@@ -7,3 +7,8 @@
   color: $colorDark;
   font: $textPostCardTitle;
 }
+
+.titleRTL {
+  @extend .title;
+  direction: rtl;
+}

@@ -5,11 +5,15 @@ import { AppState } from "../store";
 
 import Page from '../layout/Page'
 import Header from '../components/Header'
+import PinnedCard from '../components/PinnedCard'
 import PostList from '../components/PostList'
 
 const Home = (props: any) => {
   const [posts, setPosts] = React.useState(
-    props.locationData.payload ? props.locationData.payload.posts : []
+    props.locationData.posts ? props.locationData.posts : []
+  );
+  const [pinned, setPinned] = React.useState(
+    props.locationData.pinned ? props.locationData.pinned : {}
   );
 
   React.useEffect(() => {
@@ -20,7 +24,8 @@ const Home = (props: any) => {
   return (
     <Page>
       <Header />
-      <PostList posts={posts}/>
+      <PinnedCard post={pinned} />
+      <PostList posts={posts} />
     </Page>
   );
 };
