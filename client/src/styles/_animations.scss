@@ -1,15 +1,11 @@
 /// Animations
-
-
 @keyframes slideInFromTop {
   0% {
-    // transform: translateY(-10%);
     min-height: 100vh;
     margin-top: 0vh;
   }
 
   100% {
-    // transform: translateX(0);
     margin-top: 10vh;
     min-height: 90vh;
   }
@@ -18,12 +14,10 @@
 @keyframes slideInToTop {
   0% {
     height: 100vh;
-    // transform: translateX(0);
   }
 
   100% {
     height: 90vh;
-    // transform: translateY(-10%);
   }
 }
 
@@ -75,7 +69,7 @@
 @keyframes beat {
   0% {
     transform: scale(.95);
-    box-shadow: 0 0px 8px rgba(68, 68, 68, .3);
+    box-shadow: 0 0px 8px var(--colorDarkTrans);
   }
 
   50% {
@@ -84,14 +78,14 @@
 
   100% {
     transform: scale(1);
-    box-shadow: 0 0px 5px rgba(68, 68, 68, .3);
+    box-shadow: 0 0px 5px var(--colorDarkTrans);
   }
 }
 
 @keyframes beatWhite {
   0% {
     transform: scale(.95);
-    box-shadow: 0 0px 8px rgba(255, 255, 255, .3);
+    box-shadow: 0 0px 8px var(--colorWhiteThird);
   }
 
   50% {
@@ -100,17 +94,19 @@
 
   100% {
     transform: scale(1);
-    box-shadow: 0 0px 5px rgba(68, 68, 68, .3);
+    box-shadow: 0 0px 5px var(--colorDarkTrans);
   }
 }
 
-/// Box transition
-$boxTransition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+:root {
+  /// Box transition
+  --boxTransition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-/// Animations
-$aniSlideFromTop: slideInFromTop 0.3s ease-out 0s 1 forwards;
-$aniSlideToTop: slideInToTop 0.3s ease-out 0s 1 forwards;
-$aniAppear: appear 0.3s ease-out 0.3s 1 forwards;
-$aniVerticalFlip: vertical 7.5s linear infinite 0s;
-$aniBeat: beat .5s linear .3s 2;
-$aniBeatD2s: beatWhite .5s linear 2s 2;
+  /// Animations
+  --aniSlideFromTop: slideInFromTop 0.3s ease-out 0s 1 forwards;
+  --aniSlideToTop: slideInToTop 0.3s ease-out 0s 1 forwards;
+  --aniAppear: appear 0.3s ease-out 0.3s 1 forwards;
+  --aniVerticalFlip: vertical 7.5s linear infinite 0s;
+  --aniBeat: beat .5s linear .3s 2;
+  --aniBeatD2s: beatWhite .5s linear 2s 2;
+}

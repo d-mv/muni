@@ -1,10 +1,8 @@
-@import './colors';
-
 .card-template {
   width: 95vw;
   height: fit-content;
   margin: 1vh auto;
-  box-shadow: $boxShadow;
+  box-shadow: var(--boxShadow);
   display: flex;
   flex-direction: column;
 }

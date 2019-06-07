@@ -1,14 +1,10 @@
-@import './colors';
-@import './_typography';
-@import './_animations.scss';
-
 .button {
-  height:60%;
-  width:10vw;
+  height: 60%;
+  width: 10vw;
   margin: 0 1vw;
-  transition: $boxTransition;
+  transition: var(--boxTransition);
 
-  &:active{
-  transform:scale(.95);
+  &:active {
+    transform: scale(.95);
   }
 }

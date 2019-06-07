@@ -1,5 +1,3 @@
-@import './colors';
-
 /// Button template
 /// @group Layout
 .appWrapper {
@@ -11,5 +9,5 @@
   // min-height: fit-content;
   bottom: 0;
   right: 0;
-  background-color: $colorPrimary;
+  background-color: var(--colorPrimary);
 }

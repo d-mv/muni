@@ -1,6 +1,6 @@
 @import './layout.module';
-@import './colors';
-@import './animations';
+// @import './colors';
+// @import './animations';
 
 /// Regular page, starting from top
 /// @group Layout
@@ -9,7 +9,7 @@
   top: 0;
   height: 90vh;
   border-radius: 0 0 4vh 4vh;
-  box-shadow: $pageShadow;
+  box-shadow: var(--pageShadow);
 }
 
 /// Page, starting from bottom
@@ -18,7 +18,7 @@
   @extend .main-template;
   position: initial;
   border-radius: 4vh 4vh 0 0;
-  animation: $aniSlideFromTop;
+  animation: var(--aniSlideFromTop);
 }
 
 /// Page, starting from top
@@ -27,6 +27,6 @@
   @extend .main-template;
   top: 0;
   border-radius: 0 0 4vh 4vh;
-  box-shadow: $pageShadow;
-  animation: $aniSlideToTop;
+  box-shadow: var(--pageShadow);
+  animation: var(--aniSlideToTop);
 }

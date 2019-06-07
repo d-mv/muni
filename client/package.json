@@ -47,7 +47,6 @@
     "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
     "@types/react-redux": "^7.0.9",
-    "@types/react-select": "^2.0.19",
     "@types/redux-logger": "^3.0.7",
     "node-sass": "^4.12.0",
     "react-testing-library": "^7.0.1",

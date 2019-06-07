@@ -1,15 +1,11 @@
-@import './colors';
-@import './animations';
-@import './typography';
-
 /// Page wrapper template
 /// @group Layout
 .main-template {
   position: absolute;
   left: 0;
   right: 0;
-  background-color: white;
-  box-shadow: $pageShadow;
+  background-color: var(--colorWhite);
+  box-shadow: var(--pageShadow);
   overflow: scroll;
 
 }
@@ -20,20 +16,9 @@
   @extend .main-template;
   top: 0;
   border-radius: 0 0 4vh 4vh;
-  box-shadow: $pageShadow;
-  animation: $aniSlideToTop;
+  box-shadow: var(--pageShadow);
+  animation: var(--aniSlideToTop);
 }
-
-// /// Regular page, starting from top
-// /// @group Layout
-// .page {
-//   @extend .main-template;
-//   top: 0;
-//   height: 90vh;
-//   border-radius: 0 0 4vh 4vh;
-//   box-shadow: $pageShadow;
-// }
-
 
 /// Page, starting from bottom
 /// @group Layout
@@ -41,7 +26,7 @@
   @extend .main-template;
   position: initial;
   border-radius: 4vh 4vh 0 0;
-  animation: $aniSlideFromTop;
+  animation: var(--aniSlideFromTop);
 }
 
 /// Message to display in the center
@@ -49,7 +34,7 @@
 .centralMessage {
   margin: 0 auto;
   width: 70%;
-  font: $textCentralMessage;
+  font: var(--textCentralMessage);
   text-align: center;
   line-height: 2rem;
 }
