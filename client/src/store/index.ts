@@ -20,12 +20,14 @@ import { apiState } from "./defaults";
 
 import data from "../data/translation.json";
 
-console.log(process.env.NODE_ENV);
-
 const self =
-  process.env.NODE_ENV === "production"
-    ? `https://${window.location.hostname}/api`
-    : "http://localhost:8080/api";
+  window.location.hostname === "localhost"
+    ? "http://localhost:8080/api"
+    : process.env.REACT_APP_SELF
+    ? process.env.REACT_APP_SELF
+    : `https://${window.location.hostname}/api`;
+
+console.log(self);
 
 axios.defaults.baseURL = self;
 
