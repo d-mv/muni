@@ -21,7 +21,8 @@ import { apiState } from "./defaults";
 import data from "../data/translation.json";
 
 let self;
-
+console.log(process.env.REACT_APP_SELF);
+console.log(window.location.hostname);
 if (process.env.REACT_APP_SELF) {
   self = process.env.REACT_APP_SELF;
 } else if (window.location.hostname === "localhost") {
