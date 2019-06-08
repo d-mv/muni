@@ -29,13 +29,13 @@ const App = (props: any) => {
 
   const { login } = props;
   const { cookies } = props;
-  console.log(cookies.get("token"));
+  // console.log(cookies.get("token"));
 
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
   // set cookies if token changes
   React.useEffect(() => {
-    console.log("hi");
+    // console.log("hi");
     // if 'clear'
     if (props.token === "clear") {
       cookies.set("token", "");

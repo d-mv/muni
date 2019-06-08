@@ -21,3 +21,22 @@
 .text {
   font: var(--textFormMessage);
 }
+
+.icon-template {
+  height: 40px;
+  width: 40px;
+  position: relative;
+  top: -25px;
+  margin-bottom: -40px;
+}
+
+.icon {
+  @extend .icon-template;
+  left: 80vw;
+}
+
+.iconRTL {
+  @extend .icon-template;
+
+  left: 5vw;
+}

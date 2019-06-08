@@ -16,7 +16,6 @@ const iconFactory = (props: { icon: string; module: string }) => {
   const iconName = `${props.icon}${
     props.module === props.icon ? "Active" : "Regular"
   }`;
-  // import * as ICON from "../../icons/NavIcons";
   const ICON = require("../../icons/NavIcons");
   const icons: any = ICON;
   return icons[iconName];

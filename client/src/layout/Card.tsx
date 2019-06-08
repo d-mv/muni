@@ -10,10 +10,21 @@ import style from "../styles/Card.module.scss";
  * @returns {JSX.Element}
  *
  */
-const Card = (props: { direction: string; children: any; id: string }) => {
+const Card = (props: {
+  direction: string;
+  children: any;
+  id: string;
+  margin?: number;
+}) => {
   const cardStyle = props.direction === "rtl" ? style.cardRTL : style.card;
+  const marginAdjust = {
+    marginTop: props.margin || 0
+  };
   return (
-    <article id={props.id} className={cardStyle}>
+    <article
+      id={props.id}
+      className={cardStyle}
+      style={props.margin ? marginAdjust : {}}>
       {props.children}
     </article>
   );
