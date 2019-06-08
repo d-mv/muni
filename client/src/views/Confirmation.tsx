@@ -1,9 +1,12 @@
 import React from "react";
+
+import Page from "../layout/Page";
+
 import layout from "../styles/_layout.module.scss";
 
 const Confirmation = () => {
   return (
-    <main className={layout.mainOpposite}>
+    <Page>
       <div className={layout.wrapper}>
         <p className={layout.centralMessage}>
           "We have sent you the confirmation email. Please, click on 'Verify'
@@ -11,7 +14,7 @@ const Confirmation = () => {
           credentials"
         </p>
       </div>
-    </main>
+    </Page>
   );
 };
 

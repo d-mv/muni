@@ -1,6 +1,13 @@
-@import './layout.module';
-// @import './colors';
-// @import './animations';
+/// Page wrapper template
+/// @group Layout
+.main-template {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: var(--colorWhite);
+  box-shadow: var(--pageShadow);
+  overflow: scroll;
+}
 
 /// Regular page, starting from top
 /// @group Layout
@@ -8,6 +15,8 @@
   @extend .main-template;
   top: 0;
   height: 90vh;
+  box-sizing: border-box;
+  border-bottom: 4vh solid white;
   border-radius: 0 0 4vh 4vh;
   box-shadow: var(--pageShadow);
 }

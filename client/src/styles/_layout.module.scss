@@ -1,33 +1,4 @@
-/// Page wrapper template
-/// @group Layout
-.main-template {
-  position: absolute;
-  left: 0;
-  right: 0;
-  background-color: var(--colorWhite);
-  box-shadow: var(--pageShadow);
-  overflow: scroll;
 
-}
-
-/// Page, starting from top
-/// @group Layout
-.mainTop {
-  @extend .main-template;
-  top: 0;
-  border-radius: 0 0 4vh 4vh;
-  box-shadow: var(--pageShadow);
-  animation: var(--aniSlideToTop);
-}
-
-/// Page, starting from bottom
-/// @group Layout
-.mainOpposite {
-  @extend .main-template;
-  position: initial;
-  border-radius: 4vh 4vh 0 0;
-  animation: var(--aniSlideFromTop);
-}
 
 /// Message to display in the center
 /// @group Layout
