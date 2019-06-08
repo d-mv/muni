@@ -40,7 +40,7 @@ app.use("/api", apiRouter);
 // * React
 
 //Static file declaration
-app.use(express.static(path.join(__dirname, "../../client/build")));
+app.use(express.static(path.join(__dirname, "../client/build/")));
 
 //production mode
 if (process.env.NODE_ENV === "production") {
@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === "production") {
 
 //build mode
 app.get("/index.html", (req: any, res: any) => {
-  res.sendFile(path.join(__dirname + "../client/public/index.html"));
+  res.sendFile(path.join(__dirname + "../../client/build/index.html"));
 });
 
 // * end of React
