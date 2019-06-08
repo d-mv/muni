@@ -20,13 +20,17 @@ import { apiState } from "./defaults";
 
 import data from "../data/translation.json";
 
-console.log(process.env.REACT_APP_SELF);
+let self;
 
-// set default url for API
-// axios.defaults.baseURL = process.env.REACT_APP_SELF
-//   ? `${process.env.REACT_APP_SELF}`
-//   : "/api";
-axios.defaults.baseURL = "http://muni-dev.herokuapp.com/api";
+if (process.env.REACT_APP_SELF) {
+  self = process.env.REACT_APP_SELF;
+} else if (window.location.hostname === "localhost") {
+  self = "http://localhost:8080/api";
+} else {
+  self = `https://${window.location.hostname}/api`;
+}
+
+axios.defaults.baseURL = self;
 
 const rootReducer = combineReducers({
   token: setToken,
