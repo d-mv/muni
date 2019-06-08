@@ -1,14 +1,15 @@
-import React from 'react'
+import React from "react";
 
-import {iconCreateNew} from '../icons/Icons'
+import { iconCreateNew } from "../icons/Icons";
 
-import style from '../styles/NewButton.module.scss'
+import style from "../styles/NewButton.module.scss";
 
-const NewButton = () => {
+const NewButton = (props: { action: () => void }) => {
   return (
-    <button className={style.new}>{iconCreateNew}</button>
+    <button className={style.new} onClick={() => props.action()}>
+      {iconCreateNew}
+    </button>
   );
-
-}
+};
 
 export default NewButton;

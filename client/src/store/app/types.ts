@@ -14,4 +14,13 @@ export interface setLocationDataAction {
   data: data;
 }
 
-export type Action = loadDataAction | setLanguageAction | setLocationDataAction;
+export interface setStep {
+  type: "SET_STEP";
+  step:number
+}
+
+export type Action =
+  | loadDataAction
+  | setLanguageAction
+  | setLocationDataAction
+  | setStep;

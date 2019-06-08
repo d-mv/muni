@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { loadData, setLanguage } from "./app/reducers";
+import { loadData, setLanguage, setStep } from "./app/reducers";
 import {
   setToken,
   checkToken,
@@ -43,7 +43,8 @@ const rootReducer = combineReducers({
   data: loadData,
   language: setLanguage,
   locationData: setLocationData,
-  auth: setAuth
+  auth: setAuth,
+  step: setStep
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -64,6 +65,7 @@ export default function configureStore() {
     language: TYPE.indexedObjAny;
     locationData: TYPE.data;
     auth: boolean;
+    step: number;
   }
 
   const initialState: state = {
@@ -77,7 +79,8 @@ export default function configureStore() {
     data: data,
     language: data.language.en,
     locationData: {},
-    auth: false
+    auth: false,
+    step: 1
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

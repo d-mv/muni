@@ -30,17 +30,19 @@ export const setLanguage = (state = {}, action: Action): data => {
   }
   return state;
 };
+
 /**
- * Reducer function to process the setLocationData action
- * @function setLocationData
+ * Reducer function to process the setLanguage action
+ *
  * @param state
  * @param action
+ *
  * @returns {string}
  */
-// export const setLocationData = (state = {}, action: Action): data => {
-//   switch (action.type) {
-//     case "SET_LOCATION_DATA":
-//       return { ...action.data };
-//   }
-//   return state;
-// };
+export const setStep = (state = 1, action: Action): number => {
+  switch (action.type) {
+    case "SET_STEP":
+      return action.step;
+  }
+  return state;
+};

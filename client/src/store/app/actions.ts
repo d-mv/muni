@@ -33,3 +33,13 @@ export const setLanguage = (lang: string): Action => {
 export const setLocationData = (data: TYPE.data): Action => {
   return { type: "SET_LOCATION_DATA", data };
 };
+
+/** Action function to change step when creating new post
+ *
+ * @param {number} step - Step number
+ *
+ * @returns {object}
+ */
+export const setStep = (step: number): Action => {
+  return { type: "SET_STEP", step };
+};
