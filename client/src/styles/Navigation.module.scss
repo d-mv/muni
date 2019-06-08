@@ -1,7 +1,3 @@
-@import './colors';
-@import './_typography';
-@import './_animations.scss';
-
 /// Button template
 /// @group Layout
 .nav-template {
@@ -39,7 +35,7 @@
   h1 {
     width: 80%;
     text-align: center;
-    color: white;
+    color: var(--colorWhite);
   }
 }
 
@@ -65,7 +61,7 @@
   // set new properties
   height: 12.5vw;
   border-radius: 6px;
-  transition: $boxTransition;
+  transition: var(--boxTransition);
 
   &:active {
     transform: scale(0.98);
@@ -87,12 +83,12 @@
   @extend .button-template;
   width: 100%;
   height: 100%;
-  font: $textButtonEnter;
-  color: white;
+  font: var(--textButtonEnter);
+  color: var(--colorWhite);
   letter-spacing: 1vh;
   text-align: center;
   vertical-align: middle;
-  animation: $aniAppear;
+  animation: var(--aniAppear);
   opacity: 0;
 }
 

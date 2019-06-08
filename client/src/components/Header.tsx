@@ -22,11 +22,11 @@ const Header = (props: {
     : props.locationData.name["en"];
   return (
     <header className={direction === "rtl" ? style.plankRight : style.plank}>
-      <Button action={mockFN}>
+      <Button mode='minimal' action={mockFN}>
         <Help color='primary' />
       </Button>
       <PageTitle title={title} direction={direction} />
-      <Button action={mockFN}>
+      <Button mode='minimal' action={mockFN}>
         <Edit color='primary' />
       </Button>
     </header>

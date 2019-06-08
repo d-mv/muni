@@ -1,6 +1,3 @@
-@import './typography';
-@import './colors';
-
 .line {
   padding: 5px;
 }
@@ -11,16 +8,35 @@
 }
 
 .title {
-  font: $textPostCardTitle;
+  font: var(--textPostCardTitle);
   padding: 7px 0 3px 0;
   padding-top: 7px;
 }
 
 .date {
-  color: $colorDarkGrey;
-  font: $textFormMessage
+  color: var(--colorDarkGrey);
+  font: var(--textFormMessage);
 }
 
 .text {
-  font: $textFormMessage;
+  font: var(--textFormMessage);
+}
+
+.icon-template {
+  height: 40px;
+  width: 40px;
+  position: relative;
+  top: -25px;
+  margin-bottom: -40px;
+}
+
+.icon {
+  @extend .icon-template;
+  left: 80vw;
+}
+
+.iconRTL {
+  @extend .icon-template;
+
+  left: 5vw;
 }

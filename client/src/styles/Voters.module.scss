@@ -1,6 +1,3 @@
-@import './typography';
-@import './colors';
-
 .voters {
   height: 2.2rem;
   display: flex;
@@ -17,14 +14,14 @@
 
   .number {
     margin: 0 .1rem;
-    font: $textVotersNumber;
+    font: var(--textVotersNumber);
   }
 
   .text {
     margin: 0 .1rem;
     letter-spacing: 0.5px;
-    color: $colorDarkGrey;
-    font: $textVotersText;
+    color: var(--colorDarkGrey);
+    font: var(--textVotersText);
   }
 }
 

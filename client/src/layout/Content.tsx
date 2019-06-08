@@ -11,7 +11,10 @@ import style from "../styles/Content.module.scss";
  *
  */
 const Content = (props: { children: any }) => {
-  return <div className={style.content}>{props.children}</div>;
+  const compo: JSX.Element = (
+    <div className={style.content}>{props.children}</div>
+  );
+  return compo;
 };
 
 export default Content;

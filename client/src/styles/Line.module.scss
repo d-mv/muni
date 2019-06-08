@@ -22,11 +22,17 @@
 .lineRTL {
   @extend .line-template;
   flex-direction: row-reverse;
+
+  * {
+    direction: rtl
+  }
 }
 
 .lineRTLthin {
-  @extend .lineRTL;
+  @extend .linethin;
   flex-direction: row-reverse;
-  // padding: 5px;
 
+  * {
+    direction: rtl
+  }
 }

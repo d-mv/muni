@@ -1,21 +1,15 @@
-@import './_colors';
-@import './_animations';
-@import './_typography';
-
 .vote {
-  // position: relative;
-  // bottom: 9vh;
-  // left: 69vw;
+
   margin: 0;
   padding: 0;
   width: 60px;
   height: 60px;
   border-radius: 50%;
   border: none;
-  background-color: $colorWhiteThird;
-  box-shadow: $elementShadow;
-  transition: $boxTransition;
-  animation: $aniBeat;
+  background-color: var(--colorWhiteThird);
+  box-shadow: var(--elementShadow);
+  transition: var(--boxTransition);
+  animation: var(--aniBeat);
 
   &:active {
     transform: scale(.9);
@@ -29,9 +23,9 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: $colorPrimary;
-  color: white;
-  border: 3px solid $colorPrimaryLight;
+  background: var(--colorPrimary);
+  color: var(--colorWhite);
+  border: 3px solid var(--colorPrimaryLight);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,6 +34,6 @@
     width: 100%;
     text-align: center;
     user-select: none;
-    font: $textButtonVote;
+    font: var(--textButtonVote);
   }
 }

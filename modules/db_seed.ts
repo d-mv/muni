@@ -48,9 +48,9 @@ const dbSeed = (callback: any) => {
     max: 10
   });
   // categories
-  const categories = [
-    'important','cat1','cat2','other'
-  ]
+  const categories = ["important", "cat1", "cat2", "other"];
+  const languages = ["en", "עב"];
+
   // generate has for password
   encodeString("1234567", (encoded: TYPE.intApiResponseTYPE) => {
     if (!encoded.status) {
@@ -59,10 +59,10 @@ const dbSeed = (callback: any) => {
       // set the block of data
       let block = [];
       // generate user ids
-      let userIds = []
+      let userIds = [];
       for (let i = 0; i < users; i++) {
         userIds.push(new MDB.ObjectId());
-       }
+      }
 
       for (let i = 0; i < users; i++) {
         // new user
@@ -72,6 +72,7 @@ const dbSeed = (callback: any) => {
           lName: faker.name.lastName(),
           avatar: "https://picsum.photos/200/300?random=1",
           email: faker.internet.email(),
+          language: languages[Math.floor(Math.random() * languages.length)],
           pass: encoded.payload,
           posts: []
         };
@@ -96,7 +97,7 @@ const dbSeed = (callback: any) => {
             category,
             date: faker.date.between("2019-01-01", "2019-05-15"),
             status: "active",
-            votes: faker.random.number(),
+            votes: faker.random.number()
           };
           // console.log(post);
           // push the post to user

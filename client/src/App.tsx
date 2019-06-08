@@ -19,8 +19,7 @@ import style from "./styles/App.module.scss";
 
 import Welcome from "./views/Welcome";
 import Login from "./views/Login";
-import NewButton from './components/NewButton'
-
+import NewButton from "./components/NewButton";
 
 const App = (props: any) => {
   const [token, setToken] = React.useState("");
@@ -29,13 +28,13 @@ const App = (props: any) => {
 
   const { login } = props;
   const { cookies } = props;
-  console.log(cookies.get("token"));
+  // console.log(cookies.get("token"));
 
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
   // set cookies if token changes
   React.useEffect(() => {
-    console.log("hi");
+    // console.log("hi");
     // if 'clear'
     if (props.token === "clear") {
       cookies.set("token", "");
@@ -58,20 +57,20 @@ const App = (props: any) => {
 
   // fetch locations
   React.useEffect(() => {
-  fetch()
+    fetch();
   }, []);
+
+  const handleNewButtonClick = () => {
+    props.setModule("new");
+  };
+
   let show;
   switch (props.module) {
-
     case "welcome":
-      show = (
-        <Welcome />
-      );
+      show = <Welcome />;
       break;
     case "login":
-      show = (
-        <Login />
-      );
+      show = <Login />;
       break;
     case "confirmation":
       const Confirmation = React.lazy(() => import("./views/Confirmation"));
@@ -102,7 +101,7 @@ const App = (props: any) => {
       show = (
         <Suspense fallback={<Loading />}>
           <Profile />
-          <NewButton />
+          <NewButton action={handleNewButtonClick} />
         </Suspense>
       );
       break;
@@ -111,7 +110,7 @@ const App = (props: any) => {
       show = (
         <Suspense fallback={<Loading />}>
           <Home />
-          <NewButton />
+          <NewButton action={handleNewButtonClick} />
         </Suspense>
       );
   }

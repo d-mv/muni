@@ -1,11 +1,9 @@
-@import './typography';
-
 .paragraph {
-  font: $textParaStandard;
+  font: var(--textParaStandard);
   padding: 10px;
 }
 
 .paraThin {
-  font: $textParaStandard;
+  @extend .paragraph;
   padding: 0 10px 3px 10px;
 }

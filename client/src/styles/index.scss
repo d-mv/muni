@@ -1,3 +1,8 @@
+@import './_colors';
+@import './_animations';
+@import './_typography';
+
+
 /* m-plus-rounded-1c-regular - latin-ext_latin_hebrew */
 @font-face {
   font-family: 'M PLUS Rounded 1c';
@@ -83,18 +88,18 @@
   font-family: 'Tajawal';
   font-style: normal;
   font-weight: 300;
-  src: url('/fonts/tajawal-v2-latin-300.eot');
+  src: url('/fonts/tajawal-v2-arabic-300.eot');
   /* IE9 Compat Modes */
   src: local('Tajawal Light'), local('Tajawal-Light'),
-    url('/fonts/tajawal-v2-latin-300.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/tajawal-v2-arabic-300.eot?#iefix') format('embedded-opentype'),
     /* IE6-IE8 */
-    url('/fonts/tajawal-v2-latin-300.woff2') format('woff2'),
+    url('/fonts/tajawal-v2-arabic-300.woff2') format('woff2'),
     /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-latin-300.woff') format('woff'),
+    url('/fonts/tajawal-v2-arabic-300.woff') format('woff'),
     /* Modern Browsers */
-    url('/fonts/tajawal-v2-latin-300.ttf') format('truetype'),
+    url('/fonts/tajawal-v2-arabic-300.ttf') format('truetype'),
     /* Safari, Android, iOS */
-    url('/fonts/tajawal-v2-latin-300.svg#Tajawal') format('svg');
+    url('/fonts/tajawal-v2-arabic-300.svg#Tajawal') format('svg');
   /* Legacy iOS */
 }
 
@@ -103,18 +108,18 @@
   font-family: 'Tajawal';
   font-style: normal;
   font-weight: 400;
-  src: url('/fonts/tajawal-v2-latin-regular.eot');
+  src: url('/fonts/tajawal-v2-arabic-regular.eot');
   /* IE9 Compat Modes */
   src: local('Tajawal'), local('Tajawal-Regular'),
-    url('/fonts/tajawal-v2-latin-regular.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/tajawal-v2-arabic-regular.eot?#iefix') format('embedded-opentype'),
     /* IE6-IE8 */
-    url('/fonts/tajawal-v2-latin-regular.woff2') format('woff2'),
+    url('/fonts/tajawal-v2-arabic-regular.woff2') format('woff2'),
     /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-latin-regular.woff') format('woff'),
+    url('/fonts/tajawal-v2-arabic-regular.woff') format('woff'),
     /* Modern Browsers */
-    url('/fonts/tajawal-v2-latin-regular.ttf') format('truetype'),
+    url('/fonts/tajawal-v2-arabic-regular.ttf') format('truetype'),
     /* Safari, Android, iOS */
-    url('/fonts/tajawal-v2-latin-regular.svg#Tajawal') format('svg');
+    url('/fonts/tajawal-v2-arabic-regular.svg#Tajawal') format('svg');
   /* Legacy iOS */
 }
 
@@ -123,18 +128,18 @@
   font-family: 'Tajawal';
   font-style: normal;
   font-weight: 500;
-  src: url('/fonts/tajawal-v2-latin-500.eot');
+  src: url('/fonts/tajawal-v2-arabic-500.eot');
   /* IE9 Compat Modes */
   src: local('Tajawal Medium'), local('Tajawal-Medium'),
-    url('/fonts/tajawal-v2-latin-500.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/tajawal-v2-arabic-500.eot?#iefix') format('embedded-opentype'),
     /* IE6-IE8 */
-    url('/fonts/tajawal-v2-latin-500.woff2') format('woff2'),
+    url('/fonts/tajawal-v2-arabic-500.woff2') format('woff2'),
     /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-latin-500.woff') format('woff'),
+    url('/fonts/tajawal-v2-arabic-500.woff') format('woff'),
     /* Modern Browsers */
-    url('/fonts/tajawal-v2-latin-500.ttf') format('truetype'),
+    url('/fonts/tajawal-v2-arabic-500.ttf') format('truetype'),
     /* Safari, Android, iOS */
-    url('/fonts/tajawal-v2-latin-500.svg#Tajawal') format('svg');
+    url('/fonts/tajawal-v2-arabic-500.svg#Tajawal') format('svg');
   /* Legacy iOS */
 }
 
@@ -143,18 +148,18 @@
   font-family: 'Tajawal';
   font-style: normal;
   font-weight: 800;
-  src: url('/fonts/tajawal-v2-latin-800.eot');
+  src: url('/fonts/tajawal-v2-arabic-800.eot');
   /* IE9 Compat Modes */
   src: local('Tajawal ExtraBold'), local('Tajawal-ExtraBold'),
-    url('/fonts/tajawal-v2-latin-800.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/tajawal-v2-arabic-800.eot?#iefix') format('embedded-opentype'),
     /* IE6-IE8 */
-    url('/fonts/tajawal-v2-latin-800.woff2') format('woff2'),
+    url('/fonts/tajawal-v2-arabic-800.woff2') format('woff2'),
     /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-latin-800.woff') format('woff'),
+    url('/fonts/tajawal-v2-arabic-800.woff') format('woff'),
     /* Modern Browsers */
-    url('/fonts/tajawal-v2-latin-800.ttf') format('truetype'),
+    url('/fonts/tajawal-v2-arabic-800.ttf') format('truetype'),
     /* Safari, Android, iOS */
-    url('/fonts/tajawal-v2-latin-800.svg#Tajawal') format('svg');
+    url('/fonts/tajawal-v2-arabic-800.svg#Tajawal') format('svg');
   /* Legacy iOS */
 }
 
@@ -186,17 +191,17 @@
   select,
   option,
   input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
+    // -webkit-appearance: none;
+    // -moz-appearance: none;
+    // -ms-appearance: none;
+    // -o-appearance: none;
+    // appearance: none;
     outline: none;
     border: none;
-    background: none;
+      // background: rgba(0, 0, 0, 0);
 
 
-    &:active {
+      &:active {
       text-decoration: none;
       outline: none;
     }
@@ -205,12 +210,5 @@
       text-decoration: none;
       outline: none;
     }
-  }
-
-  button {
-    // align-items: none;
-    // text-align: none;
-    // cursor: default;
-    // color: none;
   }
 }

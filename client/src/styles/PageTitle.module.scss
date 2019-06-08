@@ -1,15 +1,11 @@
-@import './colors';
-@import './typography';
-
 .title {
-  color: $colorPrimary;
+  color: var(--colorPrimary);
   text-align: center;
-  font: $textPageTitle;
+  font: var(--textPageTitle);
 }
 
 .titleR {
   @extend .title;
-  // font: $textPageTitleR;
-  font-family: $fontBasic;
-  
+  font-family: var(--fontBasic);
+
 }

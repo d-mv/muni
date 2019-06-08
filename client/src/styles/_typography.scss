@@ -1,28 +1,33 @@
-/// Base font
-$fontBasic: 'M PLUS Rounded 1c',
-'Tajawal',
-sans-serif;
-/// Button name
-$textButton: normal 800 1.2rem $fontBasic;
-$textButtonEnter: normal 800 2rem $fontBasic;
-/// Fields
-$textFormField: normal 400 1rem $fontBasic;
-$textFormFieldPrompt: normal 300 0.8rem $fontBasic;
-$textFormFieldName: normal 500 0.8rem $fontBasic;
-$textFormFieldNameR: normal 500 0.9rem $fontBasic;
-$textFormMessage: normal 300 0.9rem $fontBasic;
-/// Messages
-$textCentralMessage: normal 400 1.3rem $fontBasic;
-/// Titles
-$textPageTitle: normal 800 1.8rem $fontBasic;
-$textPageTitleR: normal 800 2rem $fontBasic;
-/// Paragraphs
-$textParaStandard: normal 300 1rem $fontBasic;
- /// Card
-$textButtonVote: normal 400 .8rem $fontBasic;
+/// Defining global variables with text settings
+/// @group Typography
+:root {
+  /// Fonts
+  --fontBasic: 'M PLUS Rounded 1c',
+    'Tajawal',
+    sans-serif;
+  /// Button name
+  --textButton: normal 800 1.2rem var(--fontBasic);
+  --textButtonEnter: normal 800 2rem var(--fontBasic);
+  /// Fields
+  --textFormField: normal 400 1rem var(--fontBasic);
+  --textFormFieldPrompt: normal 300 0.8rem var(--fontBasic);
+  --textFormFieldName: normal 500 0.8rem var(--fontBasic);
+  --textFormFieldNameR: normal 500 0.9rem var(--fontBasic);
+  --textFormMessage: normal 300 0.9rem var(--fontBasic);
+  /// Messages
+  --textCentralMessage: normal 400 1.3rem var(--fontBasic);
+  /// Titles
+  --textPageTitle: normal 800 1.8rem var(--fontBasic);
+  --textPageTitleR: normal 800 2rem var(--fontBasic);
+  /// Paragraphs
+  --textParaStandard: normal 300 1rem var(--fontBasic);
+  /// Card
+  --textButtonVote: normal 400 .8rem var(--fontBasic);
 
-$textVotersNumber: normal 400 .8rem $fontBasic;
-$textVotersText: normal 300 .8rem $fontBasic;
+  --textVotersNumber: normal 400 .8rem var(--fontBasic);
+  --textVotersText: normal 300 .8rem var(--fontBasic);
 
-$textPostCardTitle: normal 500 1rem $fontBasic;
-$textPostCardCategory: normal 400 .7rem $fontBasic;
+  --textPostCardTitle: normal 500 1rem var(--fontBasic);
+  --textPostCardCategory: normal 400 .7rem var(--fontBasic);
+  --textIconStep: normal 500 1rem var(--fontBasic);
+}

@@ -13,22 +13,19 @@ import {
 
 import Loading from "../components/Loading";
 import Page from "../layout/Page";
+import Button from "../components/Button";
 import LangSwitch from "../components/LangSwitch";
-import { down } from "../icons/Icons";
+import Dropdown from "../components/Dropdown";
+import ButtonsWrapper from "../layout/ButtonsWrapper";
+import formSection from "../modules/formSection";
+
 import form from "../styles/_form.module.scss";
+import button from "../styles/Button.module.scss";
 import style from "../styles/Login.module.scss";
 
 /** Functional component to render login/register page
- * @function Login
- * @param { locations: TYPE.apiResponse;
- *  loginResult: TYPE.apiResponse;
- * registerResult: TYPE.apiResponse;
- * language: TYPE.indexedObjAny;
- * data: TYPE.indexedObjAny;
- * login: (arg0: TYPE.login) => void;
- * register: (arg0: TYPE.register) => void;
- * setModule: (arg0: string) => void;
- * setLanguage: (arg0: string) => void} props - Object, containing functions & state from Redux
+ *
+ * @param {object} props - Object, containing functions & state from Redux
  * @returns {JSX.Element} - Login page
  */
 const Login = (props: {
@@ -45,8 +42,6 @@ const Login = (props: {
 }) => {
   // get the language
   const { text, direction } = props.language;
-  // const locations = props.fetchLocations();
-
   // loading hook
   const [loading, setLoading] = React.useState(false);
   // form data hooks
@@ -59,9 +54,6 @@ const Login = (props: {
   const [showMessage, setShowMessage] = React.useState(true);
   // login/register mode hook
   const [mode, setMode] = React.useState("login");
-  //  message hook
-  // const [message, setMessage] = React.useState('');
-  // const [message, setMessage] = React.useState(text["login.message.default"]);
 
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
@@ -112,11 +104,6 @@ const Login = (props: {
   };
   // handle fields input changes
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //? const handleInputChange = (event: any) => {
-    //? if (!event.target) {
-    //?   setLocationLabel(event.label);
-    //?   setLocation(event.value);
-    //? } else {
     switch (event.target.name) {
       case "fName":
         setFname(event.target.value);
@@ -131,11 +118,14 @@ const Login = (props: {
         setEmail(event.target.value);
         break;
     }
-    // }
   };
   // handle location choice
   const handleSelectChange = (event: any) => {
     setLocation(event.target.value);
+  };
+
+  const handleSecondaryButton = () => {
+    setMode(mode === "login" ? "register" : "login");
   };
 
   // set the form elements
@@ -152,118 +142,87 @@ const Login = (props: {
     <div className={form.message} />
   );
 
+  let emailElement = formSection(
+    text["login.label.email"],
+    "email",
+    "uMail",
+    email,
+    text["login.prompt.email"],
+    handleInputChange
+  );
+
+  let passwordElement = formSection(
+    text["login.label.password"],
+    "password",
+    "uPass",
+    pass,
+    text["login.prompt.password"],
+    handleInputChange,
+    7
+  );
   let fNameElement = null;
   let lNameElement = null;
   let locationsElement = null;
   // register mode is on
   if (mode === "register") {
-    fNameElement = (
-      <section className={form.section}>
-        <label>FIRST NAME</label>
-        <input
-          type='text'
-          name='fName'
-          value={fName}
-          onChange={handleInputChange}
-          required
-        />
-        <div className={form.prompt}>
-          {fName ? "" : "enter your first name"}
-        </div>
-      </section>
-    );
-
-    lNameElement = (
-      <section className={form.section}>
-        <label>LAST NAME</label>
-        <input
-          type='text'
-          name='lName'
-          value={lName}
-          onChange={handleInputChange}
-          required
-        />
-        <div className={form.prompt}>{lName ? "" : "enter your last name"}</div>
-      </section>
-    );
-
     locationsElement = (
-      <section className={form.section} onChange={handleSelectChange}>
-        <label>LOCATION</label>
-        <select>
-          {props.locations.payload.map(
-            (location: { [index: string]: string }) => {
-              return (
-                <option key={location.value} value={location.value}>
-                  {location.label}
-                </option>
-              );
-            }
-          )}
-        </select>
-        <span>{down}</span>
-      </section>
+      <Dropdown list={props.locations.payload} action={handleSelectChange} />
+    );
+    fNameElement = formSection(
+      "FIRST NAME",
+      "text",
+      "fName",
+      fName,
+      "enter your first name",
+      handleInputChange,
+      2
+    );
+    lNameElement = formSection(
+      "LAST NAME",
+      "text",
+      "lName",
+      lName,
+      "enter your last name",
+      handleInputChange,
+      3
     );
   }
+
+  const secondaryButton =
+    mode === "login"
+      ? text["login.button.register"]
+      : text["login.button.login"];
 
   return (
     <Page opposite>
       <form
         className={direction === "rtl" ? form.right : form.left}
         onSubmit={handleSubmit}>
+        {/* visible during registration */}
         {locationsElement}
         {fNameElement}
         {lNameElement}
-        <section className={form.section}>
-          <label>{text["login.label.email"]}</label>
-          <input
-            type='email'
-            name='uMail'
-            value={email}
-            onChange={handleInputChange}
-            required
-          />
-          <div className={form.prompt}>
-            {email ? "" : text["login.prompt.email"]}
-          </div>
-        </section>
-        <section className={form.section}>
-          <label>{text["login.label.password"]}</label>
-          <input
-            type='password'
-            minLength={7}
-            name='uPass'
-            value={pass}
-            onChange={handleInputChange}
-            required
-          />
-          <div className={form.prompt}>
-            {pass ? "" : text["login.prompt.password"]}
-          </div>
-        </section>
+        {/* visible always */}
+        {emailElement}
+        {passwordElement}
+        {/* message & loading */}
         {messageElement}
         {showElement}
-        <section className={form.buttonsWrapper}>
-          <button
-            className={form.buttonArea}
-            type='submit'
-            // disabled={loading}
-            aria-label='Submit'>
+        {/* buttons */}
+        <ButtonsWrapper column direction={direction}>
+          <Button mode='form' submit disabled={loading} aria-label='Submit'>
             <input
-              className={form.buttonPrimary}
+              className={button.primary}
               type='button'
-              // type='submit'
               value={text["login.button.submit"]}
               id='submit_button'
             />
-          </button>
+          </Button>
 
-          <button disabled className={form.buttonSecondary}>
-            {mode === "login"
-              ? text["login.button.register"]
-              : text["login.button.login"]}
-          </button>
-        </section>
+          <Button mode='secondary' action={handleSecondaryButton}>
+            {secondaryButton}
+          </Button>
+        </ButtonsWrapper>
       </form>
       <div className={style.langSwitch}>
         <LangSwitch />

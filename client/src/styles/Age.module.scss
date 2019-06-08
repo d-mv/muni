@@ -1,16 +1,13 @@
-@import './typography';
-@import './colors';
-
 .age {
   margin: 0;
   padding: 0;
   display: flex;
-  font: $textVotersNumber;
+  font: var(--textVotersNumber);
 
   .text {
     margin: 0 0.1rem;
-    color: $colorDarkGrey;
-    font: $textVotersText;
+    color: var(--colorDarkGrey);
+    font: var(--textVotersText);
     padding: 0;
   }
 }

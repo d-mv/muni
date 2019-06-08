@@ -48,6 +48,15 @@ const { direction } = props.language
         </nav>
       );
       break;
+    case "new":
+      component = (
+        <nav className={style.header}>
+          <NavButton mode='return-home' action={action} />
+          <h1>Create New</h1>
+          <span className={utils.spacer10pct} />
+        </nav>
+      );
+      break;
     case "confirmation":
       component = (
         <nav className={style.header}>
