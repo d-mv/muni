@@ -1,10 +1,56 @@
-.button {
+.minimal {
   height: 60%;
   width: 10vw;
   margin: 0 1vw;
   transition: var(--boxTransition);
+  background-color: var(--colorTransparent);
 
   &:active {
     transform: scale(.95);
   }
+}
+
+.button-template {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: var(--boxShadow);
+  width: fit-content;
+  color: var(--colorWhite);
+  user-select: none;
+  font: var(--textButton);
+
+  &:active {
+    box-shadow: var(--boxShadowHover);
+    transform: scale(0.98);
+  }
+}
+
+.trans {
+  display: block;
+  margin: 10px auto;
+  background-color: var(--colorTransparent);
+}
+
+.form {
+  margin: 10px auto;
+  padding: 0;
+  background-color: var(--colorTransparent);
+}
+
+.primary {
+  @extend .button-template;
+  background-color: var(--colorPrimary);
+}
+
+.secondary {
+  @extend .button-template;
+  background-color: var(--colorSecondary);
+
+}
+
+.attention {
+  @extend .button-template;
+  background-color: var(--colorAttention);
 }

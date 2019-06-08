@@ -198,10 +198,10 @@
     // appearance: none;
     outline: none;
     border: none;
-    background: rgba(0, 0, 0, 0);
+      // background: rgba(0, 0, 0, 0);
 
 
-    &:active {
+      &:active {
       text-decoration: none;
       outline: none;
     }

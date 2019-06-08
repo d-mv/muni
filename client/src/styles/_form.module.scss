@@ -78,7 +78,9 @@
   }
 
   .buttonsWrapper {
+    display:flex;
     flex-direction: row;
+    justify-content: space-between;
   }
 }
 
@@ -144,7 +146,7 @@
 .buttonPrimary {
   @extend .button-template;
   color: var(--colorWhite);
-  background-color: var(--colorPrimary);
+  background-color: var(--colorPrimary) !important;
 }
 
 /// Joining features of the area and button
@@ -160,7 +162,7 @@
 .buttonSecondary {
   @extend .add-button;
   color: white;
-  background-color: var(--colorSecondary);
+  background-color: var(--colorSecondary) !important;
 }
 
 /// Message style
