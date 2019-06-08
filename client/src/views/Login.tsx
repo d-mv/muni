@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-
 import { AppState } from "../store";
 import * as TYPE from "../store/types";
 import { setLanguage } from "../store/app/actions";
@@ -17,7 +16,7 @@ import Page from "../layout/Page";
 import Button from "../components/Button";
 import LangSwitch from "../components/LangSwitch";
 import Dropdown from "../components/Dropdown";
-
+import ButtonsWrapper from "../layout/ButtonsWrapper";
 import formSection from "../modules/formSection";
 
 import form from "../styles/_form.module.scss";
@@ -210,8 +209,8 @@ const Login = (props: {
         {messageElement}
         {showElement}
         {/* buttons */}
-        <section className={form.buttonsWrapper}>
-          <Button form submit disabled={loading} aria-label='Submit'>
+        <ButtonsWrapper column direction={direction}>
+          <Button mode='form' submit disabled={loading} aria-label='Submit'>
             <input
               className={button.primary}
               type='button'
@@ -220,10 +219,10 @@ const Login = (props: {
             />
           </Button>
 
-          <Button secondary action={handleSecondaryButton}>
+          <Button mode='secondary' action={handleSecondaryButton}>
             {secondaryButton}
           </Button>
-        </section>
+        </ButtonsWrapper>
       </form>
       <div className={style.langSwitch}>
         <LangSwitch />

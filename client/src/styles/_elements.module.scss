@@ -24,6 +24,7 @@
     }
   }
 
+  /// Animations
   @keyframes left-swing {
 
     50%,
@@ -41,30 +42,4 @@
       transform: translateX(100%);
     }
   }
-}
-
-/// Button template
-/// @group Elements
-.button-template {
-  margin: 20px auto;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  box-shadow: none;
-  width: fit-content;
-  font: var(--textButton);
-  color: var(--colorWhite);
-  display: block;
-
-  &:active {
-    transform: scale(0.98);
-    box-shadow: var(--boxShadowHover);
-  }
-}
-
-/// Button with Primaty color
-/// @group Elements
-.buttonPrimary {
-  @extend .button-template;
-  background-color: var(--colorPrimary) !important;
 }

@@ -5,24 +5,14 @@ import style from "../styles/Button.module.scss";
 const Button = (props: {
   children?: any;
   action?: () => void;
-  form?: boolean;
-  trans?: boolean;
-  primary?: boolean;
-  secondary?: boolean;
-  attention?: boolean;
+  mode: string;
   submit?: boolean;
   disabled?: boolean;
   label?: string;
   title?: string;
 }) => {
   let undefined;
-  // default mode is 'transparent'
-  let buttonStyle = style.minimal;
-  if (props.trans) buttonStyle = style.trans;
-  if (props.form) buttonStyle = style.form
-  if (props.primary) buttonStyle = style.primary;
-  if (props.secondary) buttonStyle = style.secondary;
-  if (props.attention) buttonStyle = style.attention;
+  const buttonStyle = style[props.mode] || style.trans;
 
   const handleClick = () => {
     if (props.action) props.action();
@@ -34,9 +24,8 @@ const Button = (props: {
       onClick={() => handleClick()}
       type={props.submit ? "submit" : undefined}
       disabled={props.disabled}
-      aria-label={props.label}
-      title={props.title}>
-      {props.children}
+      aria-label={props.label}>
+      {props.children || props.title}
     </button>
   );
 };

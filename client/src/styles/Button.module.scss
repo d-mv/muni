@@ -1,3 +1,5 @@
+/// Minimal button, for header
+/// @group Buttons
 .minimal {
   height: 60%;
   width: 10vw;
@@ -10,6 +12,8 @@
   }
 }
 
+/// Button template for regular buttons
+/// @group Buttons
 .button-template {
   display: block;
   margin: 10px auto;
@@ -22,35 +26,54 @@
   font: var(--textButton);
 
   &:active {
-    box-shadow: var(--boxShadowHover);
-    transform: scale(0.98);
+    // box-shadow: var(--boxShadowHover);
+    transform: scale(0.95);
   }
 }
 
+/// Transparent background button
+/// @group Buttons
 .trans {
   display: block;
   margin: 10px auto;
   background-color: var(--colorTransparent);
 }
 
+/// Button, used by <input> in the form
+/// @group Buttons
 .form {
   margin: 10px auto;
   padding: 0;
   background-color: var(--colorTransparent);
 }
 
+/// Primary button
+/// @group Buttons
 .primary {
   @extend .button-template;
   background-color: var(--colorPrimary);
 }
 
+///  Secondary button
+/// @group Buttons
 .secondary {
   @extend .button-template;
   background-color: var(--colorSecondary);
 
 }
 
+///  Attention button
+/// @group Buttons
 .attention {
   @extend .button-template;
   background-color: var(--colorAttention);
+}
+
+///  Cancel button
+/// @group Buttons
+.cancel {
+  @extend .button-template;
+  color: var(--colorDark);
+  background-color: var(--colorWhite);
+  border: 2px solid var(--colorDark);
 }

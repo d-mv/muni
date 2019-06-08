@@ -11,7 +11,6 @@ import Paragraph from "../layout/Paragraph";
 import Line from "../layout/Line";
 import LangSwitch from "../components/LangSwitch";
 import Button from "../components/Button";
-// import Button from '../elements/Button'
 
 const Profile = (props: any) => {
   const { text, direction } = props.language;
@@ -28,7 +27,7 @@ const Profile = (props: any) => {
       <Section>
         <Paragraph>{text["profile.text.logOff"]}</Paragraph>
       </Section>
-      <Button primary action={props.logOff}>
+      <Button mode='primary' action={props.logOff}>
         {text["profile.button.logOff"]}
       </Button>
     </Page>

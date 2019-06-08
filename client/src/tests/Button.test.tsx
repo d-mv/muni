@@ -16,7 +16,7 @@ afterEach(cleanup);
 describe("Button", () => {
   it("should render button with name", () => {
     const { getByText } = render(
-      <Button action={mockFn}>Hello</Button>
+      <Button mode='minimal' action={mockFn}>Hello</Button>
     );
     getByText("Welcome");
   });

@@ -13,7 +13,7 @@ describe("Step icon", () => {
     // console.log(getByText("1").style.background);
   });
   it("should return icon with number supplied, filled", () => {
-    const { getByText } = render(<Step step={2} filled />);
+    const { getByText } = render(<Step step={2} />);
     getByText("2").className = "filled";
     // console.log(getByText("2").style.backgroundColor==='');
   });

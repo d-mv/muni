@@ -26,10 +26,8 @@
       border-radius: 4px;
       background: none;
       font: var(--textFormField);
-      // font: var(--textFormField);
       padding: 5px 8px;
       z-index: 10;
-      // user-select: none;
 
       &:focus {
         border: none;
@@ -46,8 +44,6 @@
       width: 5%;
       margin-top: -1.7rem;
       margin-bottom: 0.7rem;
-
-      // margin-left: 92%;
     }
 
     .prompt {
@@ -76,12 +72,6 @@
   span {
     margin-left: 92%;
   }
-
-  .buttonsWrapper {
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
 }
 
 /// Form alignment for right-to-left languages
@@ -97,7 +87,6 @@
   input,
   select {
     direction: rtl;
-    //  text-align: right;
   }
 
   option {
@@ -105,64 +94,8 @@
   }
 
   span {
-    // height: .6rem;
-    // width: 5%;
-    // margin-top: -1.7rem;
     margin-left: 2%;
   }
-
-  .buttonsWrapper {
-    flex-direction: row-reverse;
-  }
-}
-
-/// Button area in the form
-/// @group Form
-.buttonArea {
-  border: none;
-  background: none;
-  width: fit-content;
-  margin: 10px auto;
-  padding: 0;
-}
-
-/// Button template
-/// @group Form
-.button-template {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  box-shadow: none;
-  width: fit-content;
-  font: var(--textButton);
-
-  &:active {
-    transform: scale(0.98);
-  }
-}
-
-/// Primary button - SUBMIT button
-/// @group Form
-.buttonPrimary {
-  @extend .button-template;
-  color: var(--colorWhite);
-  background-color: var(--colorPrimary) !important;
-}
-
-/// Joining features of the area and button
-/// @group Form
-.add-button {
-  @extend .buttonArea;
-  @extend .button-template;
-  margin-top: 1rem;
-}
-
-/// Secondary button
-/// @group Form
-.buttonSecondary {
-  @extend .add-button;
-  color: white;
-  background-color: var(--colorSecondary) !important;
 }
 
 /// Message style
