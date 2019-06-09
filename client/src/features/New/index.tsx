@@ -1,22 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
+
+import { formSection, formSelection } from "../../modules/formSection";
+
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { indexedObjAny } from "../../store/types";
 
-import Content from "../../layout/Content";
-import Section from "../../layout/Section";
-import Center from "../../layout/Center";
-import Paragraph from "../../layout/Paragraph";
-import Block from "../../layout/Block";
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
+import Post from "../Post";
+
 import Button from "../../components/Button";
 import Form from "../../components/Form";
-import { formSection, formSelection } from "../../modules/formSection";
 import Steps from "./components/Steps";
 import Message from "../../components/Message";
 import PhotoUpload from "./components/PhotoUpload";
+
+import Block from "../../layout/Block";
+import ButtonsWrapper from "../../layout/ButtonsWrapper";
+import Center from "../../layout/Center";
+import Content from "../../layout/Content";
 import Label from "../../layout/Label";
+import Section from "../../layout/Section";
+import Paragraph from "../../layout/Paragraph";
+import { Zero } from "../../layout/Utils";
 
 const NewPost = (props: {
   language: indexedObjAny;
@@ -103,9 +109,6 @@ const NewPost = (props: {
       case "solution":
         setSolution(event.target.value);
         break;
-      case "photo":
-        setPhoto(event.target.value);
-        break;
       case "link":
         setLink(event.target.value);
         break;
@@ -115,7 +118,30 @@ const NewPost = (props: {
     setCategory(event.target.value);
   };
 
+  const handleSetPhoto = (props: any) => {
+    setPhoto(props);
+  };
+
   const handleSubmit = () => {};
+
+  let pageSubTitle = text["new.steps.title"];
+  let stepsComponent = <Steps current={step} direction={direction} />;
+  switch (step) {
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      stepsComponent = <Zero />;
+      pageSubTitle = text["new.preview"];
+      break;
+  }
 
   const stepOne =
     step === 1
@@ -170,6 +196,7 @@ const NewPost = (props: {
         <PhotoUpload
           label={text["new.field.photo.prompt"]}
           direction={direction}
+          action={handleSetPhoto}
         />
         {formSection(
           text["new.field.link.label"],
@@ -182,12 +209,17 @@ const NewPost = (props: {
       </Section>
     ) : null;
 
+  const preview =
+    step === 6 ? (
+      <Post post={{ title, category, problem, solution, photo, link }} />
+    ) : null;
+
   return (
     <Content padded>
-      <Section>
-        <Center block>{text["new.steps.title"]}</Center>
-        <Steps current={step} direction={direction} />
-      </Section>
+      <Center>
+        <Center block>{pageSubTitle}</Center>
+        {stepsComponent}
+      </Center>
       <Paragraph>{text["new.steps.step.1"]}</Paragraph>
       <Block>
         <Form action={handleSubmit}>
@@ -196,6 +228,7 @@ const NewPost = (props: {
           {stepThree}
           {stepFour}
           {stepFive}
+          {preview}
           <Message direction={direction} mode='attention' use='form'>
             {message}
           </Message>

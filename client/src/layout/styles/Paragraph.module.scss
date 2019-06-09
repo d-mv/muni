@@ -18,3 +18,8 @@
   @extend .border;
   padding: 0 10px;
 }
+
+.borderRectangle {
+  @extend .border;
+  border-radius:none;
+}

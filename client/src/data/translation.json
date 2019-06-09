@@ -62,7 +62,8 @@
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
         "new.message.fieldEmpty": "Please, add the information",
-        "new.message.urlMalformed":"URL is malformed"
+        "new.message.urlMalformed":"URL is malformed",
+        "new.preview":"This is preview"
       }
     },
     "עב": {
@@ -127,7 +128,8 @@
         "new.field.photo.prompt": "photo",
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
-        "new.message.fieldEmpty": "Please, add the information"
+        "new.message.fieldEmpty": "Please, add the information",
+        "new.preview":"This is preview"
       }
     }
   }

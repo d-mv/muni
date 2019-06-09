@@ -5,9 +5,13 @@ import Center from "../../../layout/Center";
 import style from "./styles/PhotoUpload.module.scss";
 import Line from "../../../layout/Line";
 import ButtonsWrapper from "../../../layout/ButtonsWrapper";
-import button from '../../../components/styles/Button.module.scss'
+import button from "../../../components/styles/Button.module.scss";
 
-const PhotoUpload = (props: { label: string; direction: string }) => {
+const PhotoUpload = (props: {
+  label: string;
+  direction: string;
+  action: (arg0: any) => void;
+}) => {
   const defaultPhoto =
     "https://res.cloudinary.com/diciu4xpu/image/upload/v1560088174/dev/photo.svg";
   const [photo, setPhoto] = React.useState("");
@@ -23,6 +27,7 @@ const PhotoUpload = (props: { label: string; direction: string }) => {
     // the image being uploaded using multer
     if (e.target.files[0]) {
       setPhoto(URL.createObjectURL(e.target.files[0]));
+      props.action(URL.createObjectURL(e.target.files[0]));
     }
   };
 
