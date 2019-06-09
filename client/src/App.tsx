@@ -13,13 +13,13 @@ import {
   fetchLocations
 } from "./store/users/actions";
 
-import Loading from "./views/Loading";
-import Navigation from "./components/Navigation/Navigation";
+import Loading from "./pages/Loading";
+import Navigation from "./features/Navigation/Navigation";
 import style from "./styles/App.module.scss";
 
-import Welcome from "./views/Welcome";
-import Login from "./views/Login";
-import NewButton from "./components/NewButton";
+import Welcome from "./pages/Welcome";
+import Login from "./pages/Login";
+import NewButton from "./features/New/components/NewButton";
 
 const App = (props: any) => {
   const [token, setToken] = React.useState("");
@@ -73,7 +73,7 @@ const App = (props: any) => {
       show = <Login />;
       break;
     case "confirmation":
-      const Confirmation = React.lazy(() => import("./views/Confirmation"));
+      const Confirmation = React.lazy(() => import("./pages/Confirmation"));
       show = (
         <Suspense fallback={<Loading />}>
           <Confirmation />;
@@ -81,7 +81,7 @@ const App = (props: any) => {
       );
       break;
     case "municipality":
-      const Municipality = React.lazy(() => import("./views/Municipality"));
+      const Municipality = React.lazy(() => import("./pages/Municipality"));
       show = (
         <Suspense fallback={<Loading />}>
           <Municipality />
@@ -89,7 +89,7 @@ const App = (props: any) => {
       );
       break;
     case "new":
-      const New = React.lazy(() => import("./views/New"));
+      const New = React.lazy(() => import("./pages/New"));
       show = (
         <Suspense fallback={<Loading />}>
           <New />
@@ -97,7 +97,7 @@ const App = (props: any) => {
       );
       break;
     case "profile":
-      const Profile = React.lazy(() => import("./views/Profile"));
+      const Profile = React.lazy(() => import("./pages/Profile"));
       show = (
         <Suspense fallback={<Loading />}>
           <Profile />
@@ -106,7 +106,7 @@ const App = (props: any) => {
       );
       break;
     case "home":
-      const Home = React.lazy(() => import("./views/Home"));
+      const Home = React.lazy(() => import("./pages/Home"));
       show = (
         <Suspense fallback={<Loading />}>
           <Home />

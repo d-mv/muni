@@ -2,8 +2,7 @@ import React from "react";
 
 import { down } from "../icons/Icons";
 
-import { indexedObjAny } from "../store/types";
-import form from "../styles/_form.module.scss";
+import style from "./styles/Dropdown.module.scss";
 
 const Dropdown = (props: {
   list: Array<any>;
@@ -11,7 +10,7 @@ const Dropdown = (props: {
 }) => {
   return (
     <section
-      className={form.section}
+      className={style.section}
       onChange={(event: React.FormEvent<Element>) => props.action(event)}>
       <label>LOCATION</label>
       <select>

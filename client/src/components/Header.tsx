@@ -6,9 +6,9 @@ import { indexedObj, indexedObjAny } from "../store/types";
 import Button from "./Button";
 import Help from "../icons/Help";
 import Edit from "../icons/Edit";
-import PageTitle from "./PageTitle";
+import Title from "../layout/Title";
 
-import style from "../styles/Header.module.scss";
+import style from "./styles/Header.module.scss";
 
 const Header = (props: {
   language: indexedObj;
@@ -25,7 +25,7 @@ const Header = (props: {
       <Button mode='minimal' action={mockFN}>
         <Help color='primary' />
       </Button>
-      <PageTitle title={title} direction={direction} />
+      <Title title={title} direction={direction} />
       <Button mode='minimal' action={mockFN}>
         <Edit color='primary' />
       </Button>

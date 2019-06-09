@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "../styles/Section.module.scss";
+import style from "./styles/Section.module.scss";
 
 /**
  * React JSX component to wrap section

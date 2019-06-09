@@ -1,0 +1,50 @@
+/// Button template
+/// @group Layout
+.nav-template {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  @extend .nav-template;
+  bottom: 0;
+  height: 10%;
+}
+
+.footerNav {
+  @extend .footer;
+  justify-content: space-around;
+}
+
+.footerRight {
+  @extend .footer;
+  flex-direction: row-reverse;
+}
+
+.header {
+  @extend .nav-template;
+  top: 0;
+  height: 10%;
+  margin: 0 auto;
+  width: 95%;
+  justify-content: space-between;
+
+  h1 {
+    width: 80%;
+    text-align: center;
+    color: var(--colorWhite);
+  }
+}
+
+.headerRight {
+  @extend .header;
+  flex-direction: row-reverse;
+
+  svg {
+    transform: rotate(180deg);
+  }
+}

@@ -1,0 +1,39 @@
+.section {
+  margin: 1em 0;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+
+
+  label {
+    font: var(--textFormFieldName);
+    margin: 5px 0;
+    letter-spacing: 1px;
+  }
+
+
+  select {
+    border: 1px solid var(--colorGrey);
+    border-radius: 4px;
+    background: none;
+    font: var(--textFormField);
+    padding: 5px 8px;
+    z-index: 10;
+
+    &:focus {
+      border: none;
+      border: 1px solid var(--colorPrimary);
+    }
+  }
+
+  option {
+    padding-right: 2%;
+  }
+
+  span {
+    height: .6rem;
+    width: 5%;
+    margin-top: -1.7rem;
+    margin-bottom: 0.7rem;
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "../styles/Card.module.scss";
+import style from "./styles/Card.module.scss";
 
 /**
  * React JSX component to wrap card

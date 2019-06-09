@@ -1,14 +1,14 @@
 import React from "react";
 
-import elements from "../styles/_elements.module.scss";
+import style from "./styles/Loading.module.scss";
 
 const Loading = () => {
   return (
-      <div className={elements.loading}>
-        <div />
-        <div />
-        <div />
-      </div>
+    <div className={style.loading}>
+      <div />
+      <div />
+      <div />
+    </div>
   );
 };
 

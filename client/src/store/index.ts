@@ -27,8 +27,6 @@ const self =
     ? process.env.REACT_APP_SELF
     : `https://${window.location.hostname}/api`;
 
-console.log(self);
-
 axios.defaults.baseURL = self;
 
 const rootReducer = combineReducers({

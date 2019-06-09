@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "../styles/ButtonsWrapper.module.scss";
+import style from "./styles/ButtonsWrapper.module.scss";
 
 /**
  * Component to wrap buttons and arrange then vertically/horizontally/RTL

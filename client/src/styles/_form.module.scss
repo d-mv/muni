@@ -20,8 +20,7 @@
       letter-spacing: 1px;
     }
 
-    input,
-    select {
+    input {
       border: 1px solid var(--colorGrey);
       border-radius: 4px;
       background: none;
@@ -35,16 +34,16 @@
       }
     }
 
-    option {
-      padding-right: 2%;
-    }
+    // option {
+    //   padding-right: 2%;
+    // }
 
-    span {
-      height: .6rem;
-      width: 5%;
-      margin-top: -1.7rem;
-      margin-bottom: 0.7rem;
-    }
+    // span {
+    //   height: .6rem;
+    //   width: 5%;
+    //   margin-top: -1.7rem;
+    //   margin-bottom: 0.7rem;
+    // }
 
     .prompt {
       z-index: 1;
@@ -69,9 +68,9 @@
   @extend .form-template;
   text-align: left;
 
-  span {
-    margin-left: 92%;
-  }
+  // span {
+  //   margin-left: 92%;
+  // }
 }
 
 /// Form alignment for right-to-left languages
@@ -84,18 +83,17 @@
     font-size: .9rem !important;
   }
 
-  input,
-  select {
+  input {
     direction: rtl;
   }
 
-  option {
-    padding-right: 2%;
-  }
+  // option {
+  //   padding-right: 2%;
+  // }
 
-  span {
-    margin-left: 2%;
-  }
+  // span {
+  //   margin-left: 2%;
+  // }
 }
 
 /// Message style

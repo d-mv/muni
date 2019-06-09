@@ -1,7 +1,7 @@
 import React from "react";
 import { render, cleanup } from "react-testing-library";
 
-import Step from "../components/New/Step";
+import Step from "../features/New/components/Step";
 
 afterEach(cleanup);
 

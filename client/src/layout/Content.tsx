@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "../styles/Content.module.scss";
+import style from "./styles/Content.module.scss";
 
 /**
  * React JSX component to wrap content
