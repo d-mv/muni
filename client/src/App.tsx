@@ -14,7 +14,7 @@ import {
 } from "./store/users/actions";
 
 import Loading from "./pages/Loading";
-import Navigation from "./features/Navigation/Navigation";
+import Navigation from "./features/Navigation";
 import style from "./styles/App.module.scss";
 
 import Welcome from "./pages/Welcome";

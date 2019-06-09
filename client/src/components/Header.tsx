@@ -14,7 +14,7 @@ const Header = (props: {
   language: indexedObj;
   locationData: indexedObjAny;
 }) => {
-  const { text, direction } = props.language;
+  const { direction } = props.language;
 
   const mockFN = () => {};
   const title: string = props.locationData.name[props.language.short]
