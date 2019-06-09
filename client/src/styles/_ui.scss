@@ -1,0 +1,11 @@
+/// Defining global variables for other UI elements
+/// @group UI
+:root {
+  /// Border
+  --border: 1px solid var(--colorGrey);
+  --borderPrimary: 2px solid var(--colorPrimary);
+  /// Border radius
+  --borderRadius: 4px;
+  --borderRadiusLarge: 10px;
+  --borderRadiusRound: 50%;
+}

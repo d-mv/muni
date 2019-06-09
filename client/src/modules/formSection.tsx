@@ -1,5 +1,6 @@
 import React from "react";
 
+import Label from '../layout/Label'
 import style from "./formSection.module.scss";
 
 const formSection = (
@@ -9,10 +10,11 @@ const formSection = (
   value: string,
   placeholder: string,
   action: (arg0: React.ChangeEvent<HTMLInputElement>) => void,
-  length?: number
+  length?: number,
+  direction?:string
 ) => (
   <section className={style.section}>
-    <label>{label}</label>
+      <Label direction={direction || 'ltr'} value={label}/>
     <input
       type={type}
       name={name}

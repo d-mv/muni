@@ -9,8 +9,20 @@ import style from "./styles/Paragraph.module.scss";
  *
  * @returns {JSX.Element}
  */
-const Block = (props: { children: any; thin?: boolean }): JSX.Element => {
-  const paragraphStyle = props.thin ? style.paraThin : style.paragraph;
+const Block = (props: {
+  children: any;
+  thin?: boolean;
+  border?: boolean;
+}): JSX.Element => {
+  let paragraphStyle = style.paragraph;
+  if (props.thin && props.border) {
+    paragraphStyle = style.borderThin;
+  } else if (props.thin) {
+    paragraphStyle = style.paraThin;
+  } else if (props.border) {
+    paragraphStyle = style.border;
+  }
+
   return <div className={paragraphStyle}>{props.children}</div>;
 };
 

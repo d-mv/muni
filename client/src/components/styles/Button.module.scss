@@ -77,3 +77,13 @@
   background-color: var(--colorWhite);
   border: 2px solid var(--colorDark);
 }
+
+/// Primary button
+/// @group Buttons
+.primarySmall {
+  @extend .button-template;
+  color: var(--colorPrimary);
+  background-color: var(--colorWhite);
+  border: var(--borderPrimary);
+  font: var(--textButtonSmall);
+}

@@ -7,3 +7,14 @@
   @extend .paragraph;
   padding: 0 10px 3px 10px;
 }
+
+.border {
+  @extend .paragraph;
+  border: var(--border);
+  border-radius: var(--borderRadius);
+}
+
+.borderThin {
+  @extend .border;
+  padding: 0 10px;
+}

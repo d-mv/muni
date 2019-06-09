@@ -1,5 +1,5 @@
 .category {
-  border-radius: 3px;
+  border-radius: var(--borderRadius);
   border: 1px solid var(--colorDark);
   width: fit-content;
   padding: 2px 5px;

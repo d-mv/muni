@@ -57,11 +57,12 @@
         "new.field.problem.prompt": "problem",
         "new.field.solution.label": "solution",
         "new.field.solution.prompt": "solution",
-        "new.field.photo.label": "photo",
-        "new.field.photo.prompt": "photo",
+        "new.field.photo.label": "Photo",
+        "new.field.photo.prompt": "Add/change photo",
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
-        "new.message.fieldEmpty": "Please, add the information"
+        "new.message.fieldEmpty": "Please, add the information",
+        "new.message.urlMalformed":"URL is malformed"
       }
     },
     "עב": {

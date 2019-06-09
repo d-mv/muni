@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import axios from "axios";
 import { AppState } from "../store";
 import { setStep } from "../store/app/actions";
 import { indexedObjAny } from "../store/types";
@@ -17,6 +17,9 @@ import Form from "../components/Form";
 import formSection from "../modules/formSection";
 import Steps from "../features/New/components/Steps";
 import Message from "../components/Message";
+import PhotoUpload from "../features/New/components/PhotoUpload";
+import Label from "../layout/Label";
+import Dropdown from "../components/Dropdown";
 
 const New = (props: {
   language: indexedObjAny;
@@ -41,22 +44,44 @@ const New = (props: {
 
   const handleNextStep = () => {
     if (step + 1 <= 6) {
-      let check;
+      let check: boolean = true;
+      let response: string = text["new.message.fieldEmpty"];
       switch (step) {
         case 1:
           check = title !== "";
+          break;
+        case 2:
+          check = category !== "";
+          break;
+        case 3:
+          check = problem !== "";
+          break;
+        case 4:
+          check = solution !== "";
+          break;
+        case 5:
+          if (link) {
+            const regex = new RegExp(
+              "^([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
+            );
+            check = regex.test(link);
+            if (!check) {
+              response = text["new.message.urlMalformed"];
+            }
+          }
           break;
       }
       if (check) {
         setMessage("");
         setStep(step + 1);
       } else {
-        setMessage(text["new.message.fieldEmpty"]);
+        setMessage(response);
       }
     }
   };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage('')
+    setMessage("");
     switch (event.target.name) {
       case "title":
         setTitle(event.target.value);
@@ -80,7 +105,7 @@ const New = (props: {
   };
   const handleSubmit = () => {};
 
-  const titleField =
+  const stepOne =
     step === 1
       ? formSection(
           text["new.field.title.label"],
@@ -92,7 +117,10 @@ const New = (props: {
           2
         )
       : null;
-  const categoryField =
+
+  // const stepTwo = step === 2 ?  <Dropdown /> : null;
+
+  const stepTwo =
     step === 2
       ? formSection(
           text["new.field.category.label"],
@@ -104,7 +132,7 @@ const New = (props: {
         )
       : null;
 
-  const problemField =
+  const stepThree =
     step === 3
       ? formSection(
           text["new.field.problem.label"],
@@ -116,7 +144,7 @@ const New = (props: {
           50
         )
       : null;
-  const solutionField =
+  const stepFour =
     step === 4
       ? formSection(
           text["new.field.solution.label"],
@@ -127,28 +155,25 @@ const New = (props: {
           handleInputChange
         )
       : null;
-  const photoField =
-    step === 5
-      ? formSection(
-          text["new.field.photo.label"],
-          "text",
-          "photo",
-          photo,
-          text["new.field.photo.prompt"],
-          handleInputChange
-        )
-      : null;
-  const linkField =
-    step === 5
-      ? formSection(
+  const stepFive =
+    step === 5 ? (
+      <Section>
+        <Label direction={direction} value={text["new.field.photo.label"]} />
+        <PhotoUpload
+          label={text["new.field.photo.prompt"]}
+          direction={direction}
+        />
+        {formSection(
           text["new.field.link.label"],
-          "text",
+          "url",
           "link",
           link,
           text["new.field.link.prompt"],
           handleInputChange
-        )
-      : null;
+        )}
+      </Section>
+    ) : null;
+
   return (
     <Page opposite>
       <Content padded>
@@ -158,25 +183,14 @@ const New = (props: {
         </Section>
         <Paragraph>{text["new.steps.step.1"]}</Paragraph>
 
-        {/* <form
-          className={direction === "rtl" ? form.right : form.left}
-          onSubmit={handleSubmit}>
-          {titleField}
-          {categoryField}
-          {problemField}
-          {solutionField}
-          {photoField}
-          {linkField}
-        </form> */}
         <Block>
           <Form action={handleSubmit}>
-            {titleField}
-            {categoryField}
-            {problemField}
-            {solutionField}
-            {photoField}
-            {linkField}
-            <Message direction={direction} mode='attention' use="form">
+            {stepOne}
+            {stepTwo}
+            {stepThree}
+            {stepFour}
+            {stepFive}
+            <Message direction={direction} mode='attention' use='form'>
               {message}
             </Message>
           </Form>
