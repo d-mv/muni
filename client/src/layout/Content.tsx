@@ -10,11 +10,12 @@ import style from "./styles/Content.module.scss";
  * @returns {JSX.Element}
  *
  */
-const Content = (props: { children: any }) => {
-  const compo: JSX.Element = (
-    <div className={style.content}>{props.children}</div>
+const Content = (props: { children: any; padded?: boolean }) => {
+  return (
+    <div className={props.padded ? style.padded : style.content}>
+      {props.children}
+    </div>
   );
-  return compo;
 };
 
 export default Content;

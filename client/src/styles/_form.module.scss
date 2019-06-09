@@ -68,9 +68,9 @@
   @extend .form-template;
   text-align: left;
 
-  // span {
-  //   margin-left: 92%;
-  // }
+  span {
+    margin-left: 92%;
+  }
 }
 
 /// Form alignment for right-to-left languages

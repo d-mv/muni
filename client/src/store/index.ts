@@ -41,6 +41,7 @@ const rootReducer = combineReducers({
   language: setLanguage,
   locationData: setLocationData,
   auth: setAuth,
+  // remove?
   step: setStep
 });
 export type AppState = ReturnType<typeof rootReducer>;

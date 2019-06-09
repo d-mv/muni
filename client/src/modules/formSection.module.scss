@@ -1,0 +1,30 @@
+.section {
+  margin: 1em 0;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font: var(--textFormFieldName);
+    margin: 5px 0;
+    letter-spacing: 1px;
+  }
+
+  input {
+    border: 1px solid var(--colorGrey);
+    border-radius: 4px;
+    background: none;
+    font: var(--textFormField);
+    padding: 5px 8px;
+    z-index: 10;
+
+    &::placeholder {
+      color: var(--colorGrey);
+    }
+
+    &:focus {
+      border: none;
+      border: 1px solid var(--colorPrimary);
+    }
+  }
+}

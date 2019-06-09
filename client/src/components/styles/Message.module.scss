@@ -1,0 +1,44 @@
+.message {
+  font: --textFormMessage;
+}
+
+.messageRTL {
+  @extend .message;
+  direction: rtl;
+}
+
+.messageForm {
+  @extend .message;
+  margin-top: -10px;
+  // font-size: 0.9rem;
+}
+
+.messageFormRTL {
+  @extend .messageForm;
+  direction: rtl;
+}
+
+/// Primary colored
+/// @group Message
+.primary {
+  color: var(--colorPrimary);
+}
+
+///  Secondary colored
+/// @group Message
+.secondary {
+  color: var(--colorSecondary);
+
+}
+
+///  Attention colored
+/// @group Message
+.attention {
+  color: var(--colorAttention);
+}
+
+///  Cancel colored
+/// @group Message
+.cancel {
+  color: var(--colorDark);
+}

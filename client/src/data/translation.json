@@ -44,7 +44,24 @@
         "new.steps.button.next": "NEXT",
         "new.steps.title": "Steps",
         "new.steps.button.cancel": "CANCEL",
-        "new.steps.step.1": "These are instructions for the creation of new petition"
+        "new.steps.step.1": "These are instructions for the creation of new petition",
+        "new.steps.step.2": "2. These are instructions for the creation of new petition",
+        "new.steps.step.3": "3. These are instructions for the creation of new petition",
+        "new.steps.step.4": "4. These are instructions for the creation of new petition",
+        "new.steps.step.5": "5. These are instructions for the creation of new petition",
+        "new.field.title.label": "Title",
+        "new.field.title.prompt": "Please, enter the title of the petition",
+        "new.field.category.label": "category",
+        "new.field.category.prompt": "category",
+        "new.field.problem.label": "problem",
+        "new.field.problem.prompt": "problem",
+        "new.field.solution.label": "solution",
+        "new.field.solution.prompt": "solution",
+        "new.field.photo.label": "photo",
+        "new.field.photo.prompt": "photo",
+        "new.field.link.label": "link",
+        "new.field.link.prompt": "link",
+        "new.message.fieldEmpty": "Please, add the information"
       }
     },
     "עב": {
@@ -92,7 +109,24 @@
         "new.steps.button.next": "NEXT",
         "new.steps.title": "Steps",
         "new.steps.button.cancel": "CANCEL",
-        "new.steps.step.1": "These are instructions for the creation of new petition"
+        "new.steps.step.1": "1. These are instructions for the creation of new petition",
+        "new.steps.step.2": "2. These are instructions for the creation of new petition",
+        "new.steps.step.3": "3. These are instructions for the creation of new petition",
+        "new.steps.step.4": "4. These are instructions for the creation of new petition",
+        "new.steps.step.5": "5. These are instructions for the creation of new petition",
+        "new.field.title.label": "title",
+        "new.field.title.prompt": "title",
+        "new.field.category.label": "category",
+        "new.field.category.prompt": "category",
+        "new.field.problem.label": "problem",
+        "new.field.problem.prompt": "problem",
+        "new.field.solution.label": "solution",
+        "new.field.solution.prompt": "solution",
+        "new.field.photo.label": "photo",
+        "new.field.photo.prompt": "photo",
+        "new.field.link.label": "link",
+        "new.field.link.prompt": "link",
+        "new.message.fieldEmpty": "Please, add the information"
       }
     }
   }

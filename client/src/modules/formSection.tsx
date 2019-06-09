@@ -1,6 +1,6 @@
 import React from "react";
 
-import form from "../styles/_form.module.scss";
+import style from "./formSection.module.scss";
 
 const formSection = (
   label: string,
@@ -8,16 +8,16 @@ const formSection = (
   name: string,
   value: string,
   placeholder: string,
-  action: (arg0?: any) => void,
+  action: (arg0: React.ChangeEvent<HTMLInputElement>) => void,
   length?: number
 ) => (
-  <section className={form.section}>
+  <section className={style.section}>
     <label>{label}</label>
     <input
       type={type}
       name={name}
       value={value}
-      onChange={(event: any) => action(event)}
+      onChange={(event: React.ChangeEvent<HTMLInputElement>) => action(event)}
       placeholder={value ? "" : placeholder}
       minLength={length ? length : 0}
       required
