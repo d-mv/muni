@@ -17,7 +17,7 @@ import Button from "../components/Button";
 import LangSwitch from "../components/LangSwitch";
 import Dropdown from "../components/Dropdown";
 import ButtonsWrapper from "../layout/ButtonsWrapper";
-import formSection from "../modules/formSection";
+import {formSection,formSelection} from "../modules/formSection";
 
 import form from "../styles/_form.module.scss";
 import button from "../components/styles/Button.module.scss";
@@ -103,7 +103,7 @@ const Login = (props: {
     }
   };
   // handle fields input changes
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: any) => {
     switch (event.target.name) {
       case "fName":
         setFname(event.target.value);

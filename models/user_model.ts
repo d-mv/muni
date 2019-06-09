@@ -156,9 +156,7 @@ export const get = (
                 // return result
                 callback({
                   status: true,
-                  message: `User ${result[0]._id}, found ${
-                    result[0].posts.length
-                  } post(s)`,
+                  message: `User ${result[0]._id}, found ${result[0].posts.length} post(s)`,
                   code: 200,
                   payload: result[0].posts
                 });
@@ -399,7 +397,7 @@ export const login = (
                   getLocationInfo(
                     newUserResponse.payload._id,
                     (dataResponse: TYPE.apiResponse) => {
-                      callback(dataResponse)
+                      callback(dataResponse);
                     }
                   );
                 } else {
@@ -575,7 +573,7 @@ export const loginAttempt = (
               pass: 1,
               location: 1,
               localPosts: 1,
-              pinned:1
+              pinned: 1
             }
           }
         ])
@@ -642,7 +640,30 @@ export const getLocationInfo = (
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
-      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      let database: any = MDB.client.db(dbName).collection(dbcApp);
+      let categories:Array<string>;
+      database.aggregate([
+        {
+          $project: {
+            _id: 0,
+            categories: 1
+          }
+        }
+      ]).toArray((err: any, result: any) => {
+          if (err) {
+            // if error
+            callback(Message.errorMessage({ action: "get categories", e: err }));
+          } else if (result.length === 0) {
+            // if no - response
+            callback(Message.notFound("categories not found"));
+          } else if (result.length > 1) {
+            // if too many results
+            callback(Message.tooManyResultsMessage("get categories"));
+          } else {
+            categories = result[0].categories;
+          }
+      });
+      database = MDB.client.db(dbName).collection(dbcMain);
       database
         .aggregate([
           {
@@ -654,7 +675,7 @@ export const getLocationInfo = (
             $project: {
               name: 1,
               location: "$_id",
-              pinned:1,
+              pinned: 1,
               _id: 0,
               posts: {
                 $reduce: {
@@ -685,7 +706,7 @@ export const getLocationInfo = (
               Message.positiveMessage({
                 subj: "User login is OK",
                 payload: {
-                  payload: { _id: user, ...result[0] }
+                  payload: { _id: user, categories,...result[0] }
                 }
               })
             );

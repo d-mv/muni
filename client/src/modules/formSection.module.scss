@@ -4,7 +4,9 @@
   display: flex;
   flex-direction: column;
 
-  input {
+  input,
+  select,
+  textarea {
     border: var(--border);
     border-radius: var(--borderRadius);
     background: none;
@@ -20,5 +22,46 @@
       border: none;
       border: 1px solid var(--colorPrimary);
     }
+  }
+
+  textarea {
+    border-radius: var(--borderRadiusText);
+  }
+
+  .inline {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+
+    select {
+      padding-left: 27px;
+      width: 100%;
+    }
+
+    svg {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      padding: 2px;
+      grid-column: 1;
+      grid-row: 1;
+      margin-left: 8px;
+    }
+  }
+
+}
+
+.sectionRTL {
+  @extend .section;
+  direction: rtl;
+
+  select {
+    padding-right: 27px;
+    padding-left: none;
+  }
+
+  svg {
+    margin-left: none;
+    margin-right: 8px;
   }
 }
