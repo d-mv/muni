@@ -16,13 +16,13 @@
   --colorTransparent: rgba(0, 0, 0, 0);
   --colorWhiteThird: rgba(255, 255, 255, .3);
   /// Shadows
-  --boxShadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
-  --pageShadow: 0 2px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
-  --pageShadowOpposite: 0 -5px 3px rgba(0, 0, 0, 0.12),
-    0 -3px 2px rgba(0, 0, 0, 0.24);
-  --boxShadowHover: 0 14px 28px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.22);
-  --svgShadowHover: 0 12px 5px rgba(0, 0, 0, 0.22);
+  --boxShadow: 0 1px 3px rgba(68, 68, 68, 0.12),
+    0 1px 2px rgba(68, 68, 68, 0.24);
+  --pageShadow: 0 2px 3px rgba(68, 68, 68, 0.12),
+    0 1px 2px rgba(68, 68, 68, 0.24);
+  --pageShadowOpposite: 0 -5px 3px rgba(68, 68, 68, 0.12),
+    0 -3px 2px rgba(68, 68, 68, 0.24);
+  --boxShadowHover: 0 14px 28px rgba(68, 68, 68, 0.25),
+    0 10px 10px rgba(68, 68, 68, 0.22);
+  --svgShadowHover: 0 12px 5px rgba(68, 68, 68, 0.22);
 }

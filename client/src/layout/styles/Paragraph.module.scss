@@ -3,8 +3,18 @@
   padding: 10px;
 }
 
+.paragraphRTL {
+  font: var(--textParaStandardR);
+  padding: 10px;
+  direction: rtl;
+}
+
 .paraThin {
   @extend .paragraph;
+  padding: 0 10px 3px 10px;
+}
+.paraThinRTL {
+  @extend .paragraphRTL;
   padding: 0 10px 3px 10px;
 }
 
@@ -14,6 +24,21 @@
   border-radius: var(--borderRadius);
 }
 
+.borderRTL {
+  @extend .paragraphRTL;
+  border: var(--border);
+  border-radius: var(--borderRadius);
+}
+
+.borderThinRTL {
+  @extend .borderRTL;
+  padding: 0 10px;
+}
+
+.borderRectangleRTL {
+  @extend .borderRTL;
+  border-radius: none;
+}
 .borderThin {
   @extend .border;
   padding: 0 10px;
@@ -21,5 +46,5 @@
 
 .borderRectangle {
   @extend .border;
-  border-radius:none;
+  border-radius: none;
 }

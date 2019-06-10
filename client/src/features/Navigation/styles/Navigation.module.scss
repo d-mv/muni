@@ -21,7 +21,7 @@
 }
 
 .footerRight {
-  @extend .footer;
+  @extend .footerNav;
   flex-direction: row-reverse;
 }
 

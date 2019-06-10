@@ -22,6 +22,7 @@ import Content from "../../layout/Content";
 import Label from "../../layout/Label";
 import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
+import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 
 const NewPost = (props: {
@@ -217,11 +218,13 @@ const NewPost = (props: {
   return (
     <Content padded>
       <Center>
-        <Center block>{pageSubTitle}</Center>
+        <Center block>
+          <SubTitle title={pageSubTitle} direction={direction} />
+        </Center>
         {stepsComponent}
       </Center>
       <Paragraph>{text["new.steps.step.1"]}</Paragraph>
-      <Block>
+      <Block thin>
         <Form action={handleSubmit}>
           {stepOne}
           {stepTwo}

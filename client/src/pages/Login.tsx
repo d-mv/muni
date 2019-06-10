@@ -17,7 +17,7 @@ import Button from "../components/Button";
 import LangSwitch from "../components/LangSwitch";
 import Dropdown from "../components/Dropdown";
 import ButtonsWrapper from "../layout/ButtonsWrapper";
-import {formSection,formSelection} from "../modules/formSection";
+import { formSection, formSelection } from "../modules/formSection";
 
 import form from "../styles/_form.module.scss";
 import button from "../components/styles/Button.module.scss";
@@ -165,9 +165,13 @@ const Login = (props: {
   let locationsElement = null;
   // register mode is on
   if (mode === "register") {
-    locationsElement = (
-      <Dropdown list={props.locations.payload} action={handleSelectChange} />
+    locationsElement = formSelection(
+      props.locations.payload,
+      direction,
+      text["login.label.location"],
+      handleSelectChange
     );
+
     fNameElement = formSection(
       "FIRST NAME",
       "text",

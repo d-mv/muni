@@ -1,10 +1,11 @@
 .line-template {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: var(--distStandard);
 
   span {
-    margin: 0 10px;
+    font: var(--textFormFieldName);
+    margin: 0 var(--distStandard);
   }
 }
 
@@ -16,7 +17,7 @@
 .linethin {
   @extend .line;
   flex-direction: row;
-  padding: 0 10px;
+  padding: 0 var(--distStandard);
 }
 
 .lineRTL {

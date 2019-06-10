@@ -3,13 +3,25 @@ import { connect } from "react-redux";
 
 import { AppState } from "../store";
 
+import Logo from '../components/Logo'
+
 import Page from "../layout/Page";
+import Paragraph from '../layout/Paragraph'
+import Center from '../layout/Center'
+
+import style from './styles/Welcome.module.scss'
 
 const Welcome = (props: any) => {
   return (
     <Page welcome>
-      <p>{props.language.text["welcome.enter"]}</p>
-      <p>this is logo:</p>
+      <Logo />
+      <div className={style.text}>
+        {/* <Paragraph> */}
+        <Center>
+          App
+          </Center>
+        {/* </Paragraph> */}
+      </div>
     </Page>
   );
 };

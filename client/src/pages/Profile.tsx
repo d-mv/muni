@@ -18,14 +18,18 @@ const Profile = (props: any) => {
     <Page>
       <Header />
       <Section>
-        <Paragraph>{text["profile.text.changeLanguage"]}</Paragraph>
+        <Paragraph direction={direction}>
+          {text["profile.text.changeLanguage"]}
+        </Paragraph>
         <Line direction={direction}>
           <LangSwitch />
           <span>{props.language.name}</span>
         </Line>
       </Section>
       <Section>
-        <Paragraph>{text["profile.text.logOff"]}</Paragraph>
+        <Paragraph direction={direction}>
+          {text["profile.text.logOff"]}
+        </Paragraph>
       </Section>
       <Button mode='primary' action={props.logOff}>
         {text["profile.button.logOff"]}

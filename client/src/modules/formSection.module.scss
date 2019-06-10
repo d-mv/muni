@@ -1,5 +1,5 @@
 .section {
-  margin: 1em 0;
+  margin-bottom: var(--distStandard);
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -11,7 +11,7 @@
     border-radius: var(--borderRadius);
     background: none;
     font: var(--textFormField);
-    padding: 5px 8px;
+    padding: .5rem .8rem;
     z-index: 10;
 
     &::placeholder {
@@ -20,7 +20,7 @@
 
     &:focus {
       border: none;
-      border: 1px solid var(--colorPrimary);
+      border: .1rem solid var(--colorPrimary);
     }
   }
 
@@ -34,18 +34,18 @@
     align-items: center;
 
     select {
-      padding-left: 27px;
+      padding-left: 2.7rem;
       width: 100%;
     }
 
     svg {
       position: absolute;
-      width: 15px;
-      height: 15px;
-      padding: 2px;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: .2rem;
       grid-column: 1;
       grid-row: 1;
-      margin-left: 8px;
+      margin-left: .8rem;
     }
   }
 
@@ -56,12 +56,12 @@
   direction: rtl;
 
   select {
-    padding-right: 27px;
+    padding-right: 2.7rem;
     padding-left: none;
   }
 
   svg {
     margin-left: none;
-    margin-right: 8px;
+    margin-right: .8rem;
   }
 }

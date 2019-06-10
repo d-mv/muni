@@ -1,7 +1,7 @@
 .message {
-  font: --textFormMessage;
+  font: var(--textFormMessage);
   height: 1rem;
-  display:flex;
+  display: flex;
   align-items: center;
 }
 
@@ -12,7 +12,7 @@
 
 .messageForm {
   @extend .message;
-  margin-top: -10px;
+  // margin-top: -10px;
   // font-size: 0.9rem;
 }
 
@@ -37,11 +37,13 @@
 ///  Attention colored
 /// @group Message
 .attention {
+  @extend .message;
   color: var(--colorAttention);
 }
 
 ///  Cancel colored
 /// @group Message
 .cancel {
+  @extend .message;
   color: var(--colorDark);
 }

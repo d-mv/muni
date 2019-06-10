@@ -8,7 +8,7 @@ import shortText from "../../modules/short_text";
 
 import Card from "../../layout/Card";
 import Voters from "./components/Voters";
-import CardVoteButton from "./components/VoteButton";
+import VoteButton from "./components/VoteButton";
 import Photo from "./components/Photo";
 import Category from "./components/Category";
 import Title from "./components/Title";
@@ -46,7 +46,7 @@ const PostCard = (props: { post: post; language: indexedObjAny }) => {
             direction={direction}
           />
           <span className={style.button}>
-            <CardVoteButton />
+            <VoteButton />
           </span>
         </section>
       </section>

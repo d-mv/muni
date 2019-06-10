@@ -2,11 +2,15 @@
 /// @group UI
 :root {
   /// Border
-  --border: 1px solid var(--colorGrey);
-  --borderPrimary: 2px solid var(--colorPrimary);
+  --border: .1rem solid var(--colorGrey);
+  --borderPrimary: .2rem solid var(--colorPrimary);
+  --borderSecondary: .2rem solid var(--colorSecondary);
   /// Border radius
-  --borderRadius: 4px;
-  --borderRadiusText: 4px 4px 0 4px;
-  --borderRadiusLarge: 10px;
+  --borderRadius: .4rem;
+  --borderRadiusText: .4rem .4rem 0 .4rem;
+  --borderRadiusLarge: 1rem;
   --borderRadiusRound: 50%;
+  /// Distances
+  --distStandard: 1rem;
+  --distDouble: 2rem;
 }

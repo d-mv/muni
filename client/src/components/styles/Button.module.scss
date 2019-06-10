@@ -16,14 +16,15 @@
 /// @group Buttons
 .button-template {
   display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  border-radius: 10px;
+  margin: var(--distStandard) auto;
+  padding: var(--distStandard) var(--distDouble);
+  border-radius: var(--borderRadiusLarge);
   box-shadow: var(--boxShadow);
   width: fit-content;
   color: var(--colorWhite);
   user-select: none;
   font: var(--textButton);
+  letter-spacing: .1rem;
 
   &:active {
     // box-shadow: var(--boxShadowHover);
@@ -45,6 +46,10 @@
   margin: 10px auto;
   padding: 0;
   background-color: var(--colorTransparent);
+
+  input {
+    margin: 0;
+  }
 }
 
 /// Primary button
@@ -52,6 +57,7 @@
 .primary {
   @extend .button-template;
   background-color: var(--colorPrimary);
+  border: var(--borderPrimary);
 }
 
 ///  Secondary button
@@ -59,6 +65,7 @@
 .secondary {
   @extend .button-template;
   background-color: var(--colorSecondary);
+  border: var(--borderSecondary);
 
 }
 

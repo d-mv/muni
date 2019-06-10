@@ -6,29 +6,33 @@
     'Tajawal',
     sans-serif;
   /// Button name
-  --textButton: normal 800 1.2rem var(--fontBasic);
+  --textButton: normal 800 1.6rem var(--fontBasic);
+  --textButtonR: normal 800 1.8rem var(--fontBasic);
   --textButtonEnter: normal 800 2rem var(--fontBasic);
   --textButtonSmall: normal 500 1rem var(--fontBasic);
   /// Fields
-  --textFormField: normal 400 1rem var(--fontBasic);
-  --textFormFieldPrompt: normal 300 0.8rem var(--fontBasic);
-  --textFormFieldName: normal 500 1rem var(--fontBasic);
-  --textFormFieldNameR: normal 500 0.9rem var(--fontBasic);
-  --textFormMessage: normal 300 0.9rem var(--fontBasic);
+  --textFormField: normal 400 1.4rem var(--fontBasic);
+  // --textFormFieldPrompt: normal 300 0.8rem var(--fontBasic);
+  --textFormFieldName: normal 500 1.7rem var(--fontBasic);
+  --textFormFieldNameR: normal 500 1.8rem var(--fontBasic);
+  --textFormMessage: normal 300 1.4rem var(--fontBasic);
   /// Messages
   --textCentralMessage: normal 400 1.3rem var(--fontBasic);
   /// Titles
   --textPageTitle: normal 800 1.8rem var(--fontBasic);
+  --textPageSubTitle: normal 500 1.8rem var(--fontBasic);
+  --textPageSubTitleR: normal 500 2rem var(--fontBasic);
   --textPageTitleR: normal 800 2rem var(--fontBasic);
   /// Paragraphs
-  --textParaStandard: normal 300 1rem var(--fontBasic);
+  --textParaStandard: normal 300 1.6rem var(--fontBasic);
+  --textParaStandardR: normal 300 1.7rem var(--fontBasic);
   /// Card
-  --textButtonVote: normal 400 .8rem var(--fontBasic);
+  --textButtonVote: normal 500 1.3rem var(--fontBasic);
 
-  --textVotersNumber: normal 400 .8rem var(--fontBasic);
-  --textVotersText: normal 300 .8rem var(--fontBasic);
+  --textVotersNumber: normal 400 1.2rem var(--fontBasic);
+  --textVotersText: normal 300 1.2rem var(--fontBasic);
 
-  --textPostCardTitle: normal 500 1rem var(--fontBasic);
-  --textPostCardCategory: normal 400 .7rem var(--fontBasic);
-  --textIconStep: normal 500 1rem var(--fontBasic);
+  --textPostCardTitle: normal 500 1.4rem var(--fontBasic);
+  --textPostCardCategory: normal 400 1.2rem var(--fontBasic);
+  --textIconStep: normal 500 1.4rem var(--fontBasic);
 }

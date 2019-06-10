@@ -12,7 +12,7 @@ import style from "./styles/Page.module.scss";
  *
  */
 const Page = (props: { children: any; opposite?:boolean, welcome?:boolean }):JSX.Element => {
-  let pageStyle = props.opposite ? style.pageOpposite : props.welcome ? style.page : style.pageWithContent;
+  let pageStyle = props.opposite ? style.pageOpposite : props.welcome ? style.welcome : style.pageWithContent;
   return <main className={pageStyle}>{props.children}</main>;
 };
 
