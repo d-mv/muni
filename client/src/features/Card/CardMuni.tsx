@@ -1,14 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import shortText from "../../modules/short_text";
+
 import { AppState } from "../../store";
 import { post, indexedObjAny, data, postMuni } from "../../store/types";
 
-import shortText from "../../modules/short_text";
-import Card from "../../layout/Card";
+import Age from "./components/Age";
 import Photo from "./components/Photo";
 import Title from "./components/Title";
-import Age from "./components/Age";
+
+import Card from "../../layout/Card";
 
 import style from "./styles/PostCard.module.scss";
 

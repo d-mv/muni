@@ -16,41 +16,30 @@
 
     label {
       font: var(--textFormFieldName);
-      margin: 5px 0;
-      letter-spacing: 1px;
+      margin: .5rem 0;
+      letter-spacing: .1rem;
     }
 
     input {
-      border: 1px solid var(--colorGrey);
+      border: .1rem solid var(--colorGrey);
       border-radius: 4px;
       background: none;
       font: var(--textFormField);
-      padding: 5px 8px;
+      padding: .5rem .8rem;
       z-index: 10;
 
       &:focus {
         border: none;
-        border: 1px solid var(--colorPrimary);
+        border: .1rem solid var(--colorPrimary);
       }
     }
-
-    // option {
-    //   padding-right: 2%;
-    // }
-
-    // span {
-    //   height: .6rem;
-    //   width: 5%;
-    //   margin-top: -1.7rem;
-    //   margin-bottom: 0.7rem;
-    // }
 
     .prompt {
       z-index: 1;
       margin: 0 auto;
       margin-top: -1.7rem;
       width: 95%;
-      min-height: 1.5em;
+      min-height: 1.5rem;
       font: var(--textFormFieldPrompt);
       color: var(--colorGrey);
     }
@@ -86,22 +75,14 @@
   input {
     direction: rtl;
   }
-
-  // option {
-  //   padding-right: 2%;
-  // }
-
-  // span {
-  //   margin-left: 2%;
-  // }
 }
 
 /// Message style
 /// @group Form
 .message {
-  margin: 15px auto;
+  margin: 1.5rem auto;
   height: fit-content;
-  min-height: 1.3em;
+  min-height: 1.3rem;
   width: 100%;
   text-align: center;
   font: var(--textFormMessage);
@@ -111,12 +92,12 @@
 /// Loading indicator wrapper
 /// @group Form
 .loading {
-  min-height: 1.3em;
+  min-height: 1.3rem;
 
   margin: {
-    top: -1.8em;
+    top: -1.8rem;
     left: auto;
     right: auto;
-    bottom: 1em;
+    bottom: 1rem;
   }
 }

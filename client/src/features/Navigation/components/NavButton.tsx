@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { AppState } from "../../../store";
 
 import { goBack } from "../../../icons";
+
 import style from "./styles/NavButton.module.scss";
 
 /** Function to create icon

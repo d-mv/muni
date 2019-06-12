@@ -4,9 +4,6 @@ import { connect } from "react-redux";
 import { AppState } from "../../store";
 import {
   indexedObjAny,
-  post,
-  postPreview,
-  postEmpty,
   postMuni
 } from "../../store/types";
 
@@ -17,7 +14,6 @@ import Text from "./components/Text";
 import Block from "../../layout/Block";
 
 import style from "./style/Post.module.scss";
-import TopBlock from "./components/TopBlock";
 
 const Post = (props: {
   post: postMuni;

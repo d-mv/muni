@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./styles/Block.module.scss";
+import styles from "./style/Block.module.scss";
 
 /**
  * React JSX component to wrap block with paragraph style
@@ -11,23 +11,18 @@ import style from "./styles/Block.module.scss";
  */
 const Block = (props: {
   children: any;
-  thin?: boolean;
   border?: boolean;
   rectangle?: boolean;
 }): JSX.Element => {
-  let paragraphStyle = style.paragraph;
+  let blockStyle = styles.block;
 
-  if (props.thin && props.border) {
-    paragraphStyle = style.borderThin;
-  } else if (props.thin) {
-    paragraphStyle = style.paraThin;
-  } else if (props.border) {
-    paragraphStyle = style.border;
+  if (props.border) {
+    blockStyle = styles.border;
   } else if (props.rectangle) {
-    paragraphStyle = style.borderRectangle;
+    blockStyle = styles.borderRectangle;
   }
 
-  return <div className={paragraphStyle}>{props.children}</div>;
+  return <div className={blockStyle}>{props.children}</div>;
 };
 
 export default Block;

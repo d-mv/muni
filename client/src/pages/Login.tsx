@@ -1,8 +1,10 @@
 import React from "react";
 
 import LoginUser from "../features/Login";
-import Page from "../layout/Page";
+
 import LangSwitch from "../components/LangSwitch";
+
+import Page from "../layout/Page";
 
 import style from "./style/Login.module.scss";
 

@@ -1,14 +1,13 @@
-import React from "react";
-import { connect } from "react-redux";
+import { indexedObj, indexedObjAny } from "../store/types";
 
 import { AppState } from "../store";
-import { setModule } from "../store/users/actions";
-import { indexedObj, indexedObjAny } from "../store/types";
 import Button from "./Button";
-import Help from "../icons/Help";
 import Edit from "../icons/Edit";
+import Help from "../icons/Help";
+import React from "react";
 import Title from "./Title";
-
+import { connect } from "react-redux";
+import { setModule } from "../store/users/actions";
 import style from "./styles/Header.module.scss";
 
 const Header = (props: {

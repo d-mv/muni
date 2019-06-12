@@ -2,13 +2,10 @@ import React from "react";
 
 import { imageDecoder, imageEncoder } from "../../../modules/image_coder";
 
-import Photo from "../../../icons/Photo";
 import Block from "../../../layout/Block";
-import Center from "../../../layout/Center";
-import style from "./styles/PhotoUpload.module.scss";
-import Line from "../../../layout/Line";
-import ButtonsWrapper from "../../../layout/ButtonsWrapper";
+
 import button from "../../../components/styles/Button.module.scss";
+import style from "./styles/PhotoUpload.module.scss";
 
 const PhotoUpload = (props: {
   label: string;

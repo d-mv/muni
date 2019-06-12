@@ -1,16 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { AppState } from "../../store";
-import { post, indexedObjAny, data, postMuni } from "../../store/types";
-
 import shortText from "../../modules/short_text";
 import {
   getCategories,
   categoryIdToName
 } from "../../modules/category_processor";
-import Block from "../../layout/Block";
-import Card from "../../layout/Card";
+
+import { AppState } from "../../store";
+import { post, indexedObjAny, data, postMuni } from "../../store/types";
+
 import Voters from "./components/Voters";
 import VoteButton from "./components/VoteButton";
 import Photo from "./components/Photo";
@@ -18,8 +17,11 @@ import Category from "./components/Category";
 import Title from "./components/Title";
 import Age from "./components/Age";
 
-import style from "./styles/PostCard.module.scss";
+import Block from "../../layout/Block";
+import Card from "../../layout/Card";
 import { Zero } from "../../layout/Utils";
+
+import style from "./styles/PostCard.module.scss";
 
 const PostCard = (props: {
   muni?: boolean;

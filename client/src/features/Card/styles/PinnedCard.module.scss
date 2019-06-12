@@ -9,8 +9,6 @@
 
 .title {
   font: var(--textPostCardTitle);
-  padding: 7px 0 3px 0;
-  padding-top: 7px;
   width: 90%;
   text-transform: uppercase;
 }
@@ -22,6 +20,7 @@
 
 .text {
   font: var(--textFormMessage);
+  overflow: hidden;
 }
 
 .icon-template {

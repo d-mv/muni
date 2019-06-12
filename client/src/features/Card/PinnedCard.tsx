@@ -31,16 +31,16 @@ const PinnedCard = (props: { post: postMuni; language: indexedObjAny,action:(arg
         <IconMunicipality filled color='primary' />
       </div>
       <Block>
-        <Line thin direction={direction}>
+        <Line  direction={direction}>
           <span className={style.title}>{shortText(props.post.title, 55)}</span>
         </Line>
-        <Line direction={direction}>
+        <Line  direction={direction}>
           <span className={style.date}>
             {dateBeautify(props.post.date, direction)}
           </span>
         </Line>
-        <Paragraph flat>
-          <span className={style.text}>{shortText(props.post.text, 95)}</span>
+        <Paragraph direction={direction}>
+          {shortText(props.post.text, 95)}
         </Paragraph>
       </Block>
     </Card>

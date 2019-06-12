@@ -1,6 +1,10 @@
 import React from "react";
-import Block from "../../../layout/Block";
+
 import Category from "../../Card/components/Category";
+
+import Section from "../../../layout/Section";
+
+import styles from './style/TopBlock.module.scss'
 
 const TopBlock = (props: {
   category: string;
@@ -8,11 +12,11 @@ const TopBlock = (props: {
   numbersLine: React.ClassicElement<any>;
 }) => {
   return (
-    <Block>
+    <Section narrow>
       <Category category={props.category} />
-      <h3>{props.title}</h3>
+      <h3 className={styles.title}>{props.title}</h3>
       {props.numbersLine}
-    </Block>
+    </Section>
   );
 };
 

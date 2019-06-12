@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./styles/Center.module.scss";
+import styles from "./style/Center.module.scss";
 
 /**
  * React JSX component to center content of the line
@@ -10,10 +10,10 @@ import style from "./styles/Center.module.scss";
  * @returns {JSX.Element}
  *
  */
-const Line = (props: { children: any; block?: boolean }) => {
-  const styles: any = style;
+const Center = (props: { children: any; block?: boolean }) => {
+
   const centerStyle = styles[`center${props.block ? "Block" : ""}`];
   return <div className={centerStyle}>{props.children}</div>;
 };
 
-export default Line;
+export default Center;

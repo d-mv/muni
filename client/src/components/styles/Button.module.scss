@@ -89,7 +89,7 @@
   @extend .button-template;
   color: var(--colorDark);
   background-color: var(--colorWhite);
-  border: 2px solid var(--colorDark);
+  border: .2rem solid var(--colorDark);
 }
 
 /// Primary button

@@ -1,14 +1,10 @@
 import React from "react";
 import styleFactory from "../../../modules/style_factory";
 
-import style from "./style/ShowMore.module.scss";
-
-import Line from "../../../layout/Line";
 import { DownArrow } from "../../../icons";
-import Button from "../../../components/Button";
 import { indexedObj } from "../../../store/types";
 
-const styles: any = style;
+import styles from "./style/ShowMore.module.scss";
 
 const ShowMore = (props: {
   title: indexedObj;
@@ -22,8 +18,8 @@ const ShowMore = (props: {
   return (
     <div className={showStyle}>
       <button onClick={() => props.action(!props.opened)}>
-        <span className={style.more}>{props.title.more}</span>
-        <span className={style.less}>{props.title.less}</span>
+        <span className={styles.more}>{props.title.more}</span>
+        <span className={styles.less}>{props.title.less}</span>
         <DownArrow primary />
       </button>
     </div>

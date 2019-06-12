@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
+import { data, indexedObjAny } from "../store/types";
 import { showHelp } from "../store/app/actions";
 
 import Help from "../features/Help";
 import PinnedCard from "../features/Card/PinnedCard";
+
 import Header from "../components/Header";
 import ShowPost from "../components/ShowPost";
+import PostList from "../components/PostList";
+
 import Page from "../layout/Page";
-import PostList from "../layout/PostList";
-import { data, indexedObjAny } from "../store/types";
 
 const Home = (props: {
   language: data;

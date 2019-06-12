@@ -1,10 +1,10 @@
 import React from "react";
 
 import styleFactory from "../../modules/style_factory";
-// import { data } from "../../store/types";
+
 import Home from "./components/Home";
+
 import styles from "./style/index.module.scss";
-import { data } from "../../store/types";
 
 const Help = (props: {
   mode: string;

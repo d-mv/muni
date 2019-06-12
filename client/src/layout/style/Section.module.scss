@@ -1,0 +1,23 @@
+.step {
+  margin-top: var(--distStandard);
+}
+
+.back {
+  background-color: var(--colorPrimaryLight);
+  padding-top: var(--distStandard)
+}
+
+.wide {
+  width: 100%;
+}
+
+.narrow {
+  height: auto;
+
+  margin: {
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: .5rem;
+  }
+}

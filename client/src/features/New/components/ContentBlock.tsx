@@ -1,6 +1,8 @@
 import React from "react";
-import Block from "../../../layout/Block";
+
 import Message from "../../../components/Message";
+
+import Content from "../../../layout/Content";
 
 const ContentBlock = (props: {
   stepOne: React.ClassicElement<any> | null;
@@ -15,7 +17,7 @@ const ContentBlock = (props: {
   direction: string;
 }) => {
   return (
-    <Block>
+    <Content padded>
       {props.stepOne}
       {props.stepTwo}
       {props.stepThree}
@@ -26,7 +28,7 @@ const ContentBlock = (props: {
         {props.message}
       </Message>
       {props.loadingElement}
-    </Block>
+    </Content>
   );
 };
 

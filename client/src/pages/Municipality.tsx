@@ -2,13 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
+import { data } from "../store/types";
 import { showHelp } from "../store/app/actions";
 
-import Page from "../layout/Page";
-import Header from "../components/Header";
 import MuniPage from "../features/Municipality";
 import Help from "../features/Help";
-import { data, indexedObjAny } from "../store/types";
+import Header from "../components/Header";
+
+import Page from "../layout/Page";
 
 const Municipality = (props: {
   language: data;

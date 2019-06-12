@@ -1,0 +1,44 @@
+.line-template {
+  display: flex;
+  align-items: center;
+  padding:.5rem 1rem;
+}
+
+.line {
+  @extend .line-template;
+  flex-direction: row;
+}
+
+.thin {
+  @extend .line;
+  flex-direction: row;
+  padding: 0 var(--distStandard);
+}
+
+.lineRTL {
+  @extend .line-template;
+  flex-direction: row-reverse;
+
+  * {
+    direction: rtl
+  }
+}
+
+.thinRTL {
+  @extend .thin;
+  flex-direction: row-reverse;
+
+  * {
+    direction: rtl
+  }
+}
+
+.flat {
+  display: flex;
+  align-items: center;
+}
+
+.flatRTL {
+  @extend .flat;
+  direction:rtl;
+}

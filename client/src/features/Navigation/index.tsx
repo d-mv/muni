@@ -6,7 +6,9 @@ import { setModule, setLoading } from "../../store/users/actions";
 
 import NavButton from "./components/NavButton";
 import EntranceButton from "./components/EntranceButton";
-import {Spacer} from '../../layout/Utils'
+
+import { Spacer } from '../../layout/Utils'
+
 import style from "./styles/Navigation.module.scss";
 /**
  * Functional component to display a footer wrapper with buttons

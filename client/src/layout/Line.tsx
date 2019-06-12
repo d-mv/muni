@@ -2,7 +2,7 @@ import React from "react";
 
 import styleFactory from "../modules/style_factory";
 
-import style from "./styles/Line.module.scss";
+import styles from "./style/Line.module.scss";
 
 /**
  * React JSX component to wrap line
@@ -18,7 +18,6 @@ const Line = (props: {
   thin?: boolean;
   flat?: boolean;
 }) => {
-  const styles: any = style;
   let lineStyle: string = styles[styleFactory("line", props.direction)];
 
   if (props.thin) {

@@ -2,10 +2,12 @@ import React from "react";
 
 import dateBeautify from "../../../modules/date_beautify";
 
-import style from "./style/NumbersLine.module.scss";
 import Age from "../../Card/components/Age";
 import Voters from "../../Card/components/Voters";
+
 import { Separator } from "../../../layout/Utils";
+
+import style from "./style/NumbersLine.module.scss";
 
 const NumbersLine = (props: {
   date: string;

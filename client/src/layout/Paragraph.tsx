@@ -2,7 +2,7 @@ import React from "react";
 
 import styleFactory from "../modules/style_factory";
 
-import style from "./styles/Paragraph.module.scss";
+import styles from "./style/Paragraph.module.scss";
 
 /**
  * React JSX component to wrap paragraph
@@ -13,12 +13,10 @@ import style from "./styles/Paragraph.module.scss";
  */
 const Paragraph = (props: {
   children: any;
-  direction?: string;
+  direction: string;
   thin?: boolean;
   flat?: boolean;
 }): JSX.Element => {
-  const styles: any = style;
-
   let propsStyle: string = "paragraph";
 
   if (props.thin) {

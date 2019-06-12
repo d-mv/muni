@@ -1,9 +1,8 @@
 import React from "react";
 
-import style from "./style/Link.module.scss";
 import { IconLink } from "../../../icons";
-import Line from "../../../layout/Line";
-import Block from "../../../layout/Block";
+
+import style from "./style/Link.module.scss";
 
 const Link = (props: {
   text: string;

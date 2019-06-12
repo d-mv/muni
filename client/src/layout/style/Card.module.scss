@@ -1,0 +1,25 @@
+.card-template {
+  width: 95vw;
+  height: fit-content;
+  margin: 1vh auto;
+  box-shadow: var(--boxShadow);
+  display: flex;
+  flex-direction: column;
+  max-height: 30vh;
+  // overflow: hidden;
+
+  @media (max-width: 399px) {}
+
+  @media (max-width: 650px) {}
+
+  @media (min-width: 651px) {}
+}
+
+.card {
+  @extend .card-template;
+}
+
+.cardRTL {
+  @extend .card-template;
+  text-align: right;
+}

@@ -1,22 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import axios from "axios";
+
 import { formSection, formSelection } from "../../modules/formSection";
 
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
-import { setModule } from "../../store/users/actions";
 import { submitPost } from "../../store/post/actions";
 import { indexedObjAny, data } from "../../store/types";
 
 import Post from "../Post";
 
 import Button from "../../components/Button";
-import Form from "../../components/Form";
 import Loading from "../../components/Loading";
 import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
+import ContentBlock from "./components/ContentBlock";
 
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
@@ -26,7 +25,7 @@ import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
-import ContentBlock from "./components/ContentBlock";
+
 
 const NewPost = (props: {
   language: data;
@@ -324,7 +323,7 @@ const NewPost = (props: {
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
       </Center>
-      <Paragraph>{text["new.steps.step.1"]}</Paragraph>
+      <Paragraph direction={direction}>{text["new.steps.step.1"]}</Paragraph>
       <ContentBlock
         stepOne={stepOne}
         stepTwo={stepTwo}

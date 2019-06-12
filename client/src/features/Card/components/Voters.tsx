@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 import { votersSecondary } from '../../../icons'
 
 import style from './styles/Voters.module.scss'

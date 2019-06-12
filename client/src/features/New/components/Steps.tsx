@@ -2,8 +2,8 @@ import React from "react";
 
 import Step from "./Step";
 
-import styleFactory from "../../../modules/style_factory";
 import style from "./styles/Steps.module.scss";
+import styleFactory from "../../../modules/style_factory";
 
 /**
  * Function to create React.FunctionalComponent with set of step icons, clickable

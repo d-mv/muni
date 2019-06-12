@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import { AppState } from "./store";
 import { loadData, setLocationData } from "./store/app/actions";
-
 import {
   setModule,
   setToken,
@@ -14,13 +13,14 @@ import {
   setAuth
 } from "./store/users/actions";
 
-import Loading from "./pages/Loading";
+import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
-import style from "./styles/App.module.scss";
 
+import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
-import NewButton from "./features/New/components/NewButton";
+
+import style from "./styles/App.module.scss";
 
 const App = (props: any) => {
   const { auth } = props;
@@ -60,7 +60,6 @@ const App = (props: any) => {
       props.setModule("home");
       setLoading(false);
       props.setAuth(true);
-
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
@@ -129,14 +128,14 @@ const App = (props: any) => {
         </Suspense>
       );
       break;
-    case 'mine':
-const Mine = React.lazy(() => import("./pages/Mine"));
-show = (
-  <Suspense fallback={<Loading />}>
-    <Mine />
-    <NewButton action={handleNewButtonClick} />
-  </Suspense>
-);
+    case "mine":
+      const Mine = React.lazy(() => import("./pages/Mine"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Mine />
+          <NewButton action={handleNewButtonClick} />
+        </Suspense>
+      );
       break;
   }
 

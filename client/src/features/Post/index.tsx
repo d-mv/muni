@@ -9,14 +9,11 @@ import { indexedObjAny, post, data } from "../../store/types";
 import Photo from "./components/Photo";
 import Link from "./components/Link";
 import Text from "./components/Text";
-
-import Block from "../../layout/Block";
-
-import style from "./style/Post.module.scss";
 import TopBlock from "./components/TopBlock";
 import ShowMore from "./components/ShowMore";
-import { votersSecondary } from "../../icons";
 import NumbersLine from "./components/NumbersLine";
+
+import style from "./style/Post.module.scss";
 
 const Post = (props: {
   post: post;
