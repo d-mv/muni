@@ -7,7 +7,7 @@ import { indexedObj, indexedObjAny } from "../store/types";
 import Button from "./Button";
 import Help from "../icons/Help";
 import Edit from "../icons/Edit";
-import Title from "../layout/Title";
+import Title from "./Title";
 
 import style from "./styles/Header.module.scss";
 

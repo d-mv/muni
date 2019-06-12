@@ -171,6 +171,15 @@
   font-size: 62.5%;
   color: #444;
 
+  @media (max-width: 399px) {
+    font-size: 60%;
+  }
+
+  @media (max-width: 650px) {}
+
+  @media (min-width: 651px) {
+    font-size: 100%;
+  }
 
   * {
     margin: 0;

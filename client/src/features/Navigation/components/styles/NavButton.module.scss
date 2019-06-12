@@ -7,7 +7,6 @@
   outline: none;
   padding: 0;
   // set new properties
-  // border-radius: var(--borderRadius);
   transition: var(--boxTransition);
   background: rgba(0, 0, 0, 0);
   display: flex;
@@ -24,6 +23,8 @@
 .navButton {
   @extend .button-template;
   border-radius: 0;
+  max-width: 8rem;
+  max-height: 8rem;
 
   @media (max-width: 399px) {
     height: 10vw;
@@ -45,6 +46,7 @@
 
 .navButtonEmpty {
   @extend .navButton;
+
 
   @media (max-width: 399px) {
     width: 10vw;
