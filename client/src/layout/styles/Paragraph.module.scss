@@ -1,50 +1,30 @@
 .paragraph {
   font: var(--textParaStandard);
-  padding: 10px;
+  padding: 1rem;
 }
 
 .paragraphRTL {
   font: var(--textParaStandardR);
-  padding: 10px;
+  padding: 1rem;
   direction: rtl;
 }
 
 .paraThin {
   @extend .paragraph;
-  padding: 0 10px 3px 10px;
+  padding: 0 1rem .3rem 1rem;
 }
+
 .paraThinRTL {
   @extend .paragraphRTL;
-  padding: 0 10px 3px 10px;
+  padding: 0 1rem .3rem 1rem;
 }
 
-// .border {
-//   @extend .paragraph;
-//   border: var(--border);
-//   border-radius: var(--borderRadius);
-// }
+.flat {
+  @extend .paragraph;
+  padding: 1rem 0;
+}
 
-// .borderRTL {
-//   @extend .paragraphRTL;
-//   border: var(--border);
-//   border-radius: var(--borderRadius);
-// }
-
-// .borderThinRTL {
-//   @extend .borderRTL;
-//   padding: 0 10px;
-// }
-
-// .borderRectangleRTL {
-//   @extend .borderRTL;
-//   border-radius: none;
-// }
-// .borderThin {
-//   @extend .border;
-//   padding: 0 10px;
-// }
-
-// .borderRectangle {
-//   @extend .border;
-//   border-radius: none;
-// }
+.flatRTL {
+  @extend .paragraphRTL;
+  padding: 1rem 0;
+}

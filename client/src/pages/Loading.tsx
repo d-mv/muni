@@ -2,7 +2,7 @@ import React from "react";
 
 import Logo from '../components/Logo'
 
-import style from "./styles/Loading.module.scss";
+import style from "./style/Loading.module.scss";
 
 const Loading = () => (
   <div>

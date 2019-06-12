@@ -7,28 +7,48 @@ import Page from "../layout/Page";
 import Header from "../components/Header";
 import PinnedCard from "../features/Card/PinnedCard";
 import PostList from "../layout/PostList";
+import Post from "../features/Post";
 
 const Home = (props: any) => {
-  const [posts, setPosts] = React.useState(
-    props.locationData.posts ? props.locationData.posts : []
-  );
-  const [pinned, setPinned] = React.useState(
-    props.locationData.pinned ? props.locationData.pinned : {}
-  );
+  const { posts, pinned } = props.locationData;
+  const [postsLcl, setPosts] = React.useState(posts ? posts : []);
+  const [pinnedLcl, setPinned] = React.useState(pinned ? pinned : {});
+  const [post, setPost] = React.useState({ _id: "" });
 
   React.useEffect(() => {
-    if (props.locationData.posts) {
-      setPosts(props.locationData.posts);
+    if (posts) {
+      setPosts(posts);
     }
-  }, [props.locationData.payload]);
+  }, [props.locationData, posts]);
 
-  const pinnedCard = pinned === {} ? null : <PinnedCard post={pinned} />;
+  const handleSetPost = (newPost: any) => {
+    if (post !== newPost) {
+      setPost(newPost);
+    }
+  };
+
+  const handleClearPost = () => {
+    setPost({ _id: "" });
+  };
+
+  let header = <Header />;
+
+  let pinnedCard =
+    pinnedLcl === {} ? null : (
+      <PinnedCard post={pinnedLcl} action={handleSetPost} />
+    );
+  let content = <PostList posts={postsLcl} action={handleSetPost} />;
+  if (post["_id"]) {
+    // @ts-ignore
+    content = <Post post={post} />;
+    pinnedCard = null;
+  }
 
   return (
     <Page>
-      <Header />
+      {header}
       {pinnedCard}
-      <PostList posts={posts} />
+      {content}
     </Page>
   );
 };

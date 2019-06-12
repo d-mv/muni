@@ -12,7 +12,7 @@ import Line from "../layout/Line";
 import LangSwitch from "../components/LangSwitch";
 import Button from "../components/Button";
 
-import style from "./styles/Profile.module.scss";
+import style from "./style/Profile.module.scss";
 
 const Profile = (props: any) => {
   const { text, direction } = props.language;

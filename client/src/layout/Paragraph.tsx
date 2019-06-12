@@ -15,17 +15,22 @@ const Paragraph = (props: {
   children: any;
   direction?: string;
   thin?: boolean;
+  flat?: boolean;
 }): JSX.Element => {
   const styles: any = style;
 
-  let paragraphStyle = props.thin ? style.paraThin : style.paragraph;
+  let propsStyle: string = "paragraph";
 
+  if (props.thin) {
+    propsStyle = "paraThin";
+  } else if (props.flat) {
+    propsStyle = "flat";
+  }
+  let paragraphStyle: string = "";
   if (props.direction) {
-    paragraphStyle =
-      styles[
-        styleFactory(props.thin ? "paraThin" : "paragraph", props.direction)
-      ];
-    console.log(paragraphStyle);
+    paragraphStyle = styles[styleFactory(propsStyle, props.direction)];
+  } else {
+    paragraphStyle = styles[propsStyle];
   }
 
   return <p className={paragraphStyle}>{props.children}</p>;

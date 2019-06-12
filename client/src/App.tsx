@@ -10,7 +10,8 @@ import {
   setToken,
   checkToken,
   login,
-  fetchLocations
+  fetchLocations,
+  setAuth
 } from "./store/users/actions";
 
 import Loading from "./pages/Loading";
@@ -22,9 +23,11 @@ import Login from "./pages/Login";
 import NewButton from "./features/New/components/NewButton";
 
 const App = (props: any) => {
-  const [token, setToken] = React.useState("");
+  const { auth } = props;
+  const { token } = props;
+  // const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-  const [auth, setAuth] = React.useState(false);
+  // const [auth, setAuth] = React.useState(false);
 
   const { login } = props;
   const { cookies } = props;
@@ -33,22 +36,22 @@ const App = (props: any) => {
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
   React.useEffect(() => {
-    if (!props.auth) {
-      props.setModule("welcome")
-      setLoading(false)
+    console.log(1);
+    if (!auth) {
+      props.setModule("welcome");
+      setLoading(false);
     }
-  }, [props.auth])
-
-
+  }, [auth]);
 
   // set cookies if token changes
   React.useEffect(() => {
     // console.log("hi");
     // if 'clear'
     if (props.token === "clear") {
+      console.log(0);
       cookies.set("token", "");
-      setToken("");
-      props.setModule('welcome')
+      props.setToken("");
+      props.setModule("welcome");
     } else if (props.token !== "" && props.token !== "clear") {
       // if token IS
       cookies.set("token", props.token);
@@ -56,14 +59,15 @@ const App = (props: any) => {
       console.log(5);
       props.setModule("home");
       setLoading(false);
-      setAuth(true);
+      props.setAuth(true);
+
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
     } else {
       setLoading(false);
     }
-  }, [props.token]);
+  }, [token]);
 
   // fetch locations
   React.useEffect(() => {
@@ -95,6 +99,7 @@ const App = (props: any) => {
       show = (
         <Suspense fallback={<Loading />}>
           <Municipality />
+          <NewButton action={handleNewButtonClick} />
         </Suspense>
       );
       break;
@@ -136,10 +141,7 @@ const App = (props: any) => {
 const mapStateToProps = (state: AppState) => {
   return {
     token: state.token,
-    check: state.checkTokenResult,
-    // login: state.login,
     module: state.module,
-    // locations: state.locations,
     loginResult: state.login,
     language: state.language,
     locationData: state.locationData,
@@ -156,6 +158,7 @@ export default connect(
     login,
     fetchLocations,
     loadData,
-    setLocationData
+    setLocationData,
+    setAuth
   }
 )(withCookies(App));

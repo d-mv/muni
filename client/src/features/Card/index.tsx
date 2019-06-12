@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { post, indexedObjAny, data } from "../../store/types";
+import { post, indexedObjAny, data, postMuni } from "../../store/types";
 
 import shortText from "../../modules/short_text";
 import {
@@ -19,30 +19,54 @@ import Title from "./components/Title";
 import Age from "./components/Age";
 
 import style from "./styles/PostCard.module.scss";
+import { Zero } from "../../layout/Utils";
 
 const PostCard = (props: {
-  post: post;
+  muni?: boolean;
+  post: post | postMuni;
   language: indexedObjAny;
   locationData: data;
+  action: (arg0: post | postMuni) => void;
 }) => {
   const { text, direction, short } = props.language;
-  const { categories } = props.locationData;
+  const { _id, title, date, photo, category } = props.post;
+  const votes = props.post.votes ? props.post.votes : [];
 
-const { _id, title, date,photo, votes } = props.post;
+  const handleClick = () => {
+    props.action(props.post);
+  };
 
+  let voterText = "";
+  let categoryElement: React.ClassicElement<any> = <Zero />;
+  let voterElement: React.ClassicElement<any> = <Zero />;
+  let voteButtonElement: React.ClassicElement<any> = <Zero />;
 
-  const category = categoryIdToName(categories, short, props.post.category);
-
-  const voterText = votes.length === 1 ? text["post.voter"] : text["post.voters"];
-
+  if (!props.muni) {
+    const { categories } = props.locationData;
+    const categoryTranslated = categoryIdToName(
+      categories,
+      short,
+      category || ""
+    );
+    categoryElement = <Category category={categoryTranslated} />;
+    voterText = votes.length === 1 ? text["post.voter"] : text["post.voters"];
+    voterElement = (
+      <Voters number={votes.length} text={voterText} direction={direction} />
+    );
+    voteButtonElement = (
+      <span className={style.button}>
+        <VoteButton />
+      </span>
+    );
+  }
   return (
-    <Card id={_id} direction={direction}>
+    <Card id={_id} direction={direction} action={handleClick}>
       <Photo photo={photo} />
       <section
         className={
           direction === "rtl" ? style.informationRTL : style.information
         }>
-        <Category category={category} />
+        {categoryElement}
         <Title title={shortText(title, 50)} direction={direction} />
         <section
           id='age'
@@ -52,14 +76,8 @@ const { _id, title, date,photo, votes } = props.post;
             text={[text["post.age.day"], text["post.age.days"]]}
             direction={direction}
           />
-          <Voters
-            number={votes.length}
-            text={voterText}
-            direction={direction}
-          />
-          <span className={style.button}>
-            <VoteButton />
-          </span>
+          {voterElement}
+          {voteButtonElement}
         </section>
       </section>
     </Card>

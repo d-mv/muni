@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import axios from "axios";
 import { formSection, formSelection } from "../../modules/formSection";
 
@@ -14,12 +15,10 @@ import Post from "../Post";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import Loading from "../../components/Loading";
-import Message from "../../components/Message";
 import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
 
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
-import Block from "../../layout/Block";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
 import Label from "../../layout/Label";
@@ -27,6 +26,7 @@ import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
+import ContentBlock from "./components/ContentBlock";
 
 const NewPost = (props: {
   language: data;
@@ -222,27 +222,14 @@ const NewPost = (props: {
     </Button>
   );
 
-  switch (step) {
-    case 1:
-      break;
-    case 2:
-      break;
-    case 3:
-      break;
-    case 4:
-      break;
-    case 5:
-      break;
-    case 6:
-      stepsComponent = <Zero />;
-      pageSubTitle = text["new.preview"];
-      buttonPrimary = (
-        <Button mode='primary' action={handleSubmit}>
-          {text["new.steps.button.submit"]}
-        </Button>
-      );
-
-      break;
+  if (step === 6) {
+    stepsComponent = <Zero />;
+    pageSubTitle = text["new.preview"];
+    buttonPrimary = (
+      <Button mode='primary' action={handleSubmit}>
+        {text["new.steps.button.submit"]}
+      </Button>
+    );
   }
 
   const stepOne =
@@ -313,7 +300,10 @@ const NewPost = (props: {
 
   const preview =
     step === 6 ? (
-      <Post post={{ title, category, problem, solution, photo, link }} />
+      <Post
+        preview
+        post={{ title, category, problem, solution, photo, link }}
+      />
     ) : null;
   const loadingElement = loading ? <Loading /> : null;
   return (
@@ -323,18 +313,17 @@ const NewPost = (props: {
         {stepsComponent}
       </Center>
       <Paragraph>{text["new.steps.step.1"]}</Paragraph>
-      <Block>
-        {stepOne}
-        {stepTwo}
-        {stepThree}
-        {stepFour}
-        {stepFive}
-        {preview}
-        <Message direction={direction} mode='attention' use='form'>
-          {message}
-        </Message>
-        {loadingElement}
-      </Block>
+      <ContentBlock
+        stepOne={stepOne}
+        stepTwo={stepTwo}
+        stepThree={stepThree}
+        stepFour={stepFour}
+        stepFive={stepFive}
+        preview={preview}
+        loadingElement={loadingElement}
+        direction={direction}
+        message={message}
+      />
       <ButtonsWrapper row direction={direction}>
         {buttonPrimary}
         <Button mode='secondary' disabled={step === 1} action={handleBackStep}>

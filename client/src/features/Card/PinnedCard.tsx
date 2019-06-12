@@ -2,12 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { indexedObjAny } from "../../store/types";
+import { indexedObjAny, postMuni } from "../../store/types";
 
 import dateBeautify from "../../modules/date_beautify";
 import shortText from "../../modules/short_text";
 import styleFactory from "../../modules/style_factory";
 
+import Block from "../../layout/Block";
 import Card from "../../layout/Card";
 import Line from "../../layout/Line";
 import Paragraph from "../../layout/Paragraph";
@@ -15,28 +16,33 @@ import IconMunicipality from "../../icons/Municipality";
 
 import style from "./styles/PinnedCard.module.scss";
 
-const PinnedCard = (props: { post: any; language: indexedObjAny }) => {
+const PinnedCard = (props: { post: postMuni; language: indexedObjAny,action:(arg0:postMuni)=>void }) => {
+  const handleClick = () => {};
+
   const { direction } = props.language;
   const iconStyle = styleFactory("icon", direction);
-  
   return (
-    <Card direction={direction} id={props.post._id} margin={25}>
+    <Card
+      direction={direction}
+      id={props.post._id}
+      margin={25}
+      action={handleClick}>
       <div className={style[iconStyle]}>
         <IconMunicipality filled color='primary' />
       </div>
-      <Paragraph thin>
+      <Block>
         <Line thin direction={direction}>
-          <p className={style.title}>{shortText(props.post.title, 55)}</p>
+          <span className={style.title}>{shortText(props.post.title, 55)}</span>
         </Line>
-        <Line thin direction={direction}>
-          <p className={style.date}>
+        <Line direction={direction}>
+          <span className={style.date}>
             {dateBeautify(props.post.date, direction)}
-          </p>
+          </span>
         </Line>
-      </Paragraph>
-      <Paragraph thin>
-        <span className={style.text}>{shortText(props.post.text, 95)}</span>
-      </Paragraph>
+        <Paragraph flat>
+          <span className={style.text}>{shortText(props.post.text, 95)}</span>
+        </Paragraph>
+      </Block>
     </Card>
   );
 };

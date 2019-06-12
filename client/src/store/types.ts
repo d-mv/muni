@@ -91,7 +91,8 @@ export interface post {
   _id: string;
   category: string;
   title: string;
-  text: string;
+  problem: string;
+  solution: string;
   photo: string;
   link: string;
   createdBy: string;
@@ -99,6 +100,34 @@ export interface post {
   status: string;
   votes: Array<string>;
   newsId?: string;
+}
+export interface postPreview {
+  _id?: string;
+  category: string;
+  title: string;
+  problem: string;
+  solution: string;
+  photo: string;
+  link: string;
+  createdBy?: string;
+  date?: string;
+  status?: string;
+  votes?: Array<string>;
+  newsId?: string;
+}
+export interface postMuni {
+  _id: string;
+  title: string;
+  text: string;
+  photo: string;
+  link: string;
+  date: string;
+  category?: string;
+  votes?: Array<string>;
+}
+
+export interface postEmpty {
+  _id: "";
 }
 
 /**

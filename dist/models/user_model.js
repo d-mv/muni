@@ -672,6 +672,7 @@ exports.getLocationInfo = function (user, callback) {
                         name: 1,
                         location: "$_id",
                         pinned: 1,
+                        municipality: 1,
                         _id: 0,
                         posts: {
                             $reduce: {

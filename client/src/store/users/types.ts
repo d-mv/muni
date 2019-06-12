@@ -14,6 +14,11 @@ export interface setLoadingAction {
   loading: boolean;
 }
 
+export interface setAuthAction {
+  type: "SET_AUTH";
+  status: boolean;
+}
+
 export interface loginAction {
   type: "LOGIN";
   payload: TYPE.apiResponse;
@@ -48,4 +53,5 @@ export type Action =
   | setLoadingAction
   | registerAction
   | setAuthAction
-  | setLocationDataAction;
+  | setLocationDataAction
+  | setAuthAction;
