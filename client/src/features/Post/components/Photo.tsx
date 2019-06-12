@@ -1,8 +1,9 @@
 import React from "react";
 
-import style from "./styles/Photo.module.scss";
+import style from "./style/Photo.module.scss";
 
-const Photo = (props: { src: string }) => {
+const Photo = (props: { src: string; preview?: boolean }) => {
+  
   return <img src={props.src} className={style.photo} />;
 };
 

@@ -1,6 +1,8 @@
 .age {
   display: flex;
   font: var(--textVotersNumber);
+  justify-content: center;
+  width: fit-content;
 
   .text {
     margin: 0 0.4rem;

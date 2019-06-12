@@ -172,10 +172,9 @@
   color: #444;
 
 
-
   * {
     margin: 0;
-padding:0;
+    padding: 0;
     margin-block-start: 0;
     margin-block-end: 0;
     margin-inline-start: 0;
@@ -183,6 +182,7 @@ padding:0;
     outline: none;
     border: none;
     box-shadow: none;
+    appearance: none;
 
     &:active {
       text-decoration: none;

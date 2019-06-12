@@ -6,7 +6,7 @@ import { AppState } from "../../store";
 import Content from "../../layout/Content";
 import { data, postMuni } from "../../store/types";
 import PostList from "../../layout/PostList";
-import Post from "../Post";
+import ShowPost from "../../components/ShowPost";
 
 const MuniPage = (props: { language: data; locationData: data }) => {
   const { municipality } = props.locationData;
@@ -24,7 +24,7 @@ const MuniPage = (props: { language: data; locationData: data }) => {
 
   let content = post["_id"] ? (
     // @ts-ignore
-    <Post post={post} />
+    <ShowPost post={post} />
   ) : (
     <PostList muni posts={municipality} action={handleSetPost} />
   );

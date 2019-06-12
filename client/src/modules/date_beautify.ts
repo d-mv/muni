@@ -14,7 +14,6 @@ const dataFile: indexedObjAny = data;
 const getMonth = (language: string, month: number): string =>
   dataFile.language[language].months[month];
 
-
 /** Function to process date to make it look like "May 16, 2019"
  *
  * @param {string} date - Date string to process
@@ -22,7 +21,7 @@ const getMonth = (language: string, month: number): string =>
  *
  * @returns {string} - Returns either empty line, if all the requirements are not satisfied or string with date
  */
-const dateBeautify = (date: string, language: string) => {
+const dateBeautify = (date: string, language: string, brief?: boolean) => {
   const parsed = new Date(Date.parse(date));
   // if empty on absent - return empty
   if (
@@ -32,6 +31,10 @@ const dateBeautify = (date: string, language: string) => {
     parsed.toString() === "Invalid Date"
   ) {
     return "";
+  } else if (brief) {
+    const calcMonth = parsed.getMonth() + 1;
+    const month = calcMonth < 10 ? `0${calcMonth}` : calcMonth;
+    return `${parsed.getDate()}/${month}/${parsed.getFullYear()}`;
   } else {
     let langRequest = !Object.keys(data.language).includes(language)
       ? "en"

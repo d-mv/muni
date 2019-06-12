@@ -4,5 +4,7 @@
 export const colorsArray: { [index: string]: string } = {
   primary: "#478FDF",
   secondary: "#03AD24",
-  white: "#fff"
+  white: "#fff",
+  dark: "#444",
+  grey: '#777'
 };

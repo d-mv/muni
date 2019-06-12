@@ -3,10 +3,10 @@
   align-items: center;
   padding: var(--distStandard);
 
-  span {
-    font: var(--textFormFieldName);
-    margin: 0 var(--distStandard);
-  }
+  // span {
+  //   font: var(--textFormFieldName);
+  //   margin: 0 var(--distStandard);
+  // }
 }
 
 .line {
@@ -14,7 +14,7 @@
   flex-direction: row;
 }
 
-.linethin {
+.thin {
   @extend .line;
   flex-direction: row;
   padding: 0 var(--distStandard);
@@ -29,8 +29,8 @@
   }
 }
 
-.lineRTLthin {
-  @extend .linethin;
+.thinRTL {
+  @extend .thin;
   flex-direction: row-reverse;
 
   * {

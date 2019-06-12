@@ -66,9 +66,12 @@
         "new.field.link.prompt": "link",
         "new.message.fieldEmpty": "Please, add the information",
         "new.message.urlMalformed": "URL is malformed",
-        "new.preview": "This is preview","new.error.incomplete":"Can't create post - incomplete data",
+        "new.preview": "This is preview",
+        "new.error.incomplete": "Can't create post - incomplete data",
         "post.problem": "Problem",
-        "post.solution": "Solution"
+        "post.solution": "Solution",
+        "post.show-more": "show more",
+        "post.show-less": "show less"
       }
     },
     "עב": {
@@ -137,9 +140,12 @@
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
         "new.message.fieldEmpty": "Please, add the information",
-        "new.preview": "This is preview","new.error.incomplete":"Can't create post - incomplete data",
+        "new.preview": "This is preview",
+        "new.error.incomplete": "Can't create post - incomplete data",
         "post.problem": "Problem",
-        "post.solution": "Solution"
+        "post.solution": "Solution",
+        "post.show-more": "show more",
+        "post.show-less": "show less"
       }
     }
   }

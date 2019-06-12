@@ -103,6 +103,7 @@
 :root {
   /// Box transition
   --boxTransition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --boxTransitionSlow: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   /// Animations
   --aniSlideFromTop: slideInFromTop 0.3s ease-out 0s 1 forwards;

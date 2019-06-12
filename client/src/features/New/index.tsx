@@ -302,7 +302,19 @@ const NewPost = (props: {
     step === 6 ? (
       <Post
         preview
-        post={{ title, category, problem, solution, photo, link }}
+        post={{
+          title,
+          category,
+          problem,
+          solution,
+          photo,
+          link,
+          _id: "",
+          createdBy: "",
+          date: "",
+          status: "",
+          votes: []
+        }}
       />
     ) : null;
   const loadingElement = loading ? <Loading /> : null;

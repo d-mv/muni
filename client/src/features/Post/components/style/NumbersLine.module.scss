@@ -1,0 +1,17 @@
+.numbers {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.numbersRTL {
+  @extend .numbers;
+  direction: rtl;
+  flex-direction: row-reverse;
+
+}
+
+.date {
+  font: var(--textVotersText);
+}

@@ -22,4 +22,8 @@ describe("Date Beautify", () => {
     const result = dateBeautify(testData, "עב");
     expect(result).toStrictEqual(foreignReply);
   });
+  it("returns beautified #2.1", () => {
+    const result = dateBeautify(testData, "ru", true);
+    expect(result).toStrictEqual("16/05/2019");
+  });
 });

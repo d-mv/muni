@@ -19,7 +19,7 @@ const Line = (props: {
   flat?: boolean;
 }) => {
   const styles: any = style;
-  let lineStyle: string = "";
+  let lineStyle: string = styles[styleFactory("line", props.direction)];
 
   if (props.thin) {
     lineStyle = styles[styleFactory("thin", props.direction)];

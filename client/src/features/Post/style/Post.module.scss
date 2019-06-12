@@ -9,8 +9,20 @@
   }
 
   h4 {
-    margin: var(--distStandard);
-    margin-bottom: 0;
+    margin: 0 var(--distStandard);
+
     font: var(--textPageSubTitle);
   }
+}
+
+
+
+.text {
+  transition: var(--boxTransitionSlow);
+}
+
+.textClosed {
+  @extend .text;
+  height: 15rem;
+  overflow: hidden;
 }

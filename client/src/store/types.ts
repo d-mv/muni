@@ -107,6 +107,7 @@ export interface postPreview {
   title: string;
   problem: string;
   solution: string;
+  text: string;
   photo: string;
   link: string;
   createdBy?: string;
@@ -118,12 +119,11 @@ export interface postPreview {
 export interface postMuni {
   _id: string;
   title: string;
-  text: string;
   photo: string;
   link: string;
+  text: string;
+  createdBy: string;
   date: string;
-  category?: string;
-  votes?: Array<string>;
 }
 
 export interface postEmpty {

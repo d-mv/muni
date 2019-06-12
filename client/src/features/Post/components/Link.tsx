@@ -1,8 +1,9 @@
 import React from "react";
 
-import style from "./styles/Link.module.scss";
+import style from "./style/Link.module.scss";
 import { IconLink } from "../../../icons";
 import Line from "../../../layout/Line";
+import Block from "../../../layout/Block";
 
 const Link = (props: {
   text: string;
@@ -18,12 +19,14 @@ const Link = (props: {
   }
 
   return (
-    <Line flat direction={props.direction}>
+    // <Line flat direction={props.direction}>
+    // <Block>
       <div className={style.link}>
         {icon}
-        {props.text}
+        <p>{props.text}</p>
       </div>
-    </Line>
+    // </Block>
+    // </Line>
   );
 };
 

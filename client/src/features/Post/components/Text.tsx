@@ -8,22 +8,23 @@ import Problem from "./Problem";
 const Text = (props: {
   step?: boolean;
   back?: boolean;
-  title: string;
+  muni?: boolean;
+  title?: string;
   text: string;
   direction: string;
 }) => {
-
-  const title = (
+  const title = props.title ? (
     <Line flat direction={props.direction}>
       <h4>{props.title}</h4>
     </Line>
-  );
+  ) : null;
 
   const text = props.back ? (
     <Solution text={props.text} />
   ) : (
     <Problem text={props.text} />
   );
+
   let wrapper: React.ClassicElement<any> = <div />;
 
   if (props.step) {
@@ -36,6 +37,13 @@ const Text = (props: {
   } else if (props.back) {
     wrapper = (
       <Section back>
+        {title}
+        {text}
+      </Section>
+    );
+  } else if (props.muni) {
+    wrapper = (
+      <Section step>
         {title}
         {text}
       </Section>

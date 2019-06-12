@@ -7,7 +7,7 @@ import Page from "../layout/Page";
 import Header from "../components/Header";
 import PinnedCard from "../features/Card/PinnedCard";
 import PostList from "../layout/PostList";
-import Post from "../features/Post";
+import ShowPost from "../components/ShowPost";
 
 const Home = (props: any) => {
   const { posts, pinned } = props.locationData;
@@ -39,8 +39,7 @@ const Home = (props: any) => {
     );
   let content = <PostList posts={postsLcl} action={handleSetPost} />;
   if (post["_id"]) {
-    // @ts-ignore
-    content = <Post post={post} />;
+    content = <ShowPost post={post} />;
     pinnedCard = null;
   }
 
