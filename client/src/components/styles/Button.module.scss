@@ -1,0 +1,103 @@
+/// Minimal button, for header
+/// @group Buttons
+.minimal {
+  height: 60%;
+  width: 10vw;
+  margin: 0 var(--distStandard);
+  transition: var(--boxTransition);
+  background-color: var(--colorTransparent);
+  width: 2.5rem;
+
+  &:active {
+    transform: scale(.95);
+  }
+}
+
+/// Button template for regular buttons
+/// @group Buttons
+.button-template {
+  display: block;
+  margin: var(--distStandard) auto;
+  padding: var(--distStandard) var(--distDouble);
+  border-radius: var(--borderRadiusLarge);
+  box-shadow: var(--boxShadow);
+  width: fit-content;
+  color: var(--colorWhite);
+  user-select: none;
+  font: var(--textButton);
+  letter-spacing: .1rem;
+
+  &:active {
+    // box-shadow: var(--boxShadowHover);
+    transform: scale(0.95);
+  }
+}
+
+/// Transparent background button
+/// @group Buttons
+.trans {
+  display: block;
+  margin: 10px auto;
+  background-color: var(--colorTransparent);
+}
+
+/// Button, used by <input> in the form
+/// @group Buttons
+.form {
+  margin: 10px auto;
+  padding: 0;
+  background-color: var(--colorTransparent);
+
+  input {
+    margin: 0;
+  }
+}
+
+/// Primary button
+/// @group Buttons
+.primary {
+  @extend .button-template;
+  background-color: var(--colorPrimary);
+  border: var(--borderPrimary);
+}
+
+///  Secondary button
+/// @group Buttons
+.secondary {
+  @extend .button-template;
+  background-color: var(--colorSecondary);
+  border: var(--borderSecondary);
+
+  &:disabled,
+  &[disabled] {
+    color: var(--colorGrey);
+    background-color: var(--colorWhite);
+    border: var(--borderDisabled);
+  }
+}
+
+///  Attention button
+/// @group Buttons
+.attention {
+  @extend .button-template;
+  background-color: var(--colorAttention);
+}
+
+///  Cancel button
+/// @group Buttons
+.cancel {
+  @extend .button-template;
+  color: var(--colorDark);
+  background-color: var(--colorWhite);
+  border: .2rem solid var(--colorDark);
+}
+
+/// Primary button
+/// @group Buttons
+.primarySmall {
+  @extend .button-template;
+  color: var(--colorPrimary);
+  background-color: var(--colorWhite);
+  border: var(--borderPrimary);
+  font: var(--textButtonSmall);
+}

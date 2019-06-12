@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "../store";
 const store = configureStore();
 import renderComponent from "./_renderComponent";
-import Navigation from "../components/Navigation/Navigation";
+import Navigation from "../features/Navigation";
 
 /**
  * Setup function to be sent as props

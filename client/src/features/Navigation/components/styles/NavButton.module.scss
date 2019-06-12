@@ -1,0 +1,85 @@
+/// Button template
+/// @group UI-elements
+.button-template {
+  // disable default
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  // set new properties
+  transition: var(--boxTransition);
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/// Primary button
+/// @group UI-elements
+.navButton {
+  @extend .button-template;
+  border-radius: 0;
+  max-width: 8rem;
+  max-height: 8rem;
+
+  @media (max-width: 399px) {
+    height: 10vw;
+    width: 10vw;
+  }
+
+  @media (max-width: 650px) {
+    height: 11vw;
+    width: 11vw;
+
+  }
+
+  @media (min-width: 651px) {
+    height: 8vw;
+    width: 8vw;
+
+  }
+}
+
+.navButtonEmpty {
+  @extend .navButton;
+
+
+  @media (max-width: 399px) {
+    width: 10vw;
+  }
+
+  @media (min-width:400px) and (max-width: 650px) {
+    width: 11vw;
+  }
+
+  @media (min-width: 651px) {
+    width: 8vw;
+  }
+}
+
+/// Primary button
+/// @group UI-elements
+.welcomeButton {
+  @extend .button-template;
+  width: 100%;
+  height: 100%;
+  font: var(--textButtonEnter);
+  color: var(--colorWhite);
+  letter-spacing: 1vh;
+  text-align: center;
+  vertical-align: middle;
+  animation: var(--aniAppear);
+  opacity: 0;
+}
+
+.return {
+  justify-self: left;
+  background: none;
+  height: 30%;
+  text-align: left;
+  width: 10%;
+}

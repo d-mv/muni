@@ -1,9 +1,0 @@
-.paragraph {
-  font: var(--textParaStandard);
-  padding: 10px;
-}
-
-.paraThin {
-  @extend .paragraph;
-  padding: 0 10px 3px 10px;
-}

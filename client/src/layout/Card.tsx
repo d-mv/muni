@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "../styles/Card.module.scss";
+import styles from "./style/Card.module.scss";
 
 /**
  * React JSX component to wrap card
@@ -15,8 +15,9 @@ const Card = (props: {
   children: any;
   id: string;
   margin?: number;
+  action: () => void;
 }) => {
-  const cardStyle = props.direction === "rtl" ? style.cardRTL : style.card;
+  const cardStyle = props.direction === "rtl" ? styles.cardRTL : styles.card;
   const marginAdjust = {
     marginTop: props.margin || 0
   };
@@ -24,7 +25,8 @@ const Card = (props: {
     <article
       id={props.id}
       className={cardStyle}
-      style={props.margin ? marginAdjust : {}}>
+      style={props.margin ? marginAdjust : {}}
+      onClick={() => props.action()}>
       {props.children}
     </article>
   );

@@ -43,3 +43,13 @@ export const setLocationData = (data: TYPE.data): Action => {
 export const setStep = (step: number): Action => {
   return { type: "SET_STEP", step };
 };
+/** Action function to show/hide help
+ *
+ * @param {number} step - Step number
+ *
+ * @returns {object}
+ */
+export const showHelp = (show:boolean): Action => {
+  return { type: "SHOW_HELP", show };
+};
+

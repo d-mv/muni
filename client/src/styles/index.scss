@@ -1,6 +1,7 @@
 @import './_colors';
 @import './_animations';
 @import './_typography';
+@import './_ui';
 
 
 /* m-plus-rounded-1c-regular - latin-ext_latin_hebrew */
@@ -167,41 +168,32 @@
 
 :root {
   font-family: 'M PLUS Rounded 1c', 'Tajawal', sans-serif;
+  font-size: 62.5%;
   color: #444;
 
-  p {
-    margin: 0;
+  @media (max-width: 399px) {
+    font-size: 60%;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: none;
+  @media (max-width: 650px) {}
+
+  @media (min-width: 651px) {
+    font-size: 100%;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
     margin-block-start: 0;
     margin-block-end: 0;
     margin-inline-start: 0;
     margin-inline-end: 0;
-  }
-
-  textarea,
-  button,
-  select,
-  option,
-  input {
-    // -webkit-appearance: none;
-    // -moz-appearance: none;
-    // -ms-appearance: none;
-    // -o-appearance: none;
-    // appearance: none;
     outline: none;
     border: none;
-      // background: rgba(0, 0, 0, 0);
+    box-shadow: none;
+    appearance: none;
 
-
-      &:active {
+    &:active {
       text-decoration: none;
       outline: none;
     }
@@ -211,4 +203,5 @@
       outline: none;
     }
   }
+
 }

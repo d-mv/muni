@@ -1,0 +1,56 @@
+.information {
+  padding: 1rem ;
+  height: 100%;
+  display: flex;
+  background-color: var(--colorWhite);
+  flex-direction: column;
+
+  h2 {
+    width: 78%;
+  }
+
+  .data {
+    width: 100%;
+    max-height: 2.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      width: 70%;
+    }
+
+    .voters {
+      margin: 0 1rem;
+      padding: 0;
+
+    }
+
+    .button {
+      position: relative;
+      bottom: 1.6rem;
+    }
+  }
+}
+
+.informationRTL {
+  @extend .information;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.dataRTL {
+  @extend .data;
+  flex-direction: row-reverse;
+
+  .lineRTL {
+    @extend .line;
+    flex-direction: row-reverse;
+  }
+}

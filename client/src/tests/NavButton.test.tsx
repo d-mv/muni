@@ -1,7 +1,7 @@
 import React from "react";
 import { render, cleanup } from "react-testing-library";
 
-import NavButton from "../components/Navigation/NavButton";
+import NavButton from "../features/Navigation/components/NavButton";
 
 /**
  * Setup function to be sent as props

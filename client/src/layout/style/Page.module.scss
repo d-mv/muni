@@ -1,0 +1,54 @@
+/// Page wrapper template
+/// @group Layout
+.main-template {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: var(--colorWhite);
+  box-shadow: var(--pageShadow);
+  overflow: scroll;
+}
+
+/// Basic page for full height content
+/// @group Layout
+.page {
+  @extend .main-template;
+  top: 0;
+  border-radius: 0 0 25px 25px;
+  box-shadow: var(--pageShadow);
+  animation: var(--aniSlideToTop);
+}
+
+/// Welcome version of page with image
+/// @group Layout
+.welcome {
+  @extend .page;
+  background: rgba(0, 0, 0, 0) url('https://res.cloudinary.com/diciu4xpu/image/upload/v1560150315/muni/photo-1509580357930-a711cf9d888d.jpg') no-repeat scroll center center / cover;
+  background-color: white;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  object-fit: cover;
+}
+
+
+
+/// Page with content
+/// @group Layout
+.pageWithContent {
+  @extend .page;
+  height: 90%;
+  box-sizing: border-box;
+  border-bottom: 20px solid white;
+  animation: none;
+}
+
+/// Page, starting from bottom
+/// @group Layout
+.pageOpposite {
+  @extend .main-template;
+  position: initial;
+  border-radius: 25px 25px 0 0;
+  animation: var(--aniSlideFromTop);
+}

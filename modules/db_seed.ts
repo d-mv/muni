@@ -3,17 +3,26 @@ import * as faker from "faker";
 import * as mongodb from "mongodb";
 import * as MDB from "./db_connect";
 
+import image from "./image";
 import { encodeString } from "./security";
+import { ObjectId } from "bson";
+
 import * as TYPE from "../src/types";
-const dbName = "muni";
 
 /**
  * Function to update the database with generated values
- * @function update
+ *
  * @param  {object} props - ID of the location and fields with generated value
+ *
  * @return {} nothing
  */
-const update = (props: { id: string; fields: any }) => {
+const update = (props: {
+  id: string;
+  users: any;
+  municipality: any;
+  pinned: any;
+}) => {
+  const dbName = "muni";
   MDB.client.connect(err => {
     assert.equal(null, err);
     // assert.equal(null, err);
@@ -23,11 +32,17 @@ const update = (props: { id: string; fields: any }) => {
         {
           _id: new MDB.ObjectId(props.id)
         },
-        { $set: { users: props.fields } },
+        {
+          $set: {
+            users: props.users,
+            municipality: props.municipality,
+            pinned: props.pinned
+          }
+        },
         { upsert: true }
       )
       .then((document: any) => {
-        console.log(document);
+        // console.log(document);
       })
       .catch((e: any) => {
         assert.equal(null, e);
@@ -36,10 +51,80 @@ const update = (props: { id: string; fields: any }) => {
   });
 };
 
+// create X amount of emails
+const emailsArray = (qty: number) => {
+  let result = [];
+  for (let i = 0; i < qty; i++) {
+    result.push(faker.internet.email());
+  }
+  return result;
+};
+
+/**
+ * Function to create posts, both petitions and municipality news
+ *
+ * @param {boolean} user - If this is a petition
+ * @param {ObjectId} createdBy - Creator's ID
+ * @param {ObjectId} category - Category's ID
+ *
+ * @returns {Array} - Array of generated posts
+ */
+const buildPost = (
+  user?: boolean,
+  createdBy?: ObjectId,
+  category?: ObjectId
+) => {
+  let post = {};
+  if (user) {
+    post = {
+      _id: new MDB.ObjectId(),
+      title: faker.lorem.sentence(),
+      problem: faker.lorem.paragraphs(5),
+      solution: faker.lorem.paragraphs(2),
+      photo: image,
+      link: faker.internet.url(),
+      newsId: new MDB.ObjectId(),
+      createdBy,
+      category,
+      date: faker.date.between("2019-01-01", "2019-05-15"),
+      status: "active",
+      votes: emailsArray(
+        faker.random.number({
+          min: 0,
+          max: 500
+        })
+      )
+    };
+  } else {
+    post = {
+      _id: new MDB.ObjectId(),
+      title: faker.lorem.sentence(),
+      text: faker.lorem.paragraphs(5),
+      photo: image,
+      link: faker.internet.url(),
+      date: faker.date.between("2019-01-01", "2019-05-15"),
+      status: "active",
+      up: emailsArray(
+        faker.random.number({
+          min: 0,
+          max: 500
+        })
+      ),
+      down: emailsArray(
+        faker.random.number({
+          min: 0,
+          max: 500
+        })
+      )
+    };
+  }
+  return post;
+};
+
 /**
  * Function to generate values
- * @function fake
- * @callback - If enabled, returns generated data through callback
+ *
+ * @param {function} - If enabled at the end of the function, returns generated data through callback
  */
 const dbSeed = (callback: any) => {
   // qty of users
@@ -48,10 +133,15 @@ const dbSeed = (callback: any) => {
     max: 10
   });
   // categories
-  const categories = ["important", "cat1", "cat2", "other"];
+  const categories = [
+    "5cfd32f3458cd06becd28315",
+    "5cfd335e458cd06becd28316",
+    "5cfd33a3458cd06becd28317",
+    "5cfd33d2458cd06becd28318"
+  ];
   const languages = ["en", "עב"];
 
-  // generate has for password
+  // generate hash for password
   encodeString("1234567", (encoded: TYPE.intApiResponseTYPE) => {
     if (!encoded.status) {
       callback({ status: false, message: "Something went wrong", code: 500 });
@@ -70,7 +160,7 @@ const dbSeed = (callback: any) => {
           _id: userIds[i],
           fName: faker.name.firstName(),
           lName: faker.name.lastName(),
-          avatar: "https://picsum.photos/200/300?random=1",
+          avatar: image,
           email: faker.internet.email(),
           language: languages[Math.floor(Math.random() * languages.length)],
           pass: encoded.payload,
@@ -81,36 +171,41 @@ const dbSeed = (callback: any) => {
           min: 2,
           max: 5
         });
+
         for (let n = 0; n < posts; n++) {
           const createdBy = userIds[Math.floor(Math.random() * userIds.length)];
-          const category =
-            categories[Math.floor(Math.random() * categories.length)];
+          const category = new MDB.ObjectId(
+            categories[Math.floor(Math.random() * categories.length)]
+          );
           // new post
-          const post: any = {
-            _id: new MDB.ObjectId(),
-            title: faker.lorem.sentence(),
-            text: faker.lorem.paragraphs(5),
-            photo: "https://picsum.photos/200/300?random=2",
-            link: faker.internet.url(),
-            newsId: new MDB.ObjectId(),
-            createdBy,
-            category,
-            date: faker.date.between("2019-01-01", "2019-05-15"),
-            status: "active",
-            votes: faker.random.number()
-          };
-          // console.log(post);
-          // push the post to user
+          const post = buildPost(true, createdBy, category);
           user.posts.push(post);
         }
         // push the user to data
         block.push(user);
       }
+      // create municipality records
+      let blockMuni = [];
+      const municipalityPosts = faker.random.number({
+        min: 2,
+        max: 4
+      });
+
+      for (let n = 0; n < municipalityPosts; n++) {
+        const post = buildPost();
+        blockMuni.push(post);
+      }
+
+      const pinned = buildPost();
+
       // ! call to update the DB
       update({
-        id: "5ce2a3c945e5451171394b35",
-        fields: block
+        id: "5ce589a00a61b5a9ca9d9caf",
+        users: block,
+        municipality: blockMuni,
+        pinned
       });
+
       // report
       callback({
         status: true,

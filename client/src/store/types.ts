@@ -77,27 +77,57 @@ export interface indexedObjAny {
  * @typedef {Object} post
  * @property {string} _id
  * @property {string} title
- * @property {string} text
+ * @property {string} problem
+ * @property {string} solution
  * @property {string} photo
  * @property {string} link
  * @property {string} createdBy
  * @property {Date} date
  * @property {boolean} status
- * @property {number} votes
+ * @property {Array} votes
  * @property {string} [newsId]
  */
 export interface post {
   _id: string;
   category: string;
   title: string;
-  text: string;
+  problem: string;
+  solution: string;
   photo: string;
   link: string;
   createdBy: string;
   date: string;
   status: string;
-  votes: number;
+  votes: Array<string>;
   newsId?: string;
+}
+export interface postPreview {
+  _id?: string;
+  category: string;
+  title: string;
+  problem: string;
+  solution: string;
+  text: string;
+  photo: string;
+  link: string;
+  createdBy?: string;
+  date?: string;
+  status?: string;
+  votes?: Array<string>;
+  newsId?: string;
+}
+export interface postMuni {
+  _id: string;
+  title: string;
+  photo: string;
+  link: string;
+  text: string;
+  createdBy: string;
+  date: string;
+}
+
+export interface postEmpty {
+  _id: "";
 }
 
 /**

@@ -3,7 +3,8 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { loadData, setLanguage, setStep } from "./app/reducers";
+import { loadData, setLanguage, setStep, showHelp } from "./app/reducers";
+import { submitPost } from "./post/reducers";
 import {
   setToken,
   checkToken,
@@ -20,15 +21,12 @@ import { apiState } from "./defaults";
 
 import data from "../data/translation.json";
 
-let self;
-
-if (process.env.REACT_APP_SELF) {
-  self = process.env.REACT_APP_SELF;
-} else if (window.location.hostname === "localhost") {
-  self = "http://localhost:8080/api";
-} else {
-  self = `https://${window.location.hostname}/api`;
-}
+const self =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8080/api"
+    : process.env.REACT_APP_SELF
+    ? process.env.REACT_APP_SELF
+    : `https://${window.location.hostname}/api`;
 
 axios.defaults.baseURL = self;
 
@@ -44,6 +42,9 @@ const rootReducer = combineReducers({
   language: setLanguage,
   locationData: setLocationData,
   auth: setAuth,
+  submitPost: submitPost,
+  help: showHelp,
+  // remove?
   step: setStep
 });
 export type AppState = ReturnType<typeof rootReducer>;
@@ -58,7 +59,6 @@ export default function configureStore() {
     login: TYPE.apiResponse;
     module: string;
     locations: any;
-    // locations: TYPE.apiResponse;
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
@@ -66,6 +66,8 @@ export default function configureStore() {
     locationData: TYPE.data;
     auth: boolean;
     step: number;
+    submitPost: TYPE.apiResponse;
+    help: boolean;
   }
 
   const initialState: state = {
@@ -80,7 +82,9 @@ export default function configureStore() {
     language: data.language.en,
     locationData: {},
     auth: false,
-    step: 1
+    step: 1,
+    submitPost: apiState,
+    help: false
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

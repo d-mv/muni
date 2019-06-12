@@ -1,0 +1,11 @@
+.title {
+  color: var(--colorPrimary);
+  text-align: center;
+  font: var(--textPageTitle);
+  // text-shadow: var(--txtShadow);
+}
+
+.titleR {
+  @extend .title;
+  font: var(--textPageTitleR);
+}

@@ -1,0 +1,30 @@
+.paragraph {
+  font: var(--textParaStandard);
+  padding: 1rem;
+}
+
+.paragraphRTL {
+  font: var(--textParaStandardR);
+  padding: 1rem;
+  direction: rtl;
+}
+
+.paraThin {
+  @extend .paragraph;
+  padding: 0 1rem .3rem 1rem;
+}
+
+.paraThinRTL {
+  @extend .paragraphRTL;
+  padding: 0 1rem .3rem 1rem;
+}
+
+.flat {
+  @extend .paragraph;
+  padding: 1rem 0;
+}
+
+.flatRTL {
+  @extend .paragraphRTL;
+  padding: 1rem 0;
+}

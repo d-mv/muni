@@ -1,0 +1,10 @@
+.title {
+  color: var(--colorPrimary);
+  text-align: center;
+  font: var(--textPageSubTitle);
+}
+
+.titleR {
+  @extend .title;
+  font: var(--textPageSubTitleR);
+}

@@ -53,6 +53,10 @@ export const checkToken = (
           dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });
+          dispatch({
+            type: "LOGIN",
+            payload: { ...response.data, code: response.status }
+          });
           // dispatch({type:"SET_MODULE",})
         } else {
           dispatch({
@@ -73,6 +77,11 @@ export const checkToken = (
         console.log(error);
       });
   };
+};
+
+export const setAuth = (status:boolean): Action => {
+  console.log(module);
+  return { type: "SET_AUTH", status };
 };
 
 export const setModule = (module: string): Action => {

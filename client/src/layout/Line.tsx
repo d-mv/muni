@@ -1,6 +1,8 @@
 import React from "react";
 
-import style from "../styles/Line.module.scss";
+import styleFactory from "../modules/style_factory";
+
+import styles from "./style/Line.module.scss";
 
 /**
  * React JSX component to wrap line
@@ -10,14 +12,19 @@ import style from "../styles/Line.module.scss";
  * @returns {JSX.Element}
  *
  */
-const Line = (props: { children: any; direction: string; thin?: boolean }) => {
-  console.log(props);
-  const styles: any = style;
-  const lineStyle =
-    styles[
-      `line${props.direction === "rtl" ? "RTL" : ""}${props.thin ? "thin" : ""}`
-    ];
-  console.log(lineStyle)
+const Line = (props: {
+  children: any;
+  direction: string;
+  thin?: boolean;
+  flat?: boolean;
+}) => {
+  let lineStyle: string = styles[styleFactory("line", props.direction)];
+
+  if (props.thin) {
+    lineStyle = styles[styleFactory("thin", props.direction)];
+  } else if (props.flat) {
+    lineStyle = styles[styleFactory("flat", props.direction)];
+  }
   return <div className={lineStyle}>{props.children}</div>;
 };
 

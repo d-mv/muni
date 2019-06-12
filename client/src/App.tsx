@@ -4,27 +4,30 @@ import { connect } from "react-redux";
 
 import { AppState } from "./store";
 import { loadData, setLocationData } from "./store/app/actions";
-
 import {
   setModule,
   setToken,
   checkToken,
   login,
-  fetchLocations
+  fetchLocations,
+  setAuth
 } from "./store/users/actions";
 
-import Loading from "./views/Loading";
-import Navigation from "./components/Navigation/Navigation";
+import NewButton from "./features/New/components/NewButton";
+import Navigation from "./features/Navigation";
+
+import Loading from "./pages/Loading";
+import Welcome from "./pages/Welcome";
+import Login from "./pages/Login";
+
 import style from "./styles/App.module.scss";
 
-import Welcome from "./views/Welcome";
-import Login from "./views/Login";
-import NewButton from "./components/NewButton";
-
 const App = (props: any) => {
-  const [token, setToken] = React.useState("");
+  const { auth } = props;
+  const { token } = props;
+  // const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-  const [auth, setAuth] = React.useState(false);
+  // const [auth, setAuth] = React.useState(false);
 
   const { login } = props;
   const { cookies } = props;
@@ -32,13 +35,23 @@ const App = (props: any) => {
 
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
+  React.useEffect(() => {
+    console.log(1);
+    if (!auth) {
+      props.setModule("welcome");
+      setLoading(false);
+    }
+  }, [auth]);
+
   // set cookies if token changes
   React.useEffect(() => {
     // console.log("hi");
     // if 'clear'
     if (props.token === "clear") {
+      console.log(0);
       cookies.set("token", "");
-      setToken("");
+      props.setToken("");
+      props.setModule("welcome");
     } else if (props.token !== "" && props.token !== "clear") {
       // if token IS
       cookies.set("token", props.token);
@@ -46,14 +59,14 @@ const App = (props: any) => {
       console.log(5);
       props.setModule("home");
       setLoading(false);
-      setAuth(true);
+      props.setAuth(true);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
     } else {
       setLoading(false);
     }
-  }, [props.token]);
+  }, [token]);
 
   // fetch locations
   React.useEffect(() => {
@@ -73,7 +86,7 @@ const App = (props: any) => {
       show = <Login />;
       break;
     case "confirmation":
-      const Confirmation = React.lazy(() => import("./views/Confirmation"));
+      const Confirmation = React.lazy(() => import("./pages/Confirmation"));
       show = (
         <Suspense fallback={<Loading />}>
           <Confirmation />;
@@ -81,15 +94,16 @@ const App = (props: any) => {
       );
       break;
     case "municipality":
-      const Municipality = React.lazy(() => import("./views/Municipality"));
+      const Municipality = React.lazy(() => import("./pages/Municipality"));
       show = (
         <Suspense fallback={<Loading />}>
           <Municipality />
+          <NewButton action={handleNewButtonClick} />
         </Suspense>
       );
       break;
     case "new":
-      const New = React.lazy(() => import("./views/New"));
+      const New = React.lazy(() => import("./pages/New"));
       show = (
         <Suspense fallback={<Loading />}>
           <New />
@@ -97,7 +111,7 @@ const App = (props: any) => {
       );
       break;
     case "profile":
-      const Profile = React.lazy(() => import("./views/Profile"));
+      const Profile = React.lazy(() => import("./pages/Profile"));
       show = (
         <Suspense fallback={<Loading />}>
           <Profile />
@@ -106,13 +120,23 @@ const App = (props: any) => {
       );
       break;
     case "home":
-      const Home = React.lazy(() => import("./views/Home"));
+      const Home = React.lazy(() => import("./pages/Home"));
       show = (
         <Suspense fallback={<Loading />}>
           <Home />
           <NewButton action={handleNewButtonClick} />
         </Suspense>
       );
+      break;
+    case "mine":
+      const Mine = React.lazy(() => import("./pages/Mine"));
+      show = (
+        <Suspense fallback={<Loading />}>
+          <Mine />
+          <NewButton action={handleNewButtonClick} />
+        </Suspense>
+      );
+      break;
   }
 
   return (
@@ -126,10 +150,7 @@ const App = (props: any) => {
 const mapStateToProps = (state: AppState) => {
   return {
     token: state.token,
-    check: state.checkTokenResult,
-    // login: state.login,
     module: state.module,
-    // locations: state.locations,
     loginResult: state.login,
     language: state.language,
     locationData: state.locationData,
@@ -146,6 +167,7 @@ export default connect(
     login,
     fetchLocations,
     loadData,
-    setLocationData
+    setLocationData,
+    setAuth
   }
 )(withCookies(App));

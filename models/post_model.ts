@@ -90,75 +90,82 @@ export const list = (
     }
   });
 };
+
+export const checkByTitle = (
+  location: string,
+  title: string,
+  callback: (arg0: boolean) => void
+) => {
+  const database: any = MDB.client.db(dbName).collection(dbcMain);
+  database
+    .aggregate([
+      {
+        $match: {
+          _id: new MDB.ObjectId(location),
+          "users.posts.title": title
+        }
+      }
+    ])
+    .toArray((e: any, res: any) => {
+      if (e || res.length === 0) {
+        callback(false);
+      } else {
+        callback(true);
+      }
+    });
+};
+
 /**
  * Function to create post
- * @function create
+ *
  * @param {object} request - New post fields and user ID
  * @callback callback - Callback function to return response
+ *
  */
 export const create = (
-  request: { post: TYPE.newPostTYPE; location: string; user: string },
+  request: TYPE.newPostRequest,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  // check if post title is available
-  findPostByTitle(
+  checkByTitle(
     request.location,
     request.post.title,
-    (findPostResult: TYPE.apiResponse) => {
-      // if status true inform, that user exists
-      // if status false, proceed with creation
-      if (findPostResult.code !== 203) {
-        // send message
-        callback(findPostResult);
+    (checkResponse: boolean) => {
+      if (checkResponse) {
+        callback(Message.alreadyExistsMessage("post title"));
       } else {
-        // proceed
-
-        // call db and create post
-        MDB.client.connect(err => {
-          assert.equal(null, err);
-          if (err) {
-            // return error with connection
+        const database: any = MDB.client.db(dbName).collection(dbcMain);
+        // set document to insert
+        const newDocument = {
+          _id: new MDB.ObjectId(),
+          createdBy: new MDB.ObjectId(request.user),
+          date: new Date(),
+          status: "active",
+          votes: "0",
+          ...request.post
+        };
+        database.update(
+            {
+              _id: new MDB.ObjectId(request.location),
+              "users._id": new MDB.ObjectId(request.user)
+            },
+            { $push: { "users.$.posts": newDocument } }
+          )
+          .then((document: any) => {
+            // process response
             callback(
-              Message.errorMessage({ action: "connection to DB (1)", e: err })
-            );
-          } else {
-            // set database
-            const database: any = MDB.client.db(dbName).collection(dbcMain);
-            // set document to insert
-            const newDocument = {
-              _id: new MDB.ObjectId(),
-              createdBy: new MDB.ObjectId(request.user),
-              date: new Date(),
-              ...request.post
-            };
-            // insert document
-            database
-              .update(
-                {
-                  _id: new MDB.ObjectId(request.location),
-                  "users._id": new MDB.ObjectId(request.user)
-                },
-                { $push: { "users.$.posts": newDocument } }
-              )
-              .then((document: any) => {
-                // process response
-                callback(
-                  Message.updateMessage({
-                    subj: "Post",
-                    document: {
-                      ok: document.result.ok,
-                      nModified: document.result.nModified
-                    }
-                  })
-                );
+              Message.updateMessage({
+                subj: "Post",
+                document: {
+                  ok: document.result.ok,
+                  nModified: document.result.nModified
+                }
               })
-              .catch((e: any) => {
-                assert.equal(null, e);
-                callback(Message.errorMessage({ action: "post create", e }))
-              }
-              );
-          }
-        });
+            );
+          })
+          .catch((e: any) => {
+            assert.equal(null, e);
+            callback(Message.errorMessage({ action: "post create", e }));
+          });
       }
     }
   );

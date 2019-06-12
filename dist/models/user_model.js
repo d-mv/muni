@@ -633,7 +633,33 @@ exports.getLocationInfo = function (user, callback) {
             callback(Message.errorMessage({ action: "connection to DB", e: err }));
         }
         else {
-            var database = MDB.client.db(dbName).collection(dbcMain);
+            var database = MDB.client.db(dbName).collection(dbcApp);
+            var categories_1;
+            database.aggregate([
+                {
+                    $project: {
+                        _id: 0,
+                        categories: 1
+                    }
+                }
+            ]).toArray(function (err, result) {
+                if (err) {
+                    // if error
+                    callback(Message.errorMessage({ action: "get categories", e: err }));
+                }
+                else if (result.length === 0) {
+                    // if no - response
+                    callback(Message.notFound("categories not found"));
+                }
+                else if (result.length > 1) {
+                    // if too many results
+                    callback(Message.tooManyResultsMessage("get categories"));
+                }
+                else {
+                    categories_1 = result[0].categories;
+                }
+            });
+            database = MDB.client.db(dbName).collection(dbcMain);
             database
                 .aggregate([
                 {
@@ -646,6 +672,7 @@ exports.getLocationInfo = function (user, callback) {
                         name: 1,
                         location: "$_id",
                         pinned: 1,
+                        municipality: 1,
                         _id: 0,
                         posts: {
                             $reduce: {
@@ -677,7 +704,7 @@ exports.getLocationInfo = function (user, callback) {
                     callback(Message.positiveMessage({
                         subj: "User login is OK",
                         payload: {
-                            payload: __assign({ _id: user }, result[0])
+                            payload: __assign({ _id: user, categories: categories_1 }, result[0])
                         }
                     }));
                 }

@@ -1,0 +1,18 @@
+/// Defining global variables for other UI elements
+/// @group UI
+:root {
+  /// Border
+  --border: .1rem solid var(--colorGrey);
+  --borderPrimary: .2rem solid var(--colorPrimary);
+  --borderSecondary: .2rem solid var(--colorSecondary);
+  --borderDisabled: .2rem solid var(--colorGrey);
+  --borderDark: .1rem solid var(--colorDark);
+  /// Border radius
+  --borderRadius: .4rem;
+  --borderRadiusText: .4rem .4rem 0 .4rem;
+  --borderRadiusLarge: 1rem;
+  --borderRadiusRound: 50%;
+  /// Distances
+  --distStandard: 1rem;
+  --distDouble: 2rem;
+}

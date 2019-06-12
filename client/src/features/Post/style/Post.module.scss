@@ -1,0 +1,21 @@
+.post {
+  border: var(--border);
+  margin-bottom: .5rem;
+
+  h4 {
+    margin: 0 var(--distStandard);
+    font: var(--textPageSubTitle);
+  }
+}
+
+
+
+.text {
+  transition: var(--boxTransitionSlow);
+}
+
+.textClosed {
+  @extend .text;
+  height: 15rem;
+  overflow: hidden;
+}

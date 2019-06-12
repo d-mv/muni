@@ -17,6 +17,20 @@ export interface apiResponse {
   payload?: any;
 }
 
+export interface newPostRequestObject {
+  category: "string";
+  link: string;
+  photo: string;
+  problem: string;
+  solution: string;
+  title: string;
+}
+export interface newPostRequest {
+  user: string;
+  location: string;
+  post: newPostRequestObject;
+}
+
 export interface votesTYPE {
   up: number;
   down: number;

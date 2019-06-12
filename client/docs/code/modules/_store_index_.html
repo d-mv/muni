@@ -100,7 +100,7 @@
 					<div class="tsd-signature tsd-kind-icon">App<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/6320d4f/client/src/store/index.ts#L49">store/index.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/8c1c6c7/client/src/store/index.ts#L50">store/index.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -110,10 +110,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="rootreducer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> root<wbr>Reducer</h3>
-					<div class="tsd-signature tsd-kind-icon">root<wbr>Reducer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;combineReducers({token: setToken,checkTokenResult: checkToken,login: login,module: setModuleU,locations: fetchLocations,loading: setLoading,register: register,data: loadData,language: setLanguage,locationData: setLocationData,auth: setAuth,step: setStep})</span></div>
+					<div class="tsd-signature tsd-kind-icon">root<wbr>Reducer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;combineReducers({token: setToken,checkTokenResult: checkToken,login: login,module: setModuleU,locations: fetchLocations,loading: setLoading,register: register,data: loadData,language: setLanguage,locationData: setLocationData,auth: setAuth,submitPost: submitPost,help: showHelp,// remove?step: setStep})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/6320d4f/client/src/store/index.ts#L35">store/index.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/8c1c6c7/client/src/store/index.ts#L33">store/index.ts:33</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -143,11 +143,11 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="self" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagLet">Let</span> self</h3>
-					<div class="tsd-signature tsd-kind-icon">self<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> self</h3>
+					<div class="tsd-signature tsd-kind-icon">self<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;window.location.hostname &#x3D;&#x3D;&#x3D; &quot;localhost&quot;? &quot;http://localhost:8080/api&quot;: process.env.REACT_APP_SELF? process.env.REACT_APP_SELF: &#x60;https://${window.location.hostname}/api&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/d-mv/muni/blob/6320d4f/client/src/store/index.ts#L23">store/index.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/d-mv/muni/blob/8c1c6c7/client/src/store/index.ts#L24">store/index.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -164,7 +164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/d-mv/muni/blob/6320d4f/client/src/store/index.ts#L51">store/index.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/d-mv/muni/blob/8c1c6c7/client/src/store/index.ts#L52">store/index.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Store</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">AnyAction</span><span class="tsd-signature-symbol">&gt;</span>

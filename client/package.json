@@ -1,6 +1,6 @@
 {
   "name": "muni-app-client",
-  "version": "0.1.0",
+  "version": "0.8.0",
   "private": true,
   "author": "Dmitry Melnikov",
   "description": "Muni Project",
@@ -12,6 +12,7 @@
     "react": "^16.8.6",
     "react-cookie": "^4.0.0",
     "react-dom": "^16.8.6",
+    "react-file-base64": "^1.0.3",
     "react-redux": "^7.0.3",
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",

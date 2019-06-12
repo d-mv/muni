@@ -1,0 +1,12 @@
+/// Center line contents
+/// @group Layout
+.center {
+  margin: 20px auto;
+  width: 100%;
+  text-align: center;
+}
+
+.centerBlock {
+  @extend .center;
+  margin: 20px auto;
+}

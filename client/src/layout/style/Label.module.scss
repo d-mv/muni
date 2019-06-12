@@ -1,0 +1,10 @@
+.label {
+  font: var(--textFormFieldName);
+  margin: 3px 0 !important;
+  letter-spacing: 1px;
+}
+
+.labelRTL {
+  @extend .label;
+  direction: rtl;
+}
