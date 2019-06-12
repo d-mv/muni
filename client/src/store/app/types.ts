@@ -1,4 +1,4 @@
-import { data,indexedObjAny } from "../types";
+import { data, indexedObjAny } from "../types";
 
 export interface loadDataAction {
   type: "LOAD_DATA";
@@ -14,13 +14,18 @@ export interface setLocationDataAction {
   data: data;
 }
 
-export interface setStep {
+export interface setStepAction {
   type: "SET_STEP";
-  step:number
+  step: number;
+}
+export interface showHelpAction {
+  type: "SHOW_HELP";
+  show: boolean;
 }
 
 export type Action =
   | loadDataAction
   | setLanguageAction
   | setLocationDataAction
-  | setStep;
+  | setStepAction
+  | showHelpAction;

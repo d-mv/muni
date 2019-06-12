@@ -98,6 +98,23 @@
   }
 }
 
+@keyframes helpIn {
+  0% {
+    top: 0;
+    left: 50%;
+    bottom: 0;
+    max-width: 0;
+  }
+
+  100% {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 100vw;
+  }
+}
+
 /// Defining global variables with animation settings
 /// @group Animation
 :root {
@@ -112,4 +129,7 @@
   --aniVerticalFlip: vertical 7.5s linear infinite 0s;
   --aniBeat: beat .5s linear .3s 2;
   --aniBeatD2s: beatWhite .5s linear 2s 2;
+  --aniHelpIn: helpIn 0.7s ease-out 0s 1 forwards;
+  --aniHelpContent: appear 0.3s ease-out 0.7s 1 forwards;
+
 }

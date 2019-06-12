@@ -7,7 +7,7 @@ const Step = (props: {
   current: number;
   action: (arg0: number) => void;
 }) => {
-  const iconStyle = props.current < props.step ? style.step : style.filled;
+  const iconStyle = props.current < props.step + 1 ? style.step : style.filled;
   return (
     <div
       data-testid='step-icon'

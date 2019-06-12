@@ -1,0 +1,13 @@
+.content {
+  opacity: 0;
+  animation: var(--aniAppear);
+  color:white;
+}
+
+.central {
+  width: 100%;
+  position: fixed;
+  top: 45vh;
+  z-index: 101;
+  text-align:center;
+}

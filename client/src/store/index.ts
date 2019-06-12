@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { loadData, setLanguage, setStep } from "./app/reducers";
+import { loadData, setLanguage, setStep, showHelp } from "./app/reducers";
 import { submitPost } from "./post/reducers";
 import {
   setToken,
@@ -43,6 +43,7 @@ const rootReducer = combineReducers({
   locationData: setLocationData,
   auth: setAuth,
   submitPost: submitPost,
+  help: showHelp,
   // remove?
   step: setStep
 });
@@ -66,6 +67,7 @@ export default function configureStore() {
     auth: boolean;
     step: number;
     submitPost: TYPE.apiResponse;
+    help: boolean;
   }
 
   const initialState: state = {
@@ -81,7 +83,8 @@ export default function configureStore() {
     locationData: {},
     auth: false,
     step: 1,
-    submitPost: apiState
+    submitPost: apiState,
+    help: false
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

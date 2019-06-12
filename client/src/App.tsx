@@ -128,6 +128,16 @@ const App = (props: any) => {
           <NewButton action={handleNewButtonClick} />
         </Suspense>
       );
+      break;
+    case 'mine':
+const Mine = React.lazy(() => import("./pages/Mine"));
+show = (
+  <Suspense fallback={<Loading />}>
+    <Mine />
+    <NewButton action={handleNewButtonClick} />
+  </Suspense>
+);
+      break;
   }
 
   return (

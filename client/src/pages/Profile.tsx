@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
+import { showHelp } from "../store/app/actions";
+
 import { logOff } from "../store/users/actions";
 
 import Page from "../layout/Page";
@@ -13,12 +15,28 @@ import LangSwitch from "../components/LangSwitch";
 import Button from "../components/Button";
 
 import style from "./style/Profile.module.scss";
+import Help from "../features/Help";
 
 const Profile = (props: any) => {
   const { text, direction } = props.language;
+
+  const toggleHelp = () => {
+    props.showHelp(!props.help);
+  };
+
+  const header = <Header help={toggleHelp} returnTo='profile' />;
+  const help = props.help ? (
+    <Help
+      mode='profile'
+      direction={props.language.direction}
+      cancel={toggleHelp}
+    />
+  ) : null;
+
   return (
     <Page>
-      <Header />
+      {header}
+      {help}
       <Section>
         <Paragraph direction={direction}>
           {text["profile.text.changeLanguage"]}
@@ -44,11 +62,12 @@ const Profile = (props: any) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language
+    language: state.language,
+    help: state.help
   };
 };
 
 export default connect(
   mapStateToProps,
-  { logOff }
+  { logOff, showHelp }
 )(Profile);

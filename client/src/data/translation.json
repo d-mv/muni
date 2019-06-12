@@ -71,7 +71,8 @@
         "post.problem": "Problem",
         "post.solution": "Solution",
         "post.show-more": "show more",
-        "post.show-less": "show less"
+        "post.show-less": "show less",
+        "mine.subtitle": "MY POSTS"
       }
     },
     "עב": {
@@ -145,7 +146,8 @@
         "post.problem": "Problem",
         "post.solution": "Solution",
         "post.show-more": "show more",
-        "post.show-less": "show less"
+        "post.show-less": "show less",
+        "mine.subtitle": "MY POSTS"
       }
     }
   }

@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.plankRight{
+.plankRTL {
   @extend .plank;
   flex-direction: row-reverse;
 }
