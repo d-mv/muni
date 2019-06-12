@@ -1,6 +1,8 @@
 const express = require("express");
 import * as dotenv from "dotenv";
 
+import compareObjects from "../modules/compare_objects";
+
 import * as PostController from "../controllers/post_controller";
 import { apiResponse } from "../src/types";
 const router = express.Router();
@@ -8,19 +10,51 @@ const router = express.Router();
 const dotEnv = dotenv.config();
 const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
+let replyCache: any = {
+  create: { time: new Date(), req: "", reply: "" }
+};
+
+// storing
+const caching = (cacheId: string, req: any, reply: any) => {
+  const time = new Date();
+  replyCache[cacheId] = { time, req, reply };
+};
+
+// check if request is double
+const double = (cacheId: string, req: any, time: number) => {
+  const cache = replyCache[cacheId];
+  const last: any = cache.time;
+  const now: any = new Date();
+  const diff = now - last;
+
+  let reply =
+    diff < 1000 * time && cache.reply !== "" && compareObjects(req, cache.req);
+  // if return list
+  if (req === "") {
+    reply = diff < 1000 * time && cache.reply !== "";
+  }
+  return reply;
+};
+
 /**
  * Route to create post, using POST method with object in body
- *
- * @function router.post
- * @param {object} req - Post ID in header, data in body
- * @param {object} res
- * @param {object} next
- *
  */
 router.post("/create", (req: any, res: any, next: any) => {
-  PostController.createPost(req, (controllerResponse: apiResponse) => {
-    res.status(controllerResponse.code).send(controllerResponse);
-  });
+  // information
+  console.log(`§ create post...`);
+  // showRequest("lcn.check", req.headers, [req.body, req.headers]);
+
+  if (double("create", req.body, 600)) {
+    console.log("~> consider double");
+    res
+      .status(replyCache["create"].reply.code)
+      .send(replyCache["create"].reply);
+  } else {
+    PostController.createPost(req.body, (controllerResponse: apiResponse) => {
+      caching("create", req.body, controllerResponse);
+      res.status(controllerResponse.code).send(controllerResponse);
+    });
+  }
 });
 
 /**

@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./styles/Paragraph.module.scss";
+import style from "./styles/Block.module.scss";
 
 /**
  * React JSX component to wrap block with paragraph style

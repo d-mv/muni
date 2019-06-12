@@ -3,7 +3,7 @@ exports.__esModule = true;
 var Post = require("../models/post_model");
 // import { checkToken } from "../modules/check_token";
 var security_1 = require("../modules/security");
-var check_post_1 = require("../modules/check_post");
+var Message = require("../modules/response_message");
 var response_message_1 = require("../modules/response_message");
 /**
  * Function to create post. _Example of the body_:
@@ -32,45 +32,31 @@ var response_message_1 = require("../modules/response_message");
  * @returns {callback} - Callback function to return response
  *
  */
-exports.createPost = function (props, callback) {
-    if (Object.keys(props.body).length === 0) {
-        // if request body is empty
-        callback(response_message_1.requestError("Wrong/malformed request"));
-    }
-    else if (!props.body.location) {
-        callback(response_message_1.requestError("Wrong/malformed request"));
-    }
-    else if (!check_post_1["default"](props.body.post)) {
-        // if fields are missing, empty or wrong type
-        callback(response_message_1.requestError("Wrong/malformed request"));
-    }
-    else {
-        if (!props.headers.token) {
-            // if token is not present send code/message
-            callback(response_message_1.requestError("Token is missing"));
-        }
-        else {
-            // token is present, check it
-            security_1.checkToken(props.headers.token, function (checkTokenResponse) {
-                // check if code is not positive
-                if (checkTokenResponse.code !== 200) {
-                    // negative code
-                    callback(checkTokenResponse);
-                }
-                else {
-                    // positive code = 200
-                    Post.create({
-                        post: props.body.post,
-                        location: props.body.location,
-                        user: checkTokenResponse.payload.id
-                    }, function (modelResponse) {
-                        // callback with response
-                        callback(modelResponse);
-                    });
-                }
+exports.createPost = function (query, callback) {
+    security_1.checkToken(query.token, function (checkTokenResponse) {
+        var _id = checkTokenResponse.payload.payload._id;
+        var location = checkTokenResponse.payload.payload.location;
+        var check = query.user === _id && query.location === location.toString();
+        // console.log(checkTokenResponse);
+        // console.log(query.user === _id);
+        // console.log(typeof query.location);
+        // console.log(typeof location);
+        // console.log(query.location === location.toString());
+        // console.log(checkTokenResponse);
+        if (check) {
+            var request = {
+                user: query.user,
+                location: query.location,
+                post: query.post
+            };
+            Post.create(request, function (modelResponse) {
+                callback(modelResponse);
             });
         }
-    }
+        else {
+            callback(Message.notAuthMessage("token is not verified"));
+        }
+    });
 };
 /**
  * Function to update post

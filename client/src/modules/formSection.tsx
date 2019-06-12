@@ -2,7 +2,7 @@ import React from "react";
 
 import Label from "../layout/Label";
 import { indexedObj } from "../store/types";
-import { down } from "../icons/Icons";
+import { down } from "../icons";
 import styleFactory from "../modules/style_factory";
 import style from "./formSection.module.scss";
 

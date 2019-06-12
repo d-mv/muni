@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 
 import { AppState } from "../store";
 
-import Page from '../layout/Page'
-import Header from '../components/Header'
-import PinnedCard from '../features/Card/PinnedCard'
-import PostList from '../layout/PostList'
+import Page from "../layout/Page";
+import Header from "../components/Header";
+import PinnedCard from "../features/Card/PinnedCard";
+import PostList from "../layout/PostList";
 
 const Home = (props: any) => {
   const [posts, setPosts] = React.useState(
@@ -21,10 +21,13 @@ const Home = (props: any) => {
       setPosts(props.locationData.posts);
     }
   }, [props.locationData.payload]);
+
+  const pinnedCard = pinned === {} ? null : <PinnedCard post={pinned} />;
+
   return (
     <Page>
       <Header />
-      <PinnedCard post={pinned} />
+      {pinnedCard}
       <PostList posts={posts} />
     </Page>
   );

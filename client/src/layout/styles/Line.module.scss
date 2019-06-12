@@ -37,3 +37,13 @@
     direction: rtl
   }
 }
+
+.flat {
+  display: flex;
+  align-items: center;
+}
+
+.flatRTL {
+  @extend .flat;
+  direction:rtl;
+}

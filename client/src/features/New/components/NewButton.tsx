@@ -1,6 +1,6 @@
 import React from "react";
 
-import { iconCreateNew } from "../../../icons/Icons";
+import { iconCreateNew } from "../../../icons";
 
 import style from "./styles/NewButton.module.scss";
 

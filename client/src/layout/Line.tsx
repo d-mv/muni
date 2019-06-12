@@ -1,5 +1,7 @@
 import React from "react";
 
+import styleFactory from "../modules/style_factory";
+
 import style from "./styles/Line.module.scss";
 
 /**
@@ -10,12 +12,20 @@ import style from "./styles/Line.module.scss";
  * @returns {JSX.Element}
  *
  */
-const Line = (props: { children: any; direction: string; thin?: boolean }) => {
+const Line = (props: {
+  children: any;
+  direction: string;
+  thin?: boolean;
+  flat?: boolean;
+}) => {
   const styles: any = style;
-  const lineStyle =
-    styles[
-      `line${props.direction === "rtl" ? "RTL" : ""}${props.thin ? "thin" : ""}`
-    ];
+  let lineStyle: string = "";
+
+  if (props.thin) {
+    lineStyle = styles[styleFactory("thin", props.direction)];
+  } else if (props.flat) {
+    lineStyle = styles[styleFactory("flat", props.direction)];
+  }
   return <div className={lineStyle}>{props.children}</div>;
 };
 

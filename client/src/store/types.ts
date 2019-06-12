@@ -77,13 +77,14 @@ export interface indexedObjAny {
  * @typedef {Object} post
  * @property {string} _id
  * @property {string} title
- * @property {string} text
+ * @property {string} problem
+ * @property {string} solution
  * @property {string} photo
  * @property {string} link
  * @property {string} createdBy
  * @property {Date} date
  * @property {boolean} status
- * @property {number} votes
+ * @property {Array} votes
  * @property {string} [newsId]
  */
 export interface post {
@@ -96,7 +97,7 @@ export interface post {
   createdBy: string;
   date: string;
   status: string;
-  votes: number;
+  votes: Array<string>;
   newsId?: string;
 }
 

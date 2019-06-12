@@ -3,8 +3,9 @@ import * as Post from "../models/post_model";
 // import { checkToken } from "../modules/check_token";
 import { checkToken } from "../modules/security";
 import { checkID } from "../modules/check_strings";
-import checkPostFields from "../modules/check_post";
+// import checkPostFields from "../modules/check_post";
 import * as TYPE from "../src/types";
+import * as Message from "../modules/response_message";
 
 import { requestError } from "../modules/response_message";
 
@@ -36,45 +37,32 @@ import { requestError } from "../modules/response_message";
  *
  */
 export const createPost = (
-  props: any,
+  query: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  if (Object.keys(props.body).length === 0) {
-    // if request body is empty
-    callback(requestError("Wrong/malformed request"));
-  } else if (!props.body.location) {
-    callback(requestError("Wrong/malformed request"));
-  } else if (!checkPostFields(props.body.post)) {
-    // if fields are missing, empty or wrong type
-    callback(requestError("Wrong/malformed request"));
-  } else {
-    if (!props.headers.token) {
-      // if token is not present send code/message
-      callback(requestError("Token is missing"));
-    } else {
-      // token is present, check it
-      checkToken(props.headers.token, (checkTokenResponse: TYPE.apiResponse) => {
-        // check if code is not positive
-        if (checkTokenResponse.code !== 200) {
-          // negative code
-          callback(checkTokenResponse);
-        } else {
-          // positive code = 200
-          Post.create(
-            {
-              post: props.body.post,
-              location: props.body.location,
-              user: checkTokenResponse.payload.id
-            },
-            (modelResponse: TYPE.apiResponse) => {
-              // callback with response
-              callback(modelResponse);
-            }
-          );
-        }
+  checkToken(query.token, (checkTokenResponse: TYPE.apiResponse) => {
+    const { _id } = checkTokenResponse.payload.payload;
+    const { location } = checkTokenResponse.payload.payload;
+    const check = query.user === _id && query.location === location.toString();
+    // console.log(checkTokenResponse);
+    // console.log(query.user === _id);
+    // console.log(typeof query.location);
+    // console.log(typeof location);
+    // console.log(query.location === location.toString());
+    // console.log(checkTokenResponse);
+    if (check) {
+      const request = {
+        user: query.user,
+        location: query.location,
+        post: query.post
+      };
+      Post.create(request, (modelResponse: TYPE.apiResponse) => {
+        callback(modelResponse);
       });
+    } else {
+      callback(Message.notAuthMessage("token is not verified"));
     }
-  }
+  });
 };
 
 /**
@@ -87,40 +75,40 @@ export const updatePost = (
   props: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-    if (Object.keys(props.body).length === 0) {
-      // if request body is empty
-      callback(requestError("Wrong/malformed request"));
+  if (Object.keys(props.body).length === 0) {
+    // if request body is empty
+    callback(requestError("Wrong/malformed request"));
+  } else {
+    if (!props.headers.token) {
+      // if token is not present send code/message
+      callback(requestError("Token is missing"));
     } else {
-      if (!props.headers.token) {
-        // if token is not present send code/message
-        callback(requestError("Token is missing"));
-      } else {
-        // token is present, check it
-        checkToken(
-          props.headers.token,
-          (checkTokenResponse: TYPE.apiResponse) => {
-            // check if code is not positive
-            if (checkTokenResponse.code !== 200) {
-              // negative code
-              callback(checkTokenResponse);
-            } else {
-              // positive code = 200
-              Post.update(
-                {
-                  fields: props.body.post,
-                  postId: props.params.id,
-                  user: checkTokenResponse
-                },
-                (modelResponse: TYPE.apiResponse) => {
-                  // callback with response
-                  callback(modelResponse);
-                }
-              );
-            }
+      // token is present, check it
+      checkToken(
+        props.headers.token,
+        (checkTokenResponse: TYPE.apiResponse) => {
+          // check if code is not positive
+          if (checkTokenResponse.code !== 200) {
+            // negative code
+            callback(checkTokenResponse);
+          } else {
+            // positive code = 200
+            Post.update(
+              {
+                fields: props.body.post,
+                postId: props.params.id,
+                user: checkTokenResponse
+              },
+              (modelResponse: TYPE.apiResponse) => {
+                // callback with response
+                callback(modelResponse);
+              }
+            );
           }
-        );
-      }
+        }
+      );
     }
+  }
 };
 /**
  * Function to delete post
@@ -132,35 +120,31 @@ export const deletePost = (
   props: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-      if (!props.headers.token) {
-        // if token is not present send code/message
-        callback(requestError("Token is missing"));
+  if (!props.headers.token) {
+    // if token is not present send code/message
+    callback(requestError("Token is missing"));
+  } else {
+    // token is present, check it
+    checkToken(props.headers.token, (checkTokenResponse: TYPE.apiResponse) => {
+      // check if code is not positive
+      if (checkTokenResponse.code !== 200) {
+        // negative code
+        callback(checkTokenResponse);
       } else {
-        // token is present, check it
-        checkToken(
-          props.headers.token,
-          (checkTokenResponse: TYPE.apiResponse) => {
-            // check if code is not positive
-            if (checkTokenResponse.code !== 200) {
-              // negative code
-              callback(checkTokenResponse);
-            } else {
-              // positive code = 200
-              Post.deletePost(
-                {
-                  postId: props.params.id,
-                  user: checkTokenResponse
-                },
-                (modelResponse: TYPE.apiResponse) => {
-                  // callback with response
-                  callback(modelResponse);
-                }
-              );
-            }
+        // positive code = 200
+        Post.deletePost(
+          {
+            postId: props.params.id,
+            user: checkTokenResponse
+          },
+          (modelResponse: TYPE.apiResponse) => {
+            // callback with response
+            callback(modelResponse);
           }
         );
-
-    }
+      }
+    });
+  }
 };
 
 /** Get the list of locations

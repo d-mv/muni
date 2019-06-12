@@ -11,6 +11,8 @@
   font: var(--textPostCardTitle);
   padding: 7px 0 3px 0;
   padding-top: 7px;
+  width: 90%;
+  text-transform: uppercase;
 }
 
 .date {
@@ -26,17 +28,16 @@
   height: 40px;
   width: 40px;
   position: relative;
-  top: -25px;
-  margin-bottom: -40px;
+  top: -2.5rem;
+  margin-bottom: -4rem;
 }
 
 .icon {
   @extend .icon-template;
-  left: 80vw;
+  left: 82vw;
 }
 
 .iconRTL {
   @extend .icon-template;
-
-  left: 5vw;
+  left: 3vw;
 }

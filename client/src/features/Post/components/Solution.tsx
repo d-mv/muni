@@ -1,9 +1,9 @@
 import React from "react";
 
-import style from "./styles/Solution.module.scss";
+import Paragraph from '../../../layout/Paragraph'
 
 const Solution = (props: { text: string }) => {
-  return <div>{props.text}</div>;
+  return  <Paragraph>{props.text}</Paragraph>;
 };
 
 export default Solution;

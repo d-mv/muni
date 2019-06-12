@@ -32,6 +32,15 @@ const App = (props: any) => {
 
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
+  React.useEffect(() => {
+    if (!props.auth) {
+      props.setModule("welcome")
+      setLoading(false)
+    }
+  }, [props.auth])
+
+
+
   // set cookies if token changes
   React.useEffect(() => {
     // console.log("hi");
@@ -39,6 +48,7 @@ const App = (props: any) => {
     if (props.token === "clear") {
       cookies.set("token", "");
       setToken("");
+      props.setModule('welcome')
     } else if (props.token !== "" && props.token !== "clear") {
       // if token IS
       cookies.set("token", props.token);

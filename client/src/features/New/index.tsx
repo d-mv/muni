@@ -1,22 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import axios from "axios";
 import { formSection, formSelection } from "../../modules/formSection";
 
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
-import { indexedObjAny } from "../../store/types";
+import { setModule } from "../../store/users/actions";
+import { submitPost } from "../../store/post/actions";
+import { indexedObjAny, data } from "../../store/types";
 
 import Post from "../Post";
 
 import Button from "../../components/Button";
 import Form from "../../components/Form";
-import Steps from "./components/Steps";
+import Loading from "../../components/Loading";
 import Message from "../../components/Message";
 import PhotoUpload from "./components/PhotoUpload";
+import Steps from "./components/Steps";
 
-import Block from "../../layout/Block";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
+import Block from "../../layout/Block";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
 import Label from "../../layout/Label";
@@ -26,18 +29,23 @@ import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 
 const NewPost = (props: {
-  language: indexedObjAny;
+  language: data;
+  locationData: data;
+  token: string;
   step: number;
-  locationData: indexedObjAny;
+  submitResult: data;
   setStep: (arg0: number) => void;
+  submitPost: (arg0: indexedObjAny) => void;
 }) => {
   const { direction } = props.language;
   const { text } = props.language;
-  const [step, setStep] = React.useState(1);
+  const [step, setStep] = React.useState(props.step);
+  const [review, setReview] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   // form fields
   const [title, setTitle] = React.useState("");
   const [category, setCategory] = React.useState(
-    props.locationData.categories[0]._id
+    props.locationData.categories[0][props.language.short]
   );
   const [problem, setProblem] = React.useState("");
   const [solution, setSolution] = React.useState("");
@@ -45,6 +53,12 @@ const NewPost = (props: {
   const [link, setLink] = React.useState("");
   // message
   const [message, setMessage] = React.useState("");
+
+  React.useEffect(() => {
+    if (step === 6 && review === false) {
+      setReview(true);
+    }
+  }, [step]);
 
   const getCategories = () => {
     let categories: Array<{ [index: string]: string }> = [];
@@ -56,9 +70,6 @@ const NewPost = (props: {
     });
     return categories;
   };
-
-  // ! remove
-  const mockFn = () => {};
 
   const handleNextStep = () => {
     if (step + 1 <= 6) {
@@ -98,6 +109,18 @@ const NewPost = (props: {
     }
   };
 
+  const handleBackStep = () => {
+    if (step - 1 > 0) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleAnyStep = (newStep: number) => {
+    if (review) {
+      setStep(newStep);
+    }
+  };
+
   const handleInputChange = (event: any) => {
     setMessage("");
     switch (event.target.name) {
@@ -123,10 +146,82 @@ const NewPost = (props: {
     setPhoto(props);
   };
 
-  const handleSubmit = () => {};
+  const disableFormSubmit = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleSubmit = () => {
+    const objectToSubmit: indexedObjAny = {
+      user: props.locationData._id,
+      location: props.locationData.location,
+      token: props.token,
+      post: {
+        title,
+        category,
+        problem,
+        solution,
+        photo,
+        link
+      }
+    };
+
+    let check = 0;
+    let counter = 0;
+
+    // Object.keys(objectToSubmit).map((el: any) => {
+    //   if (typeof objectToSubmit[el] === "object") {
+    //     Object.keys(objectToSubmit[el]).map((ele: any) => {
+    //       const empty = objectToSubmit[el][ele] === "";
+    //       if (!empty) {
+    //         check += 1;
+    //       }
+    //       counter += 1;
+    //     });
+    //   } else if (
+    //     objectToSubmit[el] === "photo" ||
+    //     objectToSubmit[el] === "link"
+    //   ) {
+    //     check += 1;
+    //     counter += 1;
+    //   } else {
+    //     const empty = objectToSubmit[el] === "";
+    //     if (!empty) {
+    //       check += 1;
+    //     }
+    //     counter += 1;
+    //   }
+    // });
+
+    const url = "/post/create";
+    axios
+      .post(url, objectToSubmit)
+      .then((response: any) => {
+        setLoading(false);
+        setMessage(response.data.message);
+      })
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+      });
+
+    if (check === counter) {
+      setLoading(true);
+      // props.setStep(6);
+      // props.submitPost(objectToSubmit);
+    } else {
+      setMessage(text["new.error.incomplete"]);
+    }
+  };
 
   let pageSubTitle = text["new.steps.title"];
-  let stepsComponent = <Steps current={step} direction={direction} />;
+  let stepsComponent = (
+    <Steps current={step} direction={direction} action={handleAnyStep} />
+  );
+  let buttonPrimary = (
+    <Button mode='primary' action={handleNextStep}>
+      {text["new.steps.button.next"]}
+    </Button>
+  );
+
   switch (step) {
     case 1:
       break;
@@ -141,6 +236,12 @@ const NewPost = (props: {
     case 6:
       stepsComponent = <Zero />;
       pageSubTitle = text["new.preview"];
+      buttonPrimary = (
+        <Button mode='primary' action={handleSubmit}>
+          {text["new.steps.button.submit"]}
+        </Button>
+      );
+
       break;
   }
 
@@ -183,7 +284,7 @@ const NewPost = (props: {
     step === 4
       ? formSection(
           text["new.field.solution.label"],
-          "text",
+          "textarea",
           "solution",
           solution,
           text["new.field.solution.prompt"],
@@ -214,35 +315,30 @@ const NewPost = (props: {
     step === 6 ? (
       <Post post={{ title, category, problem, solution, photo, link }} />
     ) : null;
-
+  const loadingElement = loading ? <Loading /> : null;
   return (
     <Content padded>
       <Center>
-        <Center block>
-          <SubTitle title={pageSubTitle} direction={direction} />
-        </Center>
+        <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
       </Center>
       <Paragraph>{text["new.steps.step.1"]}</Paragraph>
-      <Block thin>
-        <Form action={handleSubmit}>
-          {stepOne}
-          {stepTwo}
-          {stepThree}
-          {stepFour}
-          {stepFive}
-          {preview}
-          <Message direction={direction} mode='attention' use='form'>
-            {message}
-          </Message>
-        </Form>
+      <Block>
+        {stepOne}
+        {stepTwo}
+        {stepThree}
+        {stepFour}
+        {stepFive}
+        {preview}
+        <Message direction={direction} mode='attention' use='form'>
+          {message}
+        </Message>
+        {loadingElement}
       </Block>
       <ButtonsWrapper row direction={direction}>
-        <Button mode='primary' action={handleNextStep}>
-          {text["new.steps.button.next"]}
-        </Button>
-        <Button mode='cancel' action={mockFn}>
-          {text["new.steps.button.cancel"]}
+        {buttonPrimary}
+        <Button mode='secondary' disabled={step === 1} action={handleBackStep}>
+          {text["new.steps.button.back"]}
         </Button>
       </ButtonsWrapper>
     </Content>
@@ -252,12 +348,15 @@ const NewPost = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    step: state.step,
-    locationData: state.locationData
+    // step: state.step,
+    locationData: state.locationData,
+    token: state.token,
+    submitResult: state.submitPost,
+    step: state.step
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setStep }
+  { setStep, submitPost }
 )(NewPost);

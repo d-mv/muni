@@ -1,6 +1,6 @@
 import React from "react";
 
-import { down } from "../icons/Icons";
+import { down } from "../icons";
 
 import style from "./styles/Dropdown.module.scss";
 

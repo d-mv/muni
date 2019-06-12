@@ -18,19 +18,24 @@ import style from "./styles/PinnedCard.module.scss";
 const PinnedCard = (props: { post: any; language: indexedObjAny }) => {
   const { direction } = props.language;
   const iconStyle = styleFactory("icon", direction);
+  
   return (
     <Card direction={direction} id={props.post._id} margin={25}>
       <div className={style[iconStyle]}>
         <IconMunicipality filled color='primary' />
       </div>
-      <Line thin direction={direction}>
-        <h2 className={style.title}>{props.post.title.toUpperCase()}</h2>
-      </Line>
-      <Line thin direction={direction}>
-        <p className={style.date}>{dateBeautify(props.post.date, direction)}</p>
-      </Line>
       <Paragraph thin>
-        <span className={style.text}>{shortText(props.post.text, 100)}</span>
+        <Line thin direction={direction}>
+          <p className={style.title}>{shortText(props.post.title, 55)}</p>
+        </Line>
+        <Line thin direction={direction}>
+          <p className={style.date}>
+            {dateBeautify(props.post.date, direction)}
+          </p>
+        </Line>
+      </Paragraph>
+      <Paragraph thin>
+        <span className={style.text}>{shortText(props.post.text, 95)}</span>
       </Paragraph>
     </Card>
   );

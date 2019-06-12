@@ -34,7 +34,7 @@ app.use("/api", api_router_1["default"]);
 // app.use('/', router);
 // * React
 //Static file declaration
-app.use(express.static(path.join(__dirname, "../client/build/")));
+app.use(express.static(path.join(__dirname, "../../client/build/")));
 //production mode
 // if (process.env.NODE_ENV === "production") {
 // app.use(express.static(path.join(__dirname, "../client/build/")));
@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, "../client/build/")));
 // console.log(path.join(__dirname, "../client/build/index.h"));
 //build mode
 app.get("/index.html", function (req, res) {
-    res.sendFile(path.join(__dirname + "../client/build/index.html"));
+    res.sendFile(path.join(__dirname + "../../client/build/index.html"));
 });
 // * end of React
 // set up db

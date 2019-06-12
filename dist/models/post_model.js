@@ -15,7 +15,6 @@ var assert = require("assert");
 var dotenv = require("dotenv");
 var MDB = require("../modules/db_connect");
 var find_post_by_id_1 = require("./find_post_by_id");
-var find_post_by_title_1 = require("./find_post_by_title");
 var Message = require("../modules/response_message");
 // constant variables
 var dotEnv = dotenv.config();
@@ -94,55 +93,58 @@ exports.list = function (query, callback) {
         }
     });
 };
-/**
- * Function to create post
- * @function create
- * @param {object} request - New post fields and user ID
- * @callback callback - Callback function to return response
- */
-exports.create = function (request, callback) {
-    // check if post title is available
-    find_post_by_title_1["default"](request.location, request.post.title, function (findPostResult) {
-        // if status true inform, that user exists
-        // if status false, proceed with creation
-        if (findPostResult.code !== 203) {
-            // send message
-            callback(findPostResult);
+exports.checkByTitle = function (location, title, callback) {
+    var database = MDB.client.db(dbName).collection(dbcMain);
+    database
+        .aggregate([
+        {
+            $match: {
+                _id: new MDB.ObjectId(location),
+                "users.posts.title": title
+            }
+        }
+    ])
+        .toArray(function (e, res) {
+        if (e || res.length === 0) {
+            callback(false);
         }
         else {
-            // proceed
-            // call db and create post
-            MDB.client.connect(function (err) {
-                assert.equal(null, err);
-                if (err) {
-                    // return error with connection
-                    callback(Message.errorMessage({ action: "connection to DB (1)", e: err }));
-                }
-                else {
-                    // set database
-                    var database = MDB.client.db(dbName).collection(dbcMain);
-                    // set document to insert
-                    var newDocument = __assign({ _id: new MDB.ObjectId(), createdBy: new MDB.ObjectId(request.user), date: new Date() }, request.post);
-                    // insert document
-                    database
-                        .update({
-                        _id: new MDB.ObjectId(request.location),
-                        "users._id": new MDB.ObjectId(request.user)
-                    }, { $push: { "users.$.posts": newDocument } })
-                        .then(function (document) {
-                        // process response
-                        callback(Message.updateMessage({
-                            subj: "Post",
-                            document: {
-                                ok: document.result.ok,
-                                nModified: document.result.nModified
-                            }
-                        }));
-                    })["catch"](function (e) {
-                        assert.equal(null, e);
-                        callback(Message.errorMessage({ action: "post create", e: e }));
-                    });
-                }
+            callback(true);
+        }
+    });
+};
+/**
+ * Function to create post
+ *
+ * @param {object} request - New post fields and user ID
+ * @callback callback - Callback function to return response
+ *
+ */
+exports.create = function (request, callback) {
+    exports.checkByTitle(request.location, request.post.title, function (checkResponse) {
+        if (checkResponse) {
+            callback(Message.alreadyExistsMessage("post title"));
+        }
+        else {
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // set document to insert
+            var newDocument = __assign({ _id: new MDB.ObjectId(), createdBy: new MDB.ObjectId(request.user), date: new Date(), status: "active", votes: "0" }, request.post);
+            database.update({
+                _id: new MDB.ObjectId(request.location),
+                "users._id": new MDB.ObjectId(request.user)
+            }, { $push: { "users.$.posts": newDocument } })
+                .then(function (document) {
+                // process response
+                callback(Message.updateMessage({
+                    subj: "Post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post create", e: e }));
             });
         }
     });

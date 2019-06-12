@@ -1,0 +1,16 @@
+.post {
+  border: var(--border);
+  margin-bottom: .5rem;
+
+  h3 {
+    margin: var(--distStandard);
+    margin-left: 0;
+    font: var(--textPageSubTitle);
+  }
+
+  h4 {
+    margin: var(--distStandard);
+    margin-bottom: 0;
+    font: var(--textPageSubTitle);
+  }
+}

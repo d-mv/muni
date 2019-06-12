@@ -4,6 +4,7 @@ import axios from "axios";
 import { logger } from "redux-logger";
 
 import { loadData, setLanguage, setStep } from "./app/reducers";
+import { submitPost } from "./post/reducers";
 import {
   setToken,
   checkToken,
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   language: setLanguage,
   locationData: setLocationData,
   auth: setAuth,
+  submitPost: submitPost,
   // remove?
   step: setStep
 });
@@ -56,7 +58,6 @@ export default function configureStore() {
     login: TYPE.apiResponse;
     module: string;
     locations: any;
-    // locations: TYPE.apiResponse;
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
@@ -64,6 +65,7 @@ export default function configureStore() {
     locationData: TYPE.data;
     auth: boolean;
     step: number;
+    submitPost: TYPE.apiResponse;
   }
 
   const initialState: state = {
@@ -78,7 +80,8 @@ export default function configureStore() {
     language: data.language.en,
     locationData: {},
     auth: false,
-    step: 1
+    step: 1,
+    submitPost: apiState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

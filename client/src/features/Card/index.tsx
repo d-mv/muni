@@ -2,10 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { post, indexedObjAny } from "../../store/types";
+import { post, indexedObjAny, data } from "../../store/types";
 
 import shortText from "../../modules/short_text";
-
+import {
+  getCategories,
+  categoryIdToName
+} from "../../modules/category_processor";
+import Block from "../../layout/Block";
 import Card from "../../layout/Card";
 import Voters from "./components/Voters";
 import VoteButton from "./components/VoteButton";
@@ -16,32 +20,40 @@ import Age from "./components/Age";
 
 import style from "./styles/PostCard.module.scss";
 
-const PostCard = (props: { post: post; language: indexedObjAny }) => {
-  const { text } = props.language;
-  const { direction } = props.language;
+const PostCard = (props: {
+  post: post;
+  language: indexedObjAny;
+  locationData: data;
+}) => {
+  const { text, direction, short } = props.language;
+  const { categories } = props.locationData;
 
-  const voterText =
-    props.post.votes === 1 ? text["post.voter"] : text["post.voters"];
+const { _id, title, date,photo, votes } = props.post;
+
+
+  const category = categoryIdToName(categories, short, props.post.category);
+
+  const voterText = votes.length === 1 ? text["post.voter"] : text["post.voters"];
 
   return (
-    <Card id={props.post._id} direction={direction}>
-      <Photo photo={props.post.photo} />
+    <Card id={_id} direction={direction}>
+      <Photo photo={photo} />
       <section
         className={
           direction === "rtl" ? style.informationRTL : style.information
         }>
-        <Category category={props.post.category} />
-        <Title title={shortText(props.post.title,50)} direction={direction} />
+        <Category category={category} />
+        <Title title={shortText(title, 50)} direction={direction} />
         <section
           id='age'
           className={direction === "rtl" ? style.dataRTL : style.data}>
           <Age
-            date={props.post.date}
+            date={date}
             text={[text["post.age.day"], text["post.age.days"]]}
             direction={direction}
           />
           <Voters
-            number={props.post.votes}
+            number={votes.length}
             text={voterText}
             direction={direction}
           />
@@ -56,7 +68,8 @@ const PostCard = (props: { post: post; language: indexedObjAny }) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language
+    language: state.language,
+    locationData: state.locationData
   };
 };
 

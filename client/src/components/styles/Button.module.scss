@@ -3,9 +3,10 @@
 .minimal {
   height: 60%;
   width: 10vw;
-  margin: 0 1vw;
+  margin: 0 var(--distStandard);
   transition: var(--boxTransition);
   background-color: var(--colorTransparent);
+  width: 2.5rem;
 
   &:active {
     transform: scale(.95);
@@ -67,6 +68,12 @@
   background-color: var(--colorSecondary);
   border: var(--borderSecondary);
 
+  &:disabled,
+  &[disabled] {
+    color: var(--colorGrey);
+    background-color: var(--colorWhite);
+    border: var(--borderDisabled);
+  }
 }
 
 ///  Attention button

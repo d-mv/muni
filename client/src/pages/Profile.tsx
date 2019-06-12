@@ -12,6 +12,8 @@ import Line from "../layout/Line";
 import LangSwitch from "../components/LangSwitch";
 import Button from "../components/Button";
 
+import style from "./styles/Profile.module.scss";
+
 const Profile = (props: any) => {
   const { text, direction } = props.language;
   return (
@@ -21,10 +23,12 @@ const Profile = (props: any) => {
         <Paragraph direction={direction}>
           {text["profile.text.changeLanguage"]}
         </Paragraph>
-        <Line direction={direction}>
-          <LangSwitch />
-          <span>{props.language.name}</span>
-        </Line>
+        <Paragraph direction={direction}>
+          <Line direction={direction}>
+            <LangSwitch />
+            <span className={style.language}>{props.language.name}</span>
+          </Line>
+        </Paragraph>
       </Section>
       <Section>
         <Paragraph direction={direction}>

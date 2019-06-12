@@ -3,7 +3,7 @@ import React from "react";
 import style from "./styles/Photo.module.scss";
 
 const Photo = (props: { src: string }) => {
-  return <img src={props.src} />;
+  return <img src={props.src} className={style.photo} />;
 };
 
 export default Photo;

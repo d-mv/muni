@@ -8,8 +8,19 @@ import style from "./styles/Section.module.scss";
  *
  * @returns {JSX.Element}
  */
-const Section = (props: { children: any }): JSX.Element => {
-  return <section className={style.section}>{props.children}</section>;
+const Section = (props: {
+  children: any;
+  step?: boolean;
+  back?: boolean;
+  wide?: boolean;
+}): JSX.Element => {
+  let sectionStyle = "";
+  if (props.step) {
+    sectionStyle = style.step;
+  } else if (props.back) {
+    sectionStyle = style.back;
+  }
+  return <section className={sectionStyle}>{props.children}</section>;
 };
 
 export default Section;

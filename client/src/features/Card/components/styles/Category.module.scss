@@ -1,8 +1,9 @@
 .category {
   border-radius: var(--borderRadius);
-  border: 1px solid var(--colorDark);
+  border: var(--borderDark);
   width: fit-content;
-  padding: 2px 5px;
-  margin: 0.3rem 0 !important;
+  padding: 0 .5rem;
+  margin: .3rem 0;
   font: var(--textPostCardCategory);
+  text-transform: uppercase;
 }

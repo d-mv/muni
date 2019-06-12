@@ -24,7 +24,7 @@
         "login.prompt.email": "enter your email address",
         "login.label.password": "PASSWORD",
         "login.prompt.password": "enter your password",
-        "login.label.location":"LOCATION",
+        "login.label.location": "LOCATION",
         "login.label.fname": "FIRST NAME",
         "login.prompt.fname": "enter your given name",
         "login.label.lname": "LAST NAME",
@@ -43,6 +43,8 @@
         "profile.text.logOff": "Please, press the below button if you want to log off the app. You will have to log in if you want to use it again.",
         "profile.button.logOff": "LOG OFF",
         "new.steps.button.next": "NEXT",
+        "new.steps.button.back": "BACK",
+        "new.steps.button.submit": "SUBMIT",
         "new.steps.title": "Steps",
         "new.steps.button.cancel": "CANCEL",
         "new.steps.step.1": "These are instructions for the creation of new petition",
@@ -63,8 +65,10 @@
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
         "new.message.fieldEmpty": "Please, add the information",
-        "new.message.urlMalformed":"URL is malformed",
-        "new.preview":"This is preview"
+        "new.message.urlMalformed": "URL is malformed",
+        "new.preview": "This is preview","new.error.incomplete":"Can't create post - incomplete data",
+        "post.problem": "Problem",
+        "post.solution": "Solution"
       }
     },
     "עב": {
@@ -91,7 +95,8 @@
         "login.label.email": "דוא\"ל",
         "login.prompt.email": " הזן את כתובת הדוא\"ל שלך",
         "login.label.password": "סיסמה",
-        "login.prompt.password": "הכנס סיסמתך","login.label.location":"LOCATION",
+        "login.prompt.password": "הכנס סיסמתך",
+        "login.label.location": "LOCATION",
         "login.label.fname": "שם פרטי",
         "login.prompt.fname": "הזן את השם הנתון",
         "login.label.lname": "שם משפחה",
@@ -110,6 +115,8 @@
         "profile.text.logOff": "אנא, לחץ על הלחצן למטה אם אתה רוצה להיכנס את היישום. יהיה עליך להתחבר אם ברצונך להשתמש בו שוב.",
         "profile.button.logOff": "להתנתק",
         "new.steps.button.next": "NEXT",
+        "new.steps.button.back": "BACK",
+        "new.steps.button.submit": "SUBMIT",
         "new.steps.title": "Steps",
         "new.steps.button.cancel": "CANCEL",
         "new.steps.step.1": "1. These are instructions for the creation of new petition",
@@ -130,7 +137,9 @@
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
         "new.message.fieldEmpty": "Please, add the information",
-        "new.preview":"This is preview"
+        "new.preview": "This is preview","new.error.incomplete":"Can't create post - incomplete data",
+        "post.problem": "Problem",
+        "post.solution": "Solution"
       }
     }
   }

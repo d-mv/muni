@@ -1,9 +1,9 @@
 import React from 'react'
 
-import style from './styles/Problem.module.scss'
+import Paragraph from "../../../layout/Paragraph";
 
 const Problem = (props:{text:string}) => {
-  return <div>{props.text}</div>
+  return <Paragraph>{props.text}</Paragraph>
 }
 
 export default Problem

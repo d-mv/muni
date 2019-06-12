@@ -1,6 +1,7 @@
 /// Loading indicator for the form
 /// @group Elements
 .loading {
+  margin: 0 auto;
   width: 3em;
   display: flex;
   flex-flow: row nowrap;

@@ -1,4 +1,7 @@
 import React from "react";
+
+import { imageDecoder, imageEncoder } from "../../../modules/image_coder";
+
 import Photo from "../../../icons/Photo";
 import Block from "../../../layout/Block";
 import Center from "../../../layout/Center";
@@ -15,52 +18,25 @@ const PhotoUpload = (props: {
   const defaultPhoto =
     "https://res.cloudinary.com/diciu4xpu/image/upload/v1560088174/dev/photo.svg";
   const [photo, setPhoto] = React.useState("");
-  const uploadImage = (e: any) => {
-    let imageObj = {};
 
-    let imageFormObj = new FormData();
-
-    imageFormObj.append("imageName", "multer-image-" + Date.now());
-    imageFormObj.append("imageData", e.target.files[0]);
-
-    // stores a readable instance of
-    // the image being uploaded using multer
-    if (e.target.files[0]) {
-      setPhoto(URL.createObjectURL(e.target.files[0]));
-      props.action(URL.createObjectURL(e.target.files[0]));
-    }
+  /**
+   * Function to convert file to base64, send it to props,set local URL as preview
+   * @params {Array} files - File selected by client
+   */
+  const getBaseFile = (event: any) => {
+    imageEncoder(event.target.files[0], (image64: any) => {
+      const image = imageDecoder(image64);
+      setPhoto(image);
+      console.log(image64);
+      props.action(image64);
+    });
   };
 
-  // setInterval(() => {
-  //   const ided = document.getElementById("input") || null
-  //   if (ided) {console.log(ided.style)}
-  // }, 1000);
   const showPhoto = photo ? (
     <img src={photo} alt='upload-image' className={style.image} />
   ) : (
     <img src={defaultPhoto} alt='upload-image' className={style.imageDef} />
   );
-
-  // var inputs = document.querySelectorAll( '.inputfile' );
-  // Array.prototype.forEach.call( inputs, function( input )
-  // {
-  // 	var label	 = input.nextElementSibling,
-  // 		labelVal = label.innerHTML;
-
-  // 	input.addEventListener( 'change', function( e )
-  // 	{
-  // 		var fileName = '';
-  // 		if( this.files && this.files.length > 1 )
-  // 			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-  // 		else
-  // 			fileName = e.target.value.split( '\' ).pop();
-
-  // 		if( fileName )
-  // 			label.querySelector( 'span' ).innerHTML = fileName;
-  // 		else
-  // 			label.innerHTML = labelVal;
-  // 	});
-  // });
 
   return (
     <Block border>
@@ -70,7 +46,8 @@ const PhotoUpload = (props: {
         type='file'
         name='file'
         className={style.input}
-        onChange={e => uploadImage(e)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => getBaseFile(e)}
+        // onDone={(e: any) => getBaseFile(e)}
       />
       <label htmlFor='file' className={button.primarySmall}>
         {props.label}

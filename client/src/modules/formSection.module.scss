@@ -4,12 +4,17 @@
   display: flex;
   flex-direction: column;
 
+  // to avoid difference in height between select and input
+  input {
+    height: 2.1rem;
+  }
+
   input,
   select,
   textarea {
     border: var(--border);
     border-radius: var(--borderRadius);
-    background: none;
+    background-color: var(--colorWhite);
     font: var(--textFormField);
     padding: .5rem .8rem;
     z-index: 10;
@@ -24,6 +29,12 @@
     }
   }
 
+  // to avoid hiding down icon
+  select {
+    background: none;
+  }
+
+  // to avoid hiding the bottom right corner
   textarea {
     border-radius: var(--borderRadiusText);
   }

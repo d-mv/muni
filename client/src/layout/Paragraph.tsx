@@ -21,7 +21,6 @@ const Paragraph = (props: {
   let paragraphStyle = props.thin ? style.paraThin : style.paragraph;
 
   if (props.direction) {
-    // console.log(stylestyleFactory(paragraphStyle, props.direction));
     paragraphStyle =
       styles[
         styleFactory(props.thin ? "paraThin" : "paragraph", props.direction)
