@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { formSection, formSelection } from "../../modules/formSection";
+import { formSection, formSelection } from "../../components/formSection";
 
 import { AppState } from "../../store";
 import * as TYPE from "../../store/types";
@@ -39,40 +39,48 @@ const LoginUser = (props: {
   // get the language
   const { text, direction } = props.language;
   // loading hook
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   // form data hooks
-  const [email, setEmail] = React.useState("");
-  const [pass, setPass] = React.useState("");
-  const [location, setLocation] = React.useState("");
-  const [fName, setFname] = React.useState("");
-  const [lName, setLname] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [prevLogin, setPrevLogin] = useState({ email: "", pass: "" });
+  const [location, setLocation] = useState("");
+  const [fName, setFname] = useState("");
+  const [lName, setLname] = useState("");
   // show/hide message hook
-  const [showMessage, setShowMessage] = React.useState(true);
+  const [showMessage, setShowMessage] = useState(true);
+  const [displayMessage, setDisplayMessage] = useState("");
   // login/register mode hook
-  const [mode, setMode] = React.useState("login");
+  const [mode, setMode] = useState("login");
 
   // change mode upon if the code from API is 404 (user not found)
   React.useEffect(() => {
-    props.loginResult.code === 404 ? setMode("register") : setMode("login");
+    if (props.loginResult.code === 404) {
+      setDisplayMessage("");
+      setLoading(false);
+      setMode("register");
+    }
   }, [props.loginResult.code]);
 
   // update message
-  React.useEffect(() => {
-    if (props.loginResult.message !== "") {
-      setLoading(false);
-    }
-  }, [props.loginResult.message]);
+  // React.useEffect(() => {
+  //   if (props.loginResult.message !== "") {
+  //     setDisplayMessage(props.loginResult.message);
+  //     setLoading(false);
+  //   }
+  // }, [props.loginResult.message]);
 
   // register result
   React.useEffect(() => {
     // switch off spinner
     if (code !== 100) {
+      setDisplayMessage("");
       setLoading(false);
-      setShowMessage(false);
       if (status) {
         props.setModule("confirmation");
+      } else if (code !== 404) {
+        setDisplayMessage(message);
       }
-      setShowMessage(true);
     }
   }, [message, code, status]);
 
@@ -80,10 +88,15 @@ const LoginUser = (props: {
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setShowMessage(false);
+    setDisplayMessage("");
     setLoading(true);
-    if (mode === "login") {
+    const check = prevLogin.email === email && prevLogin.pass === pass;
+    if (mode === "login" && !check) {
+      setPrevLogin({ email, pass });
       props.login({ email, pass });
+    } else if (check) {
+      setDisplayMessage("Same details.");
+      setLoading(false);
     } else {
       // register
       props.register({
@@ -117,9 +130,19 @@ const LoginUser = (props: {
   const handleSelectChange = (event: any) => {
     setLocation(event.target.value);
   };
+  const setClear = () => {
+    setEmail("");
+    setPass("");
+    setFname("");
+    setLname("");
+    setLocation("");
+  };
 
   const handleSecondaryButton = () => {
     setMode(mode === "login" ? "register" : "login");
+    if (mode === "register") {
+      setClear();
+    }
   };
 
   // set the form elements
@@ -130,60 +153,62 @@ const LoginUser = (props: {
   ) : (
     <div className='formLoading' />
   );
-  const messageElement = showMessage ? (
-    <div className='formMessage'>{props.loginResult.message}</div>
+  const messageElement = displayMessage ? (
+    <div className='formMessage'>{displayMessage}</div>
   ) : (
     <div className='formMessage' />
   );
 
-  let emailElement = formSection(
-    text["login.label.email"],
-    "email",
-    "uMail",
-    email,
-    text["login.prompt.email"],
-    handleInputChange
-  );
+  let emailElement = formSection({
+    label: text["login.label.email"],
+    type: "email",
+    name: "uMail",
+    value: email,
+    placeholder: text["login.prompt.email"],
+    action: handleInputChange,
+    focus:true
+  });
 
-  let passwordElement = formSection(
-    text["login.label.password"],
-    "password",
-    "uPass",
-    pass,
-    text["login.prompt.password"],
-    handleInputChange,
-    7
-  );
+  let passwordElement = formSection({
+    label: text["login.label.password"],
+    type: "password",
+    name: "uPass",
+    value: pass,
+    placeholder: text["login.prompt.password"],
+    action: handleInputChange,
+    length: 7
+  });
   let fNameElement = null;
   let lNameElement = null;
   let locationsElement = null;
   // register mode is on
   if (mode === "register") {
-    locationsElement = formSelection(
-      props.locations.payload,
+    locationsElement = formSelection({
+      list: props.locations.payload,
       direction,
-      text["login.label.location"],
-      handleSelectChange
-    );
+      label: text["login.label.location"],
+      action: handleSelectChange,
+      focus: true
+    });
 
-    fNameElement = formSection(
-      "FIRST NAME",
-      "text",
-      "fName",
-      fName,
-      "enter your first name",
-      handleInputChange,
-      2
-    );
-    lNameElement = formSection(
-      "LAST NAME",
-      "text",
-      "lName",
-      lName,
-      "enter your last name",
-      handleInputChange,
-      3
-    );
+    fNameElement = formSection({
+      label: text["login.label.fName"],
+      type: "text",
+      name: "fName",
+      value: fName,
+      placeholder: text["login.prompt.fName"],
+      action: handleInputChange,
+      length: 2
+    });
+    lNameElement = formSection({
+      label: text["login.label.lName"],
+      type: "text",
+      name: "lName",
+      value: lName,
+      placeholder: text["login.prompt.lName"],
+      action: handleInputChange,
+      length: 3
+    });
   }
 
   const secondaryButton =

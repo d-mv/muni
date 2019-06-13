@@ -20,18 +20,15 @@ import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 
-// import style from "./style/App.module.scss";
+import "./style/App.scss";
 
 const App = (props: any) => {
   const { auth } = props;
   const { token } = props;
-  // const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-  // const [auth, setAuth] = React.useState(false);
 
   const { login } = props;
   const { cookies } = props;
-  // console.log(cookies.get("token"));
 
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
 
@@ -45,7 +42,6 @@ const App = (props: any) => {
 
   // set cookies if token changes
   React.useEffect(() => {
-    // console.log("hi");
     // if 'clear'
     if (props.token === "clear") {
       console.log(0);
@@ -76,75 +72,102 @@ const App = (props: any) => {
   const handleNewButtonClick = () => {
     props.setModule("new");
   };
+  const AppComponent = (props: { children: any }) => (
+    <div className='app'>{props.children}</div>
+  );
+  const LazyComponent = (props: { children: any }) => (
+    <Suspense fallback={<Loading />}>{props.children}</Suspense>
+  );
 
-  let show;
+  const componentFactory = (props: {
+    children: any;
+    lazy?: boolean;
+    nav?: boolean;
+    new?: boolean;
+  }) => {
+    const nav = props.nav ? <Navigation /> : null;
+    const newButton = props.new ? (
+      <NewButton action={handleNewButtonClick} />
+    ) : null;
+    let content = props.lazy ? (
+      <AppComponent>
+        <LazyComponent>
+          {nav}
+          {newButton}
+          {props.children}
+        </LazyComponent>
+      </AppComponent>
+    ) : (
+      <AppComponent>
+        {nav}
+        {newButton}
+        {props.children}
+      </AppComponent>
+    );
+    return content;
+  };
+  let show = componentFactory({ children: <Welcome />, nav: true });
   switch (props.module) {
-    case "welcome":
-      show = <Welcome />;
-      break;
     case "login":
-      show = <Login />;
+      show = componentFactory({ children: <Login />, nav: true });
       break;
     case "confirmation":
       const Confirmation = React.lazy(() => import("./pages/Confirmation"));
-      show = (
-        <Suspense fallback={<Loading />}>
-          <Confirmation />;
-        </Suspense>
-      );
+      show = componentFactory({
+        children: <Confirmation />,
+        nav: true,
+        lazy: true
+      });
       break;
     case "municipality":
       const Municipality = React.lazy(() => import("./pages/Municipality"));
-      show = (
-        <Suspense fallback={<Loading />}>
-          <Municipality />
-          <NewButton action={handleNewButtonClick} />
-        </Suspense>
-      );
+      show = componentFactory({
+        children: <Municipality />,
+        nav: true,
+        lazy: true,
+        new: true
+      });
       break;
     case "new":
       const New = React.lazy(() => import("./pages/New"));
-      show = (
-        <Suspense fallback={<Loading />}>
-          <New />
-        </Suspense>
-      );
+      show = componentFactory({
+        children: <New />,
+        nav: true,
+        lazy: true
+      });
       break;
     case "profile":
       const Profile = React.lazy(() => import("./pages/Profile"));
-      show = (
-        <Suspense fallback={<Loading />}>
-          <Profile />
-          <NewButton action={handleNewButtonClick} />
-        </Suspense>
-      );
+      show = componentFactory({
+        children: <Profile />,
+        nav: true,
+        lazy: true,
+        new: true
+      });
       break;
     case "home":
       const Home = React.lazy(() => import("./pages/Home"));
-      show = (
-        <Suspense fallback={<Loading />}>
-          <Home />
-          <NewButton action={handleNewButtonClick} />
-        </Suspense>
-      );
+      show = componentFactory({
+        children: <Home />,
+        nav: true,
+        lazy: true,
+        new: true
+      });
       break;
     case "mine":
       const Mine = React.lazy(() => import("./pages/Mine"));
-      show = (
-        <Suspense fallback={<Loading />}>
-          <Mine />
-          <NewButton action={handleNewButtonClick} />
-        </Suspense>
-      );
+      show = componentFactory({
+        children: <Mine />,
+        nav: true,
+        lazy: true,
+        new: true
+      });
       break;
   }
 
-  return (
-    <div className="app">
-      {loading ? <Loading /> : show}
-      {loading ? null : <Navigation />}
-    </div>
-  );
+  const content = loading ? <Loading /> : show;
+
+  return content;
 };
 
 const mapStateToProps = (state: AppState) => {

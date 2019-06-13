@@ -503,7 +503,7 @@ export const login = (
                   // if not matching
                   callback(
                     Message.generalError({
-                      subj: "User: wrong password",
+                      subj: "Wrong password",
                       code: 401
                     })
                   );
@@ -713,7 +713,7 @@ export const loginAttempt = (
                     // if not matching
                     callback(
                       Message.generalError({
-                        subj: "User: wrong password",
+                        subj: "Wrong password",
                         code: 401
                       })
                     );

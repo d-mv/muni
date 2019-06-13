@@ -48,10 +48,10 @@
 
 .dataRTL {
   @extend .data;
-  flex-direction: row-reverse;
+  direction: rtl;
 
   .lineRTL {
     @extend .line;
-    flex-direction: row-reverse;
+    // direction: rtl;
   }
 }

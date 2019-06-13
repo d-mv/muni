@@ -499,7 +499,7 @@ exports.login = function (user, callback) {
                             else {
                                 // if not matching
                                 callback(Message.generalError({
-                                    subj: "User: wrong password",
+                                    subj: "Wrong password",
                                     code: 401
                                 }));
                             }
@@ -697,7 +697,7 @@ exports.loginAttempt = function (user, id, callback) {
                             else {
                                 // if not matching
                                 callback(Message.generalError({
-                                    subj: "User: wrong password",
+                                    subj: "Wrong password",
                                     code: 401
                                 }));
                             }

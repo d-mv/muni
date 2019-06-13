@@ -35,9 +35,7 @@ export const setLoading = (loading: boolean = false): Action => {
 export const checkToken = (
   token: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log("check: " + token);
   const url = "/user/check";
-
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     axios({
       method: "get",
@@ -79,13 +77,11 @@ export const checkToken = (
   };
 };
 
-export const setAuth = (status:boolean): Action => {
-  console.log(module);
+export const setAuth = (status: boolean): Action => {
   return { type: "SET_AUTH", status };
 };
 
 export const setModule = (module: string): Action => {
-  console.log(module);
   return { type: "SET_MODULE", module };
 };
 
@@ -161,10 +157,8 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
 export const register = (
   props: TYPE.register
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log(props)
-  const url = `/user/create?email=${props.email}&location=${
-    props.location
-  }&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}`;
+  console.log(props);
+  const url = `/user/create?email=${props.email}&location=${props.location}&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}`;
   console.log(url);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state

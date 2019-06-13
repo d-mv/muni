@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { formSection, formSelection } from "../../modules/formSection";
+import { formSection, formSelection } from "../../components/formSection";
 
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
@@ -25,7 +25,6 @@ import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
-
 
 const NewPost = (props: {
   language: data;
@@ -233,49 +232,54 @@ const NewPost = (props: {
 
   const stepOne =
     step === 1
-      ? formSection(
-          text["new.field.title.label"],
-          "text",
-          "title",
-          title,
-          text["new.field.title.prompt"],
-          handleInputChange,
-          2
-        )
+      ? formSection({
+          label: text["new.field.title.label"],
+          type: "text",
+          name: "title",
+          value: title,
+          placeholder: text["new.field.title.prompt"],
+          action: handleInputChange,
+          length: 2,
+          focus: true
+        })
       : null;
 
   const stepTwo =
     step === 2
-      ? formSelection(
-          getCategories(),
+      ? formSelection({
+          list: getCategories(),
           direction,
-          text["new.field.category.label"],
-          handleDropDown
-        )
+          label: text["new.field.category.label"],
+          action: handleDropDown,
+          focus: true
+        })
       : null;
 
   const stepThree =
     step === 3
-      ? formSection(
-          text["new.field.problem.label"],
-          "textarea",
-          "problem",
-          problem,
-          text["new.field.problem.prompt"],
-          handleInputChange,
-          50
-        )
+      ? formSection({
+          label: text["new.field.problem.label"],
+          type: "textarea",
+          name: "problem",
+          value: problem,
+          placeholder: text["new.field.problem.prompt"],
+          action: handleInputChange,
+          length: 50,
+          focus: true
+        })
       : null;
   const stepFour =
     step === 4
-      ? formSection(
-          text["new.field.solution.label"],
-          "textarea",
-          "solution",
-          solution,
-          text["new.field.solution.prompt"],
-          handleInputChange
-        )
+      ? formSection({
+          label: text["new.field.solution.label"],
+          type: "textarea",
+          name: "solution",
+          value: solution,
+          placeholder: text["new.field.solution.prompt"],
+          action: handleInputChange,
+          length: 50,
+          focus: true
+        })
       : null;
   const stepFive =
     step === 5 ? (
@@ -286,14 +290,15 @@ const NewPost = (props: {
           direction={direction}
           action={handleSetPhoto}
         />
-        {formSection(
-          text["new.field.link.label"],
-          "url",
-          "link",
-          link,
-          text["new.field.link.prompt"],
-          handleInputChange
-        )}
+        {formSection({
+          label: text["new.field.link.label"],
+          type: "url",
+          name: "link",
+          value: link,
+          placeholder: text["new.field.link.prompt"],
+          action: handleInputChange,
+          length: 5
+        })}
       </Section>
     ) : null;
 

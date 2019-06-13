@@ -27,5 +27,5 @@
 
 .votersRight {
   @extend .voters;
-  flex-direction: row-reverse;
+  direction: rtl;
 }

@@ -8,5 +8,5 @@
 
 .plankRTL {
   @extend .plank;
-  flex-direction: row-reverse;
+  direction: rtl;
 }

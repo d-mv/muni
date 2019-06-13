@@ -2,8 +2,6 @@ import React from "react";
 
 import { colorsArray } from "../style/_colors";
 
-import style from "./style/index.module.scss";
-
 export const votersSecondary = (
   <svg
     width='100%'
@@ -130,7 +128,6 @@ export const IconLink = (props: { primary?: boolean; secondary?: boolean }) => {
   }
 
   return (
-    // <span className={style.link}>
       <svg
         viewBox='0 0 208 208'
         fillRule='evenodd'

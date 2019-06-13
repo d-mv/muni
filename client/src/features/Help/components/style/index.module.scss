@@ -1,7 +1,7 @@
 .content {
   opacity: 0;
-  animation: var(--aniAppear);
-  color:white;
+  animation: var(--aniHelpContent);
+  color: white;
 }
 
 .central {
@@ -9,5 +9,5 @@
   position: fixed;
   top: 45vh;
   z-index: 101;
-  text-align:center;
+  text-align: center;
 }

@@ -53,7 +53,7 @@
 
 /// Form alignment for left-to-right languages
 /// @group Form
-.fromLeft {
+.formLeft {
   @extend .form-template;
   text-align: left;
 
@@ -79,25 +79,103 @@
 
 /// Message style
 /// @group Form
-.fromMessage {
+.formMessage {
   margin: 1.5rem auto;
-  height: fit-content;
-  min-height: 1.3rem;
+  // height: fit-content;
+  margin: 0;
+  height: 2rem;
   width: 100%;
   text-align: center;
   font: var(--textFormMessage);
-  color: var(--colorDarkGrey);
+  color: var(--colorAttention);
 }
 
 /// Loading indicator wrapper
 /// @group Form
 .formLoading {
-  min-height: 1.3rem;
+  position: relative;
+  height: 2rem;
+  bottom: 2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
 
-  margin: {
-    top: -1.8rem;
-    left: auto;
-    right: auto;
-    bottom: 1rem;
+.section {
+  margin-bottom: var(--distStandard);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+
+  // to avoid difference in height between select and input
+  input {
+    height: 2rem;
+  }
+
+  input,
+  select,
+  textarea {
+    border: var(--border);
+    border-radius: var(--borderRadius);
+    background-color: var(--colorWhite);
+    font: var(--textFormField);
+    padding: .5rem .8rem;
+    z-index: 10;
+
+    &::placeholder {
+      color: var(--colorGrey);
+    }
+
+    &:focus {
+      border: none;
+      border: .1rem solid var(--colorPrimary);
+    }
+  }
+
+  // to avoid hiding down icon
+  select {
+    background: none;
+  }
+
+  // to avoid hiding the bottom right corner
+  textarea {
+    border-radius: var(--borderRadiusText);
+  }
+
+  .inline {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+
+    select {
+      padding-left: 2.7rem;
+      width: 100%;
+    }
+
+    svg {
+      position: absolute;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: .2rem;
+      grid-column: 1;
+      grid-row: 1;
+      margin-left: .8rem;
+    }
+  }
+
+}
+
+.sectionRTL {
+  @extend .section;
+  direction: rtl;
+
+  select {
+    padding-right: 2.7rem;
+    padding-left: none;
+  }
+
+  svg {
+    margin-left: none;
+    margin-right: .8rem;
   }
 }
