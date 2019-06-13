@@ -14,5 +14,5 @@
 
 .lineRTL {
   @extend .line-template;
-  flex-direction: row-reverse;
+  direction: rtl;
 }

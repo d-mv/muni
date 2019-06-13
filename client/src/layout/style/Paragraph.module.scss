@@ -1,9 +1,11 @@
 .paragraph {
   font: var(--textParaStandard);
+  margin: 0;
   padding: 1rem;
 }
 
 .paragraphRTL {
+  @extend .paragraph;
   font: var(--textParaStandardR);
   padding: 1rem;
   direction: rtl;

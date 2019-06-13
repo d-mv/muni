@@ -14,7 +14,7 @@
 
 .ageR {
   @extend .age;
-  flex-direction: row-reverse;
+  direction: rtl;
 
   .text {
     text-align: left;

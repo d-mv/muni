@@ -31,7 +31,7 @@ const Paragraph = (props: {
     paragraphStyle = styles[propsStyle];
   }
 
-  return <p className={paragraphStyle}>{props.children}</p>;
+  return <div className={paragraphStyle}>{props.children}</div>;
 };
 
 export default Paragraph;

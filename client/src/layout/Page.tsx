@@ -1,7 +1,5 @@
 import React from "react";
 
-import styles from "./style/Page.module.scss";
-
 /**
  * React JSX component to wrap page
  *
@@ -16,10 +14,10 @@ const Page = (props: {
   welcome?: boolean;
 }): JSX.Element => {
   let pageStyle = props.opposite
-    ? styles.pageOpposite
+    ? "pageOpposite"
     : props.welcome
     ? "welcome"
-    : styles.pageWithContent;
+    : "pageWithContent";
   return <main className={pageStyle}>{props.children}</main>;
 };
 

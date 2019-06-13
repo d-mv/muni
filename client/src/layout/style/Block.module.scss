@@ -3,11 +3,6 @@
   margin: 0;
 }
 
-// .blockRTL {
-//   @extend .block;
-//   direction: rtl;
-// }
-
 .border {
   @extend .block;
   border: var(--border);
@@ -18,21 +13,3 @@
   @extend .border;
   border-radius: none;
 }
-
-// .borderRTL {
-//   @extend .paragraphRTL;
-//   border: var(--border);
-//   border-radius: var(--borderRadius);
-// }
-
-// .borderRectangleRTL {
-//   @extend .borderRTL;
-//   border-radius: none;
-// }
-
-
-
-// .borderThin {
-//   @extend .border;
-//   padding: 0 1rem;
-// }

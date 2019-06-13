@@ -17,20 +17,14 @@
 
 .lineRTL {
   @extend .line-template;
-  flex-direction: row-reverse;
+  direction: rtl;
 
-  * {
-    direction: rtl
-  }
 }
 
 .thinRTL {
   @extend .thin;
-  flex-direction: row-reverse;
+  direction: rtl;
 
-  * {
-    direction: rtl
-  }
 }
 
 .flat {

@@ -1,8 +1,6 @@
 import React from "react";
 
-import styleFactory from '../modules/style_factory'
-
-import styles from "./style/ButtonsWrapper.module.scss";
+import styleFactory from "../modules/style_factory";
 
 /**
  * Component to wrap buttons and arrange then vertically/horizontally/RTL
@@ -17,8 +15,10 @@ const ButtonsWrapper = (props: {
   column?: boolean;
   row?: boolean;
 }): JSX.Element => {
-  const orientation = props.column ? "ver" : "hor";
-  const wrapStyle = styles[styleFactory(orientation, props.direction)];
+  const orientation = props.column ? "vertical" : "horizontal";
+  const wrapStyle = props.column
+    ? "vertical"
+    : styleFactory(orientation, props.direction);
   return <section className={wrapStyle}>{props.children}</section>;
 };
 
