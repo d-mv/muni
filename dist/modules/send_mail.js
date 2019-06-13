@@ -1,17 +1,17 @@
 "use strict";
 exports.__esModule = true;
-var nodemailer_1 = require("nodemailer");
+var nodeMailer = require("nodemailer");
 var dotenv = require("dotenv");
-var translation_json_1 = require("../client/src/data/translation.json");
-var make_html_1 = require("./make_html");
+var translation_1 = require("./translation");
+var make_email_1 = require("./make_email");
 var dotEnv = dotenv.config();
 var login = process.env.MAIL_LOGIN;
 var pass = process.env.MAIL_PASS;
-var languages = translation_json_1["default"].language;
+var languages = translation_1["default"].language;
 var sendEmail = function (user, url, language) {
     var translated = languages[language].text;
-    var transporter = nodemailer_1["default"].createTransport({
-        host: "smtp.gmail.com",
+    var transporter = nodeMailer.createTransport({
+        host: "smtp.yandex.com",
         port: 465,
         secure: true,
         auth: {
@@ -20,24 +20,25 @@ var sendEmail = function (user, url, language) {
             pass: pass
         }
     });
+    var _a = make_email_1["default"](url, language), text = _a.text, html = _a.html;
     var mailOptions = {
         // should be replaced with real recipient's account
         from: login,
         to: user,
         subject: translated["email.verification.subject"],
-        text: translated["email.verification.text"],
-        html: make_html_1["default"](url, language)
+        text: text,
+        html: html
     };
-    console.log(user);
-    console.log(url);
-    console.log(language);
-    console.log(transporter);
-    console.log(mailOptions);
-    // transporter.sendMail(mailOptions, (error: any, info: any) => {
-    //   if (error) {
-    //     return console.log(error);
-    //   }
-    //   console.log("Message %s sent: %s", info.messageId, info.response);
-    // });
+    // console.log(user);
+    // console.log(url);
+    // console.log(language);
+    // console.log(transporter);
+    // console.log(mailOptions);
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return console.log(error);
+        }
+        console.log("Message %s sent: %s", info.messageId, info.response);
+    });
 };
 exports["default"] = sendEmail;

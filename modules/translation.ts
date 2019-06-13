@@ -1,4 +1,4 @@
-{
+const data = {
   "language": {
     "en": {
       "name": "English",
@@ -41,3 +41,5 @@
     }
   }
 }
+
+export default data;

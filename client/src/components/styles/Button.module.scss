@@ -1,12 +1,13 @@
 /// Minimal button, for header
 /// @group Buttons
 .minimal {
-  height: 60%;
-  width: 10vw;
-  margin: 0 var(--distStandard);
+  height: 4rem;
+  width: 4rem;
+
+  margin: var(--distStandard);
   transition: var(--boxTransition);
   background-color: var(--colorTransparent);
-  width: 2.5rem;
+
 
   &:active {
     transform: scale(.95);

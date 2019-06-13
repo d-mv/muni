@@ -29,7 +29,7 @@ exports.create = function (query, callback) {
             // send confirmation email
             var encrypt = security_1.cookieFactory(modelResponse, true);
             console.log(encrypt);
-            var url = "localhost:8080/api/user/verify?id=" + encrypt.token;
+            var url = "https://muni-dev.herokuapp.com/api/user/verify?id=" + encrypt.token;
             send_mail_1["default"](request.email, url, request.lang);
             callback(__assign({}, modelResponse, { payload: { cookie: encrypt } }));
         }

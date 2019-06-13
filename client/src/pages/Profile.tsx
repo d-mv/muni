@@ -54,9 +54,11 @@ const Profile = (props: any) => {
           {text["profile.text.logOff"]}
         </Paragraph>
       </Section>
-      <Button mode='primary' action={props.logOff}>
-        {text["profile.button.logOff"]}
-      </Button>
+      <Paragraph direction={direction}>
+        <Button mode='primary' action={props.logOff}>
+          {text["profile.button.logOff"]}
+        </Button>
+      </Paragraph>
     </Page>
   );
 };

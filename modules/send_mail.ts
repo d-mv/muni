@@ -1,6 +1,6 @@
-import nodeMailer from "nodemailer";
+import * as nodeMailer from "nodemailer";
 import * as dotenv from "dotenv";
-import data from "./translation.json";
+import data from "./translation";
 import makeEmail from "./make_email";
 
 const dotEnv = dotenv.config();

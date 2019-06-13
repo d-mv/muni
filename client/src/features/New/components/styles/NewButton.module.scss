@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--newButtonShadow);
+  box-shadow: var(--newButtonShadow) !important;
   transition: var(--boxTransition);
   animation: var(--aniBeatD2s);
 

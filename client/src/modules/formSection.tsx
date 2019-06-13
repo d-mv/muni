@@ -4,7 +4,7 @@ import Label from "../layout/Label";
 import { indexedObj } from "../store/types";
 import { down } from "../icons";
 import styleFactory from "../modules/style_factory";
-import style from "./formSection.module.scss";
+// import style from "./formSection.module.scss";
 
 export const formSection = (
   label: string,
@@ -43,7 +43,7 @@ export const formSection = (
       />
     );
   return (
-    <section className={style.section}>
+    <section className="section">
       <Label direction={direction || "ltr"} value={label} />
       {input}
     </section>
@@ -58,10 +58,10 @@ export const formSelection = (
 ) => {
   return (
     <section
-      className={style[styleFactory("section", direction)]}
+      className={styleFactory("section", direction)}
       onChange={(event: React.FormEvent<Element>) => action(event)}>
       <Label direction={direction || "ltr"} value={label} />
-      <div className={style.inline}>
+      <div className="inline">
         <select>
           {list.map((location: { [index: string]: string }) => {
             return (

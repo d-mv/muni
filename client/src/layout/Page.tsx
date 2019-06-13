@@ -18,7 +18,7 @@ const Page = (props: {
   let pageStyle = props.opposite
     ? styles.pageOpposite
     : props.welcome
-    ? styles.welcome
+    ? "welcome"
     : styles.pageWithContent;
   return <main className={pageStyle}>{props.children}</main>;
 };

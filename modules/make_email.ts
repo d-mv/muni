@@ -1,4 +1,4 @@
-import data from "./translation.json";
+import data from "./translation";
 import { emailHtml, emailText } from "./email_template";
 const languages: any = data.language;
 
