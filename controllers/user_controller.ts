@@ -1,5 +1,9 @@
+import { verifyId, cookieFactory } from "./../modules/security";
+import { apiResponse } from "./../src/types";
+import { apiState } from "./../client/src/store/defaults";
 import * as User from "../models/user_model";
-// import { checkToken } from "../modules/check_token";
+import * as Message from "../modules/response_message";
+import sendMail from "../modules/send_mail";
 
 import * as TYPE from "../src/types";
 import { checkFieldsLogin } from "../modules/check_strings";
@@ -16,7 +20,36 @@ export const create = (
   const request: any = query;
   // request User model
   User.create(request, (modelResponse: TYPE.apiResponse) => {
-    callback(modelResponse);
+    if (modelResponse.status) {
+      console.log(modelResponse);
+      // send confirmation email
+      const encrypt: any = cookieFactory(modelResponse, true);
+      console.log(encrypt);
+      const url = `localhost:8080/api/user/verify?id=${encrypt.token}`;
+      sendMail(request.email, url, request.lang);
+      callback({
+        ...modelResponse,
+        payload: { cookie: encrypt }
+      });
+    } else {
+      callback(modelResponse);
+    }
+  });
+};
+
+export const verify = (id: string, callback: (arg0: apiResponse) => void) => {
+  verifyId(id, (verifyResponse: TYPE.apiResponse) => {
+    if (verifyResponse.status) {
+      const { _id } = verifyResponse.payload;
+      console.log(_id);
+      User.confirmedEmail(_id, (modelResponse: TYPE.apiResponse) => {
+        // if (modelResponse.status) {
+        // }
+        callback(modelResponse);
+      });
+    } else {
+      callback(verifyResponse);
+    }
   });
 };
 

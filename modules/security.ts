@@ -94,9 +94,10 @@ export const checkToken = (
             // user is not super
             User.getLocationInfo(decoded.id, (modelReply: TYPE.apiResponse) => {
               callback({ ...response, payload: { ...modelReply } });
-            })
+            });
           } else {
-          callback({ ...response, payload: { id: decoded.id } })};
+            callback({ ...response, payload: { id: decoded.id } });
+          }
         });
       } else if (authedHours > 720) {
         // unauth
@@ -119,7 +120,12 @@ export const checkToken = (
  * @param {object} message - User details
  * @return {object} - Returns object with token, cookie options, result code & message from input
  */
-export const cookieFactory = (message: TYPE.apiResponse) => {
+export const cookieFactory = (
+  message: TYPE.apiResponse,
+  createId?: boolean
+) => {
+  console.log("message")
+  console.log(message)
   const code = message.code;
   let token = "";
   let expire = "";
@@ -130,12 +136,16 @@ export const cookieFactory = (message: TYPE.apiResponse) => {
   };
   if (message.status) {
     const id = message.payload._id;
-    const now = new Date(Date.now() + 2592000 * 1000);
+    let now = new Date(Date.now() + 2592000 * 1000);
+    if (createId) {
+      now = new Date(Date.now() + 86400 * 1000);
+    }
     expire = now.toUTCString();
     delete message.payload;
     delete message.code;
+    const expiresInValue = createId ? 86400 : 2592000;
     token = jwt.sign({ id }, passPhrase, {
-      expiresIn: 2592000 // expires in 30 days in seconds
+      expiresIn: expiresInValue // expires in 30 days in seconds
     });
     options = {
       expire,
@@ -144,4 +154,48 @@ export const cookieFactory = (message: TYPE.apiResponse) => {
     };
   }
   return { token, options, code, message };
+};
+
+/**
+ * Function to decipher the id and check it for validity and expiry
+ * @function verifyId
+ * @param {string} id
+ * @returns {Object} - Uses callback function to return the message w/payload or not
+ */
+export const verifyId = (
+  id: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  jwt.verify(id, passPhrase, (err: any, decoded: any) => {
+    if (err) {
+      callback(Message.errorMessage({ action: "reading ID", e: err }));
+    } else {
+      const now: any = new Date();
+      const expiry: any = new Date(decoded.exp * 1000);
+      const authedHours = Math.round((expiry - now) / 3600000);
+      // check time validity
+      if (authedHours <= 24 && authedHours >= 0) {
+        // good
+        let response: TYPE.apiResponse = {
+          status: true,
+          message: "ID is valid",
+          code: 200,
+          payload: {
+            _id: decoded.id
+          }
+        };
+        callback(response);
+      } else if (authedHours > 24) {
+        // unauth
+        callback(Message.notAuthMessage("id is expired"));
+      } else {
+        // smth wrong
+        callback(
+          Message.wrongDbMessage(
+            "The difference between 'issued' and 'expired' is wrong"
+          )
+        );
+      }
+    }
+  });
 };

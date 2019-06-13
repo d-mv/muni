@@ -99,7 +99,6 @@ exports.checkToken = function (token, callback) {
                     else {
                         callback(__assign({}, response_1, { payload: { id: decoded.id } }));
                     }
-                    ;
                 });
             }
             else if (authedHours > 720) {
@@ -119,7 +118,9 @@ exports.checkToken = function (token, callback) {
  * @param {object} message - User details
  * @return {object} - Returns object with token, cookie options, result code & message from input
  */
-exports.cookieFactory = function (message) {
+exports.cookieFactory = function (message, createId) {
+    console.log("message");
+    console.log(message);
     var code = message.code;
     var token = "";
     var expire = "";
@@ -131,11 +132,15 @@ exports.cookieFactory = function (message) {
     if (message.status) {
         var id = message.payload._id;
         var now = new Date(Date.now() + 2592000 * 1000);
+        if (createId) {
+            now = new Date(Date.now() + 86400 * 1000);
+        }
         expire = now.toUTCString();
         delete message.payload;
         delete message.code;
+        var expiresInValue = createId ? 86400 : 2592000;
         token = jwt.sign({ id: id }, passPhrase, {
-            expiresIn: 2592000 // expires in 30 days in seconds
+            expiresIn: expiresInValue // expires in 30 days in seconds
         });
         options = {
             expire: expire,
@@ -144,4 +149,43 @@ exports.cookieFactory = function (message) {
         };
     }
     return { token: token, options: options, code: code, message: message };
+};
+/**
+ * Function to decipher the id and check it for validity and expiry
+ * @function verifyId
+ * @param {string} id
+ * @returns {Object} - Uses callback function to return the message w/payload or not
+ */
+exports.verifyId = function (id, callback) {
+    jwt.verify(id, passPhrase, function (err, decoded) {
+        if (err) {
+            callback(Message.errorMessage({ action: "reading ID", e: err }));
+        }
+        else {
+            var now = new Date();
+            var expiry = new Date(decoded.exp * 1000);
+            var authedHours = Math.round((expiry - now) / 3600000);
+            // check time validity
+            if (authedHours <= 24 && authedHours >= 0) {
+                // good
+                var response = {
+                    status: true,
+                    message: "ID is valid",
+                    code: 200,
+                    payload: {
+                        _id: decoded.id
+                    }
+                };
+                callback(response);
+            }
+            else if (authedHours > 24) {
+                // unauth
+                callback(Message.notAuthMessage("id is expired"));
+            }
+            else {
+                // smth wrong
+                callback(Message.wrongDbMessage("The difference between 'issued' and 'expired' is wrong"));
+            }
+        }
+    });
 };

@@ -60,6 +60,7 @@ var dbName = process.env.MONGO_DB || "muni";
 // collections
 var dbcApp = process.env.MONGO_COL_APP || "app";
 var dbcMain = process.env.MONGO_COL_MAIN || "dev";
+var dbAppId = process.env.MONGO_APP_ID || "5ce03ad1bb94e55d2ebf2161";
 /**
  * Update user fields
  * @function updateUser
@@ -89,7 +90,7 @@ var updateUser = function (id, newFields, callback) {
     });
 };
 // find user by email
-var checkIfEmailNew = function (email, callback) {
+var checkIfEmailNew = function (email, callback, app) {
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         assert.equal(null, err);
@@ -126,6 +127,87 @@ var checkIfEmailNew = function (email, callback) {
                 callback(true);
             }
         });
+    });
+};
+exports.verifyUser = function (_id, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            callback(Message.errorMessage({ action: "connection to DB", e: err }));
+        }
+        else {
+            var database_1 = MDB.client.db(dbName).collection(dbcMain);
+            database_1
+                .aggregate([
+                {
+                    $unwind: {
+                        path: "$newUsers",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: "$newUsers"
+                    }
+                },
+                {
+                    $match: {
+                        _id: new MDB.ObjectId(_id)
+                    }
+                }
+            ])
+                .toArray(function (e, result) {
+                if (e) {
+                    callback(Message.errorMessage({ action: "temp user search", e: e }));
+                }
+                else if (result.length === 0) {
+                    // not found
+                    callback(Message.notFound("user"));
+                }
+                else if (result.length > 1) {
+                    // houston, we've got problem
+                    callback(Message.tooManyResultsMessage("temp user search"));
+                }
+                else {
+                    // bingo
+                    var newUser = {
+                        fName: result[0].fName,
+                        lName: result[0].lName,
+                        email: result[0].email,
+                        pass: result[0].pass,
+                        posts: [],
+                        settings: result[0].settings
+                    };
+                    database_1 = MDB.client.db(dbName).collection(dbcMain);
+                    database_1
+                        .updateOne({ _id: new MDB.ObjectId(result[0].location) }, { $push: { users: newUser } })
+                        .then(function (dbReply) {
+                        // if OK
+                        if (dbReply.result.nModified === 1 && dbReply.result.ok === 1) {
+                            callback({
+                                status: true,
+                                message: "User created",
+                                code: 200,
+                                payload: {
+                                    id: _id
+                                }
+                            });
+                        }
+                        else {
+                            // if not OK
+                            callback({
+                                status: false,
+                                message: "User not created",
+                                code: 500
+                            });
+                        }
+                    })["catch"](function (e) {
+                        assert.equal(null, e);
+                        callback(Message.errorMessage({ action: "user create", e: e }));
+                    });
+                }
+            });
+        }
     });
 };
 /**
@@ -309,7 +391,7 @@ exports.isUserSuper = function (userId, callback) {
  * Create user in the system and authenticate it
  * @function create
  * @param { object } user - User object as per { name: string, email: string, pass: string }
- * @callback createCallback - Function to return result (TYPE.apiResponse)
+ * @returns {TYPE.apiResponse}
  */
 exports.create = function (request, callback) {
     // const token = Generate.token();
@@ -327,9 +409,9 @@ exports.create = function (request, callback) {
                     // set a user variable
                     var createUser_1 = {
                         _id: id,
+                        location: new MDB.ObjectId(request.location),
                         fName: check_strings_1.dropQuotes(request.fName),
                         lName: check_strings_1.dropQuotes(request.lName),
-                        avatar: check_strings_1.dropQuotes(request.avatar),
                         email: check_strings_1.dropQuotes(request.email),
                         pass: encoded.payload,
                         posts: [],
@@ -342,19 +424,23 @@ exports.create = function (request, callback) {
                             callback(Message.errorMessage({ action: "connection to DB", e: err }));
                         }
                         else {
-                            var database = MDB.client.db(dbName).collection(dbcMain);
+                            var database = MDB.client
+                                .db(dbName)
+                                .collection(dbcApp);
                             database
-                                .updateOne({ _id: new MDB.ObjectId(request.location) }, { $push: { users: createUser_1 } })
+                                .updateOne({ _id: new MDB.ObjectId(dbAppId) }, { $push: { newUsers: createUser_1 } })
                                 .then(function (dbReply) {
                                 // if OK
                                 if (dbReply.result.nModified === 1 &&
                                     dbReply.result.ok === 1) {
+                                    //                       console.log("object")
+                                    // console.log(id)
                                     callback({
                                         status: true,
-                                        message: "User created",
+                                        message: "Temp user created",
                                         code: 200,
                                         payload: {
-                                            id: id
+                                            _id: id
                                         }
                                     });
                                 }
@@ -379,7 +465,7 @@ exports.create = function (request, callback) {
             // if already exists
             callback(Message.alreadyExistsMessage("Email"));
         }
-    });
+    }, true);
 };
 /**
  * Login user
@@ -635,14 +721,16 @@ exports.getLocationInfo = function (user, callback) {
         else {
             var database = MDB.client.db(dbName).collection(dbcApp);
             var categories_1;
-            database.aggregate([
+            database
+                .aggregate([
                 {
                     $project: {
                         _id: 0,
                         categories: 1
                     }
                 }
-            ]).toArray(function (err, result) {
+            ])
+                .toArray(function (err, result) {
                 if (err) {
                     // if error
                     callback(Message.errorMessage({ action: "get categories", e: err }));
@@ -707,6 +795,85 @@ exports.getLocationInfo = function (user, callback) {
                             payload: __assign({ _id: user, categories: categories_1 }, result[0])
                         }
                     }));
+                }
+            });
+        }
+    });
+};
+exports.confirmedEmail = function (_id, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            callback(Message.errorMessage({ action: "connection to DB", e: err }));
+        }
+        else {
+            var database_2 = MDB.client.db(dbName).collection(dbcApp);
+            database_2
+                .aggregate([
+                {
+                    $unwind: {
+                        path: "$newUsers",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: "$newUsers"
+                    }
+                },
+                {
+                    $match: {
+                        _id: new MDB.ObjectId(_id)
+                    }
+                }
+            ])
+                .toArray(function (err, result) {
+                if (err) {
+                    // if error
+                    callback(Message.errorMessage({ action: "user match", e: err }));
+                }
+                else if (result.length === 0) {
+                    // if no - response
+                    callback(Message.notFound("user not found"));
+                }
+                else if (result.length > 1) {
+                    // if too many results
+                    callback(Message.tooManyResultsMessage("user matching"));
+                }
+                else {
+                    // if found
+                    var user_1 = result[0];
+                    var location_1 = user_1.location;
+                    delete user_1.location;
+                    database_2
+                        .update({ _id: new MDB.ObjectId(dbAppId) }, { $pull: { newUsers: { _id: new MDB.ObjectId(_id) } } })
+                        .then(function (document) {
+                        // process response
+                        database_2 = MDB.client.db(dbName).collection(dbcMain);
+                        database_2
+                            .updateOne({
+                            _id: new MDB.ObjectId(location_1)
+                        }, { $push: { users: user_1 } })
+                            .then(function (documentCreate) {
+                            // check if result is positive adn callback result
+                            callback(Message.updateMessage({
+                                subj: "User confirmed",
+                                document: {
+                                    ok: documentCreate.result.ok,
+                                    nModified: documentCreate.result.nModified
+                                }
+                            }));
+                        })["catch"](function (e) {
+                            assert.equal(null, e);
+                            callback(Message.errorMessage({
+                                action: "user confirmation (creation in Main)",
+                                e: e
+                            }));
+                        });
+                    })["catch"](function (e) {
+                        assert.equal(null, e);
+                        callback(Message.errorMessage({ action: "temp user removal", e: e }));
+                    });
                 }
             });
         }

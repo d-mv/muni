@@ -149,6 +149,41 @@
         "post.show-less": "show less",
         "mine.subtitle": "MY POSTS"
       }
+    },
+    "عر": {
+      "name": "عربى",
+      "short": "عر",
+      "direction": "rtl",
+      "months": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "מאי",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "text": {
+        "welcome.enter": "تسجيل الدخول",
+        "login.label.email": "تسجيل الدخول",
+        "login.prompt.email": "تسجيل الدخول",
+        "login.label.password": "تسجيل الدخول",
+        "login.prompt.password": "تسجيل الدخول",
+        "login.label.location": "تسجيل الدخول",
+        "login.label.fname": "تسجيل الدخول",
+        "login.prompt.fname": "تسجيل الدخول",
+        "login.label.lname": "تسجيل الدخول",
+        "login.prompt.lname": "تسجيل الدخول",
+        "login.button.submit": "تسجيل الدخول",
+        "login.button.register": "تسجيل الدخول",
+        "login.button.login": "تسجيل الدخول",
+        "login.message.default": "تسجيل الدخول"
+      }
     }
   }
 }

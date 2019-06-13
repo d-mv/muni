@@ -15,6 +15,7 @@ const dbName = process.env.MONGO_DB || "muni";
 // collections
 const dbcApp = process.env.MONGO_COL_APP || "app";
 const dbcMain = process.env.MONGO_COL_MAIN || "dev";
+const dbAppId = process.env.MONGO_APP_ID || "5ce03ad1bb94e55d2ebf2161";
 
 /**
  * Update user fields
@@ -57,7 +58,11 @@ const updateUser = (
 };
 
 // find user by email
-const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
+const checkIfEmailNew = (
+  email: string,
+  callback: (arg0: boolean) => void,
+  app?: boolean
+) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
     assert.equal(null, err);
@@ -93,6 +98,91 @@ const checkIfEmailNew = (email: string, callback: (arg0: boolean) => void) => {
           callback(true);
         }
       });
+  });
+};
+
+export const verifyUser = (
+  _id: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      let database: any = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $unwind: {
+              path: "$newUsers",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$newUsers"
+            }
+          },
+          {
+            $match: {
+              _id: new MDB.ObjectId(_id)
+            }
+          }
+        ])
+        .toArray((e: any, result: any) => {
+          if (e) {
+            callback(Message.errorMessage({ action: "temp user search", e }));
+          } else if (result.length === 0) {
+            // not found
+            callback(Message.notFound("user"));
+          } else if (result.length > 1) {
+            // houston, we've got problem
+            callback(Message.tooManyResultsMessage("temp user search"));
+          } else {
+            // bingo
+            const newUser = {
+              fName: result[0].fName,
+              lName: result[0].lName,
+              email: result[0].email,
+              pass: result[0].pass,
+              posts: [],
+              settings: result[0].settings
+            };
+
+            database = MDB.client.db(dbName).collection(dbcMain);
+            database
+              .updateOne(
+                { _id: new MDB.ObjectId(result[0].location) },
+                { $push: { users: newUser } }
+              )
+              .then((dbReply: any) => {
+                // if OK
+                if (dbReply.result.nModified === 1 && dbReply.result.ok === 1) {
+                  callback({
+                    status: true,
+                    message: "User created",
+                    code: 200,
+                    payload: {
+                      id: _id
+                    }
+                  });
+                } else {
+                  // if not OK
+                  callback({
+                    status: false,
+                    message: "User not created",
+                    code: 500
+                  });
+                }
+              })
+              .catch((e: any) => {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "user create", e }));
+              });
+          }
+        });
+    }
   });
 };
 
@@ -280,7 +370,7 @@ export const isUserSuper = (
  * Create user in the system and authenticate it
  * @function create
  * @param { object } user - User object as per { name: string, email: string, pass: string }
- * @callback createCallback - Function to return result (TYPE.apiResponse)
+ * @returns {TYPE.apiResponse}
  */
 export const create = (
   request: TYPE.IncUserCreateTYPE,
@@ -288,82 +378,91 @@ export const create = (
 ) => {
   // const token = Generate.token();
   const id = new MDB.ObjectId();
-  checkIfEmailNew(request.email, (emailIsNew: boolean) => {
-    if (emailIsNew) {
-      encodeString(
-        dropQuotes(request.pass),
-        (encoded: TYPE.apiResponse | TYPE.intApiResponseTYPE) => {
-          if (!encoded.status) {
-            // if error - callback error
-            //  @ts-ignore - in this case it's always TYPE.apiResponse
-            callback(encoded);
-          } else {
-            // if created - proceed with creating
-            // set a user variable
-            const createUser: TYPE.NewUserTYPE = {
-              _id: id,
-              fName: dropQuotes(request.fName),
-              lName: dropQuotes(request.lName),
-              avatar: dropQuotes(request.avatar),
-              email: dropQuotes(request.email),
-              pass: encoded.payload,
-              posts: [],
-              settings: {}
-            };
-            // store it database
-            MDB.client.connect(err => {
-              assert.equal(null, err);
-              if (err) {
-                callback(
-                  Message.errorMessage({ action: "connection to DB", e: err })
-                );
-              } else {
-                const database: any = MDB.client.db(dbName).collection(dbcMain);
-                database
-                  .updateOne(
-                    { _id: new MDB.ObjectId(request.location) },
-                    { $push: { users: createUser } }
-                  )
-                  .then((dbReply: any) => {
-                    // if OK
-                    if (
-                      dbReply.result.nModified === 1 &&
-                      dbReply.result.ok === 1
-                    ) {
-                      callback({
-                        status: true,
-                        message: "User created",
-                        code: 200,
-                        payload: {
-                          id: id
-                        }
-                      });
-                    } else {
-                      // if not OK
-                      callback({
-                        status: false,
-                        message: "User not created",
-                        code: 500
-                      });
-                    }
-                  })
-                  .catch((e: any) => {
-                    assert.equal(null, e);
-                    callback(
-                      Message.errorMessage({ action: "user create", e })
-                    );
-                  });
-              }
-            });
+  checkIfEmailNew(
+    request.email,
+    (emailIsNew: boolean) => {
+      if (emailIsNew) {
+        encodeString(
+          dropQuotes(request.pass),
+          (encoded: TYPE.apiResponse | TYPE.intApiResponseTYPE) => {
+            if (!encoded.status) {
+              // if error - callback error
+              //  @ts-ignore - in this case it's always TYPE.apiResponse
+              callback(encoded);
+            } else {
+              // if created - proceed with creating
+              // set a user variable
+              const createUser: TYPE.NewUserTYPE = {
+                _id: id,
+                location: new MDB.ObjectId(request.location),
+                fName: dropQuotes(request.fName),
+                lName: dropQuotes(request.lName),
+                email: dropQuotes(request.email),
+                pass: encoded.payload,
+                posts: [],
+                settings: {}
+              };
+              // store it database
+              MDB.client.connect(err => {
+                assert.equal(null, err);
+                if (err) {
+                  callback(
+                    Message.errorMessage({ action: "connection to DB", e: err })
+                  );
+                } else {
+                  const database: any = MDB.client
+                    .db(dbName)
+                    .collection(dbcApp);
+                  database
+                    .updateOne(
+                      { _id: new MDB.ObjectId(dbAppId) },
+                      { $push: { newUsers: createUser } }
+                    )
+                    .then((dbReply: any) => {
+                      // if OK
+                      if (
+                        dbReply.result.nModified === 1 &&
+                        dbReply.result.ok === 1
+                      ) {
+                        //                       console.log("object")
+                        // console.log(id)
+                        callback({
+                          status: true,
+                          message: "Temp user created",
+                          code: 200,
+                          payload: {
+                            _id: id
+                          }
+                        });
+                      } else {
+                        // if not OK
+                        callback({
+                          status: false,
+                          message: "User not created",
+                          code: 500
+                        });
+                      }
+                    })
+                    .catch((e: any) => {
+                      assert.equal(null, e);
+                      callback(
+                        Message.errorMessage({ action: "user create", e })
+                      );
+                    });
+                }
+              });
+            }
           }
-        }
-      );
-    } else {
-      // if already exists
-      callback(Message.alreadyExistsMessage("Email"));
-    }
-  });
+        );
+      } else {
+        // if already exists
+        callback(Message.alreadyExistsMessage("Email"));
+      }
+    },
+    true
+  );
 };
+
 /**
  * Login user
  * @function login
@@ -641,18 +740,22 @@ export const getLocationInfo = (
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       let database: any = MDB.client.db(dbName).collection(dbcApp);
-      let categories:Array<string>;
-      database.aggregate([
-        {
-          $project: {
-            _id: 0,
-            categories: 1
+      let categories: Array<string>;
+      database
+        .aggregate([
+          {
+            $project: {
+              _id: 0,
+              categories: 1
+            }
           }
-        }
-      ]).toArray((err: any, result: any) => {
+        ])
+        .toArray((err: any, result: any) => {
           if (err) {
             // if error
-            callback(Message.errorMessage({ action: "get categories", e: err }));
+            callback(
+              Message.errorMessage({ action: "get categories", e: err })
+            );
           } else if (result.length === 0) {
             // if no - response
             callback(Message.notFound("categories not found"));
@@ -662,7 +765,7 @@ export const getLocationInfo = (
           } else {
             categories = result[0].categories;
           }
-      });
+        });
       database = MDB.client.db(dbName).collection(dbcMain);
       database
         .aggregate([
@@ -676,7 +779,7 @@ export const getLocationInfo = (
               name: 1,
               location: "$_id",
               pinned: 1,
-              municipality:1,
+              municipality: 1,
               _id: 0,
               posts: {
                 $reduce: {
@@ -707,10 +810,103 @@ export const getLocationInfo = (
               Message.positiveMessage({
                 subj: "User login is OK",
                 payload: {
-                  payload: { _id: user, categories,...result[0] }
+                  payload: { _id: user, categories, ...result[0] }
                 }
               })
             );
+          }
+        });
+    }
+  });
+};
+
+export const confirmedEmail = (
+  _id: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      let database: any = MDB.client.db(dbName).collection(dbcApp);
+      database
+        .aggregate([
+          {
+            $unwind: {
+              path: "$newUsers",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$newUsers"
+            }
+          },
+          {
+            $match: {
+              _id: new MDB.ObjectId(_id)
+            }
+          }
+        ])
+        .toArray((err: any, result: any) => {
+          if (err) {
+            // if error
+            callback(Message.errorMessage({ action: "user match", e: err }));
+          } else if (result.length === 0) {
+            // if no - response
+            callback(Message.notFound("user not found"));
+          } else if (result.length > 1) {
+            // if too many results
+            callback(Message.tooManyResultsMessage("user matching"));
+          } else {
+            // if found
+            const user = result[0];
+            const { location } = user;
+            delete user.location;
+            database
+              .update(
+                { _id: new MDB.ObjectId(dbAppId) },
+                { $pull: { newUsers: { _id: new MDB.ObjectId(_id) } } }
+              )
+              .then((document: any) => {
+                // process response
+                database = MDB.client.db(dbName).collection(dbcMain);
+                database
+                  .updateOne(
+                    {
+                      _id: new MDB.ObjectId(location)
+                    },
+                    { $push: { users: user } }
+                  )
+                  .then((documentCreate: any) => {
+                    // check if result is positive adn callback result
+                    callback(
+                      Message.updateMessage({
+                        subj: "User confirmed",
+                        document: {
+                          ok: documentCreate.result.ok,
+                          nModified: documentCreate.result.nModified
+                        }
+                      })
+                    );
+                  })
+                  .catch((e: any) => {
+                    assert.equal(null, e);
+                    callback(
+                      Message.errorMessage({
+                        action: "user confirmation (creation in Main)",
+                        e
+                      })
+                    );
+                  });
+              })
+              .catch((e: any) => {
+                assert.equal(null, e);
+                callback(
+                  Message.errorMessage({ action: "temp user removal", e })
+                );
+              });
           }
         });
     }

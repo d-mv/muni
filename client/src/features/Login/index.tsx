@@ -92,7 +92,7 @@ const LoginUser = (props: {
         location,
         fName,
         lName,
-        avatar: ""
+        lang: props.language.short
       });
     }
   };
