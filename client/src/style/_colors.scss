@@ -2,7 +2,7 @@
 /// @group Colors
 :root {
   /// Colors
-  --colorPrimary: #478FDF;
+  // --colorPrimary: #478FDF;
   --colorPrimaryTrans: rgba(71, 143, 223, 0.3);
   --colorPrimaryLight: #aed2f9;
   --colorSecondary: #03AD24;
@@ -13,13 +13,13 @@
   --colorDarkGrey: #777;
   --colorGrey: #d3d3d3;
   --colorContourBlue: #376ca8;
-  --colorWhite: #fcfcfc;
+  // --colorWhite: #fcfcfc;
   --colorTransparent: rgba(0, 0, 0, 0);
   --colorWhiteThird: rgba(255, 255, 255, .3);
   /// Shadows
   --boxShadow: 0 .1rem .3rem var(--colorDarkTransLight),
     0 1px .2rem rgba(68, 68, 68, 0.24);
-  --pageShadow: 0 .3rem .3rem .5rem var(--colorDarkTransLight);
+  // --pageShadow: 0 .3rem .3rem .5rem var(--colorDarkTransLight);
   --pageShadowOpposite: 0 -.3rem .3rem .3rem var(--colorDarkTransLight);
   --boxShadowHover: 0 1.4rem 2.8rem rgba(68, 68, 68, 0.25),
     0 1rem 1rem rgba(68, 68, 68, 0.22);

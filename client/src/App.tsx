@@ -27,7 +27,7 @@ const App = (props: any) => {
   const { token } = props;
   const [loading, setLoading] = React.useState(true);
 
-  const { login } = props;
+  // const { login } = props;
   const { cookies } = props;
 
   const fetch = () => setInterval(props.fetchLocations(), 1200000);
@@ -38,7 +38,7 @@ const App = (props: any) => {
       props.setModule("welcome");
       setLoading(false);
     }
-  }, [auth]);
+  }, []);
 
   // set cookies if token changes
   React.useEffect(() => {
