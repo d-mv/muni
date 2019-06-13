@@ -25,7 +25,7 @@ export const create = (
       // send confirmation email
       const encrypt: any = cookieFactory(modelResponse, true);
       console.log(encrypt);
-      const url = `localhost:8080/api/user/verify?id=${encrypt.token}`;
+      const url = `https://muni-dev.herokuapp.com/api/user/verify?id=${encrypt.token}`;
       sendMail(request.email, url, request.lang);
       callback({
         ...modelResponse,

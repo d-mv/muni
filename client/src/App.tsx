@@ -20,7 +20,7 @@ import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 
-import style from "./styles/App.module.scss";
+import style from "./style/App.module.scss";
 
 const App = (props: any) => {
   const { auth } = props;

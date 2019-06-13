@@ -1,6 +1,6 @@
 import React from "react";
 
-import { colorsArray } from "../styles/_colors";
+import { colorsArray } from "../style/_colors";
 
 const Help = (props: { color: string }) => (
   <svg

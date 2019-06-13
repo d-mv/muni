@@ -16,7 +16,7 @@ import {
 import Loading from "../../components/Loading";
 import ButtonsBlock from "./components/ButtonsBlock";
 
-import form from "../../styles/_form.module.scss";
+import form from "../../style/_form.module.scss";
 
 /** Functional component to render login/register page
  *

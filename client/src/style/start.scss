@@ -3,7 +3,6 @@
 @import './_typography';
 @import './_ui';
 
-
 /* m-plus-rounded-1c-regular - latin-ext_latin_hebrew */
 @font-face {
   font-family: 'M PLUS Rounded 1c';
@@ -164,7 +163,9 @@
   /* Legacy iOS */
 }
 
-
+@-ms-viewport {
+  width: device-width;
+}
 
 :root {
   font-family: 'M PLUS Rounded 1c', 'Tajawal', sans-serif;
@@ -182,8 +183,8 @@
   }
 
   * {
-    margin: 0;
-    padding: 0;
+    // margin: 0;
+    // padding: 0;
     margin-block-start: 0;
     margin-block-end: 0;
     margin-inline-start: 0;
@@ -203,5 +204,4 @@
       outline: none;
     }
   }
-
 }

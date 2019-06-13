@@ -15,7 +15,7 @@
   @extend .main-template;
   top: 0;
   border-radius: 0 0 25px 25px;
-  box-shadow: var(--pageShadow);
+  box-shadow: var(--pageShadow) !important;
   animation: var(--aniSlideToTop);
 }
 
@@ -38,9 +38,13 @@
 /// @group Layout
 .pageWithContent {
   @extend .page;
-  height: 90%;
+  padding: {
+    left: var(--distStandard);
+    right: var(--distStandard);
+  }
+  height: 90vh;
   box-sizing: border-box;
-  border-bottom: 20px solid white;
+  border-bottom: .3rem solid var(--colorWhite) !important;
   animation: none;
 }
 
