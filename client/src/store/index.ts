@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import { loadData, setLanguage, setStep, showHelp } from "./app/reducers";
 import { submitPost } from "./post/reducers";
@@ -51,7 +52,10 @@ export type AppState = ReturnType<typeof rootReducer>;
 
 export default function configureStore() {
   const middlewares = [thunk, logger];
-  const middleWareEnhancer = applyMiddleware(...middlewares);
+
+  const middleWareEnhancer = composeWithDevTools(
+    applyMiddleware(...middlewares)
+  );
 
   interface state {
     token: string;
