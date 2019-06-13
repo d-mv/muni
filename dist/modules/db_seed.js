@@ -6,6 +6,18 @@ var MDB = require("./db_connect");
 var image_1 = require("./image");
 var security_1 = require("./security");
 /**
+ * Function to return a random image in base64
+ * @function getImage
+ * @returns {string}
+ */
+var getImage = function () {
+    var index = faker.random.number({
+        min: 0,
+        max: image_1["default"].length - 1
+    });
+    return image_1["default"][index];
+};
+/**
  * Function to update the database with generated values
  *
  * @param  {object} props - ID of the location and fields with generated value
@@ -61,7 +73,7 @@ var buildPost = function (user, createdBy, category) {
             title: faker.lorem.sentence(),
             problem: faker.lorem.paragraphs(5),
             solution: faker.lorem.paragraphs(2),
-            photo: image_1["default"],
+            photo: getImage(),
             link: faker.internet.url(),
             newsId: new MDB.ObjectId(),
             createdBy: createdBy,
@@ -79,7 +91,7 @@ var buildPost = function (user, createdBy, category) {
             _id: new MDB.ObjectId(),
             title: faker.lorem.sentence(),
             text: faker.lorem.paragraphs(5),
-            photo: image_1["default"],
+            photo: getImage(),
             link: faker.internet.url(),
             date: faker.date.between("2019-01-01", "2019-05-15"),
             status: "active",
@@ -133,7 +145,6 @@ var dbSeed = function (callback) {
                     _id: userIds[i],
                     fName: faker.name.firstName(),
                     lName: faker.name.lastName(),
-                    avatar: image_1["default"],
                     email: faker.internet.email(),
                     language: languages[Math.floor(Math.random() * languages.length)],
                     pass: encoded.payload,

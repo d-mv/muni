@@ -161,11 +161,10 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
 export const register = (
   props: TYPE.register
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  console.log(props)
   const url = `/user/create?email=${props.email}&location=${
     props.location
-  }&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&avatar=${
-    props.avatar
-  }`;
+  }&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}`;
   console.log(url);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state

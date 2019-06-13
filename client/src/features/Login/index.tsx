@@ -16,7 +16,7 @@ import {
 import Loading from "../../components/Loading";
 import ButtonsBlock from "./components/ButtonsBlock";
 
-import form from "../../styles/_form.module.scss";
+// import form from "../../style/_form.module.scss";
 
 /** Functional component to render login/register page
  *
@@ -92,7 +92,7 @@ const LoginUser = (props: {
         location,
         fName,
         lName,
-        avatar: ""
+        lang: props.language.short
       });
     }
   };
@@ -124,16 +124,16 @@ const LoginUser = (props: {
 
   // set the form elements
   const showElement = loading ? (
-    <div className={form.loading}>
+    <div className='formLoading'>
       <Loading />
     </div>
   ) : (
-    <div className={form.loading} />
+    <div className='formLoading' />
   );
   const messageElement = showMessage ? (
-    <div className={form.message}>{props.loginResult.message}</div>
+    <div className='formMessage'>{props.loginResult.message}</div>
   ) : (
-    <div className={form.message} />
+    <div className='formMessage' />
   );
 
   let emailElement = formSection(
@@ -193,7 +193,7 @@ const LoginUser = (props: {
 
   return (
     <form
-      className={direction === "rtl" ? form.right : form.left}
+      className={direction === "rtl" ? "formRight" : "formLeft"}
       onSubmit={handleSubmit}>
       {/* visible during registration */}
       {locationsElement}

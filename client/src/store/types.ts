@@ -41,7 +41,7 @@ export interface register {
   lName: string;
   email: string;
   pass: string;
-  avatar: string;
+  lang: string;
 }
 
 /**

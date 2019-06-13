@@ -115,9 +115,9 @@ export interface LocationTYPE {
 
 export interface NewUserTYPE {
   _id: ObjectId;
+  location: ObjectId
   fName: string;
   lName: string;
-  avatar: string;
   email: string;
   pass: string;
   posts: [];

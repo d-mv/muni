@@ -15,22 +15,22 @@
   @extend .main-template;
   top: 0;
   border-radius: 0 0 25px 25px;
-  box-shadow: var(--pageShadow);
+  box-shadow: var(--pageShadow) !important;
   animation: var(--aniSlideToTop);
 }
 
 /// Welcome version of page with image
 /// @group Layout
-.welcome {
-  @extend .page;
-  background: rgba(0, 0, 0, 0) url('https://res.cloudinary.com/diciu4xpu/image/upload/v1560150315/muni/photo-1509580357930-a711cf9d888d.jpg') no-repeat scroll center center / cover;
-  background-color: white;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  object-fit: cover;
-}
+// .welcome {
+//   @extend .page;
+//   background: rgba(0, 0, 0, 0) url('https://res.cloudinary.com/diciu4xpu/image/upload/v1560150315/muni/photo-1509580357930-a711cf9d888d.jpg') no-repeat scroll center center / cover;
+//   background-color: white;
+//   -webkit-background-size: cover;
+//   -moz-background-size: cover;
+//   -o-background-size: cover;
+//   background-size: cover;
+//   object-fit: cover;
+// }
 
 
 
@@ -38,9 +38,9 @@
 /// @group Layout
 .pageWithContent {
   @extend .page;
-  height: 90%;
+  height: 90vh;
   box-sizing: border-box;
-  border-bottom: 20px solid white;
+  border-bottom: .3rem solid var(--colorWhite) !important;
   animation: none;
 }
 

@@ -24,7 +24,6 @@ const PhotoUpload = (props: {
     imageEncoder(event.target.files[0], (image64: any) => {
       const image = imageDecoder(image64);
       setPhoto(image);
-      console.log(image64);
       props.action(image64);
     });
   };

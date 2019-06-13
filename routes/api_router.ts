@@ -13,6 +13,7 @@ router.get("/seed", (req: any, res: any, next: any) => {
     res.send(resp);
   });
 });
+
 // rest
 router.get("/*", (req: any, res: any, next: any) => {
   res.redirect(308, redirectUrl);

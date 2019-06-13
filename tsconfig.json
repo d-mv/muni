@@ -30,6 +30,7 @@
     "./routes/*.ts",
     "./models/*.ts",
     "./modules/*.ts",
+    "./modules/*.json",
     "./controllers/*.ts"
   ],
   "exclude": ["./src/public/", "node_modules", "jest.config.js", "client"]

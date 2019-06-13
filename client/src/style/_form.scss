@@ -1,0 +1,103 @@
+/// Form template with elements
+/// @group Form
+.form-template {
+  width: 80%;
+  height: fit-content;
+  padding: 1em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  .section {
+    margin: 1em 0;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font: var(--textFormFieldName);
+      margin: .5rem 0;
+      letter-spacing: .1rem;
+    }
+
+    input {
+      border: .1rem solid var(--colorGrey);
+      border-radius: 4px;
+      background: none;
+      font: var(--textFormField);
+      padding: .5rem .8rem;
+      z-index: 10;
+
+      &:focus {
+        border: none;
+        border: .1rem solid var(--colorPrimary);
+      }
+    }
+
+    .prompt {
+      z-index: 1;
+      margin: 0 auto;
+      margin-top: -1.7rem;
+      width: 95%;
+      min-height: 1.5rem;
+      font: var(--textFormFieldPrompt);
+      color: var(--colorGrey);
+    }
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    align-items: baseline;
+  }
+}
+
+/// Form alignment for left-to-right languages
+/// @group Form
+.fromLeft {
+  @extend .form-template;
+  text-align: left;
+
+  span {
+    margin-left: 92%;
+  }
+}
+
+/// Form alignment for right-to-left languages
+/// @group Form
+.formRight {
+  @extend .form-template;
+  text-align: right;
+
+  label {
+    font-size: .9rem !important;
+  }
+
+  input {
+    direction: rtl;
+  }
+}
+
+/// Message style
+/// @group Form
+.fromMessage {
+  margin: 1.5rem auto;
+  height: fit-content;
+  min-height: 1.3rem;
+  width: 100%;
+  text-align: center;
+  font: var(--textFormMessage);
+  color: var(--colorDarkGrey);
+}
+
+/// Loading indicator wrapper
+/// @group Form
+.formLoading {
+  min-height: 1.3rem;
+
+  margin: {
+    top: -1.8rem;
+    left: auto;
+    right: auto;
+    bottom: 1rem;
+  }
+}

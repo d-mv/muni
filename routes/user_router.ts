@@ -56,6 +56,38 @@ const double = (cacheId: string, req: any, time: number) => {
   return reply;
 };
 
+// verify email address
+router.get("/verify", (req: any, res: any, next: any) => {
+  const { id } = req.query;
+  // information
+  console.log(`§ verify email for: ${id}`);
+  // showRequest("usr.check", req.headers, [req.body, id]);
+
+  // check if ID is present
+  if (!id) {
+    // if not present, send code/message
+    res.status(400).send({
+      status: false,
+      code: 400,
+      message: "ID is missing"
+    });
+  } else {
+    // ID is present
+    if (double("check", id, 60)) {
+      console.log("~> consider double");
+      res
+        .status(replyCache["check"].reply.code)
+        .send(replyCache["check"].reply);
+    } else {
+      // check the request
+      UserController.verify(id, (controllerResponse: apiResponse) => {
+        caching("check", id, controllerResponse);
+        res.status(controllerResponse.code).send(controllerResponse);
+      });
+    }
+  }
+});
+
 // check if token valid
 router.get("/check", (req: any, res: any, next: any) => {
   // information
@@ -96,9 +128,7 @@ router.get("/check", (req: any, res: any, next: any) => {
         }
         const packageToSend = {
           code: checkTokenResponse.payload.code,
-          message: `${checkTokenResponse.message} / ${
-            checkTokenResponse.payload.message
-          }`,
+          message: `${checkTokenResponse.message} / ${checkTokenResponse.payload.message}`,
           status: checkTokenResponse.payload.status,
           payload: checkTokenResponse.payload.payload
         };
@@ -111,18 +141,18 @@ router.get("/check", (req: any, res: any, next: any) => {
 // create user
 router.post("/create", (req: any, res: any, next: any) => {
   console.log("create");
-  showRequest("usr.create", req.headers, [req.body, req.headers.token]);
+  showRequest("usr.create", req.headers, [req.body, req.query]);
 
   UserController.create(req.query, (controllerResponse: apiResponse) => {
     if (controllerResponse.status) {
       // created, need to issue token
-      console.log("controllerResponse");
       console.log(controllerResponse);
-      const response = cookieFactory(controllerResponse);
+      const { cookie } = controllerResponse.payload;
+      delete controllerResponse.payload.cookie;
       res
-        .cookie("token", response.token, response.options)
-        .status(response.code)
-        .send(response.message);
+        .cookie("token", cookie.token, cookie.options)
+        .status(cookie.code)
+        .send({ ...controllerResponse, code: cookie.code });
     } else {
       res.status(controllerResponse.code).send(controllerResponse);
     }
@@ -133,10 +163,7 @@ router.get("/login", (req: any, res: any, next: any) => {
   // information
   console.log(`§ logging in: ${req.query}`);
   // showRequest("usr.login", req.headers, [req.body, req.headers]);
-  // const dbl = double("login", req.query, 60);
-  // console.log(req.query);
-  // console.log(dbl)
-  // console.log(replyCache["login"]);
+
   if (double("login", req.query, 60)) {
     console.log("~> consider double");
     res.status(replyCache["login"].reply.code).send(replyCache["login"].reply);

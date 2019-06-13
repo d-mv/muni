@@ -1,6 +1,6 @@
 import React from "react";
 
-import { colorsArray } from "../styles/_colors";
+import { colorsArray } from "../style/_colors";
 
 import style from "./style/index.module.scss";
 

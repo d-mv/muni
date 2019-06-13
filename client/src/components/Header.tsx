@@ -1,6 +1,7 @@
 import { indexedObj, indexedObjAny } from "../store/types";
 
 import { AppState } from "../store";
+import styleFactory from "../modules/style_factory";
 import Button from "./Button";
 import Edit from "../icons/Edit";
 import Help from "../icons/Help";
@@ -8,7 +9,7 @@ import React from "react";
 import Title from "./Title";
 import { connect } from "react-redux";
 import { setModule } from "../store/users/actions";
-import style from "./styles/Header.module.scss";
+import styles from "./styles/Header.module.scss";
 
 const Header = (props: {
   language: indexedObj;
@@ -29,7 +30,7 @@ const Header = (props: {
     props.setModule(props.returnTo);
   };
   return (
-    <header className={direction === "rtl" ? style.plankRight : style.plank}>
+    <header className={styles[styleFactory("plank", direction)]}>
       <Button mode='minimal' action={props.help}>
         <Help color='primary' />
       </Button>
