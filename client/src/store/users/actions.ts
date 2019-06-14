@@ -189,6 +189,10 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     dispatch({ type: "SET_MODULE", module: "welcome" });
     dispatch({ type: "SET", token: "clear" });
     dispatch({
+      type: "SET_MESSAGE",
+      message: ""
+    });
+    dispatch({
       type: "LOGIN",
       payload: { ...apiState }
     });
