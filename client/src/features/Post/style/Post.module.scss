@@ -1,13 +1,15 @@
 .post {
   border: var(--border);
   margin-bottom: .5rem;
-width: 95%;
-margin: 0 auto;
+  width: 95%;
+  margin: 0 auto;
+
   h4 {
     margin: 0 var(--distStandard);
     font: var(--textPageSubTitle);
   }
 }
+
 .text {
   transition: var(--boxTransitionSlow);
 }
@@ -16,4 +18,14 @@ margin: 0 auto;
   @extend .text;
   height: 15rem;
   overflow: hidden;
+}
+
+
+.voteButton {
+  position: relative;
+  margin: 0;
+  bottom: 3.2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

@@ -11,7 +11,7 @@ import { AppState } from "../../store";
 import { post, indexedObjAny, data, postMuni } from "../../store/types";
 
 import Voters from "./components/Voters";
-import VoteButton from "./components/VoteButton";
+import VoteButton from "../../components/VoteButton";
 import Photo from "./components/Photo";
 import Category from "./components/Category";
 import Title from "./components/Title";
