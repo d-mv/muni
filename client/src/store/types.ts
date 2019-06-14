@@ -138,3 +138,4 @@ export interface postEmpty {
 export interface data {
   [index: string]: any;
 }
+

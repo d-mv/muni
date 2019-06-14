@@ -29,8 +29,8 @@ var options = {
 var replyCache = {
     check: { time: new Date(), req: "", reply: {} },
     // create: { time: new Date(), req: "" },
-    login: { time: new Date(), req: "", reply: {} }
-    // id: { time: new Date(), req: "" },
+    login: { time: new Date(), req: "", reply: {} },
+    update: { time: new Date(), req: "", reply: {} }
     // posts: { time: new Date(), req: "" }
 };
 // storing
@@ -84,6 +84,39 @@ router.get("/verify", function (req, res, next) {
         }
     }
 });
+// update
+router.post("/:id/update", function (req, res, next) {
+    var id = req.params.id;
+    var query = req.query;
+    // information
+    console.log("\u00A7 update user #: " + id + " with " + Object.keys(query));
+    // showRequest("usr.check", req.headers, [req.body, id]);
+    // check if ID is present
+    if (!id || !query || id.length !== 24) {
+        // if not present, send code/message
+        res.status(400).send({
+            status: false,
+            code: 400,
+            message: "ID and/or query is missing"
+        });
+    }
+    else {
+        // ID is present
+        if (double("update", id, 60)) {
+            console.log("~> consider double");
+            res
+                .status(replyCache["update"].reply.code)
+                .send(replyCache["update"].reply);
+        }
+        else {
+            // check the request
+            UserController.update(id, query, function (controllerResponse) {
+                caching("update", id, controllerResponse);
+                res.status(controllerResponse.code).send(controllerResponse);
+            });
+        }
+    }
+});
 // check if token valid
 router.get("/check", function (req, res, next) {
     // information
@@ -115,19 +148,20 @@ router.get("/check", function (req, res, next) {
         else {
             // check if token valid
             security_1.checkToken(req.headers.token, function (checkTokenResponse) {
+                var tmp = checkTokenResponse;
                 // reassign code
                 var code = checkTokenResponse.code;
                 delete checkTokenResponse.code;
                 // check if code is not positive
-                if (checkTokenResponse.code !== 200) {
+                if (code !== 200) {
                     // clear cookies & send code/message
                     res.cookie("token", token, options);
                 }
                 var packageToSend = {
-                    code: checkTokenResponse.payload.code,
-                    message: checkTokenResponse.message + " / " + checkTokenResponse.payload.message,
-                    status: checkTokenResponse.payload.status,
-                    payload: checkTokenResponse.payload.payload
+                    code: code,
+                    message: checkTokenResponse.message + " / " + checkTokenResponse.message,
+                    status: checkTokenResponse.status,
+                    payload: checkTokenResponse.payload
                 };
                 caching("check", req.headers.token, packageToSend);
                 res.status(code).send(packageToSend);
@@ -279,12 +313,12 @@ router.get("/:id/posts", function (req, res, next) {
     }
 });
 // rest
-router.get("/*", function (req, res, next) {
-    console.log("user-redir");
-    res.redirect(308, redirectUrl);
-});
-router.post("/*", function (req, res, next) {
-    console.log("user-redir");
-    res.redirect(308, redirectUrl);
-});
+// router.get("/*", (req: any, res: any, next: any) => {
+//   console.log("user-redir");
+//   res.redirect(308, redirectUrl);
+// });
+// router.post("/*", (req: any, res: any, next: any) => {
+//   console.log("user-redir");
+//   res.redirect(308, redirectUrl);
+// });
 exports["default"] = router;

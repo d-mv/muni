@@ -92,8 +92,16 @@ exports.checkToken = function (token, callback) {
                     response_1.level = modelResponse ? "su" : "";
                     if (!modelResponse) {
                         // user is not super
-                        User.getLocationInfo(decoded.id, function (modelReply) {
-                            callback(__assign({}, response_1, { payload: __assign({}, modelReply) }));
+                        User.getUserById(decoded.id, function (getUserByIdResponse) {
+                            if (getUserByIdResponse.status) {
+                                User.getLocationInfo(decoded.id, function (modelReply) {
+                                    var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language });
+                                    callback(__assign({}, modelReply, { payload: replyPayload }));
+                                });
+                            }
+                            else {
+                                callback(getUserByIdResponse);
+                            }
                         });
                     }
                     else {

@@ -7,7 +7,7 @@ import { compareStringToHash, encodeString } from "../modules/security";
 
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
-import { indexedObj } from "client/src/store/types";
+import { indexedObj } from "../src/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -992,8 +992,8 @@ export const update = (
   const fields: any = request.query;
   // prepare the request
   Object.keys(fields).forEach((key: string) => {
-    setRequest[`users.$[reply].${key}`] = fields[key]
-      // .match(/\w/g).join('');
+    setRequest[`users.$[reply].${key}`] = fields[key];
+    // .match(/\w/g).join('');
   });
   MDB.client.connect(err => {
     assert.equal(null, err);

@@ -266,12 +266,12 @@ router["delete"]("/:id", function (req, res, next) {
     }
 });
 // rest
-router.get("/*", function (req, res, next) {
-    console.log("loc-redir");
-    res.redirect(308, redirectUrl);
-});
-router.post("/*", function (req, res, next) {
-    console.log("loc-redir");
-    res.redirect(308, redirectUrl);
-});
+// router.get("/*", (req: any, res: any, next: any) => {
+//   console.log("loc-redir");
+//   res.redirect(308, redirectUrl);
+// });
+// router.post("/*", (req: any, res: any, next: any) => {
+//   console.log("loc-redir");
+//   res.redirect(308, redirectUrl);
+// });
 exports["default"] = router;
