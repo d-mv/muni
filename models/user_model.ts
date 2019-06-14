@@ -7,6 +7,7 @@ import { compareStringToHash, encodeString } from "../modules/security";
 
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
+import { indexedObj } from "client/src/store/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -57,7 +58,9 @@ export const getUserById = (
             callback(Message.notFound("user"));
           } else {
             console.log(res.size);
-            callback(Message.foundMessage("user", {language: res[0].language}));
+            callback(
+              Message.foundMessage("user", { language: res[0].language })
+            );
           }
         });
     }
@@ -71,7 +74,7 @@ export const getUserById = (
  * @param { object } newFields - New fields to update
  * @returns {} - Uses callback function to send TYPE.apiResponse
  */
-const updateUser = (
+export const updateUser = (
   id: string,
   newFields: { [index: string]: string | Date | number },
   callback: (arg0: TYPE.apiResponse) => void
@@ -959,6 +962,73 @@ export const confirmedEmail = (
                 );
               });
           }
+        });
+    }
+  });
+};
+
+export const update = (
+  request: {
+    id: string;
+    query: indexedObj;
+  },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  // check if post title is available
+  // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
+  // if status true inform, that user exists
+  // if status false, proceed with creation
+
+  // if (findPostResult.code !== 200) {
+  // send message
+  // callback(findPostResult);
+  // } else if (
+  // checking authorization
+  //   request.user.level === "su" ||
+  //   findPostResult.payload.createdBy == request.user.payload.id
+  // ) {
+  // authenticated
+  const setRequest: any = {};
+  const fields: any = request.query;
+  // prepare the request
+  Object.keys(fields).forEach((key: string) => {
+    setRequest[`users.$[reply].${key}`] = fields[key]
+      // .match(/\w/g).join('');
+  });
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({ action: "connection to DB (u1)", e: err })
+      );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // update
+      database
+        .updateMany(
+          { "users._id": new MDB.ObjectId(request.id) },
+          { $set: { ...setRequest } },
+          {
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(request.id) }]
+          }
+        )
+        .then((document: any) => {
+          // process response
+          callback(
+            Message.updateMessage({
+              subj: "User",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "user update", e }));
         });
     }
   });

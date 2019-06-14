@@ -327,8 +327,6 @@ export const fetchLocations = (): ThunkAction<
   };
 };
 
-
-
 /**
  * Action function to load built-in data
  * @function loadData
@@ -345,9 +343,9 @@ export const loadData = (): Action => {
  * @param {string} lang - Language to choose
  * @returns {object}
  */
-export const setLanguage = (lang: string): Action => {
-  return { type: "SET_LANGUAGE", data: importedData.language[lang] };
-};
+// export const setLanguage = (lang: string): Action => {
+//   return { type: "SET_LANGUAGE", data: importedData.language[lang] };
+// };
 
 /** Action function to store location data
  * @function setLocationData
@@ -356,4 +354,29 @@ export const setLanguage = (lang: string): Action => {
  */
 export const setLocationData = (data: TYPE.data): Action => {
   return { type: "SET_LOCATION_DATA", data };
+};
+
+export const setLanguage = (
+  lang: string,
+  user: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/user/${user}/update?language=${lang}`;
+
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // clear state
+    dispatch({
+      type: "SET_LANGUAGE",
+      data: importedData.language[lang]
+    });
+    // proceed with request
+    axios({
+      method: "post",
+      url
+      // withCredentials: true
+    })
+      .then(response => {})
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+      });
+  };
 };

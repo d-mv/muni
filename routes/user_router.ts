@@ -24,8 +24,8 @@ let options = {
 let replyCache: any = {
   check: { time: new Date(), req: "", reply: {} },
   // create: { time: new Date(), req: "" },
-  login: { time: new Date(), req: "", reply: {} }
-  // id: { time: new Date(), req: "" },
+  login: { time: new Date(), req: "", reply: {} },
+  update: { time: new Date(), req: "", reply: {} }
   // posts: { time: new Date(), req: "" }
 };
 
@@ -82,6 +82,39 @@ router.get("/verify", (req: any, res: any, next: any) => {
       // check the request
       UserController.verify(id, (controllerResponse: apiResponse) => {
         caching("check", id, controllerResponse);
+        res.status(controllerResponse.code).send(controllerResponse);
+      });
+    }
+  }
+});
+
+// update
+router.post("/:id/update", (req: any, res: any, next: any) => {
+  const { id } = req.params;
+  const { query } = req;
+  // information
+  console.log(`§ update user #: ${id} with ${Object.keys(query)}`);
+  // showRequest("usr.check", req.headers, [req.body, id]);
+
+  // check if ID is present
+  if (!id || !query || id.length !== 24) {
+    // if not present, send code/message
+    res.status(400).send({
+      status: false,
+      code: 400,
+      message: "ID and/or query is missing"
+    });
+  } else {
+    // ID is present
+    if (double("update", id, 60)) {
+      console.log("~> consider double");
+      res
+        .status(replyCache["update"].reply.code)
+        .send(replyCache["update"].reply);
+    } else {
+      // check the request
+      UserController.update(id, query, (controllerResponse: apiResponse) => {
+        caching("update", id, controllerResponse);
         res.status(controllerResponse.code).send(controllerResponse);
       });
     }
@@ -292,13 +325,13 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
 });
 
 // rest
-router.get("/*", (req: any, res: any, next: any) => {
-  console.log("user-redir");
-  res.redirect(308, redirectUrl);
-});
-router.post("/*", (req: any, res: any, next: any) => {
-  console.log("user-redir");
-  res.redirect(308, redirectUrl);
-});
+// router.get("/*", (req: any, res: any, next: any) => {
+//   console.log("user-redir");
+//   res.redirect(308, redirectUrl);
+// });
+// router.post("/*", (req: any, res: any, next: any) => {
+//   console.log("user-redir");
+//   res.redirect(308, redirectUrl);
+// });
 
 export default router;
