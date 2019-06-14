@@ -24,12 +24,6 @@ const Header = (props: {
 }) => {
   const { direction } = props.language;
 
-  const handleSecondaryClick = () => {
-    if (props.action) {
-      props.action();
-    }
-  };
-
   const title: string = props.locationData.name[props.language.short]
     ? props.locationData.name[props.language.short]
     : props.locationData.name["en"];
@@ -37,12 +31,20 @@ const Header = (props: {
   const handleReturn = () => {
     props.setModule(props.returnTo);
   };
+  let mode = "";
+  const handleSecondaryClick = () => {
+    if (props.action) {
+      props.action({ mode, details: "something" });
+    }
+  };
 
   let secondButton: React.ClassicElement<any> = <div />;
   if (props.edit) {
     secondButton = <Edit color='primary' />;
+    mode = "edit";
   } else if (props.complain) {
     secondButton = <Complain />;
+    mode = "complain";
   }
   return (
     <header className={styles[styleFactory("plank", direction)]}>

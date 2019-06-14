@@ -34,7 +34,7 @@ const Home = (props: {
   const { posts, pinned } = props.locationData;
   const [postsLcl, setPosts] = useState(posts ? posts : []);
   const [pinnedLcl, setPinned] = useState(pinned ? pinned : {});
-  const [post, setPost] = useState({ _id: "" });
+  const [post, setPost] = useState({ _id: "", createdBy: "" });
 
   useEffect(() => {
     if (posts) {
@@ -49,18 +49,36 @@ const Home = (props: {
   };
 
   const handleClearPost = () => {
-    setPost({ _id: "" });
+    setPost({ _id: "", createdBy: "" });
   };
 
   const toggleHelp = () => {
     props.showHelp(!props.help);
   };
 
-  const header = <Header help={toggleHelp} returnTo='home' />;
+  const handleAction = (actions: {
+    mode: string,
+    details:string
+  }) => {
+console.log(actions);
+  }
+
+  let header = <Header help={toggleHelp} returnTo='home'/>;
   let pinnedCard = null;
   let main = <PostList posts={postsLcl} action={handleSetPost} />;
 
-  if (post["_id"]) {
+  if (post["_id"] !== "") {
+    const author = post.createdBy === props.locationData._id;
+    header = author ? (
+      <Header help={toggleHelp} returnTo='home' edit action={handleAction} />
+    ) : (
+      <Header
+        help={toggleHelp}
+        returnTo='home'
+        complain
+        action={handleAction}
+      />
+    );
     main = <ShowPost post={post} />;
     pinnedCard = null;
   } else if (pinnedLcl !== {}) {
