@@ -11,6 +11,7 @@ import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
+import Content from "../layout/Content";
 
 const makePostsArray = (posts: Array<post>, id: string) => {
   let result: Array<post> = [];
@@ -85,8 +86,10 @@ const Mine = (props: {
   return (
     <Page>
       {header}
-      {subtitle}
-      {content}
+      <Content padded>
+        {subtitle}
+        {content}
+      </Content>
     </Page>
   );
 };

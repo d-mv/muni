@@ -155,20 +155,27 @@
 
 .content {
   width: 100%;
-  overflow: scroll
+  overflow: scroll;
+  margin-top: 5rem;
 }
 
 .content-padded {
   @extend .content;
   width: 95%;
-  margin: 0 auto;
+  margin: 5rem auto 0 auto;
+  padding-bottom: 3rem;
+  overflow: hidden;
+}
+
+.content-header {
+  @extend .content;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
   padding-bottom: 3rem;
 }
 
-.content-edit {
-  @extend .content;
-  width: 95%;
-padding-right: 10%;
-  margin: 0 auto;
-  padding-bottom: 3rem;
+.app-title {
+  color: white;
+  font: var(--textAppTitle);
 }

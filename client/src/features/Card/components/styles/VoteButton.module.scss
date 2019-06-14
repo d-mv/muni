@@ -1,5 +1,5 @@
 .vote {
-  height: 6.4rem;
+  height: 6.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,8 +9,8 @@
   transition: var(--boxTransition);
 
   .inner {
-    width: 5rem;
-    height: 5rem;
+    width: 5.5rem;
+    height: 5.5rem;
     border-radius: 50%;
     background: var(--colorPrimary);
     color: var(--colorWhite);

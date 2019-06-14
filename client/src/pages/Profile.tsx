@@ -17,6 +17,7 @@ import Paragraph from "../layout/Paragraph";
 import Line from "../layout/Line";
 
 import style from "./style/Profile.module.scss";
+import Content from "../layout/Content";
 
 const Profile = (props: any) => {
   const { text, direction } = props.language;
@@ -30,28 +31,29 @@ const Profile = (props: any) => {
   return (
     <Page>
       {header}
-
-      <Section>
+      <Content>
+        <Section>
+          <Paragraph direction={direction}>
+            {text["profile.text.changeLanguage"]}
+          </Paragraph>
+          <Paragraph direction={direction}>
+            <Line direction={direction}>
+              <LangSwitch />
+              <span className={style.language}>{props.language.name}</span>
+            </Line>
+          </Paragraph>
+        </Section>
+        <Section>
+          <Paragraph direction={direction}>
+            {text["profile.text.logOff"]}
+          </Paragraph>
+        </Section>
         <Paragraph direction={direction}>
-          {text["profile.text.changeLanguage"]}
+          <Button mode='primary' action={props.logOff}>
+            {text["profile.button.logOff"]}
+          </Button>
         </Paragraph>
-        <Paragraph direction={direction}>
-          <Line direction={direction}>
-            <LangSwitch />
-            <span className={style.language}>{props.language.name}</span>
-          </Line>
-        </Paragraph>
-      </Section>
-      <Section>
-        <Paragraph direction={direction}>
-          {text["profile.text.logOff"]}
-        </Paragraph>
-      </Section>
-      <Paragraph direction={direction}>
-        <Button mode='primary' action={props.logOff}>
-          {text["profile.button.logOff"]}
-        </Button>
-      </Paragraph>
+      </Content>
     </Page>
   );
 };

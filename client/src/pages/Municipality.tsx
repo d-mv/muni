@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import Page from "../layout/Page";
 import PostList from "../components/PostList";
 import ShowPost from "../components/ShowPost";
+import Content from "../layout/Content";
 
 const contentFactory = (props: {
   header: React.ClassicElement<any>;
@@ -17,7 +18,7 @@ const contentFactory = (props: {
 }) => (
   <Page>
     {props.header}
-    {props.main}
+    <Content padded>{props.main}</Content>
   </Page>
 );
 

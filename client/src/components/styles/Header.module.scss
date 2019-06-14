@@ -1,9 +1,12 @@
 .plank {
   width: 100%;
-  height: 7%;
+  height: 5rem;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--colorWhite);
+  z-index: 50;
 }
 
 .plankRTL {

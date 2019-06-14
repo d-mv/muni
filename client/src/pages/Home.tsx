@@ -12,6 +12,7 @@ import ShowPost from "../components/ShowPost";
 import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
+import Content from "../layout/Content";
 
 const contentFactory = (props: {
   header: React.ClassicElement<any>;
@@ -19,9 +20,11 @@ const contentFactory = (props: {
   main: React.ClassicElement<any>;
 }) => (
   <Page>
-    {props.header}
-    {props.pinnedCard}
-    {props.main}
+    {props.header}{" "}
+    <Content padded>
+      {props.pinnedCard}
+      {props.main}
+    </Content>
   </Page>
 );
 

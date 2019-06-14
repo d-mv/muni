@@ -10,19 +10,14 @@ const PostList = (props: {
   posts: any;
   muni?: boolean;
   action: (arg0: post | postMuni) => void;
-}) => {
-  return (
-    <Content>
-      {props.posts.map((post: any) => (
-        <PostCard
-          key={post._id}
-          post={post}
-          muni={props.muni}
-          action={props.action}
-        />
-      ))}
-    </Content>
-  );
-};
+}) =>
+  props.posts.map((post: any) => (
+    <PostCard
+      key={post._id}
+      post={post}
+      muni={props.muni}
+      action={props.action}
+    />
+  ));
 
 export default PostList;

@@ -13,9 +13,9 @@ const ShowPost = (props: { post: any; muni?: boolean; edit?: boolean }) => {
     <Post post={props.post} edit={props.edit} />
   );
 
-  const show = <Content padded>{content}</Content>
+  const show = {content}
 
-  return show;
+  return content;
 };
 
 export default ShowPost;
