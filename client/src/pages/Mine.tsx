@@ -14,7 +14,6 @@ import PostList from "../components/PostList";
 import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
 
-
 const makePostsArray = (posts: Array<post>, id: string) => {
   let result: Array<post> = [];
   posts.map((post: post) => {

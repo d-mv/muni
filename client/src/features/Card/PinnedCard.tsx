@@ -16,8 +16,14 @@ import IconMunicipality from "../../icons/Municipality";
 
 import style from "./styles/PinnedCard.module.scss";
 
-const PinnedCard = (props: { post: postMuni; language: indexedObjAny,action:(arg0:postMuni)=>void }) => {
-  const handleClick = () => {};
+const PinnedCard = (props: {
+  post: postMuni;
+  language: indexedObjAny;
+  action: (arg0: postMuni) => void;
+}) => {
+  const handleClick = () => {
+    props.action(props.post);
+  };
 
   const { direction } = props.language;
   const iconStyle = styleFactory("icon", direction);
@@ -31,7 +37,7 @@ const PinnedCard = (props: { post: postMuni; language: indexedObjAny,action:(arg
         <IconMunicipality filled color='primary' />
       </div>
       <Block>
-        <Line  direction={direction}>
+        <Line direction={direction}>
           <span className={style.title}>{shortText(props.post.title, 55)}</span>
         </Line>
         <Line thin direction={direction}>

@@ -35,6 +35,7 @@ const Home = (props: {
   const [postsLcl, setPosts] = useState(posts ? posts : []);
   const [pinnedLcl, setPinned] = useState(pinned ? pinned : {});
   const [post, setPost] = useState({ _id: "", createdBy: "" });
+  const [pinnedPost, viewPinnedPost] = useState({ _id: "", createdBy: "" });
 
   useEffect(() => {
     if (posts) {
@@ -47,6 +48,11 @@ const Home = (props: {
       setPost(newPost);
     }
   };
+  const handleViewPinnedPost = (newPost: any) => {
+    if (pinnedPost !== newPost) {
+      viewPinnedPost(newPost);
+    }
+  };
 
   const handleClearPost = () => {
     setPost({ _id: "", createdBy: "" });
@@ -56,14 +62,11 @@ const Home = (props: {
     props.showHelp(!props.help);
   };
 
-  const handleAction = (actions: {
-    mode: string,
-    details:string
-  }) => {
-console.log(actions);
-  }
+  const handleAction = (actions: { mode: string; details: string }) => {
+    console.log(actions);
+  };
 
-  let header = <Header help={toggleHelp} returnTo='home'/>;
+  let header = <Header help={toggleHelp} returnTo='home' />;
   let pinnedCard = null;
   let main = <PostList posts={postsLcl} action={handleSetPost} />;
 
@@ -82,7 +85,13 @@ console.log(actions);
     main = <ShowPost post={post} />;
     pinnedCard = null;
   } else if (pinnedLcl !== {}) {
-    pinnedCard = <PinnedCard post={pinnedLcl} action={handleSetPost} />;
+    pinnedCard = <PinnedCard post={pinnedLcl} action={handleViewPinnedPost} />;
+  }
+
+  if (pinnedPost._id !== "") {
+    main = <ShowPost muni post={pinnedPost} />;
+    pinnedCard = null;
+    header = <Header help={toggleHelp} returnTo='home' />;
   }
 
   return contentFactory({ header, pinnedCard, main });
