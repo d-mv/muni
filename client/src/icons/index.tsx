@@ -187,5 +187,4 @@ export const DownArrow = (props: {
 
 export const iconEdit = (color: string) => <svg />;
 export const iconHelp = (color: string) => <svg />;
-export const iconComplain = (color: string) => <svg />;
 export const iconClose = (color: string) => <svg />;

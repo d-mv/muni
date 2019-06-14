@@ -5,7 +5,6 @@ import { AppState } from "../store";
 import { data, indexedObjAny } from "../store/types";
 import { showHelp } from "../store/app/actions";
 
-import Help from "../features/Help";
 import PinnedCard from "../features/Card/PinnedCard";
 
 import Header from "../components/Header";
@@ -13,6 +12,18 @@ import ShowPost from "../components/ShowPost";
 import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
+
+const contentFactory = (props: {
+  header: React.ClassicElement<any>;
+  pinnedCard: React.ClassicElement<any> | null;
+  main: React.ClassicElement<any>;
+}) => (
+  <Page>
+    {props.header}
+    {props.pinnedCard}
+    {props.main}
+  </Page>
+);
 
 const Home = (props: {
   language: data;
@@ -46,24 +57,17 @@ const Home = (props: {
   };
 
   const header = <Header help={toggleHelp} returnTo='home' />;
+  let pinnedCard = null;
+  let main = <PostList posts={postsLcl} action={handleSetPost} />;
 
-  let pinnedCard =
-    pinnedLcl === {} ? null : (
-      <PinnedCard post={pinnedLcl} action={handleSetPost} />
-    );
-  let content = <PostList posts={postsLcl} action={handleSetPost} />;
   if (post["_id"]) {
-    content = <ShowPost post={post} />;
+    main = <ShowPost post={post} />;
     pinnedCard = null;
+  } else if (pinnedLcl !== {}) {
+    pinnedCard = <PinnedCard post={pinnedLcl} action={handleSetPost} />;
   }
 
-  return (
-    <Page>
-      {header}
-      {pinnedCard}
-      {content}
-    </Page>
-  );
+  return contentFactory({ header, pinnedCard, main });
 };
 
 const mapStateToProps = (state: AppState) => {
