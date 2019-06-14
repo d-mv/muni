@@ -36,9 +36,10 @@
       --colorPrimary: #478fdf;
       --colorWhite: #fcfcfc;
       --pageShadow: 0 0.3rem 0.3rem 0.5rem rgba(68, 68, 68, 0.12);
+      --pageShadowOpposite: 0 -0.3rem 0.3rem 0.3rem var(--colorDarkTransLight);
     }
     .app {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       bottom: 0;
@@ -49,45 +50,46 @@
     .page,
     .pageOpposite,
     .pageWithContent {
-      position: absolute;
+      height: 90%;
+      position: fixed;
       left: 0;
       right: 0;
       background-color: var(--colorWhite);
-      box-shadow: var(--pageShadow);
+      box-sizing: border-box;
       overflow: scroll;
     }
-    .page,
+    .page,.pageWithContent,
     .welcome {
       top: 0;
-      animation: slideInToTop 0.3s ease-out 0s 1 forwards;
     }
-    .welcome {
+
+    .pageOpposite {
+      bottom: 0;
+    }
+    .welcome,
+    .page,
+    .pageWithContent {
       box-shadow: var(--pageShadow);
       border-radius: 0 0 2.5rem 2.5rem;
-      box-shadow: var(--pageShadow) !important;
+    }
+    .welcome {
       background: rgba(0, 0, 0, 0)
         url("https://res.cloudinary.com/diciu4xpu/image/upload/v1560150315/muni/photo-1509580357930-a711cf9d888d.jpg")
         no-repeat scroll center center / cover;
-      background-color: white;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
       object-fit: cover;
     }
+
     .pageOpposite {
-      position: initial;
       border-radius: 2.5rem 2.5rem 0 0;
-      animation: slideInFromTop 0.3s ease-out 0s 1 forwards;
+      box-shadow: var(--pageShadowOpposite);
     }
-    .page,
+
     .pageWithContent {
-      border-radius: 0 0 2.5rem 2.5rem;
-      box-shadow: var(--pageShadow) !important;
-    }
-    .pageWithContent {
-      height: 90%;
-      box-sizing: border-box;
+      padding-top: 1rem;
       border-bottom: 0.3rem solid var(--colorWhite) !important;
     }
   </style>

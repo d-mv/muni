@@ -34,7 +34,7 @@ const PinnedCard = (props: { post: postMuni; language: indexedObjAny,action:(arg
         <Line  direction={direction}>
           <span className={style.title}>{shortText(props.post.title, 55)}</span>
         </Line>
-        <Line  direction={direction}>
+        <Line thin direction={direction}>
           <span className={style.date}>
             {dateBeautify(props.post.date, direction)}
           </span>
