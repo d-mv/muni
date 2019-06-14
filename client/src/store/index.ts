@@ -4,7 +4,7 @@ import axios from "axios";
 import { logger } from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { loadData, setLanguage, setStep, showHelp } from "./app/reducers";
+import {  setStep, showHelp } from "./app/reducers";
 import { submitPost } from "./post/reducers";
 import {
   setToken,
@@ -17,7 +17,9 @@ import {
   setAuth,
   setLocationData,
   setMessage,
-  changeMode
+  changeMode,
+  loadData,
+  setLanguage
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState } from "./defaults";

@@ -17,6 +17,53 @@ const dbcApp = process.env.MONGO_COL_APP || "app";
 const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 const dbAppId = process.env.MONGO_APP_ID || "5ce03ad1bb94e55d2ebf2161";
 
+// find user by id
+export const getUserById = (
+  id: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $match: {
+              "users._id": new MDB.ObjectId(id)
+            }
+          },
+          {
+            $unwind: {
+              path: "$users",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$users"
+            }
+          },
+          {
+            $match: {
+              _id: new MDB.ObjectId(id)
+            }
+          }
+        ])
+        .toArray((e: any, res: any) => {
+          if (e) {
+            callback(Message.notFound("user"));
+          } else {
+            console.log(res.size);
+            callback(Message.foundMessage("user", {language: res[0].language}));
+          }
+        });
+    }
+  });
+};
+
 /**
  * Update user fields
  * @function updateUser
@@ -493,10 +540,14 @@ export const login = (
                 // if it's true/false
                 if (response) {
                   // if matching
+                  const lang = newUserResponse.payload.language;
                   getLocationInfo(
                     newUserResponse.payload._id,
                     (dataResponse: TYPE.apiResponse) => {
-                      callback(dataResponse);
+                      // console.log("dataResponse");
+                      // console.log(Object.keys(dataResponse));
+                      const replyPayload = { ...dataResponse.payload, lang };
+                      callback({ ...dataResponse, payload: replyPayload });
                     }
                   );
                 } else {

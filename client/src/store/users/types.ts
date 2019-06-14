@@ -1,4 +1,5 @@
 import * as TYPE from "../types";
+import { data, indexedObjAny } from "../types";
 
 export interface checkTokenAction {
   type: "CHECK";
@@ -34,13 +35,12 @@ export interface setModuleUAction {
 
 export interface setMessageAction {
   type: "SET_MESSAGE";
-  message:string
+  message: string;
 }
-
 
 export interface setAuthAction {
   type: "SET_AUTH";
-  status: boolean
+  status: boolean;
 }
 export interface setLocationDataAction {
   type: "SET_LOCATION_DATA";
@@ -52,10 +52,27 @@ export interface fetchLocationsAction {
 }
 export interface changeModeAction {
   type: "CHANGE_MODE";
-  mode:string
+  mode: string;
+}
+
+export interface loadDataAction {
+  type: "LOAD_DATA";
+  data: indexedObjAny;
+}
+export interface setLanguageAction {
+  type: "SET_LANGUAGE";
+  data: indexedObjAny;
+}
+
+export interface setLocationDataAction {
+  type: "SET_LOCATION_DATA";
+  data: data;
 }
 
 export type Action =
+  | setLocationDataAction
+  | setLanguageAction
+  | loadDataAction
   | setTokenAction
   | checkTokenAction
   | loginAction

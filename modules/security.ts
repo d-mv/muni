@@ -90,12 +90,27 @@ export const checkToken = (
         };
         User.isUserSuper(decoded.id, (modelResponse: boolean) => {
           response.level = modelResponse ? "su" : "";
+
           if (!modelResponse) {
             // user is not super
-            User.getLocationInfo(decoded.id, (modelReply: TYPE.apiResponse) => {
-              callback({ ...response, payload: { ...modelReply } });
+            User.getUserById(decoded.id, (getUserByIdResponse: any) => {
+              if (getUserByIdResponse.status) {
+                User.getLocationInfo(
+                  decoded.id,
+                  (modelReply: TYPE.apiResponse) => {
+                    const replyPayload = {
+                      ...modelReply.payload,
+                      lang: getUserByIdResponse.language
+                    };
+                    callback({ ...modelReply, payload: replyPayload });
+                  }
+                );
+              } else {
+                callback(getUserByIdResponse);
+              }
             });
           } else {
+
             callback({ ...response, payload: { id: decoded.id } });
           }
         });
@@ -124,8 +139,8 @@ export const cookieFactory = (
   message: TYPE.apiResponse,
   createId?: boolean
 ) => {
-  console.log("message")
-  console.log(message)
+  console.log("message");
+  console.log(message);
   const code = message.code;
   let token = "";
   let expire = "";

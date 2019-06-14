@@ -1,7 +1,7 @@
 import { AppState } from "../store";
 import React from "react";
 import { connect } from "react-redux";
-import { setLanguage } from "../store/app/actions";
+import { setLanguage } from "../store/users/actions";
 import style from "./styles/LangSwitch.module.scss";
 
 const LangSwitch = (props: any) => {

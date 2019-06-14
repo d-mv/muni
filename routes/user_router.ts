@@ -118,19 +118,20 @@ router.get("/check", (req: any, res: any, next: any) => {
     } else {
       // check if token valid
       checkToken(req.headers.token, (checkTokenResponse: any) => {
+        const tmp = checkTokenResponse;
         // reassign code
         const code = checkTokenResponse.code;
         delete checkTokenResponse.code;
         // check if code is not positive
-        if (checkTokenResponse.code !== 200) {
+        if (code !== 200) {
           // clear cookies & send code/message
           res.cookie("token", token, options);
         }
         const packageToSend = {
-          code: checkTokenResponse.payload.code,
-          message: `${checkTokenResponse.message} / ${checkTokenResponse.payload.message}`,
-          status: checkTokenResponse.payload.status,
-          payload: checkTokenResponse.payload.payload
+          code: code,
+          message: `${checkTokenResponse.message} / ${checkTokenResponse.message}`,
+          status: checkTokenResponse.status,
+          payload: checkTokenResponse.payload
         };
         caching("check", req.headers.token, packageToSend);
         res.status(code).send(packageToSend);

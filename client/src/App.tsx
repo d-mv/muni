@@ -40,11 +40,6 @@ const App = (props: {
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   console.log("app")
-  //   console.log(props)
-  // },)
-
   // set cookies if token changes
   useEffect(() => {
     // if 'clear'
