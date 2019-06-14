@@ -20,7 +20,8 @@ const Post = (props: {
   language: indexedObjAny;
   location: data;
   preview?: boolean;
-  muni?: boolean;
+  // muni?: boolean;
+  edit?: boolean;
 }) => {
   const { categories } = props.location;
   const {
@@ -59,8 +60,8 @@ const Post = (props: {
   return (
     <div data-testid='post__view' id={_id} className={style.post}>
       <TopBlock category={category} title={title} numbersLine={numbersLine} />
-      <Photo src={photo} />
-      <Link primary text={link} direction={direction} />
+      <Photo src={photo} edit={props.edit} />
+      <Link primary text={link} direction={direction} edit={props.edit} />
       <div className={showStyle}>
         <Text
           step

@@ -2,10 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import {
-  indexedObjAny,
-  postMuni
-} from "../../store/types";
+import { indexedObjAny, postMuni } from "../../store/types";
 
 import Photo from "./components/Photo";
 import Link from "./components/Link";
@@ -19,7 +16,8 @@ const Post = (props: {
   post: postMuni;
   language: indexedObjAny;
   preview?: boolean;
-  muni?: boolean;
+  // muni?: boolean;
+  edit?: boolean;
 }) => {
   const { post } = props;
   const { direction } = props.language;

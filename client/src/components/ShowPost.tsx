@@ -1,22 +1,21 @@
 import React from "react";
 
-import { post, postMuni } from "../store/types";
-
 import Post from "../features/Post";
 import PostMuni from "../features/Post/PostMuni";
 
-import Block from "../layout/Block";
 import Content from "../layout/Content";
 
-const ShowPost = (props: { muni?: boolean; post: any }) => {
-
+const ShowPost = (props: { post: any; muni?: boolean; edit?: boolean }) => {
+  console.log(props.edit)
   const content = props.muni ? (
-    <PostMuni post={props.post} />
+    <PostMuni post={props.post} edit={props.edit} />
   ) : (
-    <Post post={props.post} />
+    <Post post={props.post} edit={props.edit} />
   );
 
-  return <Content padded>{content}</Content>;
+  const show = <Content padded>{content}</Content>
+
+  return show;
 };
 
 export default ShowPost;

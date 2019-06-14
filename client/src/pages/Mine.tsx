@@ -5,8 +5,6 @@ import { AppState } from "../store";
 import { data, indexedObjAny, post } from "../store/types";
 import { showHelp } from "../store/app/actions";
 
-import Help from "../features/Help";
-
 import Header from "../components/Header";
 import ShowPost from "../components/ShowPost";
 import PostList from "../components/PostList";
@@ -25,23 +23,27 @@ const makePostsArray = (posts: Array<post>, id: string) => {
 const Mine = (props: {
   language: data;
   locationData: indexedObjAny;
-  login: data;
   help: boolean;
   showHelp: (arg0: boolean) => void;
 }) => {
   const { direction, text } = props.language;
-  const { _id } = props.login.payload;
+  const { _id } = props.locationData;
   const { posts, pinned } = props.locationData;
   const [postsLcl, setPosts] = useState(
     posts ? makePostsArray(posts, _id) : []
   );
   const [post, setPost] = useState({ _id: "" });
+  const [editPost, setEditPost] = useState(false);
 
   useEffect(() => {
     if (posts) {
       setPosts(makePostsArray(posts, _id));
     }
   }, [props.locationData, posts]);
+
+  const toggleEditPost = () => {
+    setEditPost(!editPost);
+  };
 
   const handleSetPost = (newPost: any) => {
     if (post !== newPost) {
@@ -56,8 +58,16 @@ const Mine = (props: {
   const toggleHelp = () => {
     props.showHelp(!props.help);
   };
+  const handleAction = (actions: { mode: string; details?: string }) => {
+    console.log(actions)
+    switch (actions.mode) {
+      case "edit":
+        setEditPost(!editPost);
+        break;
+    }
+  };
 
-  const header = <Header help={toggleHelp} returnTo='mine' />;
+  let header = <Header help={toggleHelp} returnTo='mine' />;
 
   const subtitle = (
     <SubTitle title={text["mine.subtitle"]} direction={direction} />
@@ -66,13 +76,15 @@ const Mine = (props: {
   let content = <PostList posts={postsLcl} action={handleSetPost} />;
 
   if (post["_id"]) {
-    content = <ShowPost post={post} />;
+    content = <ShowPost post={post} edit={editPost} />;
+    header = (
+      <Header help={toggleHelp} returnTo='mine' edit action={handleAction} />
+    );
   }
 
   return (
     <Page>
       {header}
-
       {subtitle}
       {content}
     </Page>

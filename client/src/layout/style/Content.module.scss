@@ -3,9 +3,16 @@
   overflow: scroll
 }
 
-.padded {
+.content-padded {
   @extend .content;
   width: 95%;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.content-edit {
+  @extend .content;
+  width: 90%;
   margin: 0 auto;
   padding-bottom: 3rem;
 }
