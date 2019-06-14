@@ -15,7 +15,9 @@ import {
   fetchLocations,
   setLoading,
   setAuth,
-  setLocationData
+  setLocationData,
+  setMessage,
+  changeMode
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState } from "./defaults";
@@ -45,6 +47,8 @@ const rootReducer = combineReducers({
   auth: setAuth,
   submitPost: submitPost,
   help: showHelp,
+  message: setMessage,
+  mode: changeMode,
   // remove?
   step: setStep
 });
@@ -72,13 +76,15 @@ export default function configureStore() {
     step: number;
     submitPost: TYPE.apiResponse;
     help: boolean;
+    message: string;
+    mode: string;
   }
 
   const initialState: state = {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "welcome",
+    module: "",
     locations: "",
     loading: false,
     register: apiState,
@@ -88,7 +94,9 @@ export default function configureStore() {
     auth: false,
     step: 1,
     submitPost: apiState,
-    help: false
+    help: false,
+    message: "",
+    mode: "login"
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

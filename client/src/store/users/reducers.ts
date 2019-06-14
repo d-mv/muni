@@ -12,7 +12,7 @@ export const setToken = (state = "", action: Action) => {
 export const setLoading = (state = false, action: Action): boolean => {
   switch (action.type) {
     case "SET_LOADING":
-      return action.loading ? action.loading : false;
+      return action.loading;
   }
   return false;
 };
@@ -25,12 +25,28 @@ export const checkToken = (state = { token: "" }, action: Action) => {
   return { ...state };
 };
 
+export const changeMode = (state = "login", action: Action) => {
+  switch (action.type) {
+    case "CHANGE_MODE":
+      return action.mode;
+  }
+  return state;
+};
+
 export const login = (state = apiState, action: Action) => {
   switch (action.type) {
     case "LOGIN":
       return { ...state, ...action.payload };
   }
   return { ...state };
+};
+
+export const setMessage = (state = "", action: Action) => {
+  switch (action.type) {
+    case "SET_MESSAGE":
+      return action.message;
+  }
+  return state;
 };
 
 export const register = (state = apiState, action: Action) => {

@@ -59,13 +59,7 @@ const Mine = (props: {
   };
 
   const header = <Header help={toggleHelp} returnTo='mine' />;
-  const help = props.help ? (
-    <Help
-      mode={post["_id"] ? "post" : "home"}
-      direction={direction}
-      cancel={toggleHelp}
-    />
-  ) : null;
+
   const subtitle = (
     <SubTitle title={text["mine.subtitle"]} direction={direction} />
   );
@@ -79,7 +73,7 @@ const Mine = (props: {
   return (
     <Page>
       {header}
-      {help}
+
       {subtitle}
       {content}
     </Page>

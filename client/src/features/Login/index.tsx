@@ -5,18 +5,19 @@ import { formSection, formSelection } from "../../components/formSection";
 
 import { AppState } from "../../store";
 import * as TYPE from "../../store/types";
-import { setLanguage } from "../../store/app/actions";
 import {
   login,
   register,
   setModule,
-  fetchLocations
+  setMessage,
+  setLoading,
+  changeMode
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
-import ButtonsBlock from "./components/ButtonsBlock";
-
-// import form from "../../style/_form.module.scss";
+import ButtonsWrapper from "../../layout/ButtonsWrapper";
+import Button from "../../components/Button";
+import button from "../../components/styles/Button.module.scss";
 
 /** Functional component to render login/register page
  *
@@ -28,18 +29,21 @@ const LoginUser = (props: {
   loginResult: TYPE.apiResponse;
   registerResult: TYPE.apiResponse;
   language: TYPE.indexedObjAny;
-  data: TYPE.indexedObjAny;
+  message: string;
+  loading: boolean;
+  mode: string;
   login: (arg0: TYPE.login) => void;
   register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
-  setLanguage: (arg0: string) => void;
-  fetchLocations: () => void;
+  setMessage: (arg0: string) => void;
+  setLoading: (arg0: boolean) => void;
+  changeMode: (arg0: string) => void;
 }) => {
   const { code, status, message } = props.registerResult;
   // get the language
   const { text, direction } = props.language;
   // loading hook
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // form data hooks
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -47,56 +51,16 @@ const LoginUser = (props: {
   const [location, setLocation] = useState("");
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
-  // show/hide message hook
-  const [showMessage, setShowMessage] = useState(true);
-  const [displayMessage, setDisplayMessage] = useState("");
-  // login/register mode hook
-  const [mode, setMode] = useState("login");
 
-  // change mode upon if the code from API is 404 (user not found)
-  React.useEffect(() => {
-    if (props.loginResult.code === 404) {
-      setDisplayMessage("");
-      setLoading(false);
-      setMode("register");
-    }
-  }, [props.loginResult.code]);
-
-  // update message
-  // React.useEffect(() => {
-  //   if (props.loginResult.message !== "") {
-  //     setDisplayMessage(props.loginResult.message);
-  //     setLoading(false);
-  //   }
-  // }, [props.loginResult.message]);
-
-  // register result
-  React.useEffect(() => {
-    // switch off spinner
-    if (code !== 100) {
-      setDisplayMessage("");
-      setLoading(false);
-      if (status) {
-        props.setModule("confirmation");
-      } else if (code !== 404) {
-        setDisplayMessage(message);
-      }
-    }
-  }, [message, code, status]);
+  const [errorMessage, setErrorMessage] = useState(props.message);
 
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setDisplayMessage("");
-    setLoading(true);
-    const check = prevLogin.email === email && prevLogin.pass === pass;
-    if (mode === "login" && !check) {
-      setPrevLogin({ email, pass });
+
+    if (props.mode === "login") {
       props.login({ email, pass });
-    } else if (check) {
-      setDisplayMessage("Same details.");
-      setLoading(false);
     } else {
       // register
       props.register({
@@ -111,6 +75,7 @@ const LoginUser = (props: {
   };
   // handle fields input changes
   const handleInputChange = (event: any) => {
+    setErrorMessage("");
     switch (event.target.name) {
       case "fName":
         setFname(event.target.value);
@@ -130,34 +95,24 @@ const LoginUser = (props: {
   const handleSelectChange = (event: any) => {
     setLocation(event.target.value);
   };
-  const setClear = () => {
-    setEmail("");
-    setPass("");
-    setFname("");
-    setLname("");
-    setLocation("");
-  };
 
   const handleSecondaryButton = () => {
-    setMode(mode === "login" ? "register" : "login");
-    if (mode === "register") {
-      setClear();
-    }
+    props.setMessage("");
+    props.changeMode(props.mode === "login" ? "register" : "login");
   };
 
   // set the form elements
-  const showElement = loading ? (
+  const showElement = props.loading ? (
     <div className='formLoading'>
       <Loading />
     </div>
   ) : (
     <div className='formLoading' />
   );
-  const messageElement = displayMessage ? (
-    <div className='formMessage'>{displayMessage}</div>
-  ) : (
-    <div className='formMessage' />
-  );
+  const messageElement = <div className='formMessage'>{errorMessage}</div>;
+  // ) : (
+  //   <div className='formMessage' />
+  // );
 
   let emailElement = formSection({
     label: text["login.label.email"],
@@ -165,8 +120,7 @@ const LoginUser = (props: {
     name: "uMail",
     value: email,
     placeholder: text["login.prompt.email"],
-    action: handleInputChange,
-    focus:true
+    action: handleInputChange
   });
 
   let passwordElement = formSection({
@@ -182,13 +136,12 @@ const LoginUser = (props: {
   let lNameElement = null;
   let locationsElement = null;
   // register mode is on
-  if (mode === "register") {
+  if (props.mode === "register") {
     locationsElement = formSelection({
       list: props.locations.payload,
       direction,
       label: text["login.label.location"],
-      action: handleSelectChange,
-      focus: true
+      action: handleSelectChange
     });
 
     fNameElement = formSection({
@@ -198,7 +151,8 @@ const LoginUser = (props: {
       value: fName,
       placeholder: text["login.prompt.fName"],
       action: handleInputChange,
-      length: 2
+      length: 2,
+      focus: true
     });
     lNameElement = formSection({
       label: text["login.label.lName"],
@@ -212,7 +166,7 @@ const LoginUser = (props: {
   }
 
   const secondaryButton =
-    mode === "login"
+    props.mode === "login"
       ? text["login.button.register"]
       : text["login.button.login"];
 
@@ -231,13 +185,19 @@ const LoginUser = (props: {
       {messageElement}
       {showElement}
       {/* buttons */}
-      <ButtonsBlock
-        direction={direction}
-        loading={loading}
-        valuePrimary={text["login.button.submit"]}
-        actionSecondary={handleSecondaryButton}
-        secondaryButton={secondaryButton}
-      />
+      <ButtonsWrapper column direction={direction}>
+        <Button mode='form' submit disabled={props.loading} aria-label='Submit'>
+          <input
+            className={button.primary}
+            type='button'
+            value={text["login.button.submit"]}
+            id='submit_button'
+          />
+        </Button>
+        <Button mode='secondary' action={handleSecondaryButton}>
+          {secondaryButton}
+        </Button>
+      </ButtonsWrapper>
     </form>
   );
 };
@@ -248,11 +208,13 @@ const mapStateToProps = (state: AppState) => {
     locations: state.locations,
     registerResult: state.register,
     language: state.language,
-    data: state.data
+    message: state.message,
+    loading: state.loading,
+    mode: state.mode
   };
 };
 
 export default connect(
   mapStateToProps,
-  { login, register, setModule, setLanguage, fetchLocations }
+  { login, register, setModule, setMessage, setLoading, changeMode }
 )(LoginUser);

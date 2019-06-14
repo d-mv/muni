@@ -21,18 +21,12 @@ const Municipality = (props: {
   };
 
   const header = <Header help={toggleHelp} returnTo='municipality' />;
-  const help = props.help ? (
-    <Help
-      mode='municipality'
-      direction={props.language.direction}
-      cancel={toggleHelp}
-    />
-  ) : null;
+
 
   return (
     <Page>
       {header}
-      {help}
+
       <MuniPage />
     </Page>
   );

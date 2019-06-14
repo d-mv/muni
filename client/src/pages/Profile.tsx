@@ -26,18 +26,11 @@ const Profile = (props: any) => {
   };
 
   const header = <Header help={toggleHelp} returnTo='profile' />;
-  const help = props.help ? (
-    <Help
-      mode='profile'
-      direction={props.language.direction}
-      cancel={toggleHelp}
-    />
-  ) : null;
 
   return (
     <Page>
       {header}
-      {help}
+
       <Section>
         <Paragraph direction={direction}>
           {text["profile.text.changeLanguage"]}

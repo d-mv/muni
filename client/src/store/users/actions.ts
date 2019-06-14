@@ -26,6 +26,10 @@ export const setLoading = (loading: boolean = false): Action => {
   return { type: "SET_LOADING", loading };
 };
 
+export const changeMode = (mode: string): Action => {
+  return { type: "CHANGE_MODE", mode };
+};
+
 /**
  * Action function to verify the token with API
  * @function checkToken
@@ -102,6 +106,14 @@ export const login = (
       type: "LOGIN",
       payload: apiState
     });
+    dispatch({
+      type: "SET_MESSAGE",
+      message: ""
+    });
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
     // proceed with request
     axios({
       method: "get",
@@ -112,17 +124,45 @@ export const login = (
         // if successful change page
         const module = "home";
         const token = response.data.token;
+
+        console.log(response);
+        console.log(response.data);
+
         dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET_AUTH", status: true });
         dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+        dispatch({
+          type: "SET_MESSAGE",
+          message: response.data.message || response.data.payload.message
+        });
         dispatch({ type: "SET", token: response.data.token });
         dispatch({
           type: "LOGIN",
           payload: { ...response.data, code: response.status }
         });
+        dispatch({
+          type: "SET_LOADING",
+          loading: false
+        });
       })
       .catch(error => {
+        console.log(error);
         const payload = error.response ? error.response.data : error.toString();
+        if (payload.code === 404) {
+          dispatch({
+            type: "SET_LOADING",
+            loading: false
+          });
+          dispatch({
+            type: "CHANGE_MODE",
+            mode: "register"
+          });
+        } else {
+          dispatch({
+            type: "SET_MESSAGE",
+            message: payload.message || ""
+          });
+        }
         dispatch({
           type: "LOGIN",
           payload
@@ -166,6 +206,14 @@ export const register = (
       type: "REGISTER",
       payload: apiState
     });
+    dispatch({
+      type: "SET_MESSAGE",
+      message: ""
+    });
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
     // proceed with request
     axios({
       method: "post",
@@ -173,6 +221,27 @@ export const register = (
       // withCredentials: true
     })
       .then(response => {
+        console.log(response.data);
+        if (!response.data.status) {
+          dispatch({
+            type: "SET_MESSAGE",
+            message: response.data.message
+          });
+          dispatch({
+            type: "SET_LOADING",
+            loading: false
+          });
+        } else {
+          dispatch({
+            type: "SET_MESSAGE",
+            message: response.data.payload.message
+          });
+          dispatch({ type: "SET_MODULE", module: "confirmation" });
+        }
+        dispatch({
+          type: "SET_LOADING",
+          loading: false
+        });
         dispatch({
           type: "REGISTER",
           payload: { ...response.data, code: response.status }
@@ -180,11 +249,27 @@ export const register = (
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();
+
+        dispatch({
+          type: "SET_MESSAGE",
+          message: payload.toString()
+        });
         dispatch({
           type: "REGISTER",
           payload
         });
+        dispatch({
+          type: "SET_LOADING",
+          loading: false
+        });
       });
+  };
+};
+
+export const setMessage = (message: string) => {
+  return {
+    type: "SET_MESSAGE",
+    message: message
   };
 };
 

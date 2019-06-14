@@ -31,6 +31,13 @@ export interface setModuleUAction {
   type: "SET_MODULE";
   module: string;
 }
+
+export interface setMessageAction {
+  type: "SET_MESSAGE";
+  message:string
+}
+
+
 export interface setAuthAction {
   type: "SET_AUTH";
   status: boolean
@@ -43,6 +50,10 @@ export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
   payload: TYPE.apiResponse;
 }
+export interface changeModeAction {
+  type: "CHANGE_MODE";
+  mode:string
+}
 
 export type Action =
   | setTokenAction
@@ -54,4 +65,6 @@ export type Action =
   | registerAction
   | setAuthAction
   | setLocationDataAction
-  | setAuthAction;
+  | setAuthAction
+  | setMessageAction
+  | changeModeAction;

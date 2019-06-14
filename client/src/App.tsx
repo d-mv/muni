@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import { withCookies } from "react-cookie";
+import React, { useEffect, useState, Suspense } from "react";
+import { withCookies, ReactCookieProps } from "react-cookie";
 import { connect } from "react-redux";
 
 import { AppState } from "./store";
@@ -20,28 +20,33 @@ import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 
+import { data } from "./store/types";
 import "./style/App.scss";
 
-const App = (props: any) => {
-  const { auth } = props;
+const App = (props: {
+  token: string;
+  module: string;
+  loginResult: data;
+  help: boolean;
+
+  setModule: (arg0: string) => void;
+  setToken: (arg0: string) => void;
+  checkToken: (arg0: string) => void;
+  // login;
+  fetchLocations: () => void;
+  cookies: any;
+}) => {
   const { token } = props;
-  const [loading, setLoading] = React.useState(true);
-
-  // const { login } = props;
   const { cookies } = props;
+  const [loading, setLoading] = useState(true);
 
-  const fetch = () => setInterval(props.fetchLocations(), 1200000);
-
-  React.useEffect(() => {
-    console.log(1);
-    if (!auth) {
-      props.setModule("welcome");
-      setLoading(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log("app")
+  //   console.log(props)
+  // },)
 
   // set cookies if token changes
-  React.useEffect(() => {
+  useEffect(() => {
     // if 'clear'
     if (props.token === "clear") {
       console.log(0);
@@ -51,22 +56,24 @@ const App = (props: any) => {
     } else if (props.token !== "" && props.token !== "clear") {
       // if token IS
       cookies.set("token", props.token);
-      // setToken(props.token);
       console.log(5);
       props.setModule("home");
-      setLoading(false);
-      props.setAuth(true);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
     } else {
-      setLoading(false);
+      console.log("6 - no token, no cookie");
+      props.setModule("welcome");
     }
-  }, [token]);
+  }, [token, cookies]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [props.module]);
 
   // fetch locations
-  React.useEffect(() => {
-    fetch();
+  useEffect(() => {
+    props.fetchLocations();
   }, []);
 
   const handleNewButtonClick = () => {
@@ -79,35 +86,44 @@ const App = (props: any) => {
     <Suspense fallback={<Loading />}>{props.children}</Suspense>
   );
 
-  const componentFactory = (props: {
+  const componentFactory = (CFProps: {
     children: any;
     lazy?: boolean;
     nav?: boolean;
     new?: boolean;
   }) => {
-    const nav = props.nav ? <Navigation /> : null;
-    const newButton = props.new ? (
+    const Help = React.lazy(() => import("./features/Help"));
+    const help = props.help ? (
+      <LazyComponent>
+        <Help />
+      </LazyComponent>
+    ) : null;
+    const nav = CFProps.nav ? <Navigation /> : null;
+    const newButton = CFProps.new ? (
       <NewButton action={handleNewButtonClick} />
     ) : null;
-    let content = props.lazy ? (
+    let content = CFProps.lazy ? (
       <AppComponent>
-        <LazyComponent>
-          {nav}
-          {newButton}
-          {props.children}
-        </LazyComponent>
+        {help}
+        {nav}
+        {newButton}
+        <LazyComponent>{CFProps.children}</LazyComponent>
       </AppComponent>
     ) : (
       <AppComponent>
+        {help}
         {nav}
         {newButton}
-        {props.children}
+        {CFProps.children}
       </AppComponent>
     );
     return content;
   };
-  let show = componentFactory({ children: <Welcome />, nav: true });
+  let show;
   switch (props.module) {
+    case "welcome":
+      show = componentFactory({ children: <Welcome />, nav: true });
+      break;
     case "login":
       show = componentFactory({ children: <Login />, nav: true });
       break;
@@ -165,8 +181,7 @@ const App = (props: any) => {
       break;
   }
 
-  const content = loading ? <Loading /> : show;
-
+  const content = loading ? <Loading /> : show || <Loading />;
   return content;
 };
 
@@ -175,9 +190,7 @@ const mapStateToProps = (state: AppState) => {
     token: state.token,
     module: state.module,
     loginResult: state.login,
-    language: state.language,
-    locationData: state.locationData,
-    auth: state.auth
+    help: state.help
   };
 };
 
@@ -188,9 +201,6 @@ export default connect(
     setToken,
     checkToken,
     login,
-    fetchLocations,
-    loadData,
-    setLocationData,
-    setAuth
+    fetchLocations
   }
 )(withCookies(App));

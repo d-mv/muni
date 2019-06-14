@@ -46,13 +46,7 @@ const Home = (props: {
   };
 
   const header = <Header help={toggleHelp} returnTo='home' />;
-  const help = props.help ? (
-    <Help
-      mode={post["_id"] ? "post" : "home"}
-      direction={props.language.direction}
-      cancel={toggleHelp}
-    />
-  ) : null;
+
   let pinnedCard =
     pinnedLcl === {} ? null : (
       <PinnedCard post={pinnedLcl} action={handleSetPost} />
@@ -66,7 +60,6 @@ const Home = (props: {
   return (
     <Page>
       {header}
-      {help}
       {pinnedCard}
       {content}
     </Page>
