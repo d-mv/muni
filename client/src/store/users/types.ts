@@ -68,8 +68,19 @@ export interface setLocationDataAction {
   type: "SET_LOCATION_DATA";
   data: data;
 }
+export interface voteAction {
+  type: "VOTE";
+  payload: TYPE.apiResponse;
+}
+
+export interface setPostsAction {
+  type: "SET_POSTS";
+  posts: any;
+}
 
 export type Action =
+  | setPostsAction
+  | voteAction
   | setLocationDataAction
   | setLanguageAction
   | loadDataAction

@@ -29,3 +29,51 @@
   display: flex;
   justify-content: center;
 }
+
+.square {
+  position: fixed;
+  top: 30%;
+  left: 15%;
+  width: 70%;
+  display: flex;
+  padding: 4rem 0;
+  justify-content: center;
+  background-color: var(--colorWhite);
+}
+
+
+.modalText {
+  width: fit-content;
+  font: var(--textPostCardTitle);
+  color: var(--colorDark);
+}
+
+.buttonWrapper {
+  margin: 0;
+  // margin: 2rem auto 5rem auto;
+}
+
+.replyCard {
+  margin-bottom: .5rem;
+  width: 95%;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+
+
+  .replyMessage {
+    font: var(--textParaStandard);
+    margin: .5rem 1rem;
+  }
+
+  .replyCardTitle {
+    font: var(--textPageSubTitle);
+  }
+}
+
+.replyCardSecondary {
+  @extend .replyCard;
+  color: white;
+  border: var(--borderSecondaryThin);
+  background-color: var(--colorSecondary);
+}

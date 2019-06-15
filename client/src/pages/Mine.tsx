@@ -12,6 +12,7 @@ import PostList from "../components/PostList";
 import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
 import Content from "../layout/Content";
+import Post from "../features/Post";
 
 const makePostsArray = (posts: Array<post>, id: string) => {
   let result: Array<post> = [];
@@ -60,11 +61,27 @@ const Mine = (props: {
     props.showHelp(!props.help);
   };
   const handleAction = (actions: { mode: string; details?: string }) => {
-    console.log(actions)
+    console.log(actions);
     switch (actions.mode) {
       case "edit":
         setEditPost(!editPost);
         break;
+    }
+  };
+  const handleUpdatePost = (updateProps: {
+    _id: string;
+    action: string;
+    fields?: any;
+  }) => {
+    switch (updateProps.action) {
+      case "vote": {
+        const oldPosts = postsLcl;
+        oldPosts.map((post: any) => {
+          if (post._id === updateProps._id)
+            post.votes.push(props.locationData._id);
+        });
+        console.log(oldPosts);
+      }
     }
   };
 
@@ -77,7 +94,7 @@ const Mine = (props: {
   let content = <PostList posts={postsLcl} action={handleSetPost} />;
 
   if (post["_id"]) {
-    content = <ShowPost post={post} edit={editPost} />;
+    content = <Post post={post} edit={editPost} action={handleUpdatePost} />;
     header = (
       <Header help={toggleHelp} returnTo='mine' edit action={handleAction} />
     );

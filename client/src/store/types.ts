@@ -61,16 +61,6 @@ export interface indexedObjAny {
   [index: string]: any;
 }
 
-// /**
-//  * Votes object type
-//  * @typedef {Object} Votes
-//  * @property {number} up
-//  * @property {number} down
-//  */
-// export interface Votes {
-//   up: number;
-//   down: number;
-// }
 
 /**
  * Standard user post object type

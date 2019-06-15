@@ -72,7 +72,11 @@
         "post.solution": "Solution",
         "post.show-more": "show more",
         "post.show-less": "show less",
-        "mine.subtitle": "MY POSTS"
+        "mine.subtitle": "MY POSTS",
+        "vote.thanks":"Thank you for your vote",
+        "newreply.label":"Your reply:",
+        "newreply.placeholder": "please, enter your reply",
+        "munireply.title":"MUNICIPALITY"
       }
     },
     "עב": {
@@ -147,7 +151,8 @@
         "post.solution": "פתרון מוצע",
         "post.show-more": "קרא עוד",
         "post.show-less": "קרא פחות",
-        "mine.subtitle": "העתירות שלי"
+        "mine.subtitle": "העתירות שלי",
+        "vote.thanks":"Thank you for your vote"
       }
     },
     "ع": {
@@ -222,7 +227,8 @@
         "post.solution": "الحل المقترح",
         "post.show-more": "اقرأ اكثر",
         "post.show-less": "تقليص",
-        "mine.subtitle": "منشوراتي"
+        "mine.subtitle": "منشوراتي",
+        "vote.thanks":"Thank you for your vote"
       }
     }
   }

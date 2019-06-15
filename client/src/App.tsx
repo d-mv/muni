@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { withCookies, ReactCookieProps } from "react-cookie";
 import { connect } from "react-redux";
-
+import axios from "axios";
 import { AppState } from "./store";
 import { loadData, setLocationData } from "./store/app/actions";
 import {
@@ -28,7 +28,7 @@ const App = (props: {
   module: string;
   loginResult: data;
   help: boolean;
-
+  vote: data;
   setModule: (arg0: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
@@ -39,6 +39,9 @@ const App = (props: {
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
+  const [int, setInt] = useState(false);
+
+  axios.defaults.headers = { token };
 
   // set cookies if token changes
   useEffect(() => {
@@ -65,6 +68,10 @@ const App = (props: {
   useEffect(() => {
     setLoading(false);
   }, [props.module]);
+
+  // useEffect(() => {
+  //   props.checkToken(cookies.get("token"));
+  // }, [props.vote]);
 
   // fetch locations
   useEffect(() => {
@@ -185,7 +192,8 @@ const mapStateToProps = (state: AppState) => {
     token: state.token,
     module: state.module,
     loginResult: state.login,
-    help: state.help
+    help: state.help,
+    vote: state.vote
   };
 };
 

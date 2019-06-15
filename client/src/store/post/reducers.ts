@@ -8,3 +8,10 @@ export const submitPost = (state = apiState, action: Action) => {
   }
   return state;
 };
+export const updatePost = (state = apiState, action: Action) => {
+  switch (action.type) {
+    case "UPDATE_POST":
+      return { ...state, ...action.payload };
+  }
+  return state;
+};

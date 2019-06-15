@@ -302,25 +302,22 @@ const NewPost = (props: {
       </Section>
     ) : null;
 
+  const mockFn = (props: any) => {};
+  const post = {
+    title,
+    category,
+    problem,
+    solution,
+    photo,
+    link,
+    _id: "",
+    createdBy: "",
+    date: "",
+    status: "",
+    votes: []
+  };
   const preview =
-    step === 6 ? (
-      <Post
-        preview
-        post={{
-          title,
-          category,
-          problem,
-          solution,
-          photo,
-          link,
-          _id: "",
-          createdBy: "",
-          date: "",
-          status: "",
-          votes: []
-        }}
-      />
-    ) : null;
+    step === 6 ? <Post preview post={post} action={mockFn} /> : null;
   const loadingElement = loading ? <Loading /> : null;
   return (
     <Content padded>

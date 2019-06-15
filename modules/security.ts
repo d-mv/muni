@@ -98,9 +98,12 @@ export const checkToken = (
                 User.getLocationInfo(
                   decoded.id,
                   (modelReply: TYPE.apiResponse) => {
+                    console.log("getUserByIdResponse");
+                    console.log(getUserByIdResponse);
                     const replyPayload = {
                       ...modelReply.payload,
-                      lang: getUserByIdResponse.language
+                      lang: getUserByIdResponse.language,
+                      type: getUserByIdResponse.type
                     };
                     callback({ ...modelReply, payload: replyPayload });
                   }

@@ -1,3 +1,4 @@
+
 import { Action } from "./types";
 import { data } from "../types";
 import { apiState } from "../defaults";
@@ -66,7 +67,7 @@ export const fetchLocations = (state = apiState, action: Action) => {
   return { ...state };
 };
 
-export const setModuleU = (state = "", action: Action): string => {
+export const setModule = (state = "", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;
@@ -89,7 +90,6 @@ export const setLocationData = (state = {}, action: Action): data => {
   }
   return state;
 };
-
 
 /**
  * Reducer function to process the loadData action
@@ -117,6 +117,21 @@ export const setLanguage = (state = {}, action: Action): data => {
   switch (action.type) {
     case "SET_LANGUAGE":
       return { ...action.data };
+  }
+  return state;
+};
+
+export const vote = (state = apiState, action: Action) => {
+  switch (action.type) {
+    case "VOTE":
+      return action.payload;
+  }
+  return state;
+};
+export const setPosts = (state = [], action: Action) => {
+  switch (action.type) {
+    case "SET_POSTS":
+      return action.posts;
   }
   return state;
 };

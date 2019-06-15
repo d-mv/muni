@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
+import { vote } from "../../store/users/actions";
+import { updatePost } from "../../store/post/actions";
 import { indexedObjAny, post, data } from "../../store/types";
 
 import Photo from "./components/Photo";
@@ -16,13 +18,21 @@ import VoteButton from "../../components/VoteButton";
 import Modal from "../../components/Modal";
 
 import style from "./style/Post.module.scss";
+import Center from "../../layout/Center";
+import NewReply from "./components/NewReply";
+import Button from "../../components/Button";
+import Card from "../../layout/Card";
+import Line from "../../layout/Line";
 
 const Post = (props: {
-  post: post;
+  post: any;
   language: indexedObjAny;
   location: data;
   preview?: boolean;
   edit?: boolean;
+  vote: (arg0: string, arg1: string) => void;
+  action: (arg0: { _id: string; action: string; fields?: any }) => void;
+  updatePost: (arg0: any) => void;
 }) => {
   const { categories } = props.location;
   const {
@@ -33,13 +43,16 @@ const Post = (props: {
     problem,
     solution,
     votes,
-    date
+    createdBy,
+    date,
+    reply
   } = props.post;
   const { direction, text, short } = props.language;
 
   const [textOpened, setTextOpened] = React.useState(false);
-  const [showConfirm, setShowConfirm] = React.useState(false);
+  const [replyOpened, setReplyOpened] = React.useState(false);
 
+  const [showConfirm, setShowConfirm] = React.useState(false);
   const showStyle = textOpened ? style.text : style.textClosed;
   const voterText =
     votes.length === 1 ? text["post.voter"] : text["post.voters"];
@@ -51,6 +64,7 @@ const Post = (props: {
 
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
+    props.action({ _id, action: "vote" });
   };
 
   const numbersLine = (
@@ -64,10 +78,87 @@ const Post = (props: {
   );
   const modal = showConfirm ? (
     <Modal close={handleVoteClick}>
-      <p>thank you</p>
+      <div className={style.square}>
+        <Center>
+          <span className={style.modalText}>{text["vote.thanks"]}</span>
+        </Center>
+      </div>
     </Modal>
   ) : null;
-  
+
+  const includes = votes.includes(props.location._id);
+  const author = createdBy === props.location._id;
+  const muniUser = props.location.type === "muni";
+
+  const voteButton =
+    includes || author || muniUser ? null : (
+      <div className={style.voteButton} onClick={() => handleVoteClick()}>
+        <VoteButton />
+      </div>
+    );
+
+  const [newReply, setNewReply] = React.useState("");
+  const [showNewReply, setShowNewReply] = React.useState(false);
+  const handleNewReplyChange = (event: any) => {
+    switch (event.target.name) {
+      case "replyText":
+        setNewReply(event.target.value);
+        break;
+    }
+  };
+  const handleNewReplySubmit = () => {
+    if (newReply) {
+      props.updatePost({
+        _id: _id,
+        fields: { reply: { text: newReply, date: new Date() } }
+      });
+    }
+    setShowNewReply(false);
+  };
+
+  const toggleShowNewReplyButton = () => {
+    setShowNewReply(!showNewReply);
+  };
+
+  const newReplyButton =
+    muniUser && !reply ? (
+      <div className={style.buttonWrapper}>
+        <Button mode='primary' action={toggleShowNewReplyButton}>
+          new reply
+        </Button>
+      </div>
+    ) : null;
+
+  const newReplyComponent = showNewReply ? (
+    <Modal disabled close={handleNewReplySubmit}>
+      <NewReply
+        label={text["newreply.label"]}
+        value={newReply}
+        placeholder={text["newreply.placeholder"]}
+        action={handleNewReplyChange}
+        direction={direction}
+        submit={handleNewReplySubmit}
+        submitText={text["login.button.submit"]}
+      />
+    </Modal>
+  ) : null;
+
+  const ReplyMessage = reply ? (
+    <div className={style.replyCardSecondary}>
+      <Line direction={direction}>
+        <span className={style.replyCardTitle}>{text["munireply.title"]}</span>
+      </Line>
+      <div className={style.replyMessage}>{reply.text}</div>
+      <ShowMore
+        color='white'
+        title={showMoreLessText}
+        direction={direction}
+        opened={replyOpened}
+        action={setReplyOpened}
+      />
+    </div>
+  ) : null;
+
   return (
     <div>
       <div data-testid='post__view' id={_id} className={style.post}>
@@ -89,16 +180,18 @@ const Post = (props: {
           />
         </div>
         <ShowMore
+          color='primary'
           title={showMoreLessText}
           direction={direction}
           opened={textOpened}
           action={setTextOpened}
         />
       </div>
-      <div className={style.voteButton} onClick={() => handleVoteClick()}>
-        <VoteButton />
-      </div>
+      {voteButton}
       {modal}
+      {newReplyButton}
+      {newReplyComponent}
+      {ReplyMessage}
     </div>
   );
 };
@@ -112,5 +205,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { vote, updatePost }
 )(Post);

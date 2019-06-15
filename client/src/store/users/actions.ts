@@ -1,5 +1,5 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Action } from "./types";
 import * as TYPE from "../types";
 import locationsList from "../../modules/locations_list";
@@ -57,6 +57,7 @@ export const checkToken = (
         if (payload.status) {
           // if positive - save token, and return the data
           dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
+          dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });
           dispatch({
@@ -139,6 +140,11 @@ export const login = (
         dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET_AUTH", status: true });
         dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+        dispatch({
+          type: "SET_POSTS",
+          posts: response.data.payload.posts
+        });
+
         dispatch({
           type: "SET_MESSAGE",
           message: response.data.message || response.data.payload.message
@@ -360,6 +366,10 @@ export const setLocationData = (data: TYPE.data): Action => {
   return { type: "SET_LOCATION_DATA", data };
 };
 
+export const setPosts = (posts: any): Action => {
+  return { type: "SET_POSTS", posts };
+};
+
 export const setLanguage = (
   lang: string,
   user: string
@@ -384,3 +394,64 @@ export const setLanguage = (
       });
   };
 };
+
+export const vote = (
+  id: string,
+  user: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  console.log('voting')
+  const url = `/post/${id}/vote?user=${user}`;
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // proceed with request
+    axios({
+      method: "patch",
+      url
+      // withCredentials: true
+    })
+      .then((response: AxiosResponse<any>) => {
+        const payload = response.data;
+        dispatch({
+          type: "VOTE",
+          payload: payload
+        });
+      })
+      .catch(error => {
+        // const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "VOTE",
+          payload: error.response
+        });
+      });
+  };
+
+};
+
+// export const update = (
+//   id: string,
+//   user: string
+// ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+//   console.log('voting')
+//   const url = `/post/${id}/vote?user=${user}`;
+//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+//     // proceed with request
+//     axios({
+//       method: "patch",
+//       url
+//       // withCredentials: true
+//     })
+//       .then((response: AxiosResponse<any>) => {
+//         const payload = response.data;
+//         dispatch({
+//           type: "VOTE",
+//           payload: payload
+//         });
+//       })
+//       .catch(error => {
+//         // const payload = error.response ? error.response.data : error.toString();
+//         dispatch({
+//           type: "VOTE",
+//           payload: error.response
+//         });
+//       });
+//   };
+// };
