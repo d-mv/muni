@@ -57,8 +57,7 @@ const PostCard = (props: {
     );
     const author = createdBy === props.locationData._id;
     const voted = votes.includes(props.locationData._id);
-    const muniUser = props.locationData.type
-
+    const muniUser = props.locationData.type === "muni";
 
     voteButtonElement =
       !author && !voted && !muniUser ? (
