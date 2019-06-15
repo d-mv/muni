@@ -45,7 +45,7 @@ const Navigation = (props: any) => {
       component = (
         <nav className={styleFactory("header", direction)}>
           <NavButton mode='return-welcome' action={action} />
-          <h1>"App Name."</h1>
+          <h1>Our Change</h1>
           <Spacer size={10} units='%' />
         </nav>
       );

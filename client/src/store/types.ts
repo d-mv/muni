@@ -33,7 +33,7 @@ export interface login {
  * @property {string} lName - User's last name
  * @property {string} email - User's email
  * @property {string} pass - User's password
- * @property {string} avatar - Avatar's URL
+ * @property {string} lang - Avatar's URL
  */
 export interface register {
   location: string;

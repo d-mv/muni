@@ -48,17 +48,18 @@ const LoginUser = (props: {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [prevLogin, setPrevLogin] = useState({ email: "", pass: "" });
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(props.locations.payload[0].value);
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
 
   const [errorMessage, setErrorMessage] = useState(props.message);
 
+  console.log(location);
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    // console.log(event)
     if (props.mode === "login") {
       props.login({ email, pass });
     } else {
@@ -93,6 +94,7 @@ const LoginUser = (props: {
   };
   // handle location choice
   const handleSelectChange = (event: any) => {
+    console.log(event);
     setLocation(event.target.value);
   };
 
@@ -107,9 +109,9 @@ const LoginUser = (props: {
       <Loading />
     </div>
   ) : (
-    <div className='formLoading' />
+    <div className='formMessage'>{errorMessage}</div>
   );
-  const messageElement = <div className='formMessage'>{errorMessage}</div>;
+
   // ) : (
   //   <div className='formMessage' />
   // );
@@ -182,7 +184,6 @@ const LoginUser = (props: {
       {emailElement}
       {passwordElement}
       {/* message & loading */}
-      {messageElement}
       {showElement}
       {/* buttons */}
       <ButtonsWrapper column direction={direction}>

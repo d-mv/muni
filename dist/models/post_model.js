@@ -128,7 +128,12 @@ exports.create = function (request, callback) {
         else {
             var database = MDB.client.db(dbName).collection(dbcMain);
             // set document to insert
-            var newDocument = __assign({ _id: new MDB.ObjectId(), createdBy: new MDB.ObjectId(request.user), date: new Date(), status: "active", votes: "0" }, request.post);
+            var newDocument = __assign({ _id: new MDB.ObjectId(), createdBy: new MDB.ObjectId(request.user), date: new Date(), status: "active", votes: [], reply: {
+                    text: "",
+                    date: new Date(),
+                    up: [],
+                    down: []
+                } }, request.post);
             database
                 .update({
                 _id: new MDB.ObjectId(request.location),

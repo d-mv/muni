@@ -48,13 +48,29 @@ var update = function (props) {
         });
     });
 };
-// create X amount of emails
-var emailsArray = function (qty) {
+var userIds = [];
+// build array with X amount of Ids
+var idsArray = function (qty) {
     var result = [];
     for (var i = 0; i < qty; i++) {
-        result.push(faker.internet.email());
+        result.push(userIds[faker.random.number({
+            min: 0,
+            max: 4
+        })]);
     }
     return result;
+};
+var replyOrNotReply = function () {
+    var yesNo = faker.random.number({
+        min: 0,
+        max: 1
+    });
+    var paragraphs = faker.random.number({
+        min: 1,
+        max: 2
+    });
+    var reply = yesNo ? faker.lorem.paragraphs(paragraphs) : null;
+    return reply;
 };
 /**
  * Function to create posts, both petitions and municipality news
@@ -80,10 +96,22 @@ var buildPost = function (user, createdBy, category) {
             category: category,
             date: faker.date.between("2019-01-01", "2019-05-15"),
             status: "active",
-            votes: emailsArray(faker.random.number({
+            votes: idsArray(faker.random.number({
                 min: 0,
-                max: 500
-            }))
+                max: 4
+            })),
+            reply: {
+                text: replyOrNotReply() || "",
+                date: new Date(),
+                up: idsArray(faker.random.number({
+                    min: 0,
+                    max: 4
+                })),
+                down: idsArray(faker.random.number({
+                    min: 0,
+                    max: 4
+                }))
+            }
         };
     }
     else {
@@ -94,15 +122,7 @@ var buildPost = function (user, createdBy, category) {
             photo: getImage(),
             link: faker.internet.url(),
             date: faker.date.between("2019-01-01", "2019-05-15"),
-            status: "active",
-            up: emailsArray(faker.random.number({
-                min: 0,
-                max: 500
-            })),
-            down: emailsArray(faker.random.number({
-                min: 0,
-                max: 500
-            }))
+            status: "active"
         };
     }
     return post;
@@ -114,10 +134,11 @@ var buildPost = function (user, createdBy, category) {
  */
 var dbSeed = function (callback) {
     // qty of users
-    var users = faker.random.number({
-        min: 5,
-        max: 10
-    });
+    var users = 5;
+    //   faker.random.number({
+    //   min: 5,
+    //   max: 10
+    // });
     // categories
     var categories = [
         "5cfd32f3458cd06becd28315",
@@ -135,7 +156,7 @@ var dbSeed = function (callback) {
             // set the block of data
             var block = [];
             // generate user ids
-            var userIds = [];
+            // let userIds = [];
             for (var i = 0; i < users; i++) {
                 userIds.push(new MDB.ObjectId());
             }
@@ -148,12 +169,13 @@ var dbSeed = function (callback) {
                     email: faker.internet.email(),
                     language: languages[Math.floor(Math.random() * languages.length)],
                     pass: encoded.payload,
+                    type: "user",
                     posts: []
                 };
                 // qty of post per this user
                 var posts = faker.random.number({
-                    min: 2,
-                    max: 5
+                    min: 1,
+                    max: 3
                 });
                 for (var n = 0; n < posts; n++) {
                     var createdBy = userIds[Math.floor(Math.random() * userIds.length)];
@@ -165,6 +187,18 @@ var dbSeed = function (callback) {
                 // push the user to data
                 block.push(user);
             }
+            // create muni user
+            var muniUser = {
+                _id: new MDB.ObjectId(),
+                fName: faker.name.firstName(),
+                lName: faker.name.lastName(),
+                email: faker.internet.email(),
+                language: languages[Math.floor(Math.random() * languages.length)],
+                pass: encoded.payload,
+                type: "muni",
+                posts: []
+            };
+            block.push(muniUser);
             // create municipality records
             var blockMuni = [];
             var municipalityPosts = faker.random.number({
@@ -178,7 +212,7 @@ var dbSeed = function (callback) {
             var pinned = buildPost();
             // ! call to update the DB
             update({
-                id: "5ce589a00a61b5a9ca9d9caf",
+                id: "5d04f0f698de3fce481f0e3f",
                 users: block,
                 municipality: blockMuni,
                 pinned: pinned

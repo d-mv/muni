@@ -12,7 +12,7 @@ const languages: any = data.language;
 const sendEmail = (user: string, url: string, language: string) => {
   const translated = languages[language].text;
   let transporter = nodeMailer.createTransport({
-    host: "smtp.yandex.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true,
     auth: {

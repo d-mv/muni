@@ -34,9 +34,11 @@ var response_message_1 = require("../modules/response_message");
  *
  */
 exports.createPost = function (query, callback) {
+    console.log(Object.keys(query));
     security_1.checkToken(query.token, function (checkTokenResponse) {
-        var _id = checkTokenResponse.payload.payload._id;
-        var location = checkTokenResponse.payload.payload.location;
+        console.log(Object.keys(checkTokenResponse.payload));
+        var _id = checkTokenResponse.payload._id;
+        var location = checkTokenResponse.payload.location;
         var check = query.user === _id && query.location === location.toString();
         if (check) {
             var request = {

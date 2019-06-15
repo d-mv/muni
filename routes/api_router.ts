@@ -14,4 +14,9 @@ router.get("/seed", (req: any, res: any, next: any) => {
   });
 });
 
+router.get("/photo", (req: any, res: any, next: any) => {
+ console.log(req.body)
+ console.log(req)
+});
+
 export default router;

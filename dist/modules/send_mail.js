@@ -11,7 +11,7 @@ var languages = translation_1["default"].language;
 var sendEmail = function (user, url, language) {
     var translated = languages[language].text;
     var transporter = nodeMailer.createTransport({
-        host: "smtp.yandex.com",
+        host: "smtpout.secureserver.net",
         port: 465,
         secure: true,
         auth: {

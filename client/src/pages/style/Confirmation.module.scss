@@ -1,17 +1,19 @@
 /// Message to display in the center
 /// @group Layout
 .centralMessage {
-  margin: 0 auto;
+  margin: 20% auto;
   width: 70%;
-  font: var(--textCentralMessage);
+  font: normal 400 2rem var(--fontBasic);
+  line-height: 3rem;
   text-align: center;
-  line-height: 2rem;
+  line-height: 4rem;
 }
 
 .wrapper {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
 }
