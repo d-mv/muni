@@ -71,9 +71,33 @@
   }
 }
 
-.replyCardSecondary {
+// .replyCard {
+//   @extend .replyCard;
+//   color: white;
+//   border: var(--borderSecondaryThin);
+//   background-color: var(--colorSecondary);
+// }
+
+.cardGreenClosed {
   @extend .replyCard;
   color: white;
   border: var(--borderSecondaryThin);
   background-color: var(--colorSecondary);
+
+  .replyMessage {
+    height: 5rem;
+    overflow: hidden;
+  }
+
+  // height: 10rem;
+}
+
+.cardGreenOpen{
+  @extend .cardGreenClosed;
+  height: fit-content;
+
+  .replyMessage {
+    height: auto;
+    overflow: none;
+  }
 }

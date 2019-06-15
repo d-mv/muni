@@ -106,7 +106,7 @@ const Post = (props: {
         break;
     }
   };
-  
+
   const handleNewReplySubmit = () => {
     if (newReply) {
       props.updatePost({
@@ -144,19 +144,35 @@ const Post = (props: {
     </Modal>
   ) : null;
 
-  const ReplyMessage = reply ? (
-    <div className={style.replyCardSecondary}>
+  const generateStyleName = (t1: string, t2: string, t3?: string) => {
+    let styleName = t1 + t2[0].toUpperCase() + t2.slice(1);
+    if (t3) styleName = styleName + t3[0].toUpperCase() + t3.slice(1);
+    return styleName;
+  };
+
+  let replyCardColor = "green";
+  if (reply.up < reply.down) replyCardColor = "attention";
+  if (reply.up === reply.down) replyCardColor = "white";
+
+  const replyHeight = replyOpened ? "open" : "closed";
+  // console.log(object)
+  const replyCardStyle = generateStyleName("card", replyCardColor, replyHeight);
+  console.log(replyCardStyle);
+  const ReplyMessage = reply.text ? (
+    <div className={style[replyCardStyle]}>
       <Line direction={direction}>
         <span className={style.replyCardTitle}>{text["munireply.title"]}</span>
       </Line>
       <div className={style.replyMessage}>{reply.text}</div>
-      <ShowMore
-        color='white'
-        title={showMoreLessText}
-        direction={direction}
-        opened={replyOpened}
-        action={setReplyOpened}
-      />
+      {reply.text.length > 50 ? (
+        <ShowMore
+          color='white'
+          title={showMoreLessText}
+          direction={direction}
+          opened={replyOpened}
+          action={setReplyOpened}
+        />
+      ) : null}
     </div>
   ) : null;
 

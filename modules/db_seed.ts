@@ -82,6 +82,19 @@ const idsArray = (qty: number) => {
   return result;
 };
 
+const replyOrNotReply = () => {
+  const yesNo = faker.random.number({
+    min: 0,
+    max: 1
+  });
+  const paragraphs = faker.random.number({
+    min: 1,
+    max: 2
+  });
+  const reply = yesNo ? faker.lorem.paragraphs(paragraphs) : null;
+  return reply;
+};
+
 /**
  * Function to create posts, both petitions and municipality news
  *
@@ -115,7 +128,23 @@ const buildPost = (
           min: 0,
           max: 4
         })
-      )
+      ),
+      reply: {
+        text: replyOrNotReply() || "",
+        date: new Date(),
+        up: idsArray(
+          faker.random.number({
+            min: 0,
+            max: 4
+          })
+        ),
+        down: idsArray(
+          faker.random.number({
+            min: 0,
+            max: 4
+          })
+        )
+      }
     };
   } else {
     post = {
@@ -125,19 +154,7 @@ const buildPost = (
       photo: getImage(),
       link: faker.internet.url(),
       date: faker.date.between("2019-01-01", "2019-05-15"),
-      status: "active",
-      up: idsArray(
-        faker.random.number({
-          min: 0,
-          max: 4
-        })
-      ),
-      down: idsArray(
-        faker.random.number({
-          min: 0,
-          max: 4
-        })
-      )
+      status: "active"
     };
   }
   return post;
@@ -219,7 +236,7 @@ const dbSeed = (callback: any) => {
         posts: []
       };
 
-      block.push(muniUser)
+      block.push(muniUser);
 
       // create municipality records
       let blockMuni = [];
