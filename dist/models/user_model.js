@@ -99,8 +99,15 @@ exports.getUserById = function (id, callback) {
                     callback(Message.notFound("user"));
                 }
                 else {
-                    console.log(res.size);
-                    callback(Message.foundMessage("user", { language: res[0].language }));
+                    if (res.length === 0) {
+                        callback(Message.notFound("user"));
+                    }
+                    else {
+                        callback(Message.foundMessage("user", {
+                            language: res[0].language,
+                            type: res[0].type
+                        }));
+                    }
                 }
             });
         }

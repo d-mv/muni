@@ -8,7 +8,7 @@ import * as TYPE from "../src/types";
 import * as Message from "../modules/response_message";
 
 import { requestError } from "../modules/response_message";
-import { apiResponse } from 'client/src/store/types';
+// import { apiResponse } from 'client/src/store/types';
 
 /**
  * Function to create post. _Example of the body_:
@@ -157,13 +157,13 @@ export const posts = (
   });
 };
 
-export const vote = (props: { id: string, user: string }, callback: (arg0: apiResponse) => void) => {
+export const vote = (props: { id: string, user: string }, callback: (arg0: TYPE.apiResponse) => void) => {
   const {id,user} = props
   if (id === '' || user === '' || user.length !== 24 || id.length !== 24) {
     callback(Message.requestError('ID/User malformed'))
   } else {
-    Post.vote({ id, user }, (modelResponse: apiResponse) => {
-      callback(modelResponse)
-    })
+    Post.vote({ id, user }, (modelResponse: TYPE.apiResponse) => {
+      callback(modelResponse);
+    });
   }
 }

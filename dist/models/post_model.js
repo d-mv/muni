@@ -129,7 +129,8 @@ exports.create = function (request, callback) {
             var database = MDB.client.db(dbName).collection(dbcMain);
             // set document to insert
             var newDocument = __assign({ _id: new MDB.ObjectId(), createdBy: new MDB.ObjectId(request.user), date: new Date(), status: "active", votes: "0" }, request.post);
-            database.update({
+            database
+                .update({
                 _id: new MDB.ObjectId(request.location),
                 "users._id": new MDB.ObjectId(request.user)
             }, { $push: { "users.$.posts": newDocument } })
@@ -157,60 +158,64 @@ exports.create = function (request, callback) {
  */
 exports.update = function (request, callback) {
     // check if post title is available
-    find_post_by_id_1["default"](request.postId, function (findPostResult) {
-        // if status true inform, that user exists
-        // if status false, proceed with creation
-        if (findPostResult.code !== 200) {
-            // send message
-            callback(findPostResult);
-        }
-        else if (
-        // checking authorization
-        request.user.level === "su" ||
-            findPostResult.payload.createdBy == request.user.payload.id) {
-            // authenticated
-            var setRequest_1 = {};
-            // prepare the request
-            Object.keys(request.fields).forEach(function (key) {
-                setRequest_1["users.$[].posts.$[reply]." + key] = request.fields[key];
-            });
-            MDB.client.connect(function (err) {
-                assert.equal(null, err);
-                if (err) {
-                    // return error with connection
-                    callback(Message.errorMessage({ action: "connection to DB (5)", e: err }));
-                }
-                else {
-                    // set database
-                    var database = MDB.client.db(dbName).collection(dbcMain);
-                    // update
-                    database
-                        .updateMany({ "users.posts._id": new MDB.ObjectId(request.postId) }, { $set: __assign({}, setRequest_1) }, {
-                        arrayFilters: [
-                            { "reply._id": new MDB.ObjectId(request.postId) }
-                        ]
-                    })
-                        .then(function (document) {
-                        // process response
-                        callback(Message.updateMessage({
-                            subj: "Post",
-                            document: {
-                                ok: document.result.ok,
-                                nModified: document.result.nModified
-                            }
-                        }));
-                    })["catch"](function (e) {
-                        assert.equal(null, e);
-                        callback(Message.errorMessage({ action: "post update", e: e }));
-                    });
-                }
-            });
+    // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
+    // if status true inform, that user exists
+    // if status false, proceed with creation
+    // if (findPostResult.code !== 200) {
+    // send message
+    // callback(findPostResult);
+    // } else if (
+    // checking authorization
+    //   request.user.level === "su" ||
+    //   findPostResult.payload.createdBy == request.user.payload.id
+    // ) {
+    // authenticated
+    console.log(request);
+    var setRequest = {};
+    // prepare the request
+    Object.keys(request.fields).forEach(function (key) {
+        setRequest["users.$[].posts.$[reply]." + key] = request.fields[key];
+    });
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({ action: "connection to DB (5)", e: err }));
         }
         else {
-            callback(Message.notAuthMessage("You need to be either owner or administrator to edit this post"));
+            // set database
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // update
+            console.log(setRequest);
+            database
+                .updateMany({ "users.posts._id": new MDB.ObjectId(request.postId) }, { $set: __assign({}, setRequest) }, {
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(request.postId) }]
+            })
+                .then(function (document) {
+                // process response
+                callback(Message.updateMessage({
+                    subj: "Post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post update", e: e }));
+            });
         }
     });
+    // } else {
+    //   callback(
+    //     Message.notAuthMessage(
+    //       "You need to be either owner or administrator to edit this post"
+    //     )
+    //   );
+    // }
 };
+// );
+// };
 /**
  * Function to delete post
  * @function deletePost
@@ -265,6 +270,67 @@ exports.deletePost = function (request, callback) {
         }
         else {
             callback(Message.notAuthMessage("You need to be either owner or administrator to edit this post"));
+        }
+    });
+};
+exports.vote = function (request, callback) {
+    var id = request.id, user = request.user;
+    console.log("id");
+    console.log("user");
+    console.log(id);
+    console.log(user);
+    find_post_by_id_1["default"](id, function (findPostResult) {
+        if (findPostResult.status) {
+            var voters = findPostResult.payload.votes;
+            var inlcudes = voters.includes(user);
+            if (inlcudes) {
+                // already voted
+                callback(Message.generalError({ subj: "Already voted", code: 401 }));
+            }
+            else {
+                // not yet voted
+                MDB.client.connect(function (err) {
+                    assert.equal(null, err);
+                    if (err) {
+                        // return error with connection
+                        callback(Message.errorMessage({
+                            action: "connection to DB (5)",
+                            e: err
+                        }));
+                    }
+                    else {
+                        var database = MDB.client.db(dbName).collection(dbcMain);
+                        // const index = `users.$[].posts.$[reply].${id}`;
+                        // setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
+                        var dBrequest = {};
+                        // dBrequest[index] = user;
+                        dBrequest["users.$[].posts.$[reply].votes.$[]"] = user;
+                        // update
+                        database
+                            .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $push: { "users.$.posts.$[reply].votes": user } }, 
+                        // { $set: { ...dBrequest } },
+                        {
+                            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+                        })
+                            .then(function (document) {
+                            // process response
+                            callback(Message.updateMessage({
+                                subj: "Post",
+                                document: {
+                                    ok: document.result.ok,
+                                    nModified: document.result.nModified
+                                }
+                            }));
+                        })["catch"](function (e) {
+                            assert.equal(null, e);
+                            callback(Message.errorMessage({ action: "post update", e: e }));
+                        });
+                    }
+                });
+            }
+        }
+        else {
+            callback(findPostResult);
         }
     });
 };

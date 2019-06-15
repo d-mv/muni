@@ -95,7 +95,9 @@ exports.checkToken = function (token, callback) {
                         User.getUserById(decoded.id, function (getUserByIdResponse) {
                             if (getUserByIdResponse.status) {
                                 User.getLocationInfo(decoded.id, function (modelReply) {
-                                    var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language });
+                                    console.log("getUserByIdResponse");
+                                    console.log(getUserByIdResponse);
+                                    var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language, type: getUserByIdResponse.type });
                                     callback(__assign({}, modelReply, { payload: replyPayload }));
                                 });
                             }

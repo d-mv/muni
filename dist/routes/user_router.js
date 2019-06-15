@@ -30,8 +30,8 @@ var replyCache = {
     check: { time: new Date(), req: "", reply: {} },
     // create: { time: new Date(), req: "" },
     login: { time: new Date(), req: "", reply: {} },
-    update: { time: new Date(), req: "", reply: {} }
-    // posts: { time: new Date(), req: "" }
+    update: { time: new Date(), req: "", reply: {} },
+    data: { time: new Date(), req: "", reply: {} }
 };
 // storing
 var caching = function (cacheId, req, reply) {
@@ -52,6 +52,56 @@ var double = function (cacheId, req, time) {
     }
     return reply;
 };
+// fetch data
+router.get("/data", function (req, res, next) {
+    // information
+    console.log("\u00A7 checking token: " + (req.headers.token ? "present" : "absent"));
+    // showRequest("usr.check", req.headers, [req.body, req.headers.token]);
+    // check if token is present
+    if (!req.headers.token) {
+        // if not present, clear cookies and send code/message
+        res
+            .cookie("token", "", {
+            expire: "",
+            httpOnly: false,
+            secure: false
+        })
+            .status(400)
+            .send({
+            status: false,
+            message: "Token is missing"
+        });
+    }
+    else {
+        // token is present
+        if (double("data", req.headers.token, 3)) {
+            console.log("~> consider double");
+            res.status(replyCache["data"].reply.code).send(replyCache["data"].reply);
+        }
+        else {
+            console.log("check if token valid");
+            // check if token valid
+            security_1.checkToken(req.headers.token, function (checkTokenResponse) {
+                var tmp = checkTokenResponse;
+                // reassign code
+                var code = checkTokenResponse.code;
+                delete checkTokenResponse.code;
+                // check if code is not positive
+                if (code !== 200) {
+                    // clear cookies & send code/message
+                    res.cookie("token", token, options);
+                }
+                var packageToSend = {
+                    code: code,
+                    status: checkTokenResponse.status,
+                    payload: checkTokenResponse.payload
+                };
+                caching("data", req.headers.token, packageToSend);
+                res.status(code).send(packageToSend);
+            });
+        }
+    }
+});
 // verify email address
 router.get("/verify", function (req, res, next) {
     var id = req.query.id;
@@ -157,11 +207,13 @@ router.get("/check", function (req, res, next) {
                     // clear cookies & send code/message
                     res.cookie("token", token, options);
                 }
+                // console.log(object)
                 var packageToSend = {
                     code: code,
                     message: checkTokenResponse.message + " / " + checkTokenResponse.message,
                     status: checkTokenResponse.status,
-                    payload: checkTokenResponse.payload
+                    payload: checkTokenResponse.token
+                    // payload: checkTokenResponse.payload
                 };
                 caching("check", req.headers.token, packageToSend);
                 res.status(code).send(packageToSend);
@@ -312,13 +364,4 @@ router.get("/:id/posts", function (req, res, next) {
         });
     }
 });
-// rest
-// router.get("/*", (req: any, res: any, next: any) => {
-//   console.log("user-redir");
-//   res.redirect(308, redirectUrl);
-// });
-// router.post("/*", (req: any, res: any, next: any) => {
-//   console.log("user-redir");
-//   res.redirect(308, redirectUrl);
-// });
 exports["default"] = router;
