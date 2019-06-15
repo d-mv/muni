@@ -447,6 +447,7 @@ export const create = (
               callback(encoded);
             } else {
               // if created - proceed with creating
+              console.log(request)
               // set a user variable
               const createUser: TYPE.NewUserTYPE = {
                 _id: id,

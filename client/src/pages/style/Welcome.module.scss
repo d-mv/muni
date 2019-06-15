@@ -1,7 +1,18 @@
-.text {
-  position: fixed;
-  top: 50%;
-  width: 100%;
+.pageContent {
+  // position: fixed;
+  // top: 10%;
+  width: 75%;
+
+  margin: 20% auto 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-content: center;
+
+  .divider {
+    height: .3rem;
+    width: 50%;
+    margin: 2rem auto;
+    border-bottom: .2rem solid white;
+  }
 }

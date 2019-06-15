@@ -62,7 +62,6 @@ export const checkToken = (
             payload: { ...response.data, code: response.status }
           });
         } else {
-
           dispatch({ type: "SET", token: "clear" });
           dispatch({
             type: "SET_LOCATION_DATA",
@@ -87,8 +86,15 @@ export const setAuth = (status: boolean): Action => {
   return { type: "SET_AUTH", status };
 };
 
-export const setModule = (module: string): Action => {
-  return { type: "SET_MODULE", module };
+export const setModule = (
+  module: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    if (module === "login") {
+      dispatch({ type: "CHANGE_MODE", mode: "login" });
+    }
+    dispatch({ type: "SET_MODULE", module });
+  };
 };
 
 /**
@@ -213,7 +219,7 @@ export const register = (
   props: TYPE.register
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   console.log(props);
-  const url = `/user/create?email=${props.email}&location=${props.location}&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}`;
+  const url = `/user/create?email=${props.email}&location=${props.location}&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&lang=${props.lang}`;
   console.log(url);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state
@@ -431,15 +437,15 @@ export const fetchData = (
       headers: { token }
     })
       .then((response: AxiosResponse<any>) => {
-              const payload = response.data;
-              dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
-              dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
-              // dispatch({
-              //   type: "SET_LOCATION_DATA",
-              //   // type: "FETCH_DATA",
-              //   payload: payload
-              // });
-            })
+        const payload = response.data;
+        dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
+        dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
+        // dispatch({
+        //   type: "SET_LOCATION_DATA",
+        //   // type: "FETCH_DATA",
+        //   payload: payload
+        // });
+      })
       .catch(error => {
         dispatch({
           type: "SET_LOCATION_DATA",

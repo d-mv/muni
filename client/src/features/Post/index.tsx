@@ -122,79 +122,90 @@ const Post = (props: {
     setShowNewReply(!showNewReply);
   };
 
-  const newReplyButton =
-    muniUser && !reply ? (
-      <div className={style.buttonWrapper}>
-        <Button mode='primary' action={toggleShowNewReplyButton}>
-          new reply
-        </Button>
+  let newReplyButton: any = "";
+  let newReplyComponent: any = "";
+  let ReplyMessage: any = "";
+  let setOfThumbs: any = "";
+
+
+  if (!props.preview) {
+    newReplyButton =
+      muniUser && !reply ? (
+        <div className={style.buttonWrapper}>
+          <Button mode='primary' action={toggleShowNewReplyButton}>
+            new reply
+          </Button>
+        </div>
+      ) : null;
+    newReplyComponent = showNewReply ? (
+      <Modal disabled close={handleNewReplySubmit}>
+        <NewReply
+          label={text["newreply.label"]}
+          value={newReply}
+          placeholder={text["newreply.placeholder"]}
+          action={handleNewReplyChange}
+          direction={direction}
+          submit={handleNewReplySubmit}
+          submitText={text["login.button.submit"]}
+        />
+      </Modal>
+    ) : null;
+
+    const generateStyleName = (t1: string, t2: string, t3?: string) => {
+      let styleName = t1 + t2[0].toUpperCase() + t2.slice(1);
+      if (t3) styleName = styleName + t3[0].toUpperCase() + t3.slice(1);
+      return styleName;
+    };
+
+    let replyCardColor = "secondary";
+    if (reply.up < reply.down) replyCardColor = "attention";
+    if (reply.up === reply.down) replyCardColor = "white";
+
+    const replyHeight = replyOpened ? "open" : "closed";
+    const replyCardStyle = generateStyleName(
+      "card",
+      replyCardColor,
+      replyHeight
+    );
+    console.log(replyCardStyle);
+
+    setOfThumbs = reply.text ? (
+      <div className={style.setOfThumbs}>
+        <Thumb frame='white' fill={replyCardColor} />
+        <Thumb frame='white' fill={replyCardColor} />
       </div>
     ) : null;
 
-  const newReplyComponent = showNewReply ? (
-    <Modal disabled close={handleNewReplySubmit}>
-      <NewReply
-        label={text["newreply.label"]}
-        value={newReply}
-        placeholder={text["newreply.placeholder"]}
-        action={handleNewReplyChange}
-        direction={direction}
-        submit={handleNewReplySubmit}
-        submitText={text["login.button.submit"]}
-      />
-    </Modal>
-  ) : null;
+    const replyVotes = (
+      <div className={style.replyVotes}>
+        <p>{reply.up.length.toLocaleString()}</p>
+        <Thumb frame='secondary' fill='secondary' />
+        <p>{reply.down.length.toLocaleString()}</p>
+        <Thumb frame='attention' fill='attention' />
+      </div>
+    );
 
-  const generateStyleName = (t1: string, t2: string, t3?: string) => {
-    let styleName = t1 + t2[0].toUpperCase() + t2.slice(1);
-    if (t3) styleName = styleName + t3[0].toUpperCase() + t3.slice(1);
-    return styleName;
-  };
-
-  let replyCardColor = "secondary";
-  if (reply.up < reply.down) replyCardColor = "attention";
-  if (reply.up === reply.down) replyCardColor = "white";
-
-  const replyHeight = replyOpened ? "open" : "closed";
-  // console.log(object)
-  const replyCardStyle = generateStyleName("card", replyCardColor, replyHeight);
-  console.log(replyCardStyle);
-
-  const setOfThumbs = reply.text ? (
-    <div className={style.setOfThumbs}>
-      <Thumb frame='white' fill={replyCardColor} />
-      <Thumb frame='white' fill={replyCardColor} />
-    </div>
-  ) : null;
-
-
-  const replyVotes = (
-    <div className={style.replyVotes}>
-      <p>{reply.up.length.toLocaleString()}</p>
-      <Thumb frame='secondary' fill='secondary' />
-      <p>{reply.down.length.toLocaleString()}</p>
-      <Thumb frame='attention' fill='attention' />
-    </div>
-  );
-
-  const ReplyMessage = reply.text ? (
-    <div className={style[replyCardStyle]}>
-      {replyVotes}
-      <Line direction={direction}>
-        <span className={style.replyCardTitle}>{text["munireply.title"]}</span>
-      </Line>
-      <div className={style.replyMessage}>{reply.text}</div>
-      {reply.text.length > 50 ? (
-        <ShowMore
-          color='white'
-          title={showMoreLessText}
-          direction={direction}
-          opened={replyOpened}
-          action={setReplyOpened}
-        />
-      ) : null}
-    </div>
-  ) : null;
+    ReplyMessage = reply.text ? (
+      <div className={style[replyCardStyle]}>
+        {replyVotes}
+        <Line direction={direction}>
+          <span className={style.replyCardTitle}>
+            {text["munireply.title"]}
+          </span>
+        </Line>
+        <div className={style.replyMessage}>{reply.text}</div>
+        {reply.text.length > 50 ? (
+          <ShowMore
+            color='white'
+            title={showMoreLessText}
+            direction={direction}
+            opened={replyOpened}
+            action={setReplyOpened}
+          />
+        ) : null}
+      </div>
+    ) : null;
+  }
 
   return (
     <div className={style.wrapper}>
@@ -224,7 +235,7 @@ const Post = (props: {
           action={setTextOpened}
         />
       </div>
-      {voteButton}
+      {props.preview ? null : voteButton}
       {modal}
       {newReplyButton}
       {newReplyComponent}

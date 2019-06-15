@@ -41,9 +41,11 @@ export const createPost = (
   query: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
+  console.log(Object.keys(query))
   checkToken(query.token, (checkTokenResponse: TYPE.apiResponse) => {
-    const { _id } = checkTokenResponse.payload.payload;
-    const { location } = checkTokenResponse.payload.payload;
+    console.log(Object.keys(checkTokenResponse.payload));
+    const { _id } = checkTokenResponse.payload;
+    const { location } = checkTokenResponse.payload;
     const check = query.user === _id && query.location === location.toString();
     if (check) {
       const request = {

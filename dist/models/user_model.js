@@ -458,6 +458,7 @@ exports.create = function (request, callback) {
                 }
                 else {
                     // if created - proceed with creating
+                    console.log(request);
                     // set a user variable
                     var createUser_1 = {
                         _id: id,

@@ -142,7 +142,13 @@ export const create = (
           createdBy: new MDB.ObjectId(request.user),
           date: new Date(),
           status: "active",
-          votes: "0",
+          votes: [],
+          reply: {
+            text: "",
+            date: new Date(),
+            up: [],
+            down: []
+          },
           ...request.post
         };
         database
@@ -202,8 +208,8 @@ export const update = (
   //   findPostResult.payload.createdBy == request.user.payload.id
   // ) {
   // authenticated
-  console.log(request)
-  
+  console.log(request);
+
   const setRequest: any = {};
   // prepare the request
   Object.keys(request.fields).forEach((key: string) => {

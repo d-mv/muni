@@ -46,7 +46,7 @@ export const login = (state = apiState, action: Action) => {
 export const setMessage = (state = "", action: Action) => {
   switch (action.type) {
     case "SET_MESSAGE":
-      return action.message;
+      return action.message || state;
   }
   return state;
 };

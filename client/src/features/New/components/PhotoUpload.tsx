@@ -1,5 +1,4 @@
 import React from "react";
-
 import { imageDecoder, imageEncoder } from "../../../modules/image_coder";
 
 import Block from "../../../layout/Block";
@@ -14,7 +13,7 @@ const PhotoUpload = (props: {
 }) => {
   const defaultPhoto =
     "https://res.cloudinary.com/diciu4xpu/image/upload/v1560088174/dev/photo.svg";
-  const [photo, setPhoto] = React.useState("");
+  const [photo, setPhoto] = React.useState();
 
   /**
    * Function to convert file to base64, send it to props,set local URL as preview
@@ -43,7 +42,6 @@ const PhotoUpload = (props: {
         name='file'
         className={style.input}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => getBaseFile(e)}
-        // onDone={(e: any) => getBaseFile(e)}
       />
       <label htmlFor='file' className={button.primarySmall}>
         {props.label}

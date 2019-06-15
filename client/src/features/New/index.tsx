@@ -7,6 +7,7 @@ import { formSection, formSelection } from "../../components/formSection";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { submitPost } from "../../store/post/actions";
+import { setModule } from "../../store/users/actions";
 import { indexedObjAny, data } from "../../store/types";
 
 import Post from "../Post";
@@ -25,26 +26,27 @@ import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
+import CatDescription from "./components/CatDescription";
 
 const NewPost = (props: {
   language: data;
-  locationData: data;
+  location: data;
   token: string;
   step: number;
   submitResult: data;
   setStep: (arg0: number) => void;
   submitPost: (arg0: indexedObjAny) => void;
+  setModule: (arg0: string) => void;
 }) => {
-  const { direction } = props.language;
-  const { text } = props.language;
+  const { direction, text } = props.language;
+  const { categories, _id, location } = props.location;
+  // const [step, setStep] = React.useState(5);
   const [step, setStep] = React.useState(props.step);
   const [review, setReview] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   // form fields
   const [title, setTitle] = React.useState("");
-  const [category, setCategory] = React.useState(
-    props.locationData.categories[0][props.language.short]
-  );
+  const [category, setCategory] = React.useState(categories[0]._id);
   const [problem, setProblem] = React.useState("");
   const [solution, setSolution] = React.useState("");
   const [photo, setPhoto] = React.useState("");
@@ -60,7 +62,7 @@ const NewPost = (props: {
 
   const getCategories = () => {
     let categories: Array<{ [index: string]: string }> = [];
-    props.locationData.categories.map((cat: any) => {
+    categories.map((cat: any) => {
       const language = !Object.keys(cat).includes(props.language.short)
         ? "en"
         : props.language.short;
@@ -144,14 +146,10 @@ const NewPost = (props: {
     setPhoto(props);
   };
 
-  const disableFormSubmit = (e: any) => {
-    e.preventDefault();
-  };
-
   const handleSubmit = () => {
     const objectToSubmit: indexedObjAny = {
-      user: props.locationData._id,
-      location: props.locationData.location,
+      user: _id,
+      location,
       token: props.token,
       post: {
         title,
@@ -196,6 +194,9 @@ const NewPost = (props: {
       .then((response: any) => {
         setLoading(false);
         setMessage(response.data.message);
+        if (response.status) {
+          props.setModule("home");
+        }
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();
@@ -245,15 +246,22 @@ const NewPost = (props: {
       : null;
 
   const stepTwo =
-    step === 2
-      ? formSelection({
+    step === 2 ? (
+      <div>
+        {formSelection({
           list: getCategories(),
           direction,
           label: text["new.field.category.label"],
           action: handleDropDown,
           focus: true
-        })
-      : null;
+        })}
+        <CatDescription
+          direction={direction}
+          category={category}
+          categories={categories}
+        />
+      </div>
+    ) : null;
 
   const stepThree =
     step === 3
@@ -303,6 +311,7 @@ const NewPost = (props: {
     ) : null;
 
   const mockFn = (props: any) => {};
+
   const post = {
     title,
     category,
@@ -319,6 +328,7 @@ const NewPost = (props: {
   const preview =
     step === 6 ? <Post preview post={post} action={mockFn} /> : null;
   const loadingElement = loading ? <Loading /> : null;
+
   return (
     <Content padded>
       <Center>
@@ -350,8 +360,7 @@ const NewPost = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    // step: state.step,
-    locationData: state.locationData,
+    location: state.locationData,
     token: state.token,
     submitResult: state.submitPost,
     step: state.step
@@ -360,5 +369,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setStep, submitPost }
+  { setStep, submitPost, setModule }
 )(NewPost);
