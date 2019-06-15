@@ -216,5 +216,4 @@ export const IconDelete = (props: { color: string }) => {
   );
 };
 
-export const iconHelp = (color: string) => <svg />;
 export const iconClose = (color: string) => <svg />;

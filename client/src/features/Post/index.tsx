@@ -23,6 +23,7 @@ import NewReply from "./components/NewReply";
 import Button from "../../components/Button";
 import Card from "../../layout/Card";
 import Line from "../../layout/Line";
+import Thumb from "../../icons/Thumb";
 
 const Post = (props: {
   post: any;
@@ -150,7 +151,7 @@ const Post = (props: {
     return styleName;
   };
 
-  let replyCardColor = "green";
+  let replyCardColor = "secondary";
   if (reply.up < reply.down) replyCardColor = "attention";
   if (reply.up === reply.down) replyCardColor = "white";
 
@@ -158,8 +159,27 @@ const Post = (props: {
   // console.log(object)
   const replyCardStyle = generateStyleName("card", replyCardColor, replyHeight);
   console.log(replyCardStyle);
+
+  const setOfThumbs = reply.text ? (
+    <div className={style.setOfThumbs}>
+      <Thumb frame='white' fill={replyCardColor} />
+      <Thumb frame='white' fill={replyCardColor} />
+    </div>
+  ) : null;
+
+
+  const replyVotes = (
+    <div className={style.replyVotes}>
+      <p>{reply.up.length.toLocaleString()}</p>
+      <Thumb frame='secondary' fill='secondary' />
+      <p>{reply.down.length.toLocaleString()}</p>
+      <Thumb frame='attention' fill='attention' />
+    </div>
+  );
+
   const ReplyMessage = reply.text ? (
     <div className={style[replyCardStyle]}>
+      {replyVotes}
       <Line direction={direction}>
         <span className={style.replyCardTitle}>{text["munireply.title"]}</span>
       </Line>
@@ -177,7 +197,7 @@ const Post = (props: {
   ) : null;
 
   return (
-    <div>
+    <div className={style.wrapper}>
       <div data-testid='post__view' id={_id} className={style.post}>
         <TopBlock category={category} title={title} numbersLine={numbersLine} />
         <Photo src={photo} edit={props.edit} />
@@ -209,6 +229,7 @@ const Post = (props: {
       {newReplyButton}
       {newReplyComponent}
       {ReplyMessage}
+      {setOfThumbs}
     </div>
   );
 };

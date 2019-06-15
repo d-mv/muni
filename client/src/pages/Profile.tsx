@@ -45,6 +45,12 @@ const Profile = (props: any) => {
         </Section>
         <Section>
           <Paragraph direction={direction}>
+            <Line direction={direction}>{props.location.type}</Line>
+            <Line direction={direction}>{props.location._id}</Line>
+          </Paragraph>
+        </Section>
+        <Section>
+          <Paragraph direction={direction}>
             {text["profile.text.logOff"]}
           </Paragraph>
         </Section>
@@ -61,6 +67,7 @@ const Profile = (props: any) => {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
+    location: state.locationData,
     help: state.help
   };
 };
