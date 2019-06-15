@@ -1,4 +1,3 @@
-
 import { Action } from "./types";
 import { data } from "../types";
 import { apiState } from "../defaults";
@@ -128,6 +127,15 @@ export const vote = (state = apiState, action: Action) => {
   }
   return state;
 };
+
+export const fetchData = (state = apiState, action: Action) => {
+  switch (action.type) {
+    case "FETCH_DATA":
+      return action.payload;
+  }
+  return state;
+};
+
 export const setPosts = (state = [], action: Action) => {
   switch (action.type) {
     case "SET_POSTS":

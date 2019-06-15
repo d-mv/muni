@@ -45,12 +45,6 @@ export const createPost = (
     const { _id } = checkTokenResponse.payload.payload;
     const { location } = checkTokenResponse.payload.payload;
     const check = query.user === _id && query.location === location.toString();
-    // console.log(checkTokenResponse);
-    // console.log(query.user === _id);
-    // console.log(typeof query.location);
-    // console.log(typeof location);
-    // console.log(query.location === location.toString());
-    // console.log(checkTokenResponse);
     if (check) {
       const request = {
         user: query.user,

@@ -55,26 +55,19 @@ export const checkToken = (
         console.log(response.data);
         console.log("checktoken - payload.status: " + payload.status);
         if (payload.status) {
-          // if positive - save token, and return the data
-          dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
-          dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });
           dispatch({
             type: "LOGIN",
             payload: { ...response.data, code: response.status }
           });
-          dispatch({
-            type: "SET_LANGUAGE",
-            data: importedData.language[response.data.payload.lang]
-          });
-          // dispatch({type:"SET_MODULE",})
         } else {
+
+          dispatch({ type: "SET", token: "clear" });
           dispatch({
             type: "SET_LOCATION_DATA",
             data: ""
           });
-          dispatch({ type: "SET", token: "clear" });
           dispatch({ type: "SET_AUTH", status: false });
           dispatch({ type: "SET_MODULE", module: "login" });
         }
@@ -399,7 +392,7 @@ export const vote = (
   id: string,
   user: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log('voting')
+  console.log("voting");
   const url = `/post/${id}/vote?user=${user}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // proceed with request
@@ -423,35 +416,36 @@ export const vote = (
         });
       });
   };
-
 };
 
-// export const update = (
-//   id: string,
-//   user: string
-// ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-//   console.log('voting')
-//   const url = `/post/${id}/vote?user=${user}`;
-//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-//     // proceed with request
-//     axios({
-//       method: "patch",
-//       url
-//       // withCredentials: true
-//     })
-//       .then((response: AxiosResponse<any>) => {
-//         const payload = response.data;
-//         dispatch({
-//           type: "VOTE",
-//           payload: payload
-//         });
-//       })
-//       .catch(error => {
-//         // const payload = error.response ? error.response.data : error.toString();
-//         dispatch({
-//           type: "VOTE",
-//           payload: error.response
-//         });
-//       });
-//   };
-// };
+export const fetchData = (
+  token: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = "/user/data";
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // proceed with request
+
+    axios({
+      method: "get",
+      url,
+      headers: { token }
+    })
+      .then((response: AxiosResponse<any>) => {
+              const payload = response.data;
+              dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
+              dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
+              // dispatch({
+              //   type: "SET_LOCATION_DATA",
+              //   // type: "FETCH_DATA",
+              //   payload: payload
+              // });
+            })
+      .catch(error => {
+        dispatch({
+          type: "SET_LOCATION_DATA",
+          // type: "FETCH_DATA",
+          payload: error.response
+        });
+      });
+  };
+};

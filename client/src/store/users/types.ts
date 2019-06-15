@@ -72,6 +72,10 @@ export interface voteAction {
   type: "VOTE";
   payload: TYPE.apiResponse;
 }
+export interface fetchDataAction {
+  type: "FETCH_DATA";
+  payload: TYPE.apiResponse;
+}
 
 export interface setPostsAction {
   type: "SET_POSTS";
@@ -79,6 +83,7 @@ export interface setPostsAction {
 }
 
 export type Action =
+  | fetchDataAction
   | setPostsAction
   | voteAction
   | setLocationDataAction

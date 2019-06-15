@@ -10,7 +10,8 @@ import {
   checkToken,
   login,
   fetchLocations,
-  setAuth
+  setAuth,
+  fetchData
 } from "./store/users/actions";
 
 import NewButton from "./features/New/components/NewButton";
@@ -29,33 +30,44 @@ const App = (props: {
   loginResult: data;
   help: boolean;
   vote: data;
+  check: data;
   setModule: (arg0: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
-  // login;
+  location: data;
   fetchLocations: () => void;
+  fetchData: (arg0: string) => void;
   cookies: any;
 }) => {
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
   const [int, setInt] = useState(false);
+  const [fetch, setFetch] = useState(false);
 
   axios.defaults.headers = { token };
 
+  console.log(props.check);
   // set cookies if token changes
   useEffect(() => {
+    console.log(Object.keys(props.location).length);
     // if 'clear'
     if (props.token === "clear") {
       console.log(0);
       cookies.set("token", "");
       props.setToken("");
       props.setModule("welcome");
-    } else if (props.token !== "" && props.token !== "clear") {
+    } else if (
+      props.token !== "" &&
+      props.token !== "clear" &&
+      Object.keys(props.location).length > 0
+    ) {
       // if token IS
       cookies.set("token", props.token);
       console.log(5);
       props.setModule("home");
+    } else if (props.token !== "" && props.token !== "clear") {
+      props.fetchData(token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log(2);
       props.checkToken(cookies.get("token"));
@@ -69,9 +81,34 @@ const App = (props: {
     setLoading(false);
   }, [props.module]);
 
-  // useEffect(() => {
-  //   props.checkToken(cookies.get("token"));
-  // }, [props.vote]);
+  useEffect(() => {
+    console.log(7);
+    if (Object.keys(props.location).length > 0) {
+      console.log("object");
+      props.setModule("home");
+    }
+  }, [props.location]);
+
+  const fetchData = () => {
+    console.log("getting ready to fetch");
+    setInterval(() => {
+      console.log("fetching");
+      props.fetchData(token);
+    }, 60000);
+  };
+
+  useEffect(() => {
+    console.log(10);
+    // props.checkToken(cookies.get("token"));
+    console.log(props.check.status);
+    console.log(fetch);
+    if (props.check.status) {
+      setFetch(true);
+      fetchData();
+    } else {
+      setFetch(false);
+    }
+  }, [props.check.status]);
 
   // fetch locations
   useEffect(() => {
@@ -192,8 +229,10 @@ const mapStateToProps = (state: AppState) => {
     token: state.token,
     module: state.module,
     loginResult: state.login,
+    location: state.locationData,
     help: state.help,
-    vote: state.vote
+    vote: state.vote,
+    check: state.checkTokenResult
   };
 };
 
@@ -204,6 +243,7 @@ export default connect(
     setToken,
     checkToken,
     login,
-    fetchLocations
+    fetchLocations,
+    fetchData
   }
 )(withCookies(App));

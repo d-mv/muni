@@ -106,6 +106,7 @@ const Post = (props: {
         break;
     }
   };
+  
   const handleNewReplySubmit = () => {
     if (newReply) {
       props.updatePost({
