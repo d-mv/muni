@@ -85,6 +85,7 @@ const App = (props: {
     console.log(7);
     if (Object.keys(props.location).length > 0) {
       console.log("object");
+      // props.setLanguage(props.location.lang);
       props.setModule("home");
     }
   }, [props.location]);

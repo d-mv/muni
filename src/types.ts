@@ -82,6 +82,7 @@ export interface IncUserCreateTYPE {
   posts?: [];
   settings?: {};
   location: string;
+  lang:string
 }
 
 export interface UserTYPE {
@@ -122,6 +123,7 @@ export interface NewUserTYPE {
   pass: string;
   posts: [];
   settings: {};
+  language: string;
 }
 
 export interface IncUserIdTYPE {

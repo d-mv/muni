@@ -456,6 +456,7 @@ export const create = (
                 lName: dropQuotes(request.lName),
                 email: dropQuotes(request.email),
                 pass: encoded.payload,
+                language:dropQuotes(request.lang),
                 posts: [],
                 settings: {}
               };
@@ -923,6 +924,8 @@ export const confirmedEmail = (
           } else {
             // if found
             const user = result[0];
+            console.log("this is new user")
+            console.log(user)
             const { location } = user;
             delete user.location;
             database

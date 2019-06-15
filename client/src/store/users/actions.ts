@@ -440,6 +440,10 @@ export const fetchData = (
         const payload = response.data;
         dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
         dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
+        dispatch({
+          type: "SET_LANGUAGE",
+          data: importedData.language[payload.payload.lang]
+        });
         // dispatch({
         //   type: "SET_LOCATION_DATA",
         //   // type: "FETCH_DATA",
