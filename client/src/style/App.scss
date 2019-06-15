@@ -172,10 +172,23 @@
   width: 95%;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 3rem;
+  // padding-bottom: 3rem;
+}
+
+.app-logo {
+  margin: 2rem auto;
+position:relative;
+// top:10%;
+  width: 80%;
 }
 
 .app-title {
-  color: white;
-  font: var(--textAppTitle);
+  margin: 5rem auto;
+  // height: 3rem;
+  width: 90%;
+}
+
+.app-subTitle {
+  margin: 2rem auto;
+  width: 50%;
 }
