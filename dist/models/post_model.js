@@ -284,58 +284,57 @@ exports.vote = function (request, callback) {
     console.log("user");
     console.log(id);
     console.log(user);
-    find_post_by_id_1["default"](id, function (findPostResult) {
-        if (findPostResult.status) {
-            var voters = findPostResult.payload.votes;
-            var inlcudes = voters.includes(user);
-            if (inlcudes) {
-                // already voted
-                callback(Message.generalError({ subj: "Already voted", code: 401 }));
-            }
-            else {
-                // not yet voted
-                MDB.client.connect(function (err) {
-                    assert.equal(null, err);
-                    if (err) {
-                        // return error with connection
-                        callback(Message.errorMessage({
-                            action: "connection to DB (5)",
-                            e: err
-                        }));
-                    }
-                    else {
-                        var database = MDB.client.db(dbName).collection(dbcMain);
-                        // const index = `users.$[].posts.$[reply].${id}`;
-                        // setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
-                        var dBrequest = {};
-                        // dBrequest[index] = user;
-                        dBrequest["users.$[].posts.$[reply].votes.$[]"] = user;
-                        // update
-                        database
-                            .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $push: { "users.$.posts.$[reply].votes": user } }, 
-                        // { $set: { ...dBrequest } },
-                        {
-                            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
-                        })
-                            .then(function (document) {
-                            // process response
-                            callback(Message.updateMessage({
-                                subj: "Post",
-                                document: {
-                                    ok: document.result.ok,
-                                    nModified: document.result.nModified
-                                }
-                            }));
-                        })["catch"](function (e) {
-                            assert.equal(null, e);
-                            callback(Message.errorMessage({ action: "post update", e: e }));
-                        });
-                    }
-                });
-            }
+    // findPostById(id, (findPostResult: TYPE.apiResponse) => {
+    //   console.log(findPostResult);
+    //   if (findPostResult.status) {
+    //     const voters = findPostResult.payload.votes;
+    //     const inlcudes = voters.includes(user);
+    //     if (inlcudes) {
+    //       // already voted
+    //       callback(Message.generalError({ subj: "Already voted", code: 401 }));
+    //     } else {
+    // not yet voted
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({
+                action: "connection to DB (5)",
+                e: err
+            }));
         }
         else {
-            callback(findPostResult);
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // const index = `users.$[].posts.$[reply].${id}`;
+            // setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
+            var dBrequest = {};
+            // dBrequest[index] = user;
+            dBrequest["users.$[].posts.$[reply].votes.$[]"] = user;
+            // update
+            database
+                .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $push: { "users.$.posts.$[reply].votes": user } }, 
+            // { $set: { ...dBrequest } },
+            {
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+            })
+                .then(function (document) {
+                // process response
+                callback(Message.updateMessage({
+                    subj: "Post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post update", e: e }));
+            });
         }
     });
 };
+// } else {
+//   callback(findPostResult);
+// }
+// });
+// };

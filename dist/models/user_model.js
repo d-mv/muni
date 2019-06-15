@@ -467,6 +467,7 @@ exports.create = function (request, callback) {
                         lName: check_strings_1.dropQuotes(request.lName),
                         email: check_strings_1.dropQuotes(request.email),
                         pass: encoded.payload,
+                        language: check_strings_1.dropQuotes(request.lang),
                         posts: [],
                         settings: {}
                     };
@@ -900,6 +901,8 @@ exports.confirmedEmail = function (_id, callback) {
                 else {
                     // if found
                     var user_1 = result[0];
+                    console.log("this is new user");
+                    console.log(user_1);
                     var location_1 = user_1.location;
                     delete user_1.location;
                     database_2
