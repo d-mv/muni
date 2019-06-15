@@ -49,9 +49,16 @@
     "@types/react-dom": "16.8.4",
     "@types/react-redux": "^7.0.9",
     "@types/redux-logger": "^3.0.7",
+    "husky": "^2.4.1",
     "node-sass": "^4.12.0",
     "react-testing-library": "^7.0.1",
     "redux-devtools-extension": "^2.13.8",
     "typescript": "3.4.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-add": "npm run build",
+      "pre-push": ""
+    }
   }
 }

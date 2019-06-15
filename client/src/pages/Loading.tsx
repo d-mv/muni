@@ -5,7 +5,7 @@ import Logo from '../components/Logo'
 import style from "./style/Loading.module.scss";
 
 const Loading = () => (
-  <div>
+  <div className='app'>
     <Logo />
     <div className={style.loader}>
       <div className={style.outer} />

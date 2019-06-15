@@ -1,7 +1,5 @@
 import React from "react";
 
-import styles from "./style/Content.module.scss";
-
 /**
  * React JSX component to wrap content
  *
@@ -10,12 +8,16 @@ import styles from "./style/Content.module.scss";
  * @returns {JSX.Element}
  *
  */
-const Content = (props: { children: any; padded?: boolean }) => {
-  return (
-    <div className={props.padded ? styles.padded : styles.content}>
-      {props.children}
-    </div>
-  );
+const Content = (props: {
+  children: any;
+  padded?: boolean;
+  header?: boolean;
+}) => {
+  let style = "content";
+  if (props.padded) style = "content-padded";
+  if (props.header) style = "content-header";
+
+  return <div className={style}>{props.children}</div>;
 };
 
 export default Content;

@@ -61,6 +61,58 @@ var dbName = process.env.MONGO_DB || "muni";
 var dbcApp = process.env.MONGO_COL_APP || "app";
 var dbcMain = process.env.MONGO_COL_MAIN || "dev";
 var dbAppId = process.env.MONGO_APP_ID || "5ce03ad1bb94e55d2ebf2161";
+// find user by id
+exports.getUserById = function (id, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            callback(Message.errorMessage({ action: "connection to DB", e: err }));
+        }
+        else {
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            database
+                .aggregate([
+                {
+                    $match: {
+                        "users._id": new MDB.ObjectId(id)
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$users",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: "$users"
+                    }
+                },
+                {
+                    $match: {
+                        _id: new MDB.ObjectId(id)
+                    }
+                }
+            ])
+                .toArray(function (e, res) {
+                if (e) {
+                    callback(Message.notFound("user"));
+                }
+                else {
+                    if (res.length === 0) {
+                        callback(Message.notFound("user"));
+                    }
+                    else {
+                        callback(Message.foundMessage("user", {
+                            language: res[0].language,
+                            type: res[0].type
+                        }));
+                    }
+                }
+            });
+        }
+    });
+};
 /**
  * Update user fields
  * @function updateUser
@@ -68,7 +120,7 @@ var dbAppId = process.env.MONGO_APP_ID || "5ce03ad1bb94e55d2ebf2161";
  * @param { object } newFields - New fields to update
  * @returns {} - Uses callback function to send TYPE.apiResponse
  */
-var updateUser = function (id, newFields, callback) {
+exports.updateUser = function (id, newFields, callback) {
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         var database = MDB.client.db(dbName).collection(dbcMain);
@@ -492,8 +544,12 @@ exports.login = function (user, callback) {
                             // if it's true/false
                             if (response) {
                                 // if matching
+                                var lang_1 = newUserResponse.payload.language;
                                 exports.getLocationInfo(newUserResponse.payload._id, function (dataResponse) {
-                                    callback(dataResponse);
+                                    // console.log("dataResponse");
+                                    // console.log(Object.keys(dataResponse));
+                                    var replyPayload = __assign({}, dataResponse.payload, { lang: lang_1 });
+                                    callback(__assign({}, dataResponse, { payload: replyPayload }));
                                 });
                             }
                             else {
@@ -875,6 +931,57 @@ exports.confirmedEmail = function (_id, callback) {
                         callback(Message.errorMessage({ action: "temp user removal", e: e }));
                     });
                 }
+            });
+        }
+    });
+};
+exports.update = function (request, callback) {
+    // check if post title is available
+    // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
+    // if status true inform, that user exists
+    // if status false, proceed with creation
+    // if (findPostResult.code !== 200) {
+    // send message
+    // callback(findPostResult);
+    // } else if (
+    // checking authorization
+    //   request.user.level === "su" ||
+    //   findPostResult.payload.createdBy == request.user.payload.id
+    // ) {
+    // authenticated
+    var setRequest = {};
+    var fields = request.query;
+    // prepare the request
+    Object.keys(fields).forEach(function (key) {
+        setRequest["users.$[reply]." + key] = fields[key];
+        // .match(/\w/g).join('');
+    });
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({ action: "connection to DB (u1)", e: err }));
+        }
+        else {
+            // set database
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // update
+            database
+                .updateMany({ "users._id": new MDB.ObjectId(request.id) }, { $set: __assign({}, setRequest) }, {
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(request.id) }]
+            })
+                .then(function (document) {
+                // process response
+                callback(Message.updateMessage({
+                    subj: "User",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "user update", e: e }));
             });
         }
     });

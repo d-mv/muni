@@ -1,0 +1,22 @@
+.window {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  background-color: var(--colorWhite);
+padding: 2rem;
+  h3 {
+    color: var(--colorDark);
+  }
+
+  section {
+    width: 80%;
+  }
+
+  textarea {
+    margin-top: 1rem;
+    // width: 80%;
+  }
+}

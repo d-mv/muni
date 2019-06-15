@@ -2,20 +2,25 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
-import { composeWithDevTools } from "redux-devtools-extension";
 
-import { loadData, setLanguage, setStep, showHelp } from "./app/reducers";
-import { submitPost } from "./post/reducers";
+import { setStep, showHelp } from "./app/reducers";
+import { submitPost, updatePost } from "./post/reducers";
 import {
+  vote,
   setToken,
   checkToken,
   login,
-  setModuleU,
+  setModule,
   register,
   fetchLocations,
   setLoading,
   setAuth,
-  setLocationData
+  setLocationData,
+  setMessage,
+  changeMode,
+  loadData,
+  setLanguage,
+  setPosts
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState } from "./defaults";
@@ -32,10 +37,11 @@ const self =
 axios.defaults.baseURL = self;
 
 const rootReducer = combineReducers({
+  vote: vote,
   token: setToken,
   checkTokenResult: checkToken,
   login: login,
-  module: setModuleU,
+  module: setModule,
   locations: fetchLocations,
   loading: setLoading,
   register: register,
@@ -45,17 +51,18 @@ const rootReducer = combineReducers({
   auth: setAuth,
   submitPost: submitPost,
   help: showHelp,
-  // remove?
-  step: setStep
+  message: setMessage,
+  mode: changeMode,
+  step: setStep,
+  posts: setPosts,
+  update: updatePost
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
 export default function configureStore() {
   const middlewares = [thunk, logger];
 
-  const middleWareEnhancer = composeWithDevTools(
-    applyMiddleware(...middlewares)
-  );
+  const middleWareEnhancer = applyMiddleware(...middlewares);
 
   interface state {
     token: string;
@@ -72,13 +79,18 @@ export default function configureStore() {
     step: number;
     submitPost: TYPE.apiResponse;
     help: boolean;
+    message: string;
+    mode: string;
+    vote: TYPE.apiResponse;
+    posts: any;
+    update: TYPE.apiResponse;
   }
 
   const initialState: state = {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "welcome",
+    module: "",
     locations: "",
     loading: false,
     register: apiState,
@@ -88,7 +100,12 @@ export default function configureStore() {
     auth: false,
     step: 1,
     submitPost: apiState,
-    help: false
+    help: false,
+    message: "",
+    mode: "login",
+    vote: apiState,
+    posts: [],
+    update: apiState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

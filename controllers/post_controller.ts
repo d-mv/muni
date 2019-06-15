@@ -8,6 +8,7 @@ import * as TYPE from "../src/types";
 import * as Message from "../modules/response_message";
 
 import { requestError } from "../modules/response_message";
+// import { apiResponse } from 'client/src/store/types';
 
 /**
  * Function to create post. _Example of the body_:
@@ -44,12 +45,6 @@ export const createPost = (
     const { _id } = checkTokenResponse.payload.payload;
     const { location } = checkTokenResponse.payload.payload;
     const check = query.user === _id && query.location === location.toString();
-    // console.log(checkTokenResponse);
-    // console.log(query.user === _id);
-    // console.log(typeof query.location);
-    // console.log(typeof location);
-    // console.log(query.location === location.toString());
-    // console.log(checkTokenResponse);
     if (check) {
       const request = {
         user: query.user,
@@ -95,9 +90,9 @@ export const updatePost = (
             // positive code = 200
             Post.update(
               {
-                fields: props.body.post,
+                fields: props.body.fields,
                 postId: props.params.id,
-                user: checkTokenResponse
+                user: checkTokenResponse.payload._id
               },
               (modelResponse: TYPE.apiResponse) => {
                 // callback with response
@@ -161,3 +156,14 @@ export const posts = (
     callback(modelResponse);
   });
 };
+
+export const vote = (props: { id: string, user: string }, callback: (arg0: TYPE.apiResponse) => void) => {
+  const {id,user} = props
+  if (id === '' || user === '' || user.length !== 24 || id.length !== 24) {
+    callback(Message.requestError('ID/User malformed'))
+  } else {
+    Post.vote({ id, user }, (modelResponse: TYPE.apiResponse) => {
+      callback(modelResponse);
+    });
+  }
+}

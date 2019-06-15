@@ -1,3 +1,4 @@
+import { indexedObjAny, indexedObj } from "./../client/src/store/types";
 import { verifyId, cookieFactory } from "./../modules/security";
 import { apiResponse } from "./../src/types";
 import { apiState } from "./../client/src/store/defaults";
@@ -7,6 +8,7 @@ import sendMail from "../modules/send_mail";
 
 import * as TYPE from "../src/types";
 import { checkFieldsLogin } from "../modules/check_strings";
+import { callbackPromise } from "nodemailer/lib/shared";
 
 /**
  * @param  {IncUserCreateTYPE} props
@@ -83,4 +85,13 @@ export const login = (
     callback(modelResponse);
   });
   // }
+};
+
+export const update = (
+  id: string, query: indexedObj,
+  callback: (arg0: apiResponse) => void
+) => {
+  User.update({ id, query }, (modelResponse: apiResponse) => {
+    callback(modelResponse);
+  });
 };

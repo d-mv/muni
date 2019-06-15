@@ -11,11 +11,6 @@ export const submitPost = (
   const url = "/post/create";
   console.log(props);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    // clear state
-    // dispatch({
-    //   type: "SUBMIT_POST",
-    //   payload: ""
-    // });
     // proceed with request
     axios
       .post(url, props)
@@ -37,3 +32,35 @@ export const submitPost = (
       });
   };
 };
+
+export const updatePost = (
+         props: any
+       ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+         const url = `/post/${props._id}`;
+         console.log(props);
+         return async (
+           dispatch: ThunkDispatch<{}, {}, AnyAction>
+         ): Promise<void> => {
+           // proceed with request
+           axios
+             .patch(url, props)
+             .then(response => {
+               dispatch({
+                 type: "UPDATE_POST",
+                 payload: {
+                   ...response.data,
+                   code: response.status
+                 }
+               });
+             })
+             .catch(error => {
+               const payload = error.response
+                 ? error.response.data
+                 : error.toString();
+               dispatch({
+                 type: "UPDATE_POST",
+                 payload
+               });
+             });
+         };
+       };

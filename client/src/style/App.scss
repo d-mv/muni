@@ -44,7 +44,7 @@
     justify-content: center;
     width: 100%;
 
-    letter-spacing: 1vh;
+    letter-spacing: 1%;
     text-align: center;
     vertical-align: middle;
     opacity: 0;
@@ -115,4 +115,67 @@
 .footerRTL {
   @extend .footer;
   direction: rtl;
+}
+
+.help {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, .7);
+  animation: var(--aniHelpIn);
+}
+
+.help-content {
+  position: fixed;
+}
+
+.help-contentRTL {
+  @extend .help-content;
+  direction: rtl;
+}
+
+.langSwitch {
+  border: 1px solid var(--colorGrey) !important;
+  border-radius: 4px;
+  background: none;
+  font: var(--textFormField);
+  padding: 5px 8px;
+  z-index: 10;
+  user-select: none;
+
+  &:focus {
+    border: none;
+    border: 1px solid var(--colorPrimary);
+  }
+}
+
+.content {
+  width: 100%;
+  overflow: scroll;
+  margin-top: 5rem;
+}
+
+.content-padded {
+  @extend .content;
+  width: 95%;
+  margin: 5rem auto 0 auto;
+  padding-bottom: 3rem;
+  overflow: hidden;
+}
+
+.content-header {
+  @extend .content;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 3rem;
+}
+
+.app-title {
+  color: white;
+  font: var(--textAppTitle);
 }

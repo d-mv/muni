@@ -12,11 +12,4 @@ var redirectUrl = process.env.SELF || "httpL//localhost:8080";
 //     res.send(resp);
 //   });
 // });
-// rest
-router.get("/*", function (req, res, next) {
-    res.redirect(308, redirectUrl);
-});
-router.post("/*", function (req, res, next) {
-    res.redirect(308, redirectUrl);
-});
 exports["default"] = router;

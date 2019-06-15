@@ -1,9 +1,9 @@
 .text {
   font: var(--textNormal15);
-  color: var(--colorPrimary);
+
 }
 
-.closed {
+.close {
   display: flex;
   margin: 0 auto;
   width: 98%;
@@ -35,7 +35,7 @@
 
 
 .open {
-  @extend .closed;
+  @extend .close;
 
   .more {
     display: none;
@@ -51,12 +51,84 @@
   }
 }
 
-.closedRTL {
-  @extend .closed;
+.closeprimary {
+  @extend .close;
+
+  span {
+    color: var(--colorPrimary) !important;
+  }
+}
+
+.closesecondary {
+  @extend .close;
+
+  span {
+    color: var(--colorSecondary);
+  }
+}
+
+.closewhite {
+  @extend .close;
+
+  span {
+    color: var(--colorWhite);
+  }
+}
+
+
+
+
+.openprimary {
+  @extend .open;
+
+  span {
+    color: var(--colorPrimary) !important;
+  }
+}
+
+.opensecondary {
+  @extend .open;
+
+  span {
+    color: var(--colorSecondary);
+  }
+
+}
+
+.openwhite {
+  @extend .open;
+
+  span {
+    color: var(--colorWhite);
+  }
+}
+
+.closeprimaryRTL {
+  @extend .closeprimary;
   direction: rtl;
 }
 
-.openRTL {
-  @extend .open;
+.openprimaryRTL {
+  @extend .openprimary;
+  direction: rtl;
+}
+
+.closesecondaryRTL {
+  @extend .closesecondary;
+  direction: rtl;
+}
+
+.opensecondaryRTL {
+  @extend .opensecondary;
+  direction: rtl;
+}
+
+.closewhiteRTL {
+  @extend .closewhite;
+  direction: rtl;
+}
+
+.openwhiteRTL {
+  @extend .openwhite;
   direction: rtl;
 }

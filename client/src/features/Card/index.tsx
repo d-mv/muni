@@ -11,7 +11,7 @@ import { AppState } from "../../store";
 import { post, indexedObjAny, data, postMuni } from "../../store/types";
 
 import Voters from "./components/Voters";
-import VoteButton from "./components/VoteButton";
+import VoteButton from "../../components/VoteButton";
 import Photo from "./components/Photo";
 import Category from "./components/Category";
 import Title from "./components/Title";
@@ -31,7 +31,7 @@ const PostCard = (props: {
   action: (arg0: post | postMuni) => void;
 }) => {
   const { text, direction, short } = props.language;
-  const { _id, title, date, photo, category } = props.post;
+  const { _id, title, date, photo, category, createdBy } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {
@@ -55,11 +55,18 @@ const PostCard = (props: {
     voterElement = (
       <Voters number={votes.length} text={voterText} direction={direction} />
     );
-    voteButtonElement = (
-      <span className={style.button}>
-        <VoteButton />
-      </span>
-    );
+    const author = createdBy === props.locationData._id;
+    const voted = votes.includes(props.locationData._id);
+    const muniUser = props.locationData.type === "muni";
+
+    voteButtonElement =
+      !author && !voted && !muniUser ? (
+        <span className={style.button}>
+          <VoteButton />
+        </span>
+      ) : (
+        <Zero />
+      );
   }
   return (
     <Card id={_id} direction={direction} action={handleClick}>

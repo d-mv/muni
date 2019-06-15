@@ -15,7 +15,9 @@ const Welcome = (props: any) => {
     <Page welcome>
       <Logo />
       <div className={style.text}>
-        <Center>App</Center>
+        <Center>
+          <span className='app-title'>Your Voice</span>
+        </Center>
       </div>
     </Page>
   );

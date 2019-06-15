@@ -6,5 +6,6 @@ export const colorsArray: { [index: string]: string } = {
   secondary: "#03AD24",
   white: "#fff",
   dark: "#444",
-  grey: '#777'
+  grey: "#777",
+  attention: "#FF072E"
 };

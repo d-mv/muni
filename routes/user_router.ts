@@ -24,9 +24,9 @@ let options = {
 let replyCache: any = {
   check: { time: new Date(), req: "", reply: {} },
   // create: { time: new Date(), req: "" },
-  login: { time: new Date(), req: "", reply: {} }
-  // id: { time: new Date(), req: "" },
-  // posts: { time: new Date(), req: "" }
+  login: { time: new Date(), req: "", reply: {} },
+  update: { time: new Date(), req: "", reply: {} },
+  data: { time: new Date(), req: "",reply: {}}
 };
 
 // storing
@@ -56,6 +56,58 @@ const double = (cacheId: string, req: any, time: number) => {
   return reply;
 };
 
+
+
+// fetch data
+router.get("/data", (req: any, res: any, next: any) => {
+  // information
+  console.log(`§ checking token: ${req.headers.token ? "present" : "absent"}`);
+  // showRequest("usr.check", req.headers, [req.body, req.headers.token]);
+
+  // check if token is present
+  if (!req.headers.token) {
+    // if not present, clear cookies and send code/message
+    res
+      .cookie("token", "", {
+        expire: "",
+        httpOnly: false,
+        secure: false
+      })
+      .status(400)
+      .send({
+        status: false,
+        message: "Token is missing"
+      });
+  } else {
+    // token is present
+    if (double("data", req.headers.token, 3)) {
+      console.log("~> consider double");
+      res.status(replyCache["data"].reply.code).send(replyCache["data"].reply);
+    } else {
+      console.log("check if token valid");
+      // check if token valid
+      checkToken(req.headers.token, (checkTokenResponse: any) => {
+        const tmp = checkTokenResponse;
+        // reassign code
+        const code = checkTokenResponse.code;
+        delete checkTokenResponse.code;
+        // check if code is not positive
+        if (code !== 200) {
+          // clear cookies & send code/message
+          res.cookie("token", token, options);
+        }
+        const packageToSend = {
+          code,
+          status: checkTokenResponse.status,
+          payload: checkTokenResponse.payload
+        };
+        caching("data", req.headers.token, packageToSend);
+        res.status(code).send(packageToSend);
+      });
+    }
+  }
+});
+
 // verify email address
 router.get("/verify", (req: any, res: any, next: any) => {
   const { id } = req.query;
@@ -82,6 +134,39 @@ router.get("/verify", (req: any, res: any, next: any) => {
       // check the request
       UserController.verify(id, (controllerResponse: apiResponse) => {
         caching("check", id, controllerResponse);
+        res.status(controllerResponse.code).send(controllerResponse);
+      });
+    }
+  }
+});
+
+// update
+router.post("/:id/update", (req: any, res: any, next: any) => {
+  const { id } = req.params;
+  const { query } = req;
+  // information
+  console.log(`§ update user #: ${id} with ${Object.keys(query)}`);
+  // showRequest("usr.check", req.headers, [req.body, id]);
+
+  // check if ID is present
+  if (!id || !query || id.length !== 24) {
+    // if not present, send code/message
+    res.status(400).send({
+      status: false,
+      code: 400,
+      message: "ID and/or query is missing"
+    });
+  } else {
+    // ID is present
+    if (double("update", id, 60)) {
+      console.log("~> consider double");
+      res
+        .status(replyCache["update"].reply.code)
+        .send(replyCache["update"].reply);
+    } else {
+      // check the request
+      UserController.update(id, query, (controllerResponse: apiResponse) => {
+        caching("update", id, controllerResponse);
         res.status(controllerResponse.code).send(controllerResponse);
       });
     }
@@ -118,19 +203,22 @@ router.get("/check", (req: any, res: any, next: any) => {
     } else {
       // check if token valid
       checkToken(req.headers.token, (checkTokenResponse: any) => {
+        const tmp = checkTokenResponse;
         // reassign code
         const code = checkTokenResponse.code;
         delete checkTokenResponse.code;
         // check if code is not positive
-        if (checkTokenResponse.code !== 200) {
+        if (code !== 200) {
           // clear cookies & send code/message
           res.cookie("token", token, options);
         }
+        // console.log(object)
         const packageToSend = {
-          code: checkTokenResponse.payload.code,
-          message: `${checkTokenResponse.message} / ${checkTokenResponse.payload.message}`,
-          status: checkTokenResponse.payload.status,
-          payload: checkTokenResponse.payload.payload
+          code: code,
+          message: `${checkTokenResponse.message} / ${checkTokenResponse.message}`,
+          status: checkTokenResponse.status,
+          payload: checkTokenResponse.token
+          // payload: checkTokenResponse.payload
         };
         caching("check", req.headers.token, packageToSend);
         res.status(code).send(packageToSend);
@@ -290,14 +378,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
   }
 });
 
-// rest
-router.get("/*", (req: any, res: any, next: any) => {
-  console.log("user-redir");
-  res.redirect(308, redirectUrl);
-});
-router.post("/*", (req: any, res: any, next: any) => {
-  console.log("user-redir");
-  res.redirect(308, redirectUrl);
-});
+
+
 
 export default router;

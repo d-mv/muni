@@ -2,12 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import { indexedObj } from "../store/types";
+import { indexedObj, indexedObjAny } from "../store/types";
 
 import style from "./styles/Form.module.scss";
 
 const Form = (props: {
-  language: indexedObj;
+  language: indexedObjAny;
   action: (arg0: React.FormEvent<HTMLElement>) => void;
   children: any;
 }) => {

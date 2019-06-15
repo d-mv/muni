@@ -32,6 +32,10 @@ const findPostById = (
       );
     } else {
       // set database
+
+      // console.log("id")
+      // console.log(id)
+
       const database: any = MDB.client.db(dbName).collection(dbcMain);
       // check the names availability
       database
@@ -74,7 +78,7 @@ const findPostById = (
             callback(Message.errorMessage({ action: "post search by ID", e }));
           } else if (documents.length > 1) {
             // houston, we've got problem
-            callback(Message.tooManyResultsMessage("post search by ID"));
+            callback(Message.tooManyResultsMessage("post search by ID "));
           } else if (documents.length === 1) {
             // already exists
             callback(Message.foundMessage("Post", { payload: documents[0] }));

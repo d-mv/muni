@@ -115,7 +115,7 @@ export interface LocationTYPE {
 
 export interface NewUserTYPE {
   _id: ObjectId;
-  location: ObjectId
+  location: ObjectId;
   fName: string;
   lName: string;
   email: string;
@@ -127,4 +127,29 @@ export interface NewUserTYPE {
 export interface IncUserIdTYPE {
   id: string;
   token: string;
+}
+
+/**
+ * Standard data object type
+ * @typedef {Object} data
+ * @property {index} any
+ */
+export interface data {
+  [index: string]: any;
+}
+/**
+ * Standard indexed object type
+ * @typedef {Object} indexedObj
+ * @property {string} index - Indexed string pair
+ */
+export interface indexedObj {
+  [index: string]: string;
+}
+/**
+ * Standard indexed object type with any values
+ * @typedef {Object} indexedObjAny
+ * @property {string} index - Indexed string pair
+ */
+export interface indexedObjAny {
+  [index: string]: any;
 }

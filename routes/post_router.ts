@@ -65,7 +65,24 @@ router.post("/create", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.patch("/:id", (req: any, res: any, next: any) => {
-  PostController.updatePost(req, (controllerResponse: apiResponse) => {
+  if (req.body) {
+    PostController.updatePost(req, (controllerResponse: apiResponse) => {
+      res.status(controllerResponse.code).send(controllerResponse);
+    });
+  }
+});
+
+/**
+ * Route to update post, using PATCH method with object in body
+ * @function router.patch
+ * @param {object} req - Post ID in parameters + token in header
+ * @param {object} res
+ * @param {object} next
+ */
+router.patch("/:id/vote", (req: any, res: any, next: any) => {
+  const { id } = req.params;
+  const { user } = req.query;
+  PostController.vote({ id, user }, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
@@ -81,16 +98,6 @@ router.delete("/:id", (req: any, res: any, next: any) => {
   PostController.deletePost(req, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
-});
-
-// rest
-router.get("/*", (req: any, res: any, next: any) => {
-  console.log("post-redir");
-  res.redirect(308, redirectUrl);
-});
-router.post("/*", (req: any, res: any, next: any) => {
-  console.log("post-redir");
-  res.redirect(308, redirectUrl);
 });
 
 export default router;

@@ -10,17 +10,17 @@ const ShowMore = (props: {
   title: indexedObj;
   direction: string;
   opened: boolean;
+  color:string
   action: (arg0: boolean) => void;
 }) => {
-  const styleName = props.opened ? "open" : "closed";
-  const showStyle = styles[styleFactory(styleName, props.direction)];
-
+  const styleName = props.opened ? "open" : "close";
+  const showStyle = styles[styleFactory(`${styleName}${props.color}`, props.direction)];
   return (
     <div className={showStyle}>
       <button onClick={() => props.action(!props.opened)}>
         <span className={styles.more}>{props.title.more}</span>
         <span className={styles.less}>{props.title.less}</span>
-        <DownArrow primary />
+        <DownArrow color={props.color || "primary"} />
       </button>
     </div>
   );

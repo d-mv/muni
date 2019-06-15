@@ -1,0 +1,35 @@
+.vote {
+  height: 6.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--colorWhiteThird);
+  box-shadow: var(--elementShadow);
+  transition: var(--boxTransition);
+
+  .inner {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    background: var(--colorPrimary);
+    color: var(--colorWhite);
+    border: .4rem solid var(--colorPrimaryLight);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: var(--aniBeat);
+
+    span {
+      width: 100%;
+      text-align: center;
+      user-select: none;
+      font: var(--textButtonVote);
+    }
+
+    &:active {
+      transform: scale(.9);
+      box-shadow: 0 0 1.7rem rgba(68, 68, 68, .7);
+    }
+  }
+}

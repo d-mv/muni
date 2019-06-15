@@ -5,6 +5,7 @@ var Post = require("../models/post_model");
 var security_1 = require("../modules/security");
 var Message = require("../modules/response_message");
 var response_message_1 = require("../modules/response_message");
+// import { apiResponse } from 'client/src/store/types';
 /**
  * Function to create post. _Example of the body_:
  *
@@ -37,12 +38,6 @@ exports.createPost = function (query, callback) {
         var _id = checkTokenResponse.payload.payload._id;
         var location = checkTokenResponse.payload.payload.location;
         var check = query.user === _id && query.location === location.toString();
-        // console.log(checkTokenResponse);
-        // console.log(query.user === _id);
-        // console.log(typeof query.location);
-        // console.log(typeof location);
-        // console.log(query.location === location.toString());
-        // console.log(checkTokenResponse);
         if (check) {
             var request = {
                 user: query.user,
@@ -85,9 +80,9 @@ exports.updatePost = function (props, callback) {
                 else {
                     // positive code = 200
                     Post.update({
-                        fields: props.body.post,
+                        fields: props.body.fields,
                         postId: props.params.id,
-                        user: checkTokenResponse
+                        user: checkTokenResponse.payload._id
                     }, function (modelResponse) {
                         // callback with response
                         callback(modelResponse);
@@ -139,4 +134,15 @@ exports.posts = function (props, callback) {
         console.log("object");
         callback(modelResponse);
     });
+};
+exports.vote = function (props, callback) {
+    var id = props.id, user = props.user;
+    if (id === '' || user === '' || user.length !== 24 || id.length !== 24) {
+        callback(Message.requestError('ID/User malformed'));
+    }
+    else {
+        Post.vote({ id: id, user: user }, function (modelResponse) {
+            callback(modelResponse);
+        });
+    }
 };

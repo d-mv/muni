@@ -5,15 +5,14 @@ import { AppState } from "../store";
 import { data, indexedObjAny, post } from "../store/types";
 import { showHelp } from "../store/app/actions";
 
-import Help from "../features/Help";
-
 import Header from "../components/Header";
 import ShowPost from "../components/ShowPost";
 import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
-
+import Content from "../layout/Content";
+import Post from "../features/Post";
 
 const makePostsArray = (posts: Array<post>, id: string) => {
   let result: Array<post> = [];
@@ -26,23 +25,27 @@ const makePostsArray = (posts: Array<post>, id: string) => {
 const Mine = (props: {
   language: data;
   locationData: indexedObjAny;
-  login: data;
   help: boolean;
   showHelp: (arg0: boolean) => void;
 }) => {
   const { direction, text } = props.language;
-  const { _id } = props.login.payload;
+  const { _id } = props.locationData;
   const { posts, pinned } = props.locationData;
   const [postsLcl, setPosts] = useState(
     posts ? makePostsArray(posts, _id) : []
   );
   const [post, setPost] = useState({ _id: "" });
+  const [editPost, setEditPost] = useState(false);
 
   useEffect(() => {
     if (posts) {
       setPosts(makePostsArray(posts, _id));
     }
   }, [props.locationData, posts]);
+
+  const toggleEditPost = () => {
+    setEditPost(!editPost);
+  };
 
   const handleSetPost = (newPost: any) => {
     if (post !== newPost) {
@@ -57,15 +60,33 @@ const Mine = (props: {
   const toggleHelp = () => {
     props.showHelp(!props.help);
   };
+  const handleAction = (actions: { mode: string; details?: string }) => {
+    console.log(actions);
+    switch (actions.mode) {
+      case "edit":
+        setEditPost(!editPost);
+        break;
+    }
+  };
+  const handleUpdatePost = (updateProps: {
+    _id: string;
+    action: string;
+    fields?: any;
+  }) => {
+    switch (updateProps.action) {
+      case "vote": {
+        const oldPosts = postsLcl;
+        oldPosts.map((post: any) => {
+          if (post._id === updateProps._id)
+            post.votes.push(props.locationData._id);
+        });
+        console.log(oldPosts);
+      }
+    }
+  };
 
-  const header = <Header help={toggleHelp} returnTo='mine' />;
-  const help = props.help ? (
-    <Help
-      mode={post["_id"] ? "post" : "home"}
-      direction={direction}
-      cancel={toggleHelp}
-    />
-  ) : null;
+  let header = <Header help={toggleHelp} returnTo='mine' />;
+
   const subtitle = (
     <SubTitle title={text["mine.subtitle"]} direction={direction} />
   );
@@ -73,15 +94,19 @@ const Mine = (props: {
   let content = <PostList posts={postsLcl} action={handleSetPost} />;
 
   if (post["_id"]) {
-    content = <ShowPost post={post} />;
+    content = <Post post={post} edit={editPost} action={handleUpdatePost} />;
+    header = (
+      <Header help={toggleHelp} returnTo='mine' edit action={handleAction} />
+    );
   }
 
   return (
     <Page>
       {header}
-      {help}
-      {subtitle}
-      {content}
+      <Content padded>
+        {subtitle}
+        {content}
+      </Content>
     </Page>
   );
 };

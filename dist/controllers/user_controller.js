@@ -78,3 +78,8 @@ exports.login = function (props, callback) {
     });
     // }
 };
+exports.update = function (id, query, callback) {
+    User.update({ id: id, query: query }, function (modelResponse) {
+        callback(modelResponse);
+    });
+};

@@ -64,13 +64,35 @@ const update = (props: {
   });
 };
 
-// create X amount of emails
-const emailsArray = (qty: number) => {
+let userIds: any[] = [];
+
+// build array with X amount of Ids
+const idsArray = (qty: number) => {
   let result = [];
   for (let i = 0; i < qty; i++) {
-    result.push(faker.internet.email());
+    result.push(
+      userIds[
+        faker.random.number({
+          min: 0,
+          max: 4
+        })
+      ]
+    );
   }
   return result;
+};
+
+const replyOrNotReply = () => {
+  const yesNo = faker.random.number({
+    min: 0,
+    max: 1
+  });
+  const paragraphs = faker.random.number({
+    min: 1,
+    max: 2
+  });
+  const reply = yesNo ? faker.lorem.paragraphs(paragraphs) : null;
+  return reply;
 };
 
 /**
@@ -101,12 +123,28 @@ const buildPost = (
       category,
       date: faker.date.between("2019-01-01", "2019-05-15"),
       status: "active",
-      votes: emailsArray(
+      votes: idsArray(
         faker.random.number({
           min: 0,
-          max: 500
+          max: 4
         })
-      )
+      ),
+      reply: {
+        text: replyOrNotReply() || "",
+        date: new Date(),
+        up: idsArray(
+          faker.random.number({
+            min: 0,
+            max: 4
+          })
+        ),
+        down: idsArray(
+          faker.random.number({
+            min: 0,
+            max: 4
+          })
+        )
+      }
     };
   } else {
     post = {
@@ -116,19 +154,7 @@ const buildPost = (
       photo: getImage(),
       link: faker.internet.url(),
       date: faker.date.between("2019-01-01", "2019-05-15"),
-      status: "active",
-      up: emailsArray(
-        faker.random.number({
-          min: 0,
-          max: 500
-        })
-      ),
-      down: emailsArray(
-        faker.random.number({
-          min: 0,
-          max: 500
-        })
-      )
+      status: "active"
     };
   }
   return post;
@@ -141,10 +167,11 @@ const buildPost = (
  */
 const dbSeed = (callback: any) => {
   // qty of users
-  const users = faker.random.number({
-    min: 5,
-    max: 10
-  });
+  const users = 5;
+  //   faker.random.number({
+  //   min: 5,
+  //   max: 10
+  // });
   // categories
   const categories = [
     "5cfd32f3458cd06becd28315",
@@ -162,7 +189,7 @@ const dbSeed = (callback: any) => {
       // set the block of data
       let block = [];
       // generate user ids
-      let userIds = [];
+      // let userIds = [];
       for (let i = 0; i < users; i++) {
         userIds.push(new MDB.ObjectId());
       }
@@ -176,12 +203,13 @@ const dbSeed = (callback: any) => {
           email: faker.internet.email(),
           language: languages[Math.floor(Math.random() * languages.length)],
           pass: encoded.payload,
+          type: "user",
           posts: []
         };
         // qty of post per this user
         const posts = faker.random.number({
-          min: 2,
-          max: 5
+          min: 1,
+          max: 3
         });
 
         for (let n = 0; n < posts; n++) {
@@ -196,6 +224,20 @@ const dbSeed = (callback: any) => {
         // push the user to data
         block.push(user);
       }
+      // create muni user
+      const muniUser: any = {
+        _id: new MDB.ObjectId(),
+        fName: faker.name.firstName(),
+        lName: faker.name.lastName(),
+        email: faker.internet.email(),
+        language: languages[Math.floor(Math.random() * languages.length)],
+        pass: encoded.payload,
+        type: "muni",
+        posts: []
+      };
+
+      block.push(muniUser);
+
       // create municipality records
       let blockMuni = [];
       const municipalityPosts = faker.random.number({
