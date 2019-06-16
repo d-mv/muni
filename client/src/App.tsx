@@ -1,21 +1,15 @@
 import React, { useEffect, useState, Suspense } from "react";
-import { withCookies, ReactCookieProps } from "react-cookie";
+import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 import axios from "axios";
 import { AppState } from "./store";
 
-  // import Registration from "./features/Register";
-
-
-
-import { loadData, setLocationData } from "./store/app/actions";
 import {
   setModule,
   setToken,
   checkToken,
   login,
   fetchLocations,
-  setAuth,
   fetchData
 } from "./store/users/actions";
 
@@ -223,7 +217,7 @@ const App = (props: {
         children: <Register register />,
         nav: true,
         lazy: true,
-        new: true
+        new: false
       });
       break;
   }

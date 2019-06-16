@@ -16,7 +16,7 @@ import Loading from "../../components/Loading";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 
-import button from "../../components/styles/Button.module.scss";
+import button from "../../components/style/Button.module.scss";
 
 /** Functional component to render login/register page
  *
@@ -49,7 +49,7 @@ const LoginUser = (props: {
   };
 
   // handle fields input changes
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value, name } = event.target;
     setErrorMessage("");
     if (name === "email") {
@@ -113,7 +113,7 @@ const LoginUser = (props: {
             id='submit_button'
           />
         </Button>
-        <Button mode='secondary' action={handleSecondaryButton}>
+        <Button mode='secondaryFlat' action={handleSecondaryButton}>
           {text["login.button.register"]}
         </Button>
       </ButtonsWrapper>

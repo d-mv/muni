@@ -373,24 +373,27 @@ export const setLanguage = (
   lang: string,
   user: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/user/${user}/update?language=${lang}`;
-
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state
     dispatch({
       type: "SET_LANGUAGE",
       data: importedData.language[lang]
     });
-    // proceed with request
-    axios({
-      method: "post",
-      url
-      // withCredentials: true
-    })
-      .then(response => {})
-      .catch(error => {
-        const payload = error.response ? error.response.data : error.toString();
-      });
+    if (user) {
+      // proceed with request
+      const url = `/user/${user}/update?language=${lang}`;
+      axios({
+        method: "post",
+        url
+        // withCredentials: true
+      })
+        .then(response => {})
+        .catch(error => {
+          const payload = error.response
+            ? error.response.data
+            : error.toString();
+        });
+    }
   };
 };
 

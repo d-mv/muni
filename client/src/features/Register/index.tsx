@@ -6,18 +6,15 @@ import { formSection, formSelection } from "../../components/formSection";
 import { AppState } from "../../store";
 import * as TYPE from "../../store/types";
 import {
-  login,
   register,
   setModule,
   setMessage,
-  setLoading,
-  changeMode
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
-import button from "../../components/styles/Button.module.scss";
+import button from "../../components/style/Button.module.scss";
 
 /** Functional component to render login/register page
  *
@@ -26,81 +23,67 @@ import button from "../../components/styles/Button.module.scss";
  */
 const LoginUser = (props: {
   locations: TYPE.apiResponse;
-  loginResult: TYPE.apiResponse;
-  registerResult: TYPE.apiResponse;
   language: TYPE.indexedObjAny;
   message: string;
   loading: boolean;
-  mode: string;
-  login: (arg0: TYPE.login) => void;
   register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
-  setLoading: (arg0: boolean) => void;
-  changeMode: (arg0: string) => void;
+
 }) => {
-  const { code, status, message } = props.registerResult;
   // get the language
   const { text, direction } = props.language;
-  // loading hook
-  // const [loading, setLoading] = useState(false);
-  // form data hooks
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [prevLogin, setPrevLogin] = useState({ email: "", pass: "" });
   const [location, setLocation] = useState(props.locations.payload[0].value);
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
 
   const [errorMessage, setErrorMessage] = useState(props.message);
 
-  console.log(location);
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // console.log(event)
-    if (props.mode === "login") {
-      props.login({ email, pass });
-    } else {
-      // register
-      props.register({
-        email,
-        pass,
-        location,
-        fName,
-        lName,
-        lang: props.language.short
-      });
-    }
+    props.register({
+      email,
+      pass,
+      location,
+      fName,
+      lName,
+      lang: props.language.short
+    });
   };
   // handle fields input changes
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setErrorMessage("");
-    switch (event.target.name) {
+    const { value, name } = event.target
+    switch (name) {
       case "fName":
-        setFname(event.target.value);
+        setFname(value);
         break;
       case "lName":
-        setLname(event.target.value);
+        setLname(value);
         break;
-      case "uPass":
-        setPass(event.target.value);
+      case "pass":
+        setPass(value);
         break;
       default:
-        setEmail(event.target.value);
+        setEmail(value);
         break;
     }
   };
   // handle location choice
   const handleSelectChange = (event: any) => {
-    console.log(event);
     setLocation(event.target.value);
   };
 
   const handleSecondaryButton = () => {
+    props.setModule("login");
     props.setMessage("");
-    props.changeMode(props.mode === "login" ? "register" : "login");
   };
 
   // set the form elements
@@ -112,14 +95,10 @@ const LoginUser = (props: {
     <div className='formMessage'>{errorMessage}</div>
   );
 
-  // ) : (
-  //   <div className='formMessage' />
-  // );
-
   let emailElement = formSection({
     label: text["login.label.email"],
     type: "email",
-    name: "uMail",
+    name: "email",
     value: email,
     placeholder: text["login.prompt.email"],
     action: handleInputChange
@@ -128,49 +107,39 @@ const LoginUser = (props: {
   let passwordElement = formSection({
     label: text["login.label.password"],
     type: "password",
-    name: "uPass",
+    name: "pass",
     value: pass,
     placeholder: text["login.prompt.password"],
     action: handleInputChange,
     length: 7
   });
-  let fNameElement = null;
-  let lNameElement = null;
-  let locationsElement = null;
-  // register mode is on
-  if (props.mode === "register") {
-    locationsElement = formSelection({
-      list: props.locations.payload,
-      direction,
-      label: text["login.label.location"],
-      action: handleSelectChange
-    });
 
-    fNameElement = formSection({
-      label: text["login.label.fName"],
-      type: "text",
-      name: "fName",
-      value: fName,
-      placeholder: text["login.prompt.fName"],
-      action: handleInputChange,
-      length: 2,
-      focus: true
-    });
-    lNameElement = formSection({
-      label: text["login.label.lName"],
-      type: "text",
-      name: "lName",
-      value: lName,
-      placeholder: text["login.prompt.lName"],
-      action: handleInputChange,
-      length: 3
-    });
-  }
+  const locationsElement = formSelection({
+    list: props.locations.payload,
+    direction,
+    label: text["login.label.location"],
+    action: handleSelectChange
+  });
 
-  const secondaryButton =
-    props.mode === "login"
-      ? text["login.button.register"]
-      : text["login.button.login"];
+  const fNameElement = formSection({
+    label: text["login.label.fname"],
+    type: "text",
+    name: "fName",
+    value: fName,
+    placeholder: text["login.prompt.fname"],
+    action: handleInputChange,
+    length: 2,
+    focus: true
+  });
+  const lNameElement = formSection({
+    label: text["login.label.lname"],
+    type: "text",
+    name: "lName",
+    value: lName,
+    placeholder: text["login.prompt.lname"],
+    action: handleInputChange,
+    length: 3
+  });
 
   return (
     <form
@@ -180,7 +149,6 @@ const LoginUser = (props: {
       {locationsElement}
       {fNameElement}
       {lNameElement}
-      {/* visible always */}
       {emailElement}
       {passwordElement}
       {/* message & loading */}
@@ -191,12 +159,12 @@ const LoginUser = (props: {
           <input
             className={button.primary}
             type='button'
-            value={text["login.button.submit"]}
+            value={text["login.button.register"]}
             id='submit_button'
           />
         </Button>
-        <Button mode='secondary' action={handleSecondaryButton}>
-          {secondaryButton}
+        <Button mode='secondaryFlat' action={handleSecondaryButton}>
+          {text["login.button.login"]}
         </Button>
       </ButtonsWrapper>
     </form>
@@ -205,17 +173,15 @@ const LoginUser = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    loginResult: state.login,
     locations: state.locations,
     registerResult: state.register,
     language: state.language,
     message: state.message,
     loading: state.loading,
-    mode: state.mode
   };
 };
 
 export default connect(
   mapStateToProps,
-  { login, register, setModule, setMessage, setLoading, changeMode }
+  { register, setModule, setMessage,  }
 )(LoginUser);
