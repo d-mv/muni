@@ -222,7 +222,8 @@ const App = (props: {
   }
 
   const content = loading ? <Loading /> : show || <Loading />;
-  return content;
+  return <Loading />;
+  // return content;
 };
 
 const mapStateToProps = (state: AppState) => {
