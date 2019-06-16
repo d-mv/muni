@@ -20,9 +20,9 @@
       ],
       "text": {
         "welcome.enter": "ENTER",
-        "login.label.email": "EMAIL",
+        "login.label.email": "Email",
         "login.prompt.email": "enter your email address",
-        "login.label.password": "PASSWORD",
+        "login.label.password": "Password",
         "login.prompt.password": "enter your password",
         "login.label.location": "City",
         "login.label.fname": "FIRST NAME",

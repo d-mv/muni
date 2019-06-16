@@ -1,6 +1,7 @@
 import React from "react";
 
-import LoginUser from "../features/Login";
+import Login from "../features/Login";
+import Register from "../features/Register";
 
 import LangSwitch from "../components/LangSwitch";
 
@@ -12,10 +13,11 @@ import style from "./style/Login.module.scss";
  *
  * @returns {JSX.Element} - Login page
  */
-const Login = () => {
+const Enter = (props: { register?: boolean }) => {
+  const show = props.register? <Register /> : <Login />
   return (
     <Page opposite>
-      <LoginUser />
+      {show}
       <div className={style.langSwitch}>
         <LangSwitch />
       </div>
@@ -23,4 +25,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Enter;

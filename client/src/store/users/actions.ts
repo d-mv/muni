@@ -144,10 +144,10 @@ export const login = (
           posts: response.data.payload.posts
         });
 
-        dispatch({
-          type: "SET_MESSAGE",
-          message: response.data.message || response.data.payload.message
-        });
+        // dispatch({
+        //   type: "SET_MESSAGE",
+        //   message: response.data.message || response.data.payload.message
+        // });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[response.data.payload.lang]

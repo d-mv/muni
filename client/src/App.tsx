@@ -3,6 +3,11 @@ import { withCookies, ReactCookieProps } from "react-cookie";
 import { connect } from "react-redux";
 import axios from "axios";
 import { AppState } from "./store";
+
+  // import Registration from "./features/Register";
+
+
+
 import { loadData, setLocationData } from "./store/app/actions";
 import {
   setModule,
@@ -19,7 +24,7 @@ import Navigation from "./features/Navigation";
 
 import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
-import Login from "./pages/Login";
+import Enter from "./pages/Enter";
 
 import { data } from "./store/types";
 import "./style/App.scss";
@@ -90,24 +95,18 @@ const App = (props: {
     }
   }, [props.location]);
 
-  const fetchData = () => {
-    console.log("getting ready to fetch");
-    setInterval(() => {
-      console.log("fetching");
-      props.fetchData(token);
-    }, 60000);
-  };
+
 
   useEffect(() => {
     console.log(10);
     // props.checkToken(cookies.get("token"));
-    console.log(props.check.status);
-    console.log(fetch);
+    // console.log(props.check.status);
+    // console.log(fetch);
     if (props.check.status) {
-      setFetch(true);
-      fetchData();
+      // setFetch(true);
+       props.fetchData(token);
     } else {
-      setFetch(false);
+      // setFetch(false);
     }
   }, [props.check.status]);
 
@@ -165,7 +164,7 @@ const App = (props: {
       show = componentFactory({ children: <Welcome />, nav: true });
       break;
     case "login":
-      show = componentFactory({ children: <Login />, nav: true });
+      show = componentFactory({ children: <Enter />, nav: true });
       break;
     case "confirmation":
       const Confirmation = React.lazy(() => import("./pages/Confirmation"));
@@ -218,12 +217,20 @@ const App = (props: {
         lazy: true,
         new: true
       });
+    case "register":
+      const Register = React.lazy(() => import("./pages/Enter"));
+      show = componentFactory({
+        children: <Register register />,
+        nav: true,
+        lazy: true,
+        new: true
+      });
       break;
   }
 
   const content = loading ? <Loading /> : show || <Loading />;
-  return <Loading />;
-  // return content;
+
+  return content;
 };
 
 const mapStateToProps = (state: AppState) => {
