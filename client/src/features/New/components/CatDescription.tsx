@@ -16,6 +16,10 @@ const CatDescription = (props: {
   category: string;
   categories: data;
 }) => {
+  console.log("catdescripton")
+  console.log(props.direction);
+  console.log(props.category);
+  console.log(props.categories);
   return (
     <Line direction={props.direction}>
       <p className='textStandard'>

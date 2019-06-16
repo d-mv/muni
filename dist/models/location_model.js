@@ -41,10 +41,12 @@ exports.list = function (callback) {
         ])
             .toArray(function (e, result) {
             if (e) {
+                MDB.client.close();
                 callback(Message.errorMessage({ action: "locations fetch", e: e }));
             }
             else if (result.length > 0) {
                 console.log(result);
+                MDB.client.close();
                 callback(Message.positiveMessage({
                     subj: "Locations found",
                     code: 200,
@@ -52,6 +54,7 @@ exports.list = function (callback) {
                 }));
             }
             else {
+                MDB.client.close();
                 callback(Message.notFound("locations"));
             }
         });

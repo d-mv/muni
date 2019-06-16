@@ -77,6 +77,14 @@
   }
 }
 
+.secondaryFlat {
+  @extend .secondary;
+  color: var(--colorSecondary);
+  background-color: var(--colorWhite);
+  border: none;
+}
+
+
 ///  Attention button
 /// @group Buttons
 .attention {

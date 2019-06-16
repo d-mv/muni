@@ -40,7 +40,6 @@ const NewPost = (props: {
 }) => {
   const { direction, text } = props.language;
   const { categories, _id, location } = props.location;
-  // const [step, setStep] = React.useState(5);
   const [step, setStep] = React.useState(props.step);
   const [review, setReview] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -61,14 +60,14 @@ const NewPost = (props: {
   }, [step]);
 
   const getCategories = () => {
-    let categories: Array<{ [index: string]: string }> = [];
+    let result: Array<{ [index: string]: string }> = [];
     categories.map((cat: any) => {
       const language = !Object.keys(cat).includes(props.language.short)
         ? "en"
         : props.language.short;
-      categories.push({ value: cat._id, label: cat[language] });
+      result.push({ value: cat._id, label: cat[language] });
     });
-    return categories;
+    return result;
   };
 
   const handleNextStep = () => {
@@ -108,7 +107,7 @@ const NewPost = (props: {
       }
     }
   };
-
+  console.log(step);
   const handleBackStep = () => {
     if (step - 1 > 0) {
       setStep(step - 1);
@@ -204,8 +203,8 @@ const NewPost = (props: {
 
     if (check === counter) {
       setLoading(true);
-      // props.setStep(6);
-      // props.submitPost(objectToSubmit);
+      props.setStep(6);
+      props.submitPost(objectToSubmit);
     } else {
       setMessage(text["new.error.incomplete"]);
     }

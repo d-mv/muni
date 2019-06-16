@@ -144,10 +144,10 @@ export const login = (
           posts: response.data.payload.posts
         });
 
-        dispatch({
-          type: "SET_MESSAGE",
-          message: response.data.message || response.data.payload.message
-        });
+        // dispatch({
+        //   type: "SET_MESSAGE",
+        //   message: response.data.message || response.data.payload.message
+        // });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[response.data.payload.lang]
@@ -373,24 +373,27 @@ export const setLanguage = (
   lang: string,
   user: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/user/${user}/update?language=${lang}`;
-
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // clear state
     dispatch({
       type: "SET_LANGUAGE",
       data: importedData.language[lang]
     });
-    // proceed with request
-    axios({
-      method: "post",
-      url
-      // withCredentials: true
-    })
-      .then(response => {})
-      .catch(error => {
-        const payload = error.response ? error.response.data : error.toString();
-      });
+    if (user) {
+      // proceed with request
+      const url = `/user/${user}/update?language=${lang}`;
+      axios({
+        method: "post",
+        url
+        // withCredentials: true
+      })
+        .then(response => {})
+        .catch(error => {
+          const payload = error.response
+            ? error.response.data
+            : error.toString();
+        });
+    }
   };
 };
 
@@ -440,6 +443,10 @@ export const fetchData = (
         const payload = response.data;
         dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
         dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
+        dispatch({
+          type: "SET_LANGUAGE",
+          data: importedData.language[payload.payload.lang]
+        });
         // dispatch({
         //   type: "SET_LOCATION_DATA",
         //   // type: "FETCH_DATA",

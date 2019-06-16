@@ -50,6 +50,15 @@ const Navigation = (props: any) => {
         </nav>
       );
       break;
+    case "register":
+      component = (
+        <nav className={styleFactory("header", direction)}>
+          <NavButton mode='return-welcome' action={action} />
+          <h1>Our Change</h1>
+          <Spacer size={10} units='%' />
+        </nav>
+      );
+      break;
     case "new":
       component = (
         <nav className={styleFactory("header", direction)}>

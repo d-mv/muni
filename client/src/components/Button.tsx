@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./styles/Button.module.scss";
+import style from "./style/Button.module.scss";
 
 const Button = (props: {
   children?: any;

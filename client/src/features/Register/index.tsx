@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { formSection } from "../../components/formSection";
+import { formSection, formSelection } from "../../components/formSection";
 
 import { AppState } from "../../store";
 import * as TYPE from "../../store/types";
 import {
-  login,
+  register,
   setModule,
   setMessage,
-  setLoading
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
-
 import button from "../../components/style/Button.module.scss";
 
 /** Functional component to render login/register page
@@ -24,43 +22,67 @@ import button from "../../components/style/Button.module.scss";
  * @returns {JSX.Element} - Login page
  */
 const LoginUser = (props: {
-  registerResult: TYPE.apiResponse;
+  locations: TYPE.apiResponse;
   language: TYPE.indexedObjAny;
   message: string;
   loading: boolean;
-  login: (arg0: TYPE.login) => void;
+  register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
-  setLoading: (arg0: boolean) => void;
+
 }) => {
   // get the language
   const { text, direction } = props.language;
-  // set local hooks
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  // set message
+  const [location, setLocation] = useState(props.locations.payload[0].value);
+  const [fName, setFname] = useState("");
+  const [lName, setLname] = useState("");
+
   const [errorMessage, setErrorMessage] = useState(props.message);
 
+  // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const login: TYPE.login = { email: email, pass: pass };
-    props.login(login);
+    props.register({
+      email,
+      pass,
+      location,
+      fName,
+      lName,
+      lang: props.language.short
+    });
   };
-
   // handle fields input changes
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { value, name } = event.target;
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setErrorMessage("");
-    if (name === "email") {
-      setEmail(value);
-    } else {
-      setPass(value);
+    const { value, name } = event.target
+    switch (name) {
+      case "fName":
+        setFname(value);
+        break;
+      case "lName":
+        setLname(value);
+        break;
+      case "pass":
+        setPass(value);
+        break;
+      default:
+        setEmail(value);
+        break;
     }
+  };
+  // handle location choice
+  const handleSelectChange = (event: any) => {
+    setLocation(event.target.value);
   };
 
   const handleSecondaryButton = () => {
-    props.setModule("register");
+    props.setModule("login");
     props.setMessage("");
   };
 
@@ -79,8 +101,7 @@ const LoginUser = (props: {
     name: "email",
     value: email,
     placeholder: text["login.prompt.email"],
-    action: handleInputChange,
-    focus: true
+    action: handleInputChange
   });
 
   let passwordElement = formSection({
@@ -93,12 +114,41 @@ const LoginUser = (props: {
     length: 7
   });
 
+  const locationsElement = formSelection({
+    list: props.locations.payload,
+    direction,
+    label: text["login.label.location"],
+    action: handleSelectChange
+  });
+
+  const fNameElement = formSection({
+    label: text["login.label.fname"],
+    type: "text",
+    name: "fName",
+    value: fName,
+    placeholder: text["login.prompt.fname"],
+    action: handleInputChange,
+    length: 2,
+    focus: true
+  });
+  const lNameElement = formSection({
+    label: text["login.label.lname"],
+    type: "text",
+    name: "lName",
+    value: lName,
+    placeholder: text["login.prompt.lname"],
+    action: handleInputChange,
+    length: 3
+  });
+
   return (
     <form
       className={direction === "rtl" ? "formRight" : "formLeft"}
-      onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
-        handleSubmit(event)
-      }>
+      onSubmit={handleSubmit}>
+      {/* visible during registration */}
+      {locationsElement}
+      {fNameElement}
+      {lNameElement}
       {emailElement}
       {passwordElement}
       {/* message & loading */}
@@ -109,12 +159,12 @@ const LoginUser = (props: {
           <input
             className={button.primary}
             type='button'
-            value={text["login.button.login"]}
+            value={text["login.button.register"]}
             id='submit_button'
           />
         </Button>
         <Button mode='secondaryFlat' action={handleSecondaryButton}>
-          {text["login.button.register"]}
+          {text["login.button.login"]}
         </Button>
       </ButtonsWrapper>
     </form>
@@ -123,14 +173,15 @@ const LoginUser = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
+    locations: state.locations,
     registerResult: state.register,
     language: state.language,
     message: state.message,
-    loading: state.loading
+    loading: state.loading,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { login, setModule, setMessage, setLoading }
+  { register, setModule, setMessage,  }
 )(LoginUser);

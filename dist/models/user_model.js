@@ -63,6 +63,7 @@ var dbcMain = process.env.MONGO_COL_MAIN || "dev";
 var dbAppId = process.env.MONGO_APP_ID || "5ce03ad1bb94e55d2ebf2161";
 // find user by id
 exports.getUserById = function (id, callback) {
+    MDB.client.close();
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         if (err) {
@@ -96,13 +97,16 @@ exports.getUserById = function (id, callback) {
             ])
                 .toArray(function (e, res) {
                 if (e) {
+                    MDB.client.close();
                     callback(Message.notFound("user"));
                 }
                 else {
                     if (res.length === 0) {
+                        MDB.client.close();
                         callback(Message.notFound("user"));
                     }
                     else {
+                        MDB.client.close();
                         callback(Message.foundMessage("user", {
                             language: res[0].language,
                             type: res[0].type
@@ -467,6 +471,7 @@ exports.create = function (request, callback) {
                         lName: check_strings_1.dropQuotes(request.lName),
                         email: check_strings_1.dropQuotes(request.email),
                         pass: encoded.payload,
+                        language: check_strings_1.dropQuotes(request.lang),
                         posts: [],
                         settings: {}
                     };
@@ -773,6 +778,7 @@ exports.getLocationInfo = function (user, callback) {
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         if (err) {
+            MDB.client.close();
             callback(Message.errorMessage({ action: "connection to DB", e: err }));
         }
         else {
@@ -790,14 +796,20 @@ exports.getLocationInfo = function (user, callback) {
                 .toArray(function (err, result) {
                 if (err) {
                     // if error
-                    callback(Message.errorMessage({ action: "get categories", e: err }));
+                    MDB.client.close();
+                    callback(Message.errorMessage({
+                        action: "get categories",
+                        e: err
+                    }));
                 }
                 else if (result.length === 0) {
                     // if no - response
+                    MDB.client.close();
                     callback(Message.notFound("categories not found"));
                 }
                 else if (result.length > 1) {
                     // if too many results
+                    MDB.client.close();
                     callback(Message.tooManyResultsMessage("get categories"));
                 }
                 else {
@@ -834,18 +846,22 @@ exports.getLocationInfo = function (user, callback) {
                 .toArray(function (err, result) {
                 if (err) {
                     // if error
+                    MDB.client.close();
                     callback(Message.errorMessage({ action: "user match", e: err }));
                 }
                 else if (result.length === 0) {
                     // if no - response
+                    MDB.client.close();
                     callback(Message.notFound("user not found"));
                 }
                 else if (result.length > 1) {
                     // if too many results
+                    MDB.client.close();
                     callback(Message.tooManyResultsMessage("user matching"));
                 }
                 else {
                     // if found
+                    MDB.client.close();
                     callback(Message.positiveMessage({
                         subj: "User login is OK",
                         payload: {
@@ -861,6 +877,7 @@ exports.confirmedEmail = function (_id, callback) {
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         if (err) {
+            MDB.client.close();
             callback(Message.errorMessage({ action: "connection to DB", e: err }));
         }
         else {
@@ -887,19 +904,24 @@ exports.confirmedEmail = function (_id, callback) {
                 .toArray(function (err, result) {
                 if (err) {
                     // if error
+                    MDB.client.close();
                     callback(Message.errorMessage({ action: "user match", e: err }));
                 }
                 else if (result.length === 0) {
                     // if no - response
+                    MDB.client.close();
                     callback(Message.notFound("user not found"));
                 }
                 else if (result.length > 1) {
                     // if too many results
+                    MDB.client.close();
                     callback(Message.tooManyResultsMessage("user matching"));
                 }
                 else {
                     // if found
                     var user_1 = result[0];
+                    console.log("this is new user");
+                    console.log(user_1);
                     var location_1 = user_1.location;
                     delete user_1.location;
                     database_2
@@ -913,6 +935,7 @@ exports.confirmedEmail = function (_id, callback) {
                         }, { $push: { users: user_1 } })
                             .then(function (documentCreate) {
                             // check if result is positive adn callback result
+                            MDB.client.close();
                             callback(Message.updateMessage({
                                 subj: "User confirmed",
                                 document: {
@@ -922,6 +945,7 @@ exports.confirmedEmail = function (_id, callback) {
                             }));
                         })["catch"](function (e) {
                             assert.equal(null, e);
+                            MDB.client.close();
                             callback(Message.errorMessage({
                                 action: "user confirmation (creation in Main)",
                                 e: e
@@ -929,6 +953,7 @@ exports.confirmedEmail = function (_id, callback) {
                         });
                     })["catch"](function (e) {
                         assert.equal(null, e);
+                        MDB.client.close();
                         callback(Message.errorMessage({ action: "temp user removal", e: e }));
                     });
                 }
@@ -961,6 +986,7 @@ exports.update = function (request, callback) {
         assert.equal(null, err);
         if (err) {
             // return error with connection
+            MDB.client.close();
             callback(Message.errorMessage({ action: "connection to DB (u1)", e: err }));
         }
         else {
@@ -973,6 +999,7 @@ exports.update = function (request, callback) {
             })
                 .then(function (document) {
                 // process response
+                MDB.client.close();
                 callback(Message.updateMessage({
                     subj: "User",
                     document: {
@@ -982,6 +1009,7 @@ exports.update = function (request, callback) {
                 }));
             })["catch"](function (e) {
                 assert.equal(null, e);
+                MDB.client.close();
                 callback(Message.errorMessage({ action: "user update", e: e }));
             });
         }

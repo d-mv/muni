@@ -174,10 +174,11 @@ const dbSeed = (callback: any) => {
   // });
   // categories
   const categories = [
-    "5cfd32f3458cd06becd28315",
-    "5cfd335e458cd06becd28316",
-    "5cfd33a3458cd06becd28317",
-    "5cfd33d2458cd06becd28318"
+    "5d0515f6765ce120e4bdf6a8",
+    "5d051619765ce120e4bdf6ab",
+    "5d051627765ce120e4bdf6ac",
+    "5d05160d765ce120e4bdf6aa",
+    "5d051602765ce120e4bdf6a9"
   ];
   const languages = ["en", "עב"];
 

@@ -23,6 +23,21 @@
       transform: translateX(-95%);
       animation: right-swing 0.5s ease-out alternate infinite;
     }
+
+    @media (min-aspect-ratio: 50/100) {
+    }
+
+    @media (min-aspect-ratio: 75/100) {
+    }
+
+    @media (min-aspect-ratio:80/100) {
+    }
+
+    @media (min-aspect-ratio: 90/100) {
+    }
+
+    @media (min-aspect-ratio: 125/100) {
+    }
   }
 
   /// Animations
