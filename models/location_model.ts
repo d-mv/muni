@@ -32,10 +32,12 @@ export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
       ])
       .toArray((e: any, result: any) => {
         if (e) {
-          callback(Message.errorMessage({ action: "locations fetch", e }));
+                 MDB.client.close();
+     callback(Message.errorMessage({ action: "locations fetch", e }));
         } else if (result.length > 0) {
           console.log(result);
-          callback(
+                 MDB.client.close();
+     callback(
             Message.positiveMessage({
               subj: "Locations found",
               code: 200,
@@ -43,7 +45,8 @@ export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
             })
           );
         } else {
-          callback(Message.notFound("locations"));
+                MDB.client.close();
+      callback(Message.notFound("locations"));
         }
       });
   });

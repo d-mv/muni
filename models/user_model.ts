@@ -23,6 +23,7 @@ export const getUserById = (
   id: string,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
+  MDB.client.close();
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
@@ -55,11 +56,14 @@ export const getUserById = (
         ])
         .toArray((e: any, res: any) => {
           if (e) {
+            MDB.client.close();
             callback(Message.notFound("user"));
           } else {
             if (res.length === 0) {
+              MDB.client.close();
               callback(Message.notFound("user"));
             } else {
+              MDB.client.close();
               callback(
                 Message.foundMessage("user", {
                   language: res[0].language,
@@ -447,7 +451,7 @@ export const create = (
               callback(encoded);
             } else {
               // if created - proceed with creating
-              console.log(request)
+              console.log(request);
               // set a user variable
               const createUser: TYPE.NewUserTYPE = {
                 _id: id,
@@ -456,7 +460,7 @@ export const create = (
                 lName: dropQuotes(request.lName),
                 email: dropQuotes(request.email),
                 pass: encoded.payload,
-                language:dropQuotes(request.lang),
+                language: dropQuotes(request.lang),
                 posts: [],
                 settings: {}
               };
@@ -799,6 +803,8 @@ export const getLocationInfo = (
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
+      MDB.client.close();
+
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       let database: any = MDB.client.db(dbName).collection(dbcApp);
@@ -815,14 +821,21 @@ export const getLocationInfo = (
         .toArray((err: any, result: any) => {
           if (err) {
             // if error
+            MDB.client.close();
+
             callback(
-              Message.errorMessage({ action: "get categories", e: err })
+              Message.errorMessage({
+                action: "get categories",
+                e: err
+              })
             );
           } else if (result.length === 0) {
             // if no - response
+            MDB.client.close();
             callback(Message.notFound("categories not found"));
           } else if (result.length > 1) {
             // if too many results
+            MDB.client.close();
             callback(Message.tooManyResultsMessage("get categories"));
           } else {
             categories = result[0].categories;
@@ -858,15 +871,19 @@ export const getLocationInfo = (
         .toArray((err: any, result: any) => {
           if (err) {
             // if error
+            MDB.client.close();
             callback(Message.errorMessage({ action: "user match", e: err }));
           } else if (result.length === 0) {
             // if no - response
+            MDB.client.close();
             callback(Message.notFound("user not found"));
           } else if (result.length > 1) {
             // if too many results
+            MDB.client.close();
             callback(Message.tooManyResultsMessage("user matching"));
           } else {
             // if found
+            MDB.client.close();
 
             callback(
               Message.positiveMessage({
@@ -889,6 +906,7 @@ export const confirmedEmail = (
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
+      MDB.client.close();
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       let database: any = MDB.client.db(dbName).collection(dbcApp);
@@ -914,18 +932,21 @@ export const confirmedEmail = (
         .toArray((err: any, result: any) => {
           if (err) {
             // if error
+            MDB.client.close();
             callback(Message.errorMessage({ action: "user match", e: err }));
           } else if (result.length === 0) {
             // if no - response
+            MDB.client.close();
             callback(Message.notFound("user not found"));
           } else if (result.length > 1) {
             // if too many results
+            MDB.client.close();
             callback(Message.tooManyResultsMessage("user matching"));
           } else {
             // if found
             const user = result[0];
-            console.log("this is new user")
-            console.log(user)
+            console.log("this is new user");
+            console.log(user);
             const { location } = user;
             delete user.location;
             database
@@ -945,6 +966,7 @@ export const confirmedEmail = (
                   )
                   .then((documentCreate: any) => {
                     // check if result is positive adn callback result
+                    MDB.client.close();
                     callback(
                       Message.updateMessage({
                         subj: "User confirmed",
@@ -957,6 +979,7 @@ export const confirmedEmail = (
                   })
                   .catch((e: any) => {
                     assert.equal(null, e);
+                    MDB.client.close();
                     callback(
                       Message.errorMessage({
                         action: "user confirmation (creation in Main)",
@@ -967,6 +990,7 @@ export const confirmedEmail = (
               })
               .catch((e: any) => {
                 assert.equal(null, e);
+                MDB.client.close();
                 callback(
                   Message.errorMessage({ action: "temp user removal", e })
                 );
@@ -1009,6 +1033,7 @@ export const update = (
     assert.equal(null, err);
     if (err) {
       // return error with connection
+      MDB.client.close();
       callback(
         Message.errorMessage({ action: "connection to DB (u1)", e: err })
       );
@@ -1026,6 +1051,7 @@ export const update = (
         )
         .then((document: any) => {
           // process response
+          MDB.client.close();
           callback(
             Message.updateMessage({
               subj: "User",
@@ -1038,6 +1064,7 @@ export const update = (
         })
         .catch((e: any) => {
           assert.equal(null, e);
+          MDB.client.close();
           callback(Message.errorMessage({ action: "user update", e }));
         });
     }
