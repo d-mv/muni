@@ -32,12 +32,9 @@ export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
       ])
       .toArray((e: any, result: any) => {
         if (e) {
-                 MDB.client.close();
-     callback(Message.errorMessage({ action: "locations fetch", e }));
+          callback(Message.errorMessage({ action: "locations fetch", e }));
         } else if (result.length > 0) {
-          console.log(result);
-                 MDB.client.close();
-     callback(
+          callback(
             Message.positiveMessage({
               subj: "Locations found",
               code: 200,
@@ -45,9 +42,9 @@ export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
             })
           );
         } else {
-                MDB.client.close();
-      callback(Message.notFound("locations"));
+          callback(Message.notFound("locations"));
         }
+        MDB.client.close();
       });
   });
 };
@@ -63,7 +60,6 @@ export const create = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   MDB.client.connect(err => {
-    assert.equal(null, err);
     assert.equal(null, err);
     const database: any = MDB.client.db(dbName).collection(dbcMain);
     // check the names availability
@@ -107,10 +103,10 @@ export const create = (
               );
             }
           })
-          .catch((e: any) =>
-            {assert.equal(null, e);
-            callback(Message.errorMessage({ action: "location creation", e }))}
-          );
+          .catch((e: any) => {
+            assert.equal(null, e);
+            callback(Message.errorMessage({ action: "location creation", e }));
+          });
       }
     });
     //
@@ -164,9 +160,8 @@ export const update = (
             })
             .catch((e: any) => {
               assert.equal(null, e);
-              callback(Message.errorMessage({ action: "location update", e }))
-            }
-            );
+              callback(Message.errorMessage({ action: "location update", e }));
+            });
         }
       });
   });
@@ -219,9 +214,10 @@ export const deleteLocation = (
               })
               .catch((e: any) => {
                 assert.equal(null, e);
-                callback(Message.errorMessage({ action: "location delete", e }))
-              }
-              );
+                callback(
+                  Message.errorMessage({ action: "location delete", e })
+                );
+              });
           }
         });
     }

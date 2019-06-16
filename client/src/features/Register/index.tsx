@@ -5,11 +5,7 @@ import { formSection, formSelection } from "../../components/formSection";
 
 import { AppState } from "../../store";
 import * as TYPE from "../../store/types";
-import {
-  register,
-  setModule,
-  setMessage,
-} from "../../store/users/actions";
+import { register, setModule, setMessage } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
@@ -29,14 +25,15 @@ const LoginUser = (props: {
   register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
-
 }) => {
   // get the language
   const { text, direction } = props.language;
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [location, setLocation] = useState(props.locations.payload[0].value);
+  const [location, setLocation] = useState(
+    props.locations.payload[0].value || ""
+  );
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
 
@@ -60,7 +57,7 @@ const LoginUser = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setErrorMessage("");
-    const { value, name } = event.target
+    const { value, name } = event.target;
     switch (name) {
       case "fName":
         setFname(value);
@@ -115,7 +112,7 @@ const LoginUser = (props: {
   });
 
   const locationsElement = formSelection({
-    list: props.locations.payload,
+    list: props.locations.payload || [],
     direction,
     label: text["login.label.location"],
     action: handleSelectChange
@@ -177,11 +174,11 @@ const mapStateToProps = (state: AppState) => {
     registerResult: state.register,
     language: state.language,
     message: state.message,
-    loading: state.loading,
+    loading: state.loading
   };
 };
 
 export default connect(
   mapStateToProps,
-  { register, setModule, setMessage,  }
+  { register, setModule, setMessage }
 )(LoginUser);

@@ -906,8 +906,8 @@ export const confirmedEmail = (
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
-      MDB.client.close();
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
+      MDB.client.close();
     } else {
       let database: any = MDB.client.db(dbName).collection(dbcApp);
       database
@@ -932,20 +932,16 @@ export const confirmedEmail = (
         .toArray((err: any, result: any) => {
           if (err) {
             // if error
-            MDB.client.close();
             callback(Message.errorMessage({ action: "user match", e: err }));
           } else if (result.length === 0) {
             // if no - response
-            MDB.client.close();
             callback(Message.notFound("user not found"));
           } else if (result.length > 1) {
             // if too many results
-            MDB.client.close();
             callback(Message.tooManyResultsMessage("user matching"));
           } else {
             // if found
             const user = result[0];
-            console.log("this is new user");
             console.log(user);
             const { location } = user;
             delete user.location;
@@ -966,7 +962,6 @@ export const confirmedEmail = (
                   )
                   .then((documentCreate: any) => {
                     // check if result is positive adn callback result
-                    MDB.client.close();
                     callback(
                       Message.updateMessage({
                         subj: "User confirmed",
@@ -976,24 +971,26 @@ export const confirmedEmail = (
                         }
                       })
                     );
+                    MDB.client.close();
                   })
                   .catch((e: any) => {
                     assert.equal(null, e);
-                    MDB.client.close();
                     callback(
                       Message.errorMessage({
                         action: "user confirmation (creation in Main)",
                         e
                       })
                     );
+                    MDB.client.close();
                   });
               })
               .catch((e: any) => {
                 assert.equal(null, e);
-                MDB.client.close();
+
                 callback(
                   Message.errorMessage({ action: "temp user removal", e })
                 );
+                MDB.client.close();
               });
           }
         });
@@ -1033,7 +1030,6 @@ export const update = (
     assert.equal(null, err);
     if (err) {
       // return error with connection
-      MDB.client.close();
       callback(
         Message.errorMessage({ action: "connection to DB (u1)", e: err })
       );
