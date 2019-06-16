@@ -24,12 +24,10 @@
       width: 45%;
     }
 
-
-
     @media (min-aspect-ratio: 90/100) {
       width: 35%
     }
-
+    
     @media (min-aspect-ratio: 125/100) {
       width: 25%;
       border-bottom: .1rem solid white;
