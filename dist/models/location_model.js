@@ -41,12 +41,9 @@ exports.list = function (callback) {
         ])
             .toArray(function (e, result) {
             if (e) {
-                MDB.client.close();
                 callback(Message.errorMessage({ action: "locations fetch", e: e }));
             }
             else if (result.length > 0) {
-                console.log(result);
-                MDB.client.close();
                 callback(Message.positiveMessage({
                     subj: "Locations found",
                     code: 200,
@@ -54,11 +51,11 @@ exports.list = function (callback) {
                 }));
             }
             else {
-                MDB.client.close();
                 callback(Message.notFound("locations"));
             }
         });
     });
+    MDB.client.close();
 };
 /**
  * Function to create a location
@@ -68,7 +65,6 @@ exports.list = function (callback) {
  */
 exports.create = function (query, callback) {
     MDB.client.connect(function (err) {
-        assert.equal(null, err);
         assert.equal(null, err);
         var database = MDB.client.db(dbName).collection(dbcMain);
         // check the names availability
