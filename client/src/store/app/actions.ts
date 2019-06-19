@@ -1,7 +1,10 @@
 import { Action } from "./types";
 import * as TYPE from "../types";
-
+import axios from "axios";
 import data from "../../data/translation.json";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import locationsList from "../../modules/locations_list";
 
 const importedData: TYPE.indexedObjAny = data;
 
@@ -49,7 +52,50 @@ export const setStep = (step: number): Action => {
  *
  * @returns {object}
  */
-export const showHelp = (show:boolean): Action => {
+export const showHelp = (show: boolean): Action => {
   return { type: "SHOW_HELP", show };
 };
 
+/**
+ * Action function to fetch list of locations from API
+ * @function fetchLocations
+ * @return {Promise} - Returns promise resolved with the help of Thunk
+ */
+export const fetchLocations = (): ThunkAction<
+  Promise<void>,
+  {},
+  {},
+  AnyAction
+> => {
+  const url = "/location/list";
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    axios({
+      method: "get",
+      url
+    })
+      .then(response => {
+        // locations
+        let locations: any[];
+        const { status, code, message, payload } = response.data;
+        if (status && payload) {
+          locations = locationsList(payload, "עב");
+          dispatch({
+            type: "FETCH_LOCATIONS",
+            payload: { message, status, code, payload: locations }
+          });
+        } else {
+          dispatch({
+            type: "FETCH_LOCATIONS",
+            payload: { message, status, code }
+          });
+        }
+      })
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "FETCH_LOCATIONS",
+          payload
+        });
+      });
+  };
+};

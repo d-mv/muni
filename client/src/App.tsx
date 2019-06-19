@@ -9,9 +9,10 @@ import {
   setToken,
   checkToken,
   login,
-  fetchLocations,
+
   fetchData
 } from "./store/users/actions";
+import {  fetchLocations} from './store/app/actions'
 
 import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
@@ -34,6 +35,7 @@ const App = (props: {
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   location: data;
+  locations: data;
   fetchLocations: () => void;
   fetchData: (arg0: string) => void;
   cookies: any;
@@ -42,7 +44,7 @@ const App = (props: {
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
   const [int, setInt] = useState(false);
-  const [fetch, setFetch] = useState(false);
+  const [locations, setLocations] = useState();
 
   axios.defaults.headers = { token };
 
@@ -89,8 +91,6 @@ const App = (props: {
     }
   }, [props.location]);
 
-
-
   useEffect(() => {
     console.log(10);
     // props.checkToken(cookies.get("token"));
@@ -98,7 +98,7 @@ const App = (props: {
     // console.log(fetch);
     if (props.check.status) {
       // setFetch(true);
-       props.fetchData(token);
+      props.fetchData(token);
     } else {
       // setFetch(false);
     }
@@ -106,6 +106,7 @@ const App = (props: {
 
   // fetch locations
   useEffect(() => {
+    console.log(11)
     props.fetchLocations();
   }, []);
 
@@ -214,7 +215,7 @@ const App = (props: {
     case "register":
       const Register = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
-        children: <Register register />,
+        children: <Register register locations={locations} />,
         nav: true,
         lazy: true,
         new: false
@@ -233,6 +234,7 @@ const mapStateToProps = (state: AppState) => {
     module: state.module,
     loginResult: state.login,
     location: state.locationData,
+    locations: state.locations,
     help: state.help,
     vote: state.vote,
     check: state.checkTokenResult

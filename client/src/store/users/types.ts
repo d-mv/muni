@@ -46,10 +46,7 @@ export interface setLocationDataAction {
   type: "SET_LOCATION_DATA";
   data: TYPE.data;
 }
-export interface fetchLocationsAction {
-  type: "FETCH_LOCATIONS";
-  payload: TYPE.apiResponse;
-}
+
 export interface changeModeAction {
   type: "CHANGE_MODE";
   mode: string;
@@ -93,7 +90,7 @@ export type Action =
   | checkTokenAction
   | loginAction
   | setModuleUAction
-  | fetchLocationsAction
+
   | setLoadingAction
   | registerAction
   | setAuthAction

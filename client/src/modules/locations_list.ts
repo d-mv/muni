@@ -17,7 +17,6 @@ export const locationsList = (
   const check = locations.filter(el => Object.keys(el.name).includes(language));
   // return empty array if not
   if (check.length !== locations.length) return [];
-
   // process the names as per language request
   const unsortedResult: indexedObj = {};
   const locationsList: Array<string> = [];

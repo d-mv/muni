@@ -2,9 +2,8 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
-import importedData from "../data/translation.json";
 
-import { setStep, showHelp } from "./app/reducers";
+import { setStep, showHelp, fetchLocations } from "./app/reducers";
 import { submitPost, updatePost } from "./post/reducers";
 import {
   vote,
@@ -13,7 +12,6 @@ import {
   login,
   setModule,
   register,
-  fetchLocations,
   setLoading,
   setAuth,
   setLocationData,
@@ -70,7 +68,7 @@ export default function configureStore() {
     checkTokenResult: any;
     login: TYPE.apiResponse;
     module: string;
-    locations: any;
+    locations: [];
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
@@ -92,7 +90,7 @@ export default function configureStore() {
     checkTokenResult: "",
     login: apiState,
     module: "",
-    locations: "",
+    locations: [],
     loading: false,
     register: apiState,
     data: data,

@@ -36,7 +36,7 @@ const double = (cacheId: string, req: any, time: number) => {
   let reply = diff < 1000 * time && cache.reply !== "" && req === cache.req;
   // if return list
   if (req === "") {
-    reply = diff < 1000 * time && cache.reply !== "";
+    reply = diff < 1000 * time && cache.reply !== "" && cache.reply.status;
   }
   return reply;
 };

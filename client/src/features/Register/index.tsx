@@ -18,7 +18,8 @@ import button from "../../components/style/Button.module.scss";
  * @returns {JSX.Element} - Login page
  */
 const LoginUser = (props: {
-  locations: TYPE.apiResponse;
+  locations: { value: string; label: string }[];
+  storedLocations?: TYPE.data;
   language: TYPE.indexedObjAny;
   message: string;
   loading: boolean;
@@ -28,12 +29,12 @@ const LoginUser = (props: {
 }) => {
   // get the language
   const { text, direction } = props.language;
+  const { locations } = props;
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [location, setLocation] = useState(
-    props.locations.payload[0].value || ""
-  );
+  const defaultLocation = locations ? locations[0].value : "";
+  const [location, setLocation] = useState(defaultLocation);
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
 
@@ -112,7 +113,7 @@ const LoginUser = (props: {
   });
 
   const locationsElement = formSelection({
-    list: props.locations.payload || [],
+    list: locations,
     direction,
     label: text["login.label.location"],
     action: handleSelectChange

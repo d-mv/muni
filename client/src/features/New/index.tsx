@@ -60,7 +60,7 @@ const NewPost = (props: {
   }, [step]);
 
   const getCategories = () => {
-    let result: Array<{ [index: string]: string }> = [];
+    let result: { value: string; label: string }[] = [];
     categories.map((cat: any) => {
       const language = !Object.keys(cat).includes(props.language.short)
         ? "עב"

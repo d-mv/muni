@@ -57,13 +57,7 @@ export const register = (state = apiState, action: Action) => {
   }
   return { ...state };
 };
-export const fetchLocations = (state = apiState, action: Action) => {
-  switch (action.type) {
-    case "FETCH_LOCATIONS":
-      return action.payload;
-  }
-  return { ...state };
-};
+
 
 export const setModule = (state = "", action: Action): string => {
   switch (action.type) {

@@ -1,3 +1,5 @@
+import * as TYPE from "../types";
+
 import { data, indexedObjAny } from "../types";
 
 export interface loadDataAction {
@@ -22,8 +24,12 @@ export interface showHelpAction {
   type: "SHOW_HELP";
   show: boolean;
 }
-
+export interface fetchLocationsAction {
+  type: "FETCH_LOCATIONS";
+  payload: TYPE.apiResponse;
+}
 export type Action =
+  | fetchLocationsAction
   | loadDataAction
   | setLanguageAction
   | setLocationDataAction
