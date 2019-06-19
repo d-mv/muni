@@ -314,7 +314,7 @@ export const fetchLocations = (): ThunkAction<
         // locations
         let locations: Array<any>[];
         if (response.data.status && response.data.payload) {
-          locations = locationsList(response.data.payload, "en");
+          locations = locationsList(response.data.payload, "עב");
           dispatch({
             type: "FETCH_LOCATIONS",
             payload: { payload: locations, code: response.status }

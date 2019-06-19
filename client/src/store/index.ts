@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
+import importedData from "../data/translation.json";
 
 import { setStep, showHelp } from "./app/reducers";
 import { submitPost, updatePost } from "./post/reducers";
@@ -95,7 +96,7 @@ export default function configureStore() {
     loading: false,
     register: apiState,
     data: data,
-    language: data.language.en,
+    language: data.language["עב"],
     locationData: {},
     auth: false,
     step: 1,

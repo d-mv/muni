@@ -17,7 +17,7 @@ const NumbersLine = (props: {
   voterText: string;
 }) => {
   const date = (
-    <div className={style.date}>{dateBeautify(props.date, "en", true)}</div>
+    <div className={style.date}>{dateBeautify(props.date, "עב", true)}</div>
   );
   return (
     <div className={style.numbers}>

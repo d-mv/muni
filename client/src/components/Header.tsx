@@ -26,7 +26,7 @@ const Header = (props: {
 
   const title: string = props.locationData.name[props.language.short]
     ? props.locationData.name[props.language.short]
-    : props.locationData.name["en"];
+    : props.locationData.name["עב"];
 
   const handleReturn = () => {
     props.setModule(props.returnTo);

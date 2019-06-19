@@ -1,6 +1,7 @@
 import { Action } from "./types";
-import { data } from "../types";
+import { data, indexedObjAny } from "../types";
 import { apiState } from "../defaults";
+import importedData from "../../data/translation.json";
 
 export const setToken = (state = "", action: Action) => {
   switch (action.type) {
@@ -24,8 +25,6 @@ export const checkToken = (state = { token: "" }, action: Action) => {
   }
   return { ...state };
 };
-
-
 
 export const changeMode = (state = "login", action: Action) => {
   switch (action.type) {
@@ -112,12 +111,12 @@ export const loadData = (state = {}, action: Action): data => {
  * @param action
  * @returns {string}
  */
-export const setLanguage = (state = {}, action: Action): data => {
+export const setLanguage = (state = {}, action: Action): indexedObjAny => {
   switch (action.type) {
     case "SET_LANGUAGE":
       return { ...action.data };
   }
-  return state;
+  return importedData.language["עב"];
 };
 
 export const vote = (state = apiState, action: Action) => {
