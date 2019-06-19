@@ -4,7 +4,7 @@ import axios from "axios";
 import { logger } from "redux-logger";
 
 import { setStep, showHelp, fetchLocations } from "./app/reducers";
-import { submitPost, updatePost } from "./post/reducers";
+import { submitPost, updatePost, showPost } from "./post/reducers";
 import {
   vote,
   setToken,
@@ -54,7 +54,8 @@ const rootReducer = combineReducers({
   mode: changeMode,
   step: setStep,
   posts: setPosts,
-  update: updatePost
+  update: updatePost,
+  post: showPost
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -83,6 +84,7 @@ export default function configureStore() {
     vote: TYPE.apiResponse;
     posts: any;
     update: TYPE.apiResponse;
+    post: TYPE.data;
   }
 
   const initialState: state = {
@@ -104,7 +106,8 @@ export default function configureStore() {
     mode: "login",
     vote: apiState,
     posts: [],
-    update: apiState
+    update: apiState,
+    post: { show: false }
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

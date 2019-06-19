@@ -15,3 +15,11 @@ export const updatePost = (state = apiState, action: Action) => {
   }
   return state;
 };
+
+export const showPost = (state = { show: false }, action: Action) => {
+  switch (action.type) {
+    case "SHOW_POST":
+      return { ...state, ...action.payload };
+  }
+  return state;
+};

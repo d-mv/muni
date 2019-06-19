@@ -9,10 +9,9 @@ import {
   setToken,
   checkToken,
   login,
-
   fetchData
 } from "./store/users/actions";
-import {  fetchLocations} from './store/app/actions'
+import { fetchLocations } from "./store/app/actions";
 
 import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
@@ -106,7 +105,7 @@ const App = (props: {
 
   // fetch locations
   useEffect(() => {
-    console.log(11)
+    console.log(11);
     props.fetchLocations();
   }, []);
 
@@ -217,8 +216,15 @@ const App = (props: {
       show = componentFactory({
         children: <Register register locations={locations} />,
         nav: true,
-        lazy: true,
-        new: false
+        lazy: true
+      });
+      break;
+    case "post":
+      const Post = React.lazy(() => import("./pages/Post"));
+      show = componentFactory({
+        children: <Post />,
+        nav: true,
+        lazy: true
       });
       break;
   }
@@ -237,7 +243,8 @@ const mapStateToProps = (state: AppState) => {
     locations: state.locations,
     help: state.help,
     vote: state.vote,
-    check: state.checkTokenResult
+    check: state.checkTokenResult,
+    post: state.post.show
   };
 };
 

@@ -9,4 +9,9 @@ export interface updatePostAction {
   payload: TYPE.apiResponse;
 }
 
-export type Action = submitPostAction | updatePostAction;
+export interface showPostAction {
+  type: "SHOW_POST";
+  payload: TYPE.data;
+}
+
+export type Action = showPostAction | submitPostAction | updatePostAction;

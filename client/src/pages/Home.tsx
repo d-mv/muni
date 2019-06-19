@@ -56,80 +56,65 @@ const Home = (props: {
       setPost(newPost);
     }
   };
+
   const handleViewPinnedPost = (newPost: any) => {
     if (pinnedPost !== newPost) {
       viewPinnedPost(newPost);
     }
   };
 
-  const handleClearPost = () => {
-    setPost({ _id: "", createdBy: "" });
-  };
+  // const handleClearPost = () => {
+  //   setPost({ _id: "", createdBy: "" });
+  // };
 
   const toggleHelp = () => {
     props.showHelp(!props.help);
   };
 
-  const handleUpdatePost = (updateProps: {
-    _id: string;
-    action: string;
-    fields?: any;
-  }) => {
-    console.log("handle");
-    switch (updateProps.action) {
-      case "vote": {
-        const oldPosts = props.posts;
-        oldPosts.map((post: any) => {
-          if (post._id === updateProps._id)
-            if (!post.votes.includes(props.locationData._id)) {
-              console.log(post.votes);
-              post.votes.push(props.locationData._id);
-            }
-        });
-        props.setPosts(oldPosts);
-        props.vote(updateProps._id, props.locationData._id);
-      }
-    }
-  };
+  // const handleUpdatePost = (updateProps: {
+  //   _id: string;
+  //   action: string;
+  //   fields?: any;
+  // }) => {
+  //   console.log("handle");
+  //   switch (updateProps.action) {
+  //     case "vote": {
+  //       const oldPosts = props.posts;
+  //       oldPosts.map((post: any) => {
+  //         if (post._id === updateProps._id)
+  //           if (!post.votes.includes(props.locationData._id)) {
+  //             console.log(post.votes);
+  //             post.votes.push(props.locationData._id);
+  //           }
+  //       });
+  //       props.setPosts(oldPosts);
+  //       props.vote(updateProps._id, props.locationData._id);
+  //     }
+  //   }
+  // };
 
-  const handleAction = (actions: { mode: string; details: string }) => {
-    console.log(actions);
-  };
+  // const handleAction = (actions: { mode: string; details: string }) => {
+  //   console.log(actions);
+  // };
 
   let header = <Header help={toggleHelp} returnTo='home' />;
   let pinnedCard = null;
   let main = <PostList posts={props.posts} action={handleSetPost} />;
 
-  if (post["_id"] !== "") {
-    const author = post.createdBy === props.locationData._id;
-    const muniUser = props.locationData.type;
-    header = (
-      <Header help={toggleHelp} returnTo='home' edit action={handleAction} />
-    );
-    if (!author)
-      header = (
-        <Header
-          help={toggleHelp}
-          returnTo='home'
-          complain
-          action={handleAction}
-        />
-      );
-    if (muniUser) header = <Header help={toggleHelp} returnTo='home' />;
-
-    main = <Post post={post} action={handleUpdatePost} />;
-    pinnedCard = null;
-  } else if (pinnedLcl !== {}) {
+ if (pinnedLcl !== {}) {
     pinnedCard = <PinnedCard post={pinnedLcl} action={handleViewPinnedPost} />;
   }
 
-  if (pinnedPost._id !== "") {
-    main = <ShowPost muni post={pinnedPost} />;
-    pinnedCard = null;
-    header = <Header help={toggleHelp} returnTo='home' />;
-  }
-
-  return contentFactory({ header, pinnedCard, main });
+  // return contentFactory({ header, pinnedCard, main });
+  return (
+    <Page>
+      <Header help={toggleHelp} returnTo='home' />;
+      <Content padded>
+        {pinnedCard}
+        <PostList posts={props.posts} action={handleSetPost} />;
+      </Content>
+    </Page>
+  );
 };
 
 const mapStateToProps = (state: AppState) => {

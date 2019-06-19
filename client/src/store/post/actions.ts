@@ -64,3 +64,11 @@ export const updatePost = (
       });
   };
 };
+
+export const showPost = (props: {
+  show: boolean;
+  post?: { type: string; id: string };
+}): Action => {
+  const { show, post } = props;
+  return { type: "SHOW_POST", payload: { show, post } };
+};
