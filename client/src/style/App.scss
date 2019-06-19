@@ -204,6 +204,8 @@
   position: absolute;
   left: 0;
   right: 0;
+  height: 6rem;
+  // min-height: 6rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -212,7 +214,7 @@
 .header {
   @extend .nav-template;
   top: 0;
-  height: 10%;
+  // height: 10%;
   margin: 0 auto;
   width: 95%;
   justify-content: space-between;
@@ -238,7 +240,7 @@
 .footer-template {
   @extend .nav-template;
   bottom: 0;
-  height: 10%;
+  // height: 10%;
 }
 
 .footer {
