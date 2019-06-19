@@ -41,7 +41,7 @@
         "post.voters": "supporters",
         "profile.text.changeLanguage": "Please, choose the app language. The language chosen is shown next to the switch button",
         "profile.text.logOff": "Please press the button below if you want to log off the app. You will have to log in if you want to use the app again.",
-        "profile.button.logOff": "LOG OFF",
+        "profile.button.logOff": "LOG OUT",
         "new.steps.button.next": "NEXT",
         "new.steps.button.back": "BACK",
         "new.steps.button.submit": "SUBMIT",
@@ -73,10 +73,10 @@
         "post.show-more": "show more",
         "post.show-less": "show less",
         "mine.subtitle": "MY POSTS",
-        "vote.thanks":"Thank you for your vote",
-        "newreply.label":"Your reply:",
+        "vote.thanks": "Thank you for your vote",
+        "newreply.label": "Your reply:",
         "newreply.placeholder": "please, enter your reply",
-        "munireply.title":"MUNICIPALITY"
+        "munireply.title": "MUNICIPALITY"
       }
     },
     "עב": {
@@ -152,7 +152,7 @@
         "post.show-more": "קרא עוד",
         "post.show-less": "קרא פחות",
         "mine.subtitle": "העתירות שלי",
-        "vote.thanks":"Thank you for your vote"
+        "vote.thanks": "Thank you for your vote"
       }
     },
     "ع": {
@@ -228,7 +228,7 @@
         "post.show-more": "اقرأ اكثر",
         "post.show-less": "تقليص",
         "mine.subtitle": "منشوراتي",
-        "vote.thanks":"Thank you for your vote"
+        "vote.thanks": "Thank you for your vote"
       }
     }
   }
