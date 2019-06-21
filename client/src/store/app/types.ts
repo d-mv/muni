@@ -28,7 +28,13 @@ export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
   payload: TYPE.apiResponse;
 }
+
+export interface prevModuleAction {
+  type: "PREV_MODULE";
+  module:string
+}
 export type Action =
+  | prevModuleAction
   | fetchLocationsAction
   | loadDataAction
   | setLanguageAction

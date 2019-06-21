@@ -63,17 +63,20 @@ export const showHelp = (state = false, action: Action): boolean => {
   return state;
 };
 
-export const fetchLocations = (state:[] = [], action: Action):[] => {
+export const fetchLocations = (state: [] = [], action: Action): [] => {
   switch (action.type) {
     case "FETCH_LOCATIONS":
-      const { payload } = action.payload
-            console.log(action);
-            console.log(payload);
-
-
+      const { payload } = action.payload;
       const result: [] = payload ? payload : state;
-      console.log(result)
       return result;
   }
   return state;
+};
+
+export const prevModule = (state = "welcome", action: Action) => {
+  switch (action.type) {
+    case "PREV_MODULE":
+      return action.module;
+  }
+  return state
 };

@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { setStep, showHelp, fetchLocations } from "./app/reducers";
+import { setStep, showHelp, fetchLocations, prevModule } from "./app/reducers";
 import { submitPost, updatePost, showPost } from "./post/reducers";
 import {
   vote,
@@ -42,6 +42,7 @@ const rootReducer = combineReducers({
   checkTokenResult: checkToken,
   login: login,
   module: setModule,
+  prevModule: prevModule,
   locations: fetchLocations,
   loading: setLoading,
   register: register,
@@ -70,6 +71,7 @@ export default function configureStore() {
     checkTokenResult: any;
     login: TYPE.apiResponse;
     module: string;
+    prevModule: string;
     locations: [];
     loading: boolean;
     register: TYPE.apiResponse;
@@ -93,6 +95,7 @@ export default function configureStore() {
     checkTokenResult: "",
     login: apiState,
     module: "welcome",
+    prevModule: "welcome",
     locations: [],
     loading: false,
     register: apiState,

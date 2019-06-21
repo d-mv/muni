@@ -14,14 +14,13 @@ import styles from "./styles/Header.module.scss";
 
 const Header = (props: {
   language: indexedObj;
-  locationData: indexedObjAny;
-  // returnTo: string;
-  // help: () => void;
-  // action?: (arg?: any) => void;
+  location: indexedObjAny;
   setModule: (arg0: string) => void;
-  // edit?: boolean;
-  // complain?: boolean;
+  name: indexedObj;
+  module: string;
+  prevModule: string;
 }) => {
+  const [showHelp, setShowHelp] = React.useState(false);
   // ! mock
   const returnTo = "home";
   const help = () => {};
@@ -32,43 +31,45 @@ const Header = (props: {
 
   const { direction } = props.language;
 
-  // const title: string = props.locationData.name[props.language.short]
-  //   ? props.locationData.name[props.language.short]
-  //   : props.locationData.name["עב"];
+  const [currentModule, setCurrentModule] = React.useState(props.module);
 
-  // const handleReturn = () => {
-  //   props.setModule(returnTo);
-  // };
-  // let mode = "";
-  // const handleSecondaryClick = () => {
-  //   if (action) {
-  //     action({ mode, details: "something" });
-  //   }
-  // };
+  const toggleHelp = () => {
+    setShowHelp(!showHelp);
+  };
 
-  // let secondButton: React.ClassicElement<any> = <div />;
-  // if (edit) {
-  //   secondButton = <Edit color='primary' />;
-  //   mode = "edit";
-  // } else if (complain) {
-  //   secondButton = <Complain />;
-  //   mode = "complain";
-  // }
+  const goHome = () => {
+    props.setModule(props.prevModule);
+  }
 
-  const leftButton = "";
-  const rightButton = "";
+  // defaults
+  let leftButton = <Help color='primary' />;
+  let leftAction = toggleHelp;
+  let rightButton = "";
+  let rightAction = goHome;
+  let name = "";
+  if (props.location && props.name) {
+    name =
+      props.location.name[props.language.short] || props.location.name["עב"];
+  }
 
-  const title = "";
+  switch (props.module) {
+    case "post":
+      leftButton = <div>back</div>;
+      leftAction = goHome;
+      break;
+  }
+
+  const title = <Title title={name} direction={direction} return={goHome} />;
 
   return (
     <header className={styles[styleFactory("plank", direction)]}>
-      <Button mode='minimal' action={help}>
-        <Help color='primary' />
+      <Button mode='minimal' action={leftAction}>
+        {leftButton}
       </Button>
-      {/* <Title title={title} direction={direction} return={handleReturn} /> */}
-      {/* <Button mode='minimal' action={() => handleSecondaryClick()}>
-        {secondButton}
-      </Button> */}
+      {title}
+      <Button mode='minimal' action={rightAction}>
+        {rightButton}
+      </Button>
     </header>
   );
 };
@@ -76,7 +77,10 @@ const Header = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    locationData: state.locationData
+    location: state.locationData,
+    name: state.locationData.name,
+    module: state.module,
+    prevModule: state.prevModule
   };
 };
 

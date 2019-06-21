@@ -11,7 +11,7 @@ import {
   login,
   fetchData
 } from "./store/users/actions";
-import { fetchLocations } from "./store/app/actions";
+import { fetchLocations, prevModule } from "./store/app/actions";
 import { showPost } from "./store/post/actions";
 
 import NewButton from "./features/New/components/NewButton";
@@ -42,6 +42,7 @@ const App = (props: {
   fetchData: (arg0: string) => void;
   cookies: any;
   showPost: (arg0: showPostPayload) => void;
+  prevModule: (arg0: string) => void;
 }) => {
   const { token } = props;
   const { cookies } = props;
@@ -49,7 +50,12 @@ const App = (props: {
   const [locations, setLocations] = useState();
   axios.defaults.headers = { token };
 
-console.log(props.module)
+  console.log(props.module);
+
+  const toggleModule = (module: string) => {
+    props.prevModule(props.module);
+    props.setModule(module);
+  };
 
   // set cookies if token changes
   useEffect(() => {
@@ -59,7 +65,7 @@ console.log(props.module)
       console.log(0);
       cookies.set("token", "");
       props.setToken("");
-      props.setModule("welcome");
+      toggleModule("welcome");
     } else if (
       props.token !== "" &&
       props.token !== "clear" &&
@@ -68,7 +74,7 @@ console.log(props.module)
       // if token IS
       cookies.set("token", props.token);
       console.log(5);
-      props.setModule("home");
+      toggleModule("home");
     } else if (props.token !== "" && props.token !== "clear") {
       props.fetchData(token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
@@ -76,7 +82,7 @@ console.log(props.module)
       props.checkToken(cookies.get("token"));
     } else {
       console.log("6 - no token, no cookie");
-      props.setModule("welcome");
+      toggleModule("welcome");
     }
   }, [token, cookies]);
 
@@ -84,7 +90,7 @@ console.log(props.module)
     console.log(13);
     setLoading(false);
     if (props.module != "post") {
-      // props.showPost({ show: false });
+      props.showPost({ show: false });
     }
   }, [props.module]);
 
@@ -93,14 +99,14 @@ console.log(props.module)
     if (Object.keys(props.location).length > 0) {
       console.log("object");
       // props.setLanguage(props.location.lang);
-      props.setModule("home");
+      toggleModule("home");
     }
   }, [props.location]);
 
   useEffect(() => {
     console.log(12);
     if (props.post) {
-      props.setModule("post");
+      toggleModule("post");
     }
   }, [props.post]);
 
@@ -124,7 +130,7 @@ console.log(props.module)
   }, []);
 
   const handleNewButtonClick = () => {
-    props.setModule("new");
+    toggleModule("new");
   };
 
   const AppComponent = (props: { children: any }) => (
@@ -250,7 +256,7 @@ console.log(props.module)
       break;
   }
 
-  const content = loading ? <Loading /> : show
+  const content = loading ? <Loading /> : show;
 
   return content;
 };
@@ -279,6 +285,7 @@ export default connect(
     login,
     fetchLocations,
     fetchData,
-    showPost
+    showPost,
+    prevModule
   }
 )(withCookies(App));

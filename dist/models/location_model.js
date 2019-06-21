@@ -53,9 +53,9 @@ exports.list = function (callback) {
             else {
                 callback(Message.notFound("locations"));
             }
+            MDB.client.close();
         });
     });
-    MDB.client.close();
 };
 /**
  * Function to create a location

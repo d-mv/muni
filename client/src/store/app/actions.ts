@@ -99,3 +99,7 @@ export const fetchLocations = (): ThunkAction<
       });
   };
 };
+
+export const prevModule = (module: string):Action => {
+  return {type:"PREV_MODULE",module}
+}
