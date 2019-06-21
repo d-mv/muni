@@ -47,7 +47,6 @@ const App = (props: {
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
-  const [locations, setLocations] = useState();
   axios.defaults.headers = { token };
 
   console.log(props.module);
@@ -59,7 +58,6 @@ const App = (props: {
 
   // set cookies if token changes
   useEffect(() => {
-    console.log(Object.keys(props.location).length);
     // if 'clear'
     if (props.token === "clear") {
       console.log(0);
@@ -74,7 +72,7 @@ const App = (props: {
       // if token IS
       cookies.set("token", props.token);
       console.log(5);
-      toggleModule("home");
+      if (props.locations.length > 0) toggleModule("home");
     } else if (props.token !== "" && props.token !== "clear") {
       props.fetchData(token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
@@ -97,8 +95,7 @@ const App = (props: {
   useEffect(() => {
     console.log(7);
     if (Object.keys(props.location).length > 0) {
-      console.log("object");
-      // props.setLanguage(props.location.lang);
+      console.log(7.1)
       toggleModule("home");
     }
   }, [props.location]);
@@ -112,14 +109,9 @@ const App = (props: {
 
   useEffect(() => {
     console.log(10);
-    // props.checkToken(cookies.get("token"));
-    // console.log(props.check.status);
-    // console.log(fetch);
     if (props.check.status) {
-      // setFetch(true);
       props.fetchData(token);
     } else {
-      // setFetch(false);
     }
   }, [props.check.status]);
 
@@ -233,7 +225,7 @@ const App = (props: {
     case "login":
       const Login = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
-        children: <Login locations={locations} />,
+        children: <Login />,
         nav: true,
         lazy: true
       });
@@ -241,7 +233,7 @@ const App = (props: {
     case "register":
       const Register = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
-        children: <Register register locations={locations} />,
+        children: <Register register locations={props.locations} />,
         nav: true,
         lazy: true
       });

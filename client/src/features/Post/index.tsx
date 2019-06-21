@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
-import { vote } from "../../store/users/actions";
+import { vote, setModule } from "../../store/users/actions";
 import { updatePost } from "../../store/post/actions";
 import { indexedObjAny, post, data } from "../../store/types";
 
@@ -24,6 +24,9 @@ import Button from "../../components/Button";
 import Card from "../../layout/Card";
 import Line from "../../layout/Line";
 import Thumb from "../../icons/Thumb";
+import Header from "../../components/Header";
+import Content from "../../layout/Content";
+import { Action } from "../../store/users/types";
 
 const Post = (props: {
   post: any;
@@ -32,6 +35,8 @@ const Post = (props: {
   vote: (arg0: string, arg1: string) => void;
   // action: (arg0: { _id: string; action: string; fields?: any }) => void;
   updatePost: (arg0: any) => void;
+  setModule: (arg0: string) => void;
+  prevModule: string;
 }) => {
   const { categories } = props.location;
   const {
@@ -51,7 +56,7 @@ const Post = (props: {
   const [textOpened, setTextOpened] = React.useState(false);
   const [replyOpened, setReplyOpened] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
-  
+
   const showStyle = textOpened ? style.text : style.textClosed;
   const voterText =
     votes.length === 1 ? text["post.voter"] : text["post.voters"];
@@ -197,41 +202,56 @@ const Post = (props: {
 
   // TODO: change
   const mockEdit = false;
-
+  const mockFnEdit = () => {};
+  const goHome = () => {
+    props.setModule(props.prevModule);
+  };
+  const headerObject = {
+    name: "",
+    right: { icon: <div>edit</div>, action: mockFnEdit },
+    left: { icon: <div>back</div>, action: goHome }
+  };
   return (
-    <div className={style.wrapper}>
-      <div data-testid='post__view' id={_id} className={style.post}>
-        <TopBlock category={category} title={title} numbersLine={numbersLine} />
-        <Photo src={photo} edit={mockEdit} />
-        <Link primary text={link} direction={direction} edit={mockEdit} />
-        <div className={showStyle}>
-          <Text
-            step
-            title={text["post.problem"]}
-            text={problem}
-            direction={direction}
+    <Content header>
+      <Header {...headerObject} />
+      <div className={style.wrapper}>
+        <div data-testid='post__view' id={_id} className={style.post}>
+          <TopBlock
+            category={category}
+            title={title}
+            numbersLine={numbersLine}
           />
-          <Text
-            back
-            title={text["post.solution"]}
-            text={solution}
+          <Photo src={photo} edit={mockEdit} />
+          <Link primary text={link} direction={direction} edit={mockEdit} />
+          <div className={showStyle}>
+            <Text
+              step
+              title={text["post.problem"]}
+              text={problem}
+              direction={direction}
+            />
+            <Text
+              back
+              title={text["post.solution"]}
+              text={solution}
+              direction={direction}
+            />
+          </div>
+          <ShowMore
+            color='primary'
+            title={showMoreLessText}
             direction={direction}
+            opened={textOpened}
+            action={setTextOpened}
           />
         </div>
-        <ShowMore
-          color='primary'
-          title={showMoreLessText}
-          direction={direction}
-          opened={textOpened}
-          action={setTextOpened}
-        />
+        {modal}
+        {newReplyButton}
+        {newReplyComponent}
+        {ReplyMessage}
+        {setOfThumbs}
       </div>
-      {modal}
-      {newReplyButton}
-      {newReplyComponent}
-      {ReplyMessage}
-      {setOfThumbs}
-    </div>
+    </Content>
   );
 };
 
@@ -241,11 +261,12 @@ const mapStateToProps = (state: AppState) => {
     location: state.locationData,
     // @ts-ignore
     post: state.posts.filter((post: any) => post._id === state.post._id)[0],
-    mode: state.mode
+    mode: state.mode,
+    prevModule: state.prevModule
   };
 };
 
 export default connect(
   mapStateToProps,
-  { vote, updatePost }
+  { vote, updatePost, setModule }
 )(Post);

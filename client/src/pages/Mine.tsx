@@ -24,7 +24,7 @@ const Mine = (props: { language: data; _id: string; allPosts: post[] }) => {
   console.log(posts);
   return (
     <Page data-testid='page__mine'>
-      <Header />;
+      {/* <Header />; */}
       <Content padded>
         <SubTitle title={text["mine.subtitle"]} direction={direction} />
         <PostList posts={posts} />;

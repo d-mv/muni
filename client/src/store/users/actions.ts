@@ -61,7 +61,6 @@ export const checkToken = (
             type: "LOGIN",
             payload: { ...response.data, code: response.status }
           })
-            dispatch({ type: "SET_MODULE", module: "home" });;
         } else {
           dispatch({ type: "SET", token: "clear" });
           dispatch({

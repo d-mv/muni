@@ -22,16 +22,14 @@ import Content from "../layout/Content";
 const Profile = (props: any) => {
   const { text, direction } = props.language;
 
-  const toggleHelp = () => {
-    props.showHelp(!props.help);
+  const headerObject = {
+    name: props.location.name[props.language.short]
   };
-
-  const header = <Header />;
 
   return (
     <Page>
-      {header}
-      <Content>
+      <Header {...headerObject} />
+      <Content header>
         <Section>
           <Paragraph direction={direction}>
             {text["profile.text.changeLanguage"]}

@@ -10,54 +10,25 @@ import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
 import Content from "../layout/Content";
+import { data } from "../store/types";
 
-// const contentFactory = (props: {
-//   header: React.ClassicElement<any>;
-//   pinnedCard: React.ClassicElement<any> | null;
-//   main: React.ClassicElement<any>;
-// }) => (
-//   <Page>
-//     {props.header}{" "}
-//     <Content padded>
-//       {props.pinnedCard}
-//       {props.main}
-//     </Content>
-//   </Page>
-// );
-
-const Home = (props: { posts: any; pinned: any }) => {
+const Home = (props: {
+  posts: any;
+  pinned: any;
+  language: string;
+  location: data;
+}) => {
   const { posts, pinned } = props;
 
-  // const handleUpdatePost = (updateProps: {
-  //   _id: string;
-  //   action: string;
-  //   fields?: any;
-  // }) => {
-  //   console.log("handle");
-  //   switch (updateProps.action) {
-  //     case "vote": {
-  //       const oldPosts = props.posts;
-  //       oldPosts.map((post: any) => {
-  //         if (post._id === updateProps._id)
-  //           if (!post.votes.includes(props.locationData._id)) {
-  //             console.log(post.votes);
-  //             post.votes.push(props.locationData._id);
-  //           }
-  //       });
-  //       props.setPosts(oldPosts);
-  //       props.vote(updateProps._id, props.locationData._id);
-  //     }
-  //   }
-  // };
-
-  // const handleAction = (actions: { mode: string; details: string }) => {
-  //   console.log(actions);
-  // };
+  const headerObject = {
+    name: props.location.name[props.language],
+    right: { icon: <div />, action: () => {} }
+  };
 
   return (
     <Page>
-      <Header />;
-      <Content padded>
+      <Header {...headerObject} />
+      <Content header>
         {pinned !== {} ? <PinnedCard post={pinned} /> : null}
         <PostList posts={posts} />;
       </Content>
@@ -67,6 +38,8 @@ const Home = (props: { posts: any; pinned: any }) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
+    location: state.locationData,
+    language: state.language.short,
     posts: state.posts,
     pinned: state.locationData
   };

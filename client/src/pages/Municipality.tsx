@@ -15,7 +15,7 @@ const Municipality = (props: { posts: post[] }) => {
 
   return (
     <Page>
-      <Header />;
+      {/* <Header />; */}
       <Content padded>
         <PostList posts={posts} />;
       </Content>

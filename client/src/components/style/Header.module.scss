@@ -1,15 +1,29 @@
 .plank {
   width: 100%;
   height: 5rem;
-  position: fixed;
+  // position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--colorWhite);
   z-index: 50;
+
 }
 
 .plankRTL {
   @extend .plank;
   direction: rtl;
+}
+
+.icon {
+  height: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  //  transform: rotate(180deg);
+}
+
+.iconRTL {
+  @extend .icon;
+  transform: rotate(180deg);
 }

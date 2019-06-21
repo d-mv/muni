@@ -21,15 +21,14 @@ const Post = (props: {post: data }) => {
 
   return (
     <Page>
-      <Header />
-      <Content padded>{component}</Content>
+      {component}
     </Page>
   );
 };
 
 const mapStateToProps = (state: AppState) => {
   return {
-    //@ts-ignore
+    // @ts-ignore
     post: state.post.type
   };
 };
