@@ -388,6 +388,7 @@ exports.isUserNew = function (user, callback) {
             // no result
             console.log("isUserNew?");
             console.log(result);
+            console.log(user);
             var response = {
                 status: false,
                 message: "User not found (email is not registered)",

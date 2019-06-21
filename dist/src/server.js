@@ -30,6 +30,16 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
+if (process.env.NODE_ENV === "production") {
+    app.use(function (req, res, next) {
+        if (!/https/.test(req.protocol)) {
+            res.redirect("https://" + req.headers.host + req.url);
+        }
+        else {
+            return next();
+        }
+    });
+}
 app.use("/api/user", user_router_1["default"]);
 app.use("/api/location", location_router_1["default"]);
 app.use("/api/post", post_router_1["default"]);

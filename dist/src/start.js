@@ -3,8 +3,14 @@
 exports.__esModule = true;
 var server_1 = require("./server");
 var debug_1 = require("debug");
+var https = require("https");
 var http = require("http");
+var dotenv = require("dotenv");
 var server = http.createServer(server_1["default"]);
+var dotEnv = dotenv.config();
+if (process.env.NODE_ENV === "production")
+    server = https.createServer(server_1["default"]);
+console.log(process.env.NODE_ENV);
 var normalizePort = function (value) {
     var port = parseInt(value, 10);
     if (isNaN(port)) {
