@@ -22,6 +22,8 @@ const Navigation = (props: any) => {
 
   const headerStyle = styleFactory("header", direction);
   const footerStyle = styleFactory("footer", direction);
+  console.log(direction);
+  console.log(footerStyle)
 
   // toggle module to show
   const action = (module: string) => {

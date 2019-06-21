@@ -58,7 +58,6 @@ export const register = (state = apiState, action: Action) => {
   return { ...state };
 };
 
-
 export const setModule = (state = "welcome", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
@@ -105,12 +104,15 @@ export const loadData = (state = {}, action: Action): data => {
  * @param action
  * @returns {string}
  */
-export const setLanguage = (state = {}, action: Action): indexedObjAny => {
+export const setLanguage = (
+  state = {},
+  action: Action
+): indexedObjAny => {
   switch (action.type) {
     case "SET_LANGUAGE":
       return { ...action.data };
   }
-  return importedData.language["עב"];
+  return state;
 };
 
 export const vote = (state = apiState, action: Action) => {
