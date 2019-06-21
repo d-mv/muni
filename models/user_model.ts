@@ -371,6 +371,7 @@ export const isUserNew = (
         // no result
         console.log("isUserNew?");
         console.log(result);
+        console.log(user);
         let response: TYPE.apiResponse = {
           status: false,
           message: "User not found (email is not registered)",

@@ -10,10 +10,10 @@ import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
 import Content from "../layout/Content";
-import { data } from "../store/types";
+import { data, post } from "../store/types";
 
 const Home = (props: {
-  posts: any;
+  posts: post[];
   pinned: any;
   language: string;
   location: data;
@@ -25,12 +25,18 @@ const Home = (props: {
     right: { icon: <div />, action: () => {} }
   };
 
+  const sortPostList = (posts: post[]) => {
+    return posts.sort((a: post, b: post) =>
+      a.votes.length < b.votes.length ? 1 : -1
+    );
+  };
+  
   return (
     <Page>
       <Header {...headerObject} />
       <Content header>
         {pinned !== {} ? <PinnedCard post={pinned} /> : null}
-        <PostList posts={posts} />;
+        <PostList posts={sortPostList(posts)} />;
       </Content>
     </Page>
   );

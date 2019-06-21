@@ -37,7 +37,7 @@ const PostCard = (props: {
   let voterText = "";
   let categoryElement: React.ClassicElement<any> = <Zero />;
   let voterElement: React.ClassicElement<any> = <Zero />;
-  let voteButtonElement: React.ClassicElement<any> = <Zero />;
+  // let voteButtonElement: React.ClassicElement<any> = <div className={style.button}/>;
 
   const { categories } = props.locationData;
   const categoryTranslated = categoryIdToName(
@@ -54,13 +54,13 @@ const PostCard = (props: {
   const voted = votes.includes(props.locationData._id);
   const muniUser = props.locationData.type === "muni";
 
-  voteButtonElement =
+  const voteButtonElement =
     !author && !voted && !muniUser ? (
       <span className={style.button}>
         <VoteButton />
       </span>
     ) : (
-      <Zero />
+      <div className={style.button}/>
     );
 
   const replyTag = reply ? (

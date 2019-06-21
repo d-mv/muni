@@ -154,7 +154,6 @@ export const posts = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   Post.list(props, (modelResponse: TYPE.apiResponse) => {
-    console.log("object");
     callback(modelResponse);
   });
 };
