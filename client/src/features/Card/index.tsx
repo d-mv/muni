@@ -69,7 +69,7 @@ const PostCard = (props: {
     );
 
   const replyTag = reply ? (
-    <RepliedTag text='replied' direction={direction} />
+    <RepliedTag text={text["post.replied"]} direction={direction} />
   ) : null;
 
   return (

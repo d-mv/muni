@@ -6,7 +6,7 @@ import styleFactory from "../../../modules/style_factory";
 const RepliedTag = (props: { text: string; direction: string }) => {
   return (
     <div className={style[styleFactory("tag", props.direction)]}>
-      <p>props.text</p>
+      <p>{props.text}</p>
     </div>
   );
 };

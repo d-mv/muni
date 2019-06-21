@@ -16,7 +16,7 @@ import ShowMore from "./components/ShowMore";
 import NumbersLine from "./components/NumbersLine";
 import VoteButton from "../../components/VoteButton";
 import Modal from "../../components/Modal";
-
+import { Voted } from "./components";
 import style from "./style/Post.module.scss";
 import Center from "../../layout/Center";
 import NewReply from "./components/NewReply";
@@ -94,12 +94,15 @@ const Post = (props: {
   const author = createdBy === props.location._id;
   const muniUser = props.location.type === "muni";
 
-  const voteButton =
+  let voteButton =
     includes || author || muniUser ? null : (
       <div className={style.voteButton} onClick={() => handleVoteClick()}>
         <VoteButton />
       </div>
     );
+
+  if (votes.includes(props.location._id))
+    voteButton = <Voted text={text["post.voted"]} direction={direction} />;
 
   const [newReply, setNewReply] = React.useState("");
   const [showNewReply, setShowNewReply] = React.useState(false);
@@ -159,46 +162,54 @@ const Post = (props: {
   };
 
   let replyCardColor = "secondary";
-  if (reply.up < reply.down) replyCardColor = "attention";
-  if (reply.up === reply.down) replyCardColor = "white";
+  if (reply) {
+    if (reply.up < reply.down) replyCardColor = "attention";
+    if (reply.up === reply.down) replyCardColor = "white";
 
-  const replyHeight = replyOpened ? "open" : "closed";
-  const replyCardStyle = generateStyleName("card", replyCardColor, replyHeight);
+    const replyHeight = replyOpened ? "open" : "closed";
+    const replyCardStyle = generateStyleName(
+      "card",
+      replyCardColor,
+      replyHeight
+    );
 
-  setOfThumbs = reply.text ? (
-    <div className={style.setOfThumbs}>
-      <Thumb frame='white' fill={replyCardColor} />
-      <Thumb frame='white' fill={replyCardColor} />
-    </div>
-  ) : null;
+    setOfThumbs = reply.text ? (
+      <div className={style.setOfThumbs}>
+        <Thumb frame='white' fill={replyCardColor} />
+        <Thumb frame='white' fill={replyCardColor} />
+      </div>
+    ) : null;
 
-  const replyVotes = (
-    <div className={style.replyVotes}>
-      <p>{reply.up.length.toLocaleString()}</p>
-      <Thumb frame='secondary' fill='secondary' />
-      <p>{reply.down.length.toLocaleString()}</p>
-      <Thumb frame='attention' fill='attention' />
-    </div>
-  );
+    const replyVotes = (
+      <div className={style.replyVotes}>
+        <p>{reply.up.length.toLocaleString()}</p>
+        <Thumb frame='secondary' fill='secondary' />
+        <p>{reply.down.length.toLocaleString()}</p>
+        <Thumb frame='attention' fill='attention' />
+      </div>
+    );
 
-  ReplyMessage = reply.text ? (
-    <div className={style[replyCardStyle]}>
-      {replyVotes}
-      <Line direction={direction}>
-        <span className={style.replyCardTitle}>{text["munireply.title"]}</span>
-      </Line>
-      <div className={style.replyMessage}>{reply.text}</div>
-      {reply.text.length > 50 ? (
-        <ShowMore
-          color='white'
-          title={showMoreLessText}
-          direction={direction}
-          opened={replyOpened}
-          action={setReplyOpened}
-        />
-      ) : null}
-    </div>
-  ) : null;
+    ReplyMessage = reply.text ? (
+      <div className={style[replyCardStyle]}>
+        {replyVotes}
+        <Line direction={direction}>
+          <span className={style.replyCardTitle}>
+            {text["munireply.title"]}
+          </span>
+        </Line>
+        <div className={style.replyMessage}>{reply.text}</div>
+        {reply.text.length > 50 ? (
+          <ShowMore
+            color='white'
+            title={showMoreLessText}
+            direction={direction}
+            opened={replyOpened}
+            action={setReplyOpened}
+          />
+        ) : null}
+      </div>
+    ) : null;
+  }
 
   // TODO: change
   const mockEdit = false;
@@ -245,6 +256,7 @@ const Post = (props: {
             action={setTextOpened}
           />
         </div>
+        <div className={style.voted}>{voteButton}</div>
         {modal}
         {newReplyButton}
         {newReplyComponent}
