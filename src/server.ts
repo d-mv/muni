@@ -33,6 +33,16 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
+if (process.env.NODE_ENV === "production") {
+  app.use((req: any, res: any, next: any) => {
+    if (!/https/.test(req.protocol)) {
+      res.redirect("https://" + req.headers.host + req.url);
+    } else {
+      return next();
+    }
+  });
+}
+
 app.use("/api/user", userRouter);
 app.use("/api/location", locationRouter);
 app.use("/api/post", postRouter);

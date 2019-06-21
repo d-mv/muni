@@ -2,9 +2,17 @@
 
 import app from "./server";
 import debug from "debug";
+import * as https from "https";
 import * as http from "http";
+import * as dotenv from "dotenv";
 
-const server = http.createServer(app);
+let server: any = http.createServer(app);
+
+const dotEnv = dotenv.config();
+
+if (process.env.NODE_ENV === "production") server = https.createServer(app);
+
+console.log(process.env.NODE_ENV);
 
 const normalizePort = (value: string) => {
   const port = parseInt(value, 10);
@@ -18,13 +26,12 @@ const normalizePort = (value: string) => {
     // port number
     return port;
   }
-
   return false;
 };
 
 const onError = (error: any) => {
-  console.log(new Date())
-    console.log(error);
+  console.log(new Date());
+  console.log(error);
 
   if (error.syscall !== "listen") {
     throw error;

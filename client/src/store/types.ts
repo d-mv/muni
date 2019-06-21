@@ -61,7 +61,6 @@ export interface indexedObjAny {
   [index: string]: any;
 }
 
-
 /**
  * Standard user post object type
  * @typedef {Object} post
@@ -90,6 +89,12 @@ export interface post {
   status: string;
   votes: Array<string>;
   newsId?: string;
+  reply?: {
+    date: Date;
+    text: string;
+    up: string[];
+    down: string[];
+  };
 }
 export interface postPreview {
   _id?: string;
@@ -128,4 +133,3 @@ export interface postEmpty {
 export interface data {
   [index: string]: any;
 }
-

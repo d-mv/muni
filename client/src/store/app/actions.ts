@@ -1,3 +1,4 @@
+// import { fetchLocations } from "./actions";
 import { Action } from "./types";
 import * as TYPE from "../types";
 import axios from "axios";
@@ -5,6 +6,7 @@ import data from "../../data/translation.json";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import locationsList from "../../modules/locations_list";
+import request from "../services";
 
 const importedData: TYPE.indexedObjAny = data;
 
@@ -69,37 +71,35 @@ export const fetchLocations = (): ThunkAction<
 > => {
   const url = "/location/list";
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    axios({
-      method: "get",
-      url
-    })
-      .then(response => {
-        // locations
-        let locations: any[];
-        const { status, code, message, payload } = response.data;
-        if (status && payload) {
-          locations = locationsList(payload, "עב");
-          dispatch({
-            type: "FETCH_LOCATIONS",
-            payload: { message, status, code, payload: locations }
-          });
-        } else {
-          dispatch({
-            type: "FETCH_LOCATIONS",
-            payload: { message, status, code }
-          });
-        }
-      })
-      .catch(error => {
-        const payload = error.response ? error.response.data : error.toString();
+    try {
+      const response: any = await request.locationsList;
+      const { status, code, message, payload } = response.data;
+      if (status && payload) {
         dispatch({
           type: "FETCH_LOCATIONS",
-          payload
+          payload: {
+            message,
+            status,
+            code,
+            payload: locationsList(payload, "עב")
+          }
         });
+      } else {
+        dispatch({
+          type: "FETCH_LOCATIONS",
+          payload: { message, status, code }
+        });
+      }
+    } catch (error) {
+      const payload = error.response ? error.response.data : error.toString();
+      dispatch({
+        type: "FETCH_LOCATIONS",
+        payload
       });
+    }
   };
 };
 
-export const prevModule = (module: string):Action => {
-  return {type:"PREV_MODULE",module}
-}
+export const prevModule = (module: string): Action => {
+  return { type: "PREV_MODULE", module };
+};

@@ -38,7 +38,7 @@ const App = (props: {
   location: data;
   locations: data;
   posttmp: data;
-  fetchLocations: () => void;
+  fetchLocations: (props?:any) => any;
   fetchData: (arg0: string) => void;
   cookies: any;
   showPost: (arg0: showPostPayload) => void;
