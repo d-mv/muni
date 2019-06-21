@@ -5,7 +5,6 @@ import { AppState } from "../../store";
 import { showHelp} from '../../store/app/actions'
 import styleFactory from "../../modules/style_factory";
 
-import Home from "./components/Home";
 import { data } from "../../store/types";
 
 const Help = (props: {

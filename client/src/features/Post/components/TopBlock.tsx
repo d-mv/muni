@@ -6,7 +6,7 @@ import Section from "../../../layout/Section";
 
 import styles from './style/TopBlock.module.scss'
 
-const TopBlock = (props: {
+export const TopBlock = (props: {
   category: string;
   title: string;
   numbersLine: React.ClassicElement<any>;
@@ -19,5 +19,3 @@ const TopBlock = (props: {
     </Section>
   );
 };
-
-export default TopBlock;

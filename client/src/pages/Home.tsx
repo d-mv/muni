@@ -41,7 +41,7 @@ const mapStateToProps = (state: AppState) => {
     location: state.locationData,
     language: state.language.short,
     posts: state.posts,
-    pinned: state.locationData
+    pinned: state.locationData.pinned
   };
 };
 

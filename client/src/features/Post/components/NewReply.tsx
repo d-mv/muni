@@ -7,7 +7,7 @@ import { placeholder } from "@babel/types";
 import Button from "../../../components/Button";
 import Label from "../../../layout/Label";
 
-const NewReply = (props: {
+export const NewReply = (props: {
   value: string;
   label: string;
   placeholder: string;
@@ -39,4 +39,3 @@ const NewReply = (props: {
   );
 };
 
-export default NewReply;

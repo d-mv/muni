@@ -11,11 +11,6 @@ import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
 import Content from "../layout/Content";
 
-const makePostsArray = (posts: Array<post>, id: string) => {
-  let result = posts.filter((post: post) => post.createdBy === id);
-  return result;
-};
-
 const Mine = (props: {
   language: data;
   _id: string;

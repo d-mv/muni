@@ -2,13 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 
 import shortText from "../../modules/short_text";
-import {
-  getCategories,
-  categoryIdToName
-} from "../../modules/category_processor";
+import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
-import { post, indexedObjAny, data, postMuni } from "../../store/types";
+import { post, indexedObjAny, data } from "../../store/types";
 import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
 import VoteButton from "../../components/VoteButton";
@@ -17,8 +14,6 @@ import Category from "./components/Category";
 import Title from "./components/Title";
 import Age from "./components/Age";
 import { RepliedTag } from "./components";
-
-import Block from "../../layout/Block";
 import Card from "../../layout/Card";
 import { Zero } from "../../layout/Utils";
 

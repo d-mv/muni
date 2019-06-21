@@ -7,18 +7,17 @@ const iconWrapper = (style: string, icon: JSX.Element) => (
   <div className={styles[style]}>{icon}</div>
 );
 
-const Photo = (props: {
+export const Photo = (props: {
   src: string;
   preview?: boolean;
   edit?: boolean;
   primary?: boolean;
   secondary?: boolean;
 }) => {
-
   const mainStyle = props.edit ? styles.editing : styles.show;
   const color = props.secondary ? "secondary" : "primary";
-  const iconDelete = iconWrapper('delete', <IconDelete color={color} />);
-  const iconEdit = iconWrapper('edit', <IconEdit color={color} />);
+  const iconDelete = iconWrapper("delete", <IconDelete color={color} />);
+  const iconEdit = iconWrapper("edit", <IconEdit color={color} />);
 
   const photo = <img src={props.src} className={styles.photo} />;
 
@@ -30,5 +29,3 @@ const Photo = (props: {
     </div>
   );
 };
-
-export default Photo;

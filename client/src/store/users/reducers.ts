@@ -1,7 +1,6 @@
 import { Action } from "./types";
 import { data, indexedObjAny } from "../types";
 import { apiState } from "../defaults";
-import importedData from "../../data/translation.json";
 
 export const setToken = (state = "", action: Action) => {
   switch (action.type) {

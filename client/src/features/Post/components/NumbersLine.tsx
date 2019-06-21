@@ -9,7 +9,7 @@ import { Separator } from "../../../layout/Utils";
 
 import style from "./style/NumbersLine.module.scss";
 
-const NumbersLine = (props: {
+export  const NumbersLine = (props: {
   date: string;
   daysText: Array<string>;
   direction: string;
@@ -37,5 +37,3 @@ const NumbersLine = (props: {
     </div>
   );
 };
-
-export default NumbersLine;

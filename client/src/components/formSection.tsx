@@ -1,7 +1,6 @@
 import React from "react";
 
 import Label from "../layout/Label";
-import { indexedObj, data } from "../store/types";
 import { down } from "../icons";
 import styleFactory from "../modules/style_factory";
 

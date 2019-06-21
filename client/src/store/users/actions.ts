@@ -128,7 +128,7 @@ export const login = (
       .then(response => {
         // if successful change page
         const module = "home";
-        const token = response.data.token;
+        // const token = response.data.token;
 
         console.log(response);
         console.log(response.data);

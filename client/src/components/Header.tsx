@@ -1,4 +1,4 @@
-import { indexedObj, indexedObjAny } from "../store/types";
+import { indexedObj} from "../store/types";
 
 import { AppState } from "../store";
 import styleFactory from "../modules/style_factory";

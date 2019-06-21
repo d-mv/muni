@@ -1,7 +1,6 @@
 // import { fetchLocations } from "./actions";
 import { Action } from "./types";
 import * as TYPE from "../types";
-import axios from "axios";
 import data from "../../data/translation.json";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";

@@ -8,7 +8,7 @@ const iconWrapper = (style: string, icon: JSX.Element) => (
   <div className={styles[style]}>{icon}</div>
 );
 
-const Link = (props: {
+export const Link = (props: {
   text: string;
   direction: string;
   primary?: boolean;
@@ -53,4 +53,3 @@ const Link = (props: {
   );
 };
 
-export default Link;
