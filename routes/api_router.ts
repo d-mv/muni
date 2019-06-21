@@ -5,7 +5,6 @@ import * as dotenv from "dotenv";
 const router = express.Router();
 
 const dotEnv = dotenv.config();
-const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 // ! seed the db with users/posts
 // router.get("/seed", (req: any, res: any, next: any) => {
