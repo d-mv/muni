@@ -19,7 +19,6 @@ import Navigation from "./features/Navigation";
 
 import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
-import Enter from "./pages/Enter";
 
 import { data } from "./store/types";
 import "./style/App.scss";
@@ -44,17 +43,14 @@ const App = (props: {
   cookies: any;
   showPost: (arg0: showPostPayload) => void;
 }) => {
-  console.log(props.posttmp);
-
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
-  const [int, setInt] = useState(false);
   const [locations, setLocations] = useState();
-
   axios.defaults.headers = { token };
 
-  console.log(props.check);
+console.log(props.module)
+
   // set cookies if token changes
   useEffect(() => {
     console.log(Object.keys(props.location).length);
@@ -85,9 +81,10 @@ const App = (props: {
   }, [token, cookies]);
 
   useEffect(() => {
+    console.log(13);
     setLoading(false);
     if (props.module != "post") {
-      props.showPost({ show: false });
+      // props.showPost({ show: false });
     }
   }, [props.module]);
 
@@ -101,6 +98,7 @@ const App = (props: {
   }, [props.location]);
 
   useEffect(() => {
+    console.log(12);
     if (props.post) {
       props.setModule("post");
     }
@@ -128,6 +126,7 @@ const App = (props: {
   const handleNewButtonClick = () => {
     props.setModule("new");
   };
+
   const AppComponent = (props: { children: any }) => (
     <div className='app'>{props.children}</div>
   );
@@ -168,13 +167,10 @@ const App = (props: {
     );
     return content;
   };
-  let show;
+  let show = <Loading />;
   switch (props.module) {
     case "welcome":
       show = componentFactory({ children: <Welcome />, nav: true });
-      break;
-    case "login":
-      show = componentFactory({ children: <Enter />, nav: true });
       break;
     case "confirmation":
       const Confirmation = React.lazy(() => import("./pages/Confirmation"));
@@ -184,15 +180,15 @@ const App = (props: {
         lazy: true
       });
       break;
-    // case "municipality":
-    //   const Municipality = React.lazy(() => import("./pages/Municipality"));
-    //   show = componentFactory({
-    //     children: <Municipality />,
-    //     nav: true,
-    //     lazy: true,
-    //     new: true
-    //   });
-    //   break;
+    case "municipality":
+      const Municipality = React.lazy(() => import("./pages/Municipality"));
+      show = componentFactory({
+        children: <Municipality />,
+        nav: true,
+        lazy: true,
+        new: true
+      });
+      break;
     case "new":
       const New = React.lazy(() => import("./pages/New"));
       show = componentFactory({
@@ -227,6 +223,15 @@ const App = (props: {
         lazy: true,
         new: true
       });
+      break;
+    case "login":
+      const Login = React.lazy(() => import("./pages/Enter"));
+      show = componentFactory({
+        children: <Login locations={locations} />,
+        nav: true,
+        lazy: true
+      });
+      break;
     case "register":
       const Register = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
@@ -245,7 +250,7 @@ const App = (props: {
       break;
   }
 
-  const content = loading ? <Loading /> : show || <Loading />;
+  const content = loading ? <Loading /> : show
 
   return content;
 };

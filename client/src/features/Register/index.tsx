@@ -12,12 +12,11 @@ import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
 
-/** Functional component to render login/register page
- *
+/** Functional component to render Register page content
  * @param {object} props - Object, containing functions & state from Redux
- * @returns {JSX.Element} - Login page
+ * @returns {JSX.Element} - Register content
  */
-const LoginUser = (props: {
+const Register = (props: {
   locations: { value: string; label: string }[];
   storedLocations?: TYPE.data;
   language: TYPE.indexedObjAny;
@@ -182,4 +181,4 @@ const mapStateToProps = (state: AppState) => {
 export default connect(
   mapStateToProps,
   { register, setModule, setMessage }
-)(LoginUser);
+)(Register);

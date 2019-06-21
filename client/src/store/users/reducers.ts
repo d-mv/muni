@@ -59,7 +59,7 @@ export const register = (state = apiState, action: Action) => {
 };
 
 
-export const setModule = (state = "", action: Action): string => {
+export const setModule = (state = "welcome", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;

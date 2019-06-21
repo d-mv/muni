@@ -11,7 +11,6 @@ import style from "./style/Login.module.scss";
 import { data } from "../store/types";
 
 /** Functional component to render login/register page
- *
  * @returns {JSX.Element} - Login page
  */
 const Enter = (props: { register?: boolean; locations?: data }) => {

@@ -60,7 +60,8 @@ export const checkToken = (
           dispatch({
             type: "LOGIN",
             payload: { ...response.data, code: response.status }
-          });
+          })
+            dispatch({ type: "SET_MODULE", module: "home" });;
         } else {
           dispatch({ type: "SET", token: "clear" });
           dispatch({
@@ -90,9 +91,6 @@ export const setModule = (
   module: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    if (module === "login") {
-      dispatch({ type: "CHANGE_MODE", mode: "login" });
-    }
     dispatch({ type: "SET_MODULE", module });
   };
 };

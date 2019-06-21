@@ -23,7 +23,7 @@ const Header = (props: {
   // complain?: boolean;
 }) => {
   // ! mock
-  const returnTo= "home";
+  const returnTo = "home";
   const help = () => {};
   const action = (arg: any) => {};
   const edit = false;
@@ -32,37 +32,43 @@ const Header = (props: {
 
   const { direction } = props.language;
 
-  const title: string = props.locationData.name[props.language.short]
-    ? props.locationData.name[props.language.short]
-    : props.locationData.name["עב"];
+  // const title: string = props.locationData.name[props.language.short]
+  //   ? props.locationData.name[props.language.short]
+  //   : props.locationData.name["עב"];
 
-  const handleReturn = () => {
-    props.setModule(returnTo);
-  };
-  let mode = "";
-  const handleSecondaryClick = () => {
-    if (action) {
-      action({ mode, details: "something" });
-    }
-  };
+  // const handleReturn = () => {
+  //   props.setModule(returnTo);
+  // };
+  // let mode = "";
+  // const handleSecondaryClick = () => {
+  //   if (action) {
+  //     action({ mode, details: "something" });
+  //   }
+  // };
 
-  let secondButton: React.ClassicElement<any> = <div />;
-  if (edit) {
-    secondButton = <Edit color='primary' />;
-    mode = "edit";
-  } else if (complain) {
-    secondButton = <Complain />;
-    mode = "complain";
-  }
+  // let secondButton: React.ClassicElement<any> = <div />;
+  // if (edit) {
+  //   secondButton = <Edit color='primary' />;
+  //   mode = "edit";
+  // } else if (complain) {
+  //   secondButton = <Complain />;
+  //   mode = "complain";
+  // }
+
+  const leftButton = "";
+  const rightButton = "";
+
+  const title = "";
+
   return (
     <header className={styles[styleFactory("plank", direction)]}>
       <Button mode='minimal' action={help}>
         <Help color='primary' />
       </Button>
-      <Title title={title} direction={direction} return={handleReturn} />
-      <Button mode='minimal' action={() => handleSecondaryClick()}>
+      {/* <Title title={title} direction={direction} return={handleReturn} /> */}
+      {/* <Button mode='minimal' action={() => handleSecondaryClick()}>
         {secondButton}
-      </Button>
+      </Button> */}
     </header>
   );
 };

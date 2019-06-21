@@ -5,3 +5,4 @@ exports.apiState = {
     message: "",
     code: 100
 };
+exports.showPostState = { show: false, type: "", _id: "" };

@@ -80,11 +80,16 @@ const Navigation = (props: any) => {
     default:
       component = (
         <nav className={styleFactory("footer", direction)}>
-          <NavButton mode='nav' icon='home' action={action} />
-          <NavButton mode='nav' icon='municipality' action={action} />
+          <NavButton mode='nav' icon='home' action={props.setModule} />
+          <NavButton mode='nav' icon='municipality' action={props.setModule} />
           <NavButton mode='empty' />
-          <NavButton mode='nav' icon='mine' action={action} />
-          <NavButton mode='nav' icon='profile' active={true} action={action} />
+          <NavButton mode='nav' icon='mine' action={props.setModule} />
+          <NavButton
+            mode='nav'
+            icon='profile'
+            active={true}
+            action={props.setModule}
+          />
         </nav>
       );
   }

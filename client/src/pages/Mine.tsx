@@ -12,10 +12,7 @@ import SubTitle from "../layout/SubTitle";
 import Content from "../layout/Content";
 
 const makePostsArray = (posts: Array<post>, id: string) => {
-  let result: Array<post> = [];
-  posts.map((post: post) => {
-    if (post.createdBy === id) result.push(post);
-  });
+  let result = posts.filter((post: post) => post.createdBy === id);
   return result;
 };
 
@@ -23,10 +20,10 @@ const Mine = (props: { language: data; _id: string; allPosts: post[] }) => {
   const { direction, text } = props.language;
   const { allPosts, _id } = props;
 
-  const posts = makePostsArray(allPosts, _id);
-
+  const posts = allPosts.filter((post: post) => post.createdBy === _id);
+  console.log(posts);
   return (
-    <Page>
+    <Page data-testid='page__mine'>
       <Header />;
       <Content padded>
         <SubTitle title={text["mine.subtitle"]} direction={direction} />

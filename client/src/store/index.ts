@@ -92,7 +92,7 @@ export default function configureStore() {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "",
+    module: "welcome",
     locations: [],
     loading: false,
     register: apiState,

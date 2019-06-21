@@ -382,7 +382,6 @@ export const isUserNew = (
           response.code = 500;
         } else if (result.length === 1) {
           // match
-
           response = {
             status: true,
             message: "User found",
