@@ -8,13 +8,13 @@
     />
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>React App</title>
+    <title>Our Change</title>
   </head>
   <style>
     :root {
       --colorPrimary: #478fdf;
       --colorWhite: #fcfcfc;
-      --pageShadow: 0 0.3rem 0.3rem 0.5rem rgba(68, 68, 68, 0.12);
+      --pageShadow: 0 0.1rem 0.3rem rgba(68, 68, 68, 0.4);
       --pageShadowOpposite: 0 -0.3rem 0.3rem 0.3rem var(--colorDarkTransLight);
     }
     .app {
@@ -29,7 +29,6 @@
     .page,
     .pageOpposite,
     .pageWithContent {
-      height: 90%;
       position: fixed;
       left: 0;
       right: 0;
@@ -40,10 +39,11 @@
     .page,
     .pageWithContent,
     .welcome {
+      bottom: 6rem;
       top: 0;
     }
-
     .pageOpposite {
+      top: 6rem;
       bottom: 0;
     }
     .welcome,
@@ -66,6 +66,7 @@
     .pageOpposite {
       border-radius: 2.5rem 2.5rem 0 0;
       box-shadow: var(--pageShadowOpposite);
+      border-top: 0.3rem solid var(--colorWhite) !important;
     }
 
     .pageWithContent {

@@ -1,5 +1,5 @@
 import { Action } from "./types";
-import { data } from "../types";
+import { data, indexedObjAny } from "../types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action) => {
@@ -24,8 +24,6 @@ export const checkToken = (state = { token: "" }, action: Action) => {
   }
   return { ...state };
 };
-
-
 
 export const changeMode = (state = "login", action: Action) => {
   switch (action.type) {
@@ -58,15 +56,8 @@ export const register = (state = apiState, action: Action) => {
   }
   return { ...state };
 };
-export const fetchLocations = (state = apiState, action: Action) => {
-  switch (action.type) {
-    case "FETCH_LOCATIONS":
-      return action.payload;
-  }
-  return { ...state };
-};
 
-export const setModule = (state = "", action: Action): string => {
+export const setModule = (state = "welcome", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;
@@ -112,7 +103,10 @@ export const loadData = (state = {}, action: Action): data => {
  * @param action
  * @returns {string}
  */
-export const setLanguage = (state = {}, action: Action): data => {
+export const setLanguage = (
+  state = {},
+  action: Action
+): indexedObjAny => {
   switch (action.type) {
     case "SET_LANGUAGE":
       return { ...action.data };

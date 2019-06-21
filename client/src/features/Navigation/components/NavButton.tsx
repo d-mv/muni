@@ -40,6 +40,7 @@ const NavButton = (props: {
   const testId = `${mode}__button`;
 
   const actionHandler = (action?: any) => {
+    console.log(action)
     if (props.action) props.action(action);
   };
 
@@ -75,7 +76,7 @@ const NavButton = (props: {
     default:
       const modeDetails = mode.split("-");
       if (modeDetails[0] === "return") {
-        component = buttonFactory(style.return, goBack, modeDetails[1]);
+        component = buttonFactory(style.return, goBack("white"), modeDetails[1]);
       } else {
         component = null;
       }

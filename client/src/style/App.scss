@@ -204,6 +204,8 @@
   position: absolute;
   left: 0;
   right: 0;
+  height: 6rem;
+  // min-height: 6rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -212,7 +214,7 @@
 .header {
   @extend .nav-template;
   top: 0;
-  height: 10%;
+  // height: 10%;
   margin: 0 auto;
   width: 95%;
   justify-content: space-between;
@@ -238,7 +240,7 @@
 .footer-template {
   @extend .nav-template;
   bottom: 0;
-  height: 10%;
+  // height: 10%;
 }
 
 .footer {
@@ -289,6 +291,7 @@
 
 .content {
   width: 100%;
+  // height: auto;
   overflow: scroll;
   margin-top: 5rem;
 }
@@ -304,8 +307,13 @@
 .content-header {
   @extend .content;
   width: 95%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
+.content-header-sub {
+  @extend .content-header;
+  overflow: auto;
 }
 
 .app-logo {

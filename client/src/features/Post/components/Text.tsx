@@ -1,12 +1,11 @@
 import React from "react";
 
-import Solution from "./Solution";
-import Problem from "./Problem";
+import {ParagraphBlock} from "./";
 
 import Section from "../../../layout/Section";
 import Line from "../../../layout/Line";
 
-const Text = (props: {
+export  const Text = (props: {
   step?: boolean;
   back?: boolean;
   muni?: boolean;
@@ -22,9 +21,9 @@ const Text = (props: {
   ) : null;
 
   const text = props.back ? (
-    <Solution text={props.text} direction={direction} />
+    <ParagraphBlock text={props.text} direction={direction} />
   ) : (
-    <Problem text={props.text} direction={direction} />
+    <ParagraphBlock text={props.text} direction={direction} />
   );
 
   let wrapper: React.ClassicElement<any> = <div />;
@@ -53,5 +52,3 @@ const Text = (props: {
   }
   return wrapper;
 };
-
-export default Text;

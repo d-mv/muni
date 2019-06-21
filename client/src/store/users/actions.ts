@@ -2,7 +2,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios, { AxiosResponse } from "axios";
 import { Action } from "./types";
 import * as TYPE from "../types";
-import locationsList from "../../modules/locations_list";
+
 
 import { AnyAction } from "redux";
 import { apiState } from "../defaults";
@@ -60,7 +60,7 @@ export const checkToken = (
           dispatch({
             type: "LOGIN",
             payload: { ...response.data, code: response.status }
-          });
+          })
         } else {
           dispatch({ type: "SET", token: "clear" });
           dispatch({
@@ -90,9 +90,6 @@ export const setModule = (
   module: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    if (module === "login") {
-      dispatch({ type: "CHANGE_MODE", mode: "login" });
-    }
     dispatch({ type: "SET_MODULE", module });
   };
 };
@@ -131,7 +128,7 @@ export const login = (
       .then(response => {
         // if successful change page
         const module = "home";
-        const token = response.data.token;
+        // const token = response.data.token;
 
         console.log(response);
         console.log(response.data);
@@ -293,48 +290,6 @@ export const setMessage = (message: string) => {
   };
 };
 
-/**
- * Action function to fetch list of locations from API
- * @function fetchLocations
- * @return {Promise} - Returns promise resolved with the help of Thunk
- */
-export const fetchLocations = (): ThunkAction<
-  Promise<void>,
-  {},
-  {},
-  AnyAction
-> => {
-  const url = "/location/list";
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    axios({
-      method: "get",
-      url
-    })
-      .then(response => {
-        // locations
-        let locations: Array<any>[];
-        if (response.data.status && response.data.payload) {
-          locations = locationsList(response.data.payload, "en");
-          dispatch({
-            type: "FETCH_LOCATIONS",
-            payload: { payload: locations, code: response.status }
-          });
-        } else {
-          dispatch({
-            type: "FETCH_LOCATIONS",
-            payload: { code: response.status }
-          });
-        }
-      })
-      .catch(error => {
-        const payload = error.response ? error.response.data : error.toString();
-        dispatch({
-          type: "FETCH_LOCATIONS",
-          payload
-        });
-      });
-  };
-};
 
 /**
  * Action function to load built-in data

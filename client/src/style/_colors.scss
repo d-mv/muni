@@ -5,8 +5,9 @@
   // --colorPrimary: #478FDF;
   --colorPrimaryTrans: rgba(71, 143, 223, 0.3);
   --colorPrimaryLight: #aed2f9;
-  --colorSecondary: #03AD24;
-  --colorAttention: #FF072E;
+  --colorSecondary: #379B37;
+  --colorSecondaryTrans: rgba(55, 155, 55,0.5);
+  --colorAttention: #E33039;
   --colorDark: #444;
   --colorDarkTrans: rgba(68, 68, 68, 0.3);
   --colorDarkTransLight: rgba(68, 68, 68, 0.12);
@@ -19,8 +20,12 @@
   /// Shadows
   --boxShadow: 0 .1rem .3rem var(--colorDarkTransLight),
     0 1px .2rem rgba(68, 68, 68, 0.24);
+
+  // --boxShadow: 0 .1rem .3rem var(--colorDarkTransLight),
+  //   0 1px .2rem rgba(68, 68, 68, 0.24);
+
   // --pageShadow: 0 .3rem .3rem .5rem var(--colorDarkTransLight);
- 
+
   --boxShadowHover: 0 1.4rem 2.8rem rgba(68, 68, 68, 0.25),
     0 1rem 1rem rgba(68, 68, 68, 0.22);
   --svgShadowHover: 0 1.2rem .5rem rgba(68, 68, 68, 0.22);

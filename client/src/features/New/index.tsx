@@ -10,8 +10,6 @@ import { submitPost } from "../../store/post/actions";
 import { setModule } from "../../store/users/actions";
 import { indexedObjAny, data } from "../../store/types";
 
-import Post from "../Post";
-
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import PhotoUpload from "./components/PhotoUpload";
@@ -27,6 +25,7 @@ import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
+import Header from "../../components/Header";
 
 const NewPost = (props: {
   language: data;
@@ -37,6 +36,7 @@ const NewPost = (props: {
   setStep: (arg0: number) => void;
   submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
+  prevModule: string;
 }) => {
   const { direction, text } = props.language;
   const { categories, _id, location } = props.location;
@@ -60,10 +60,10 @@ const NewPost = (props: {
   }, [step]);
 
   const getCategories = () => {
-    let result: Array<{ [index: string]: string }> = [];
+    let result: { value: string; label: string }[] = [];
     categories.map((cat: any) => {
       const language = !Object.keys(cat).includes(props.language.short)
-        ? "en"
+        ? "עב"
         : props.language.short;
       result.push({ value: cat._id, label: cat[language] });
     });
@@ -324,12 +324,22 @@ const NewPost = (props: {
     status: "",
     votes: []
   };
-  const preview =
-    step === 6 ? <Post preview post={post} action={mockFn} /> : null;
+  // TODO: fix below
+  const preview = null;
+  // step === 6 ? <Post preview post={post} action={mockFn} /> : null;
   const loadingElement = loading ? <Loading /> : null;
 
+  const goHome = () => {
+    props.setModule(props.prevModule);
+  };
+  const headerObject = {
+    name: "New Post",
+    left: { icon: <div>back</div>, action: goHome }
+  };
+
   return (
-    <Content padded>
+    <Content header>
+      <Header {...headerObject} />
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
@@ -362,7 +372,8 @@ const mapStateToProps = (state: AppState) => {
     location: state.locationData,
     token: state.token,
     submitResult: state.submitPost,
-    step: state.step
+    step: state.step,
+    prevModule: state.prevModule
   };
 };
 

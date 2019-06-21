@@ -2,38 +2,45 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { categoryIdToName } from "../../modules/category_processor";
+import { replyCardStyleUtil } from "../../modules/reply_style_generator";
 
 import { AppState } from "../../store";
-import { vote } from "../../store/users/actions";
+import { vote, setModule } from "../../store/users/actions";
 import { updatePost } from "../../store/post/actions";
 import { indexedObjAny, post, data } from "../../store/types";
 
-import Photo from "./components/Photo";
-import Link from "./components/Link";
-import Text from "./components/Text";
-import TopBlock from "./components/TopBlock";
-import ShowMore from "./components/ShowMore";
-import NumbersLine from "./components/NumbersLine";
 import VoteButton from "../../components/VoteButton";
+import Header from "../../components/Header";
 import Modal from "../../components/Modal";
 
-import style from "./style/Post.module.scss";
-import Center from "../../layout/Center";
-import NewReply from "./components/NewReply";
-import Button from "../../components/Button";
-import Card from "../../layout/Card";
+import {
+  Photo,
+  Link,
+  Text,
+  TopBlock,
+  ShowMore,
+  NumbersLine,
+  NewReply,
+  Voted,
+  SetOfThumbs,
+  ReplyVotes,
+  NewReplyButton,
+  ModalView
+} from "./components";
+
 import Line from "../../layout/Line";
-import Thumb from "../../icons/Thumb";
+import Content from "../../layout/Content";
+
+import style from "./style/Post.module.scss";
 
 const Post = (props: {
-  post: any;
+  post: post;
   language: indexedObjAny;
   location: data;
-  preview?: boolean;
-  edit?: boolean;
   vote: (arg0: string, arg1: string) => void;
-  action: (arg0: { _id: string; action: string; fields?: any }) => void;
   updatePost: (arg0: any) => void;
+  setModule: (arg0: string) => void;
+  prevModule: string;
 }) => {
   const { categories } = props.location;
   const {
@@ -52,8 +59,10 @@ const Post = (props: {
 
   const [textOpened, setTextOpened] = React.useState(false);
   const [replyOpened, setReplyOpened] = React.useState(false);
-
   const [showConfirm, setShowConfirm] = React.useState(false);
+  const [newReply, setNewReply] = React.useState("");
+  const [showNewReply, setShowNewReply] = React.useState(false);
+
   const showStyle = textOpened ? style.text : style.textClosed;
   const voterText =
     votes.length === 1 ? text["post.voter"] : text["post.voters"];
@@ -65,7 +74,7 @@ const Post = (props: {
 
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    props.action({ _id, action: "vote" });
+    // props.action({ _id, action: "vote" });
   };
 
   const numbersLine = (
@@ -77,29 +86,25 @@ const Post = (props: {
       voterText={voterText}
     />
   );
+
   const modal = showConfirm ? (
-    <Modal close={handleVoteClick}>
-      <div className={style.square}>
-        <Center>
-          <span className={style.modalText}>{text["vote.thanks"]}</span>
-        </Center>
-      </div>
-    </Modal>
+    <ModalView close={handleVoteClick} text={text["vote.thanks"]} />
   ) : null;
 
   const includes = votes.includes(props.location._id);
   const author = createdBy === props.location._id;
   const muniUser = props.location.type === "muni";
 
-  const voteButton =
+  let voteButton =
     includes || author || muniUser ? null : (
       <div className={style.voteButton} onClick={() => handleVoteClick()}>
         <VoteButton />
       </div>
     );
 
-  const [newReply, setNewReply] = React.useState("");
-  const [showNewReply, setShowNewReply] = React.useState(false);
+  if (votes.includes(props.location._id))
+    voteButton = <Voted text={text["post.voted"]} direction={direction} />;
+
   const handleNewReplyChange = (event: any) => {
     switch (event.target.name) {
       case "replyText":
@@ -127,62 +132,33 @@ const Post = (props: {
   let ReplyMessage: any = "";
   let setOfThumbs: any = "";
 
-
-  if (!props.preview) {
-    newReplyButton =
-      muniUser && !reply ? (
-        <div className={style.buttonWrapper}>
-          <Button mode='primary' action={toggleShowNewReplyButton}>
-            new reply
-          </Button>
-        </div>
-      ) : null;
-    newReplyComponent = showNewReply ? (
-      <Modal disabled close={handleNewReplySubmit}>
-        <NewReply
-          label={text["newreply.label"]}
-          value={newReply}
-          placeholder={text["newreply.placeholder"]}
-          action={handleNewReplyChange}
-          direction={direction}
-          submit={handleNewReplySubmit}
-          submitText={text["login.button.submit"]}
-        />
-      </Modal>
+  newReplyButton =
+    muniUser && !reply ? (
+      <NewReplyButton action={toggleShowNewReplyButton} />
     ) : null;
+  newReplyComponent = showNewReply ? (
+    <Modal disabled close={handleNewReplySubmit}>
+      <NewReply
+        label={text["newreply.label"]}
+        value={newReply}
+        placeholder={text["newreply.placeholder"]}
+        action={handleNewReplyChange}
+        direction={direction}
+        submit={handleNewReplySubmit}
+        submitText={text["login.button.submit"]}
+      />
+    </Modal>
+  ) : null;
 
-    const generateStyleName = (t1: string, t2: string, t3?: string) => {
-      let styleName = t1 + t2[0].toUpperCase() + t2.slice(1);
-      if (t3) styleName = styleName + t3[0].toUpperCase() + t3.slice(1);
-      return styleName;
-    };
-
-    let replyCardColor = "secondary";
-    if (reply.up < reply.down) replyCardColor = "attention";
-    if (reply.up === reply.down) replyCardColor = "white";
-
-    const replyHeight = replyOpened ? "open" : "closed";
-    const replyCardStyle = generateStyleName(
-      "card",
-      replyCardColor,
-      replyHeight
+  if (reply) {
+    const { replyCardStyle, replyCardColor } = replyCardStyleUtil(
+      reply,
+      replyOpened
     );
-    console.log(replyCardStyle);
 
-    setOfThumbs = reply.text ? (
-      <div className={style.setOfThumbs}>
-        <Thumb frame='white' fill={replyCardColor} />
-        <Thumb frame='white' fill={replyCardColor} />
-      </div>
-    ) : null;
-
+    setOfThumbs = reply.text ? <SetOfThumbs fill={replyCardColor} /> : null;
     const replyVotes = (
-      <div className={style.replyVotes}>
-        <p>{reply.up.length.toLocaleString()}</p>
-        <Thumb frame='secondary' fill='secondary' />
-        <p>{reply.down.length.toLocaleString()}</p>
-        <Thumb frame='attention' fill='attention' />
-      </div>
+      <ReplyVotes replies={{ up: reply.up, down: reply.down }} />
     );
 
     ReplyMessage = reply.text ? (
@@ -207,52 +183,74 @@ const Post = (props: {
     ) : null;
   }
 
+  // TODO: change
+  const mockEdit = false;
+  const mockFnEdit = () => {};
+  const goHome = () => {
+    props.setModule(props.prevModule);
+  };
+  const headerObject = {
+    name: "",
+    right: { icon: <div>edit</div>, action: mockFnEdit },
+    left: { icon: <div>back</div>, action: goHome }
+  };
   return (
-    <div className={style.wrapper}>
-      <div data-testid='post__view' id={_id} className={style.post}>
-        <TopBlock category={category} title={title} numbersLine={numbersLine} />
-        <Photo src={photo} edit={props.edit} />
-        <Link primary text={link} direction={direction} edit={props.edit} />
-        <div className={showStyle}>
-          <Text
-            step
-            title={text["post.problem"]}
-            text={problem}
-            direction={direction}
+    <Content headerSub>
+      <Header {...headerObject} />
+      <div className={style.wrapper}>
+        <div data-testid='post__view' id={_id} className={style.post}>
+          <TopBlock
+            category={category}
+            title={title}
+            numbersLine={numbersLine}
           />
-          <Text
-            back
-            title={text["post.solution"]}
-            text={solution}
+          <Photo src={photo} edit={mockEdit} />
+          <Link primary text={link} direction={direction} edit={mockEdit} />
+          <div className={showStyle}>
+            <Text
+              step
+              title={text["post.problem"]}
+              text={problem}
+              direction={direction}
+            />
+            <Text
+              back
+              title={text["post.solution"]}
+              text={solution}
+              direction={direction}
+            />
+          </div>
+          <ShowMore
+            color='primary'
+            title={showMoreLessText}
             direction={direction}
+            opened={textOpened}
+            action={setTextOpened}
           />
         </div>
-        <ShowMore
-          color='primary'
-          title={showMoreLessText}
-          direction={direction}
-          opened={textOpened}
-          action={setTextOpened}
-        />
+        <div className={style.voted}>{voteButton}</div>
+        {modal}
+        {newReplyButton}
+        {newReplyComponent}
+        {ReplyMessage}
+        {setOfThumbs}
       </div>
-      {props.preview ? null : voteButton}
-      {modal}
-      {newReplyButton}
-      {newReplyComponent}
-      {ReplyMessage}
-      {setOfThumbs}
-    </div>
+    </Content>
   );
 };
 
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    location: state.locationData
+    location: state.locationData,
+    // @ts-ignore
+    post: state.posts.filter((post: any) => post._id === state.post._id)[0],
+    mode: state.mode,
+    prevModule: state.prevModule
   };
 };
 
 export default connect(
   mapStateToProps,
-  { vote, updatePost }
+  { vote, updatePost, setModule }
 )(Post);

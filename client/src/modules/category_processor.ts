@@ -5,9 +5,7 @@ export const getCategories = (
   language: string
 ): Array<indexedObj> => {
   let categories: Array<indexedObj> = [];
-  catArray.map((cat: any) => {
-    categories.push({ value: cat._id, label: cat[language] });
-  });
+  catArray.map((cat: any) => categories.push({ value: cat._id, label: cat[language] }));
   return categories;
 };
 

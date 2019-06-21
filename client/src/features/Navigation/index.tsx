@@ -20,6 +20,11 @@ import { Spacer } from "../../layout/Utils";
 const Navigation = (props: any) => {
   const { direction } = props.language;
 
+  const headerStyle = styleFactory("header", direction);
+  const footerStyle = styleFactory("footer", direction);
+  console.log(direction);
+  console.log(footerStyle)
+
   // toggle module to show
   const action = (module: string) => {
     switch (module) {
@@ -36,14 +41,14 @@ const Navigation = (props: any) => {
   switch (props.module) {
     case "welcome":
       component = (
-        <nav className={styleFactory("footer", direction)}>
+        <nav className={footerStyle}>
           <EntranceButton action={action} />
         </nav>
       );
       break;
     case "login":
       component = (
-        <nav className={styleFactory("header", direction)}>
+        <nav className={headerStyle}>
           <NavButton mode='return-welcome' action={action} />
           <h1>Our Change</h1>
           <Spacer size={10} units='%' />
@@ -52,8 +57,8 @@ const Navigation = (props: any) => {
       break;
     case "register":
       component = (
-        <nav className={styleFactory("header", direction)}>
-          <NavButton mode='return-welcome' action={action} />
+        <nav className={headerStyle}>
+          <NavButton mode='return-login' action={action} />
           <h1>Our Change</h1>
           <Spacer size={10} units='%' />
         </nav>
@@ -61,7 +66,7 @@ const Navigation = (props: any) => {
       break;
     case "new":
       component = (
-        <nav className={styleFactory("header", direction)}>
+        <nav className={headerStyle}>
           <NavButton mode='return-home' action={action} />
           <h1>Create New</h1>
           <Spacer size={10} units='%' />
@@ -70,7 +75,7 @@ const Navigation = (props: any) => {
       break;
     case "confirmation":
       component = (
-        <nav className={styleFactory("header", direction)}>
+        <nav className={headerStyle}>
           <NavButton mode='confirmation' action={action}>
             RETURN
           </NavButton>
@@ -79,12 +84,17 @@ const Navigation = (props: any) => {
       break;
     default:
       component = (
-        <nav className={styleFactory("footer", direction)}>
-          <NavButton mode='nav' icon='home' action={action} />
-          <NavButton mode='nav' icon='municipality' action={action} />
+        <nav className={footerStyle}>
+          <NavButton mode='nav' icon='home' action={props.setModule} />
+          <NavButton mode='nav' icon='municipality' action={props.setModule} />
           <NavButton mode='empty' />
-          <NavButton mode='nav' icon='mine' action={action} />
-          <NavButton mode='nav' icon='profile' active={true} action={action} />
+          <NavButton mode='nav' icon='mine' action={props.setModule} />
+          <NavButton
+            mode='nav'
+            icon='profile'
+            active={true}
+            action={props.setModule}
+          />
         </nav>
       );
   }

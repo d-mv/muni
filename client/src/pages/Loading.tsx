@@ -1,7 +1,5 @@
 import React from "react";
 
-import Logo from '../components/Logo'
-
 import style from "./style/Loading.module.scss";
 import { VectorLogo } from "../icons/Welcome";
 

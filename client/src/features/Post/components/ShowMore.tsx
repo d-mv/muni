@@ -6,15 +6,16 @@ import { indexedObj } from "../../../store/types";
 
 import styles from "./style/ShowMore.module.scss";
 
-const ShowMore = (props: {
+export const ShowMore = (props: {
   title: indexedObj;
   direction: string;
   opened: boolean;
-  color:string
+  color: string;
   action: (arg0: boolean) => void;
 }) => {
   const styleName = props.opened ? "open" : "close";
-  const showStyle = styles[styleFactory(`${styleName}${props.color}`, props.direction)];
+  const showStyle =
+    styles[styleFactory(`${styleName}${props.color}`, props.direction)];
   return (
     <div className={showStyle}>
       <button onClick={() => props.action(!props.opened)}>
@@ -25,5 +26,3 @@ const ShowMore = (props: {
     </div>
   );
 };
-
-export default ShowMore;

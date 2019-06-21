@@ -37,7 +37,7 @@ const dateBeautify = (date: string, language: string, brief?: boolean) => {
     return `${parsed.getDate()}/${month}/${parsed.getFullYear()}`;
   } else {
     let langRequest = !Object.keys(data.language).includes(language)
-      ? "en"
+      ? "עב"
       : language;
 
     return `${getMonth(

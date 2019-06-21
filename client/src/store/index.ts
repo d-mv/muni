@@ -3,8 +3,8 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { setStep, showHelp } from "./app/reducers";
-import { submitPost, updatePost } from "./post/reducers";
+import { setStep, showHelp, fetchLocations, prevModule } from "./app/reducers";
+import { submitPost, updatePost, showPost } from "./post/reducers";
 import {
   vote,
   setToken,
@@ -12,7 +12,6 @@ import {
   login,
   setModule,
   register,
-  fetchLocations,
   setLoading,
   setAuth,
   setLocationData,
@@ -23,9 +22,10 @@ import {
   setPosts
 } from "./users/reducers";
 import * as TYPE from "./types";
-import { apiState } from "./defaults";
+import { apiState, showPostState } from "./defaults";
 
 import data from "../data/translation.json";
+import { showPostPayload } from "./post/types";
 
 const self =
   window.location.hostname === "localhost"
@@ -42,6 +42,7 @@ const rootReducer = combineReducers({
   checkTokenResult: checkToken,
   login: login,
   module: setModule,
+  prevModule: prevModule,
   locations: fetchLocations,
   loading: setLoading,
   register: register,
@@ -55,7 +56,8 @@ const rootReducer = combineReducers({
   mode: changeMode,
   step: setStep,
   posts: setPosts,
-  update: updatePost
+  update: updatePost,
+  post: showPost
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -69,7 +71,8 @@ export default function configureStore() {
     checkTokenResult: any;
     login: TYPE.apiResponse;
     module: string;
-    locations: any;
+    prevModule: string;
+    locations: [];
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
@@ -84,28 +87,31 @@ export default function configureStore() {
     vote: TYPE.apiResponse;
     posts: any;
     update: TYPE.apiResponse;
+    post: showPostPayload;
   }
 
   const initialState: state = {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "",
-    locations: "",
+    module: "welcome",
+    prevModule: "welcome",
+    locations: [],
     loading: false,
     register: apiState,
     data: data,
-    language: data.language.en,
+    language: data.language["עב"],
     locationData: {},
     auth: false,
     step: 1,
     submitPost: apiState,
     help: false,
     message: "",
-    mode: "login",
+    mode: "show",
     vote: apiState,
     posts: [],
-    update: apiState
+    update: apiState,
+    post: showPostState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

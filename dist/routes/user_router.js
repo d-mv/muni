@@ -152,7 +152,7 @@ router.post("/:id/update", function (req, res, next) {
     }
     else {
         // ID is present
-        if (double("update", id, 60)) {
+        if (double("update", id, 3)) {
             console.log("~> consider double");
             res
                 .status(replyCache["update"].reply.code)

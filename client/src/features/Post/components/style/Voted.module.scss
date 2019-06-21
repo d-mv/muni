@@ -1,0 +1,18 @@
+.voted {
+  width: fit-content;
+  border-radius: 1rem;
+  padding: .3rem 1rem;
+  border: var(--borderPrimary);
+  background-color: var(--colorWhite);
+
+  P {
+    margin: 0;
+    color:var(--colorPrimary);
+    font: var(--textButtonVote)
+  }
+}
+
+.votedRTL {
+  @extend .voted;
+  direction: rtl
+}

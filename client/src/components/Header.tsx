@@ -1,59 +1,58 @@
-import { indexedObj, indexedObjAny } from "../store/types";
+import { indexedObj} from "../store/types";
 
 import { AppState } from "../store";
 import styleFactory from "../modules/style_factory";
 import Button from "./Button";
-import Edit from "../icons/Edit";
-import Complain from "../icons/Complain";
 import Help from "../icons/Help";
 import React from "react";
 import Title from "./Title";
 import { connect } from "react-redux";
-import { setModule } from "../store/users/actions";
-import styles from "./styles/Header.module.scss";
+import styles from "./style/Header.module.scss";
 
 const Header = (props: {
   language: indexedObj;
-  locationData: indexedObjAny;
-  returnTo: string;
-  help: () => void;
-  action?: (arg?: any) => void;
-  setModule: (arg0: string) => void;
-  edit?: boolean;
-  complain?: boolean;
+  name: string;
+  right?: {
+    icon: JSX.Element;
+    action: () => void;
+  };
+  left?: {
+    icon: JSX.Element;
+    action: () => void;
+  };
 }) => {
+  const [showHelp, setShowHelp] = React.useState(false);
   const { direction } = props.language;
+  const { name } = props;
 
-  const title: string = props.locationData.name[props.language.short]
-    ? props.locationData.name[props.language.short]
-    : props.locationData.name["en"];
-
-  const handleReturn = () => {
-    props.setModule(props.returnTo);
-  };
-  let mode = "";
-  const handleSecondaryClick = () => {
-    if (props.action) {
-      props.action({ mode, details: "something" });
-    }
+  const makeIcon = (icon: any, noRtl?: boolean) => {
+    const style = noRtl
+      ? styles["icon"]
+      : styles[styleFactory("icon", direction)];
+    return <div className={style}>{icon}</div>;
   };
 
-  let secondButton: React.ClassicElement<any> = <div />;
-  if (props.edit) {
-    secondButton = <Edit color='primary' />;
-    mode = "edit";
-  } else if (props.complain) {
-    secondButton = <Complain />;
-    mode = "complain";
-  }
+  const handleLeftAction = () => {
+    props.left ? props.left.action() : setShowHelp(!showHelp);
+  };
+  const handleRightAction = () => {
+    if (props.right) props.right.action();
+  };
+
+  const left = props.left
+    ? makeIcon(props.left.icon)
+    : makeIcon(<Help color='primary' />, true);
+
+  const right = props.right ? makeIcon(props.right.icon) : <div />;
+
   return (
     <header className={styles[styleFactory("plank", direction)]}>
-      <Button mode='minimal' action={props.help}>
-        <Help color='primary' />
+      <Button mode='minimal' action={handleLeftAction}>
+        {left}
       </Button>
-      <Title title={title} direction={direction} return={handleReturn} />
-      <Button mode='minimal' action={() => handleSecondaryClick()}>
-        {secondButton}
+      <Title title={name} direction={direction} />
+      <Button mode='minimal' action={handleRightAction}>
+        {right}
       </Button>
     </header>
   );
@@ -61,12 +60,11 @@ const Header = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language,
-    locationData: state.locationData
+    language: state.language
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setModule }
+  {}
 )(Header);

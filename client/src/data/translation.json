@@ -25,9 +25,9 @@
         "login.label.password": "Password",
         "login.prompt.password": "enter your password",
         "login.label.location": "City",
-        "login.label.fname": "FIRST NAME",
+        "login.label.fname": "First Name",
         "login.prompt.fname": "enter your given name",
-        "login.label.lname": "LAST NAME",
+        "login.label.lname": "Last Name",
         "login.prompt.lname": "enter your surname",
         "login.button.submit": "SUBMIT",
         "login.button.register": "REGISTER",
@@ -39,9 +39,11 @@
         "post.age.days": "days",
         "post.voter": "supporter",
         "post.voters": "supporters",
+        "post.replied": "replied",
+        "post.voted": "you have voted",
         "profile.text.changeLanguage": "Please, choose the app language. The language chosen is shown next to the switch button",
         "profile.text.logOff": "Please press the button below if you want to log off the app. You will have to log in if you want to use the app again.",
-        "profile.button.logOff": "LOG OFF",
+        "profile.button.logOff": "LOG OUT",
         "new.steps.button.next": "NEXT",
         "new.steps.button.back": "BACK",
         "new.steps.button.submit": "SUBMIT",
@@ -73,10 +75,10 @@
         "post.show-more": "show more",
         "post.show-less": "show less",
         "mine.subtitle": "MY POSTS",
-        "vote.thanks":"Thank you for your vote",
-        "newreply.label":"Your reply:",
+        "vote.thanks": "Thank you for your vote",
+        "newreply.label": "Your reply:",
         "newreply.placeholder": "please, enter your reply",
-        "munireply.title":"MUNICIPALITY"
+        "munireply.title": "MUNICIPALITY"
       }
     },
     "עב": {
@@ -119,6 +121,8 @@
         "post.age.days": "ימים",
         "post.voter": "תומך",
         "post.voters": "תומכים",
+        "post.replied": "replied",
+        "post.voted": "you have voted",
         "profile.text.changeLanguage": "בחר, בחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד הלחצן למטה",
         "profile.text.logOff": "אנא לחץ על הלחצן למטה אם אתה רוצה לצאת מהאפליקצייה. יהיה עליך להתחבר מחדש אם ברצונך להשתמש באפליקציה שוב.",
         "profile.button.logOff": "התנתק",
@@ -152,7 +156,10 @@
         "post.show-more": "קרא עוד",
         "post.show-less": "קרא פחות",
         "mine.subtitle": "העתירות שלי",
-        "vote.thanks":"Thank you for your vote"
+        "vote.thanks": "Thank you for your vote",
+        "newreply.label": "Your reply:",
+        "newreply.placeholder": "please, enter your reply",
+        "munireply.title": "MUNICIPALITY"
       }
     },
     "ع": {
@@ -194,6 +201,8 @@
         "post.age.days": "أيام",
         "post.voter": "مؤيد",
         "post.voters": "مؤيدين",
+        "post.replied": "replied",
+        "post.voted": "you have voted",
         "profile.text.changeLanguage": "من فضلك اختر لغة التطبيق. اللغة اللتي تم اختيارها تظهر اسفل بجانب زر التغيير",
         "profile.text.logOff": "الرجاء الضغط على الزر اسفل الصفحة لتسجيل الخروج. ستحتاجون لتسجيل الدخول من جديد اذا اردتم استعمال التطبيق.",
         "profile.button.logOff": "تسجيل الخروج",
@@ -228,7 +237,10 @@
         "post.show-more": "اقرأ اكثر",
         "post.show-less": "تقليص",
         "mine.subtitle": "منشوراتي",
-        "vote.thanks":"Thank you for your vote"
+        "vote.thanks": "Thank you for your vote",
+        "newreply.label": "Your reply:",
+        "newreply.placeholder": "please, enter your reply",
+        "munireply.title": "MUNICIPALITY"
       }
     }
   }

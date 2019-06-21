@@ -9,19 +9,20 @@ import {
   setToken,
   checkToken,
   login,
-  fetchLocations,
   fetchData
 } from "./store/users/actions";
+import { fetchLocations, prevModule } from "./store/app/actions";
+import { showPost } from "./store/post/actions";
 
 import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
 
 import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
-import Enter from "./pages/Enter";
 
 import { data } from "./store/types";
 import "./style/App.scss";
+import { showPostPayload } from "./store/post/types";
 
 const App = (props: {
   token: string;
@@ -30,32 +31,39 @@ const App = (props: {
   help: boolean;
   vote: data;
   check: data;
+  post: boolean;
   setModule: (arg0: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   location: data;
-  fetchLocations: () => void;
+  locations: data;
+  posttmp: data;
+  fetchLocations: (props?:any) => any;
   fetchData: (arg0: string) => void;
   cookies: any;
+  showPost: (arg0: showPostPayload) => void;
+  prevModule: (arg0: string) => void;
 }) => {
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
-  const [int, setInt] = useState(false);
-  const [fetch, setFetch] = useState(false);
-
   axios.defaults.headers = { token };
 
-  console.log(props.check);
+  console.log(props.module);
+
+  const toggleModule = (module: string) => {
+    props.prevModule(props.module);
+    props.setModule(module);
+  };
+
   // set cookies if token changes
   useEffect(() => {
-    console.log(Object.keys(props.location).length);
     // if 'clear'
     if (props.token === "clear") {
       console.log(0);
       cookies.set("token", "");
       props.setToken("");
-      props.setModule("welcome");
+      toggleModule("welcome");
     } else if (
       props.token !== "" &&
       props.token !== "clear" &&
@@ -64,7 +72,7 @@ const App = (props: {
       // if token IS
       cookies.set("token", props.token);
       console.log(5);
-      props.setModule("home");
+      if (props.locations.length > 0) toggleModule("home");
     } else if (props.token !== "" && props.token !== "clear") {
       props.fetchData(token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
@@ -72,46 +80,51 @@ const App = (props: {
       props.checkToken(cookies.get("token"));
     } else {
       console.log("6 - no token, no cookie");
-      props.setModule("welcome");
+      toggleModule("welcome");
     }
   }, [token, cookies]);
 
   useEffect(() => {
+    console.log(13);
     setLoading(false);
+    if (props.module != "post") {
+      props.showPost({ show: false });
+    }
   }, [props.module]);
 
   useEffect(() => {
     console.log(7);
     if (Object.keys(props.location).length > 0) {
-      console.log("object");
-      // props.setLanguage(props.location.lang);
-      props.setModule("home");
+      console.log(7.1)
+      toggleModule("home");
     }
   }, [props.location]);
 
-
+  useEffect(() => {
+    console.log(12);
+    if (props.post) {
+      toggleModule("post");
+    }
+  }, [props.post]);
 
   useEffect(() => {
     console.log(10);
-    // props.checkToken(cookies.get("token"));
-    // console.log(props.check.status);
-    // console.log(fetch);
     if (props.check.status) {
-      // setFetch(true);
-       props.fetchData(token);
+      props.fetchData(token);
     } else {
-      // setFetch(false);
     }
   }, [props.check.status]);
 
   // fetch locations
   useEffect(() => {
+    console.log(11);
     props.fetchLocations();
   }, []);
 
   const handleNewButtonClick = () => {
-    props.setModule("new");
+    toggleModule("new");
   };
+
   const AppComponent = (props: { children: any }) => (
     <div className='app'>{props.children}</div>
   );
@@ -152,13 +165,10 @@ const App = (props: {
     );
     return content;
   };
-  let show;
+  let show = <Loading />;
   switch (props.module) {
     case "welcome":
       show = componentFactory({ children: <Welcome />, nav: true });
-      break;
-    case "login":
-      show = componentFactory({ children: <Enter />, nav: true });
       break;
     case "confirmation":
       const Confirmation = React.lazy(() => import("./pages/Confirmation"));
@@ -211,18 +221,34 @@ const App = (props: {
         lazy: true,
         new: true
       });
+      break;
+    case "login":
+      const Login = React.lazy(() => import("./pages/Enter"));
+      show = componentFactory({
+        children: <Login />,
+        nav: true,
+        lazy: true
+      });
+      break;
     case "register":
       const Register = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
-        children: <Register register />,
+        children: <Register register locations={props.locations} />,
         nav: true,
-        lazy: true,
-        new: false
+        lazy: true
+      });
+      break;
+    case "post":
+      const Post = React.lazy(() => import("./pages/Post"));
+      show = componentFactory({
+        children: <Post />,
+        nav: true,
+        lazy: true
       });
       break;
   }
 
-  const content = loading ? <Loading /> : show || <Loading />;
+  const content = loading ? <Loading /> : show;
 
   return content;
 };
@@ -233,9 +259,12 @@ const mapStateToProps = (state: AppState) => {
     module: state.module,
     loginResult: state.login,
     location: state.locationData,
+    locations: state.locations,
     help: state.help,
     vote: state.vote,
-    check: state.checkTokenResult
+    check: state.checkTokenResult,
+    post: state.post.show,
+    posttmp: state.post
   };
 };
 
@@ -247,6 +276,8 @@ export default connect(
     checkToken,
     login,
     fetchLocations,
-    fetchData
+    fetchData,
+    showPost,
+    prevModule
   }
 )(withCookies(App));

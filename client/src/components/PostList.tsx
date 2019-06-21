@@ -1,23 +1,9 @@
 import React from "react";
 
-import { post, postMuni } from "../store/types";
+import Card from "../features/Card";
+import { post } from "../store/types";
 
-import PostCard from "../features/Card";
-
-import Content from "../layout/Content";
-
-const PostList = (props: {
-  posts: any;
-  muni?: boolean;
-  action: (arg0: post | postMuni) => void;
-}) =>
-  props.posts.map((post: any) => (
-    <PostCard
-      key={post._id}
-      post={post}
-      muni={props.muni}
-      action={props.action}
-    />
-  ));
+const PostList = (props: { posts: any }) =>
+  props.posts.map((post: any) => <Card key={post._id} post={post} />);
 
 export default PostList;

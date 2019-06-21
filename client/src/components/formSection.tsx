@@ -1,7 +1,6 @@
 import React from "react";
 
 import Label from "../layout/Label";
-import { indexedObj, data } from "../store/types";
 import { down } from "../icons";
 import styleFactory from "../modules/style_factory";
 
@@ -55,12 +54,13 @@ export const formSection = (props: {
 };
 
 export const formSelection = (props: {
-  list: Array<indexedObj>;
+  list: { value: string; label: string }[];
   direction: string;
   label: string;
   action: (arg0: React.FormEvent<Element>) => void;
   focus?: boolean;
 }) => {
+
   return (
     <section
       className={styleFactory("section", props.direction)}
@@ -68,7 +68,7 @@ export const formSelection = (props: {
       <Label direction={props.direction || "ltr"} value={props.label} />
       <div className='inline'>
         <select autoFocus={props.focus}>
-          {props.list.map((location: data) => {
+          {props.list.map((location: { value: string; label: string }) => {
             return (
               <option key={location.value} value={location.value}>
                 {location.label}

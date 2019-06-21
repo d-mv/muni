@@ -30,7 +30,9 @@ const PostCard = (props: {
 
   return (
     <Card id={_id} direction={direction} action={handleClick}>
-      <Photo photo={photo} />
+      <Photo photo={photo} >
+        <div>''</div>
+      </Photo>
       <section
         className={
           direction === "rtl" ? style.informationRTL : style.information

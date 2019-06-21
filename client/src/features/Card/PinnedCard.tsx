@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "../../store";
 import { indexedObjAny, postMuni } from "../../store/types";
+import { showPost } from "../../store/post/actions";
 
 import dateBeautify from "../../modules/date_beautify";
 import shortText from "../../modules/short_text";
@@ -15,14 +16,15 @@ import Paragraph from "../../layout/Paragraph";
 import IconMunicipality from "../../icons/Municipality";
 
 import style from "./styles/PinnedCard.module.scss";
+import { showPostPayload } from "../../store/post/types";
 
 const PinnedCard = (props: {
   post: postMuni;
   language: indexedObjAny;
-  action: (arg0: postMuni) => void;
+  showPost: (arg0: showPostPayload) => void;
 }) => {
   const handleClick = () => {
-    props.action(props.post);
+    props.showPost({ show: true, type: "muni", _id: props.post._id });
   };
 
   const { direction } = props.language;
@@ -61,5 +63,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { showPost }
 )(PinnedCard);

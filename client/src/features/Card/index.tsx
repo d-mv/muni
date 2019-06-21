@@ -2,75 +2,76 @@ import React from "react";
 import { connect } from "react-redux";
 
 import shortText from "../../modules/short_text";
-import {
-  getCategories,
-  categoryIdToName
-} from "../../modules/category_processor";
+import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
-import { post, indexedObjAny, data, postMuni } from "../../store/types";
-
+import { post, indexedObjAny, data } from "../../store/types";
+import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
 import VoteButton from "../../components/VoteButton";
 import Photo from "./components/Photo";
 import Category from "./components/Category";
 import Title from "./components/Title";
 import Age from "./components/Age";
-
-import Block from "../../layout/Block";
+import { RepliedTag } from "./components";
 import Card from "../../layout/Card";
 import { Zero } from "../../layout/Utils";
 
 import style from "./styles/PostCard.module.scss";
+import { showPostPayload } from "../../store/post/types";
 
 const PostCard = (props: {
-  muni?: boolean;
   post: post;
   language: indexedObjAny;
   locationData: data;
-  action: (arg0: post | postMuni) => void;
+  showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction, short } = props.language;
-  const { _id, title, date, photo, category, createdBy } = props.post;
+  const { _id, title, date, photo, category, createdBy, reply } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {
-    props.action(props.post);
+    props.showPost({ show: true, type: "user", _id: _id });
   };
 
   let voterText = "";
   let categoryElement: React.ClassicElement<any> = <Zero />;
   let voterElement: React.ClassicElement<any> = <Zero />;
-  let voteButtonElement: React.ClassicElement<any> = <Zero />;
+  // let voteButtonElement: React.ClassicElement<any> = <div className={style.button}/>;
 
-  if (!props.muni) {
-    const { categories } = props.locationData;
-    const categoryTranslated = categoryIdToName(
-      categories,
-      short,
-      category || ""
-    );
-    categoryElement = <Category category={categoryTranslated} />;
-    voterText = votes.length === 1 ? text["post.voter"] : text["post.voters"];
-    voterElement = (
-      <Voters number={votes.length} text={voterText} direction={direction} />
-    );
-    const author = createdBy === props.locationData._id;
-    const voted = votes.includes(props.locationData._id);
-    const muniUser = props.locationData.type === "muni";
+  const { categories } = props.locationData;
+  const categoryTranslated = categoryIdToName(
+    categories,
+    short,
+    category || ""
+  );
+  categoryElement = <Category category={categoryTranslated} />;
+  voterText = votes.length === 1 ? text["post.voter"] : text["post.voters"];
+  voterElement = (
+    <Voters number={votes.length} text={voterText} direction={direction} />
+  );
+  const author = createdBy === props.locationData._id;
+  const voted = votes.includes(props.locationData._id);
+  const muniUser = props.locationData.type === "muni";
 
-    voteButtonElement =
-      !author && !voted && !muniUser ? (
-        <span className={style.button}>
-          <VoteButton />
-        </span>
-      ) : (
-        <Zero />
-      );
-  }
+  const voteButtonElement =
+    !author && !voted && !muniUser ? (
+      <span className={style.button}>
+        <VoteButton />
+      </span>
+    ) : (
+      <div className={style.button}/>
+    );
+
+  const replyTag = reply ? (
+    <RepliedTag text={text["post.replied"]} direction={direction} />
+  ) : null;
+
   return (
     <Card id={_id} direction={direction} action={handleClick}>
-      <Photo photo={photo} />
+      <Photo photo={photo} direction={direction}>
+        {replyTag}
+      </Photo>
       <section
         className={
           direction === "rtl" ? style.informationRTL : style.information
@@ -102,5 +103,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { showPost }
 )(PostCard);
