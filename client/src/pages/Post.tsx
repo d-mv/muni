@@ -1,23 +1,19 @@
 import React from "react";
-
-
-import Page from "../layout/Page";
-import { data } from "../store/types";
-import Content from "../layout/Content";
-import Header from "../components/Header";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
 
 import PostUser from '../features/Post/'
+import PostMuni from '../features/Post/PostMuni'
+
+import Page from "../layout/Page";
 
 /** Functional component to render Post page
  * @returns {JSX.Element} - Post page
  */
-const Post = (props: {post: data }) => {
+const Post = (props: {muni?:true}) => {
   // TODO: change
-  const component =<PostUser />
-  // const component = props.post.type === "user" ? <PostUser /> : <PostMuni />;
+  const component = props.muni? <PostMuni /> : <PostUser />
 
   return (
     <Page>
@@ -28,8 +24,6 @@ const Post = (props: {post: data }) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    // @ts-ignore
-    post: state.post.type
   };
 };
 

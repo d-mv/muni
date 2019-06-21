@@ -16,15 +16,23 @@ const makePostsArray = (posts: Array<post>, id: string) => {
   return result;
 };
 
-const Mine = (props: { language: data; _id: string; allPosts: post[] }) => {
+const Mine = (props: {
+  language: data;
+  _id: string;
+  allPosts: post[];
+  location: data;
+}) => {
   const { direction, text } = props.language;
   const { allPosts, _id } = props;
 
   const posts = allPosts.filter((post: post) => post.createdBy === _id);
-  console.log(posts);
+  const headerObject = {
+    name: props.location.name[props.language.short]
+  };
+
   return (
     <Page data-testid='page__mine'>
-      {/* <Header />; */}
+      <Header {...headerObject} />;
       <Content padded>
         <SubTitle title={text["mine.subtitle"]} direction={direction} />
         <PostList posts={posts} />;
@@ -36,6 +44,7 @@ const Mine = (props: { language: data; _id: string; allPosts: post[] }) => {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
+    location: state.locationData,
     _id: state.locationData._id,
     allPosts: state.posts
   };

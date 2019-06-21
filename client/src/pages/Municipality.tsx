@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import { post } from "../store/types";
+import { post, data } from "../store/types";
 
 import Header from "../components/Header";
 
@@ -10,13 +10,21 @@ import Page from "../layout/Page";
 import PostList from "../components/PostList";
 import Content from "../layout/Content";
 
-const Municipality = (props: { posts: post[] }) => {
+const Municipality = (props: {
+  posts: post[];
+  location: data;
+  language: data;
+}) => {
   const { posts } = props;
+
+  const headerObject = {
+    name: props.location.name[props.language.short]
+  };
 
   return (
     <Page>
-      {/* <Header />; */}
-      <Content padded>
+      <Content header>
+        <Header {...headerObject} />;
         <PostList posts={posts} />;
       </Content>
     </Page>
@@ -25,7 +33,9 @@ const Municipality = (props: { posts: post[] }) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    posts: state.locationData.municipality
+    posts: state.locationData.municipality,
+    language: state.language,
+    location: state.locationData
   };
 };
 

@@ -5,8 +5,6 @@ import { AppState } from "../store";
 import { showHelp } from "../store/app/actions";
 import { logOff } from "../store/users/actions";
 
-import Help from "../features/Help";
-
 import Header from "../components/Header";
 import LangSwitch from "../components/LangSwitch";
 import Button from "../components/Button";
@@ -15,9 +13,9 @@ import Page from "../layout/Page";
 import Section from "../layout/Section";
 import Paragraph from "../layout/Paragraph";
 import Line from "../layout/Line";
+import Content from "../layout/Content";
 
 import style from "./style/Profile.module.scss";
-import Content from "../layout/Content";
 
 const Profile = (props: any) => {
   const { text, direction } = props.language;
