@@ -9,9 +9,14 @@ export interface updatePostAction {
   payload: TYPE.apiResponse;
 }
 
+export interface showPostPayload {
+  show: boolean;
+  type?: string;
+  _id?: string;
+}
 export interface showPostAction {
   type: "SHOW_POST";
-  payload: TYPE.data;
+  payload: showPostPayload;
 }
 
 export type Action = showPostAction | submitPostAction | updatePostAction;

@@ -22,9 +22,10 @@ import {
   setPosts
 } from "./users/reducers";
 import * as TYPE from "./types";
-import { apiState } from "./defaults";
+import { apiState, showPostState } from "./defaults";
 
 import data from "../data/translation.json";
+import { showPostPayload } from "./post/types";
 
 const self =
   window.location.hostname === "localhost"
@@ -84,7 +85,7 @@ export default function configureStore() {
     vote: TYPE.apiResponse;
     posts: any;
     update: TYPE.apiResponse;
-    post: TYPE.data;
+    post: showPostPayload;
   }
 
   const initialState: state = {
@@ -103,11 +104,11 @@ export default function configureStore() {
     submitPost: apiState,
     help: false,
     message: "",
-    mode: "login",
+    mode: "show",
     vote: apiState,
     posts: [],
     update: apiState,
-    post: { show: false }
+    post: showPostState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

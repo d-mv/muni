@@ -26,7 +26,7 @@ const Profile = (props: any) => {
     props.showHelp(!props.help);
   };
 
-  const header = <Header help={toggleHelp} returnTo='profile' />;
+  const header = <Header />;
 
   return (
     <Page>

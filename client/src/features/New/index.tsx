@@ -324,8 +324,9 @@ const NewPost = (props: {
     status: "",
     votes: []
   };
-  const preview =
-    step === 6 ? <Post preview post={post} action={mockFn} /> : null;
+  // TODO: fix below
+  const preview = null
+    // step === 6 ? <Post preview post={post} action={mockFn} /> : null;
   const loadingElement = loading ? <Loading /> : null;
 
   return (

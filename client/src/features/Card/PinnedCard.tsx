@@ -19,10 +19,12 @@ import style from "./styles/PinnedCard.module.scss";
 const PinnedCard = (props: {
   post: postMuni;
   language: indexedObjAny;
-  action: (arg0: postMuni) => void;
 }) => {
+
+
+
   const handleClick = () => {
-    props.action(props.post);
+    // props.action(props.post);
   };
 
   const { direction } = props.language;

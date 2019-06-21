@@ -9,7 +9,7 @@ import {
 
 import { AppState } from "../../store";
 import { post, indexedObjAny, data, postMuni } from "../../store/types";
-
+import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
 import VoteButton from "../../components/VoteButton";
 import Photo from "./components/Photo";
@@ -22,20 +22,21 @@ import Card from "../../layout/Card";
 import { Zero } from "../../layout/Utils";
 
 import style from "./styles/PostCard.module.scss";
+import { showPostPayload } from "../../store/post/types";
 
 const PostCard = (props: {
   muni?: boolean;
   post: post;
   language: indexedObjAny;
   locationData: data;
-  action: (arg0: post | postMuni) => void;
+  showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction, short } = props.language;
   const { _id, title, date, photo, category, createdBy } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {
-    props.action(props.post);
+    props.showPost({ show: true, type: "user", _id: _id });
   };
 
   let voterText = "";
@@ -102,5 +103,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { showPost }
 )(PostCard);

@@ -9,7 +9,7 @@ import Header from "../components/Header";
 
 import Page from "../layout/Page";
 import PostList from "../components/PostList";
-import ShowPost from "../components/ShowPost";
+// import ShowPost from "../components/ShowPost";
 import Content from "../layout/Content";
 
 const contentFactory = (props: {
@@ -55,23 +55,15 @@ const Municipality = (props: {
     console.log(actions);
   };
 
-  let header = <Header help={toggleHelp} returnTo='municipality' />;
+  let header = <Header />;
 
-  let main = <PostList muni posts={municipality} action={handleSetPost} />;
+  let main = <PostList posts={municipality} />;
 
   if (post["_id"] !== "") {
     const user = props.locationData.type === "muni_user";
-    header = user ? (
-      <Header help={toggleHelp} returnTo='home' edit action={handleAction} />
-    ) : (
-      <Header
-        help={toggleHelp}
-        returnTo='home'
-        complain
-        action={handleAction}
-      />
-    );
-    main = <ShowPost muni post={post} />;
+    header = <Header />;
+
+    // main = <ShowPost muni post={post} />;
   }
 
   return contentFactory({ header, main });

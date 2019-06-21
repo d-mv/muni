@@ -6,7 +6,7 @@ import { data, indexedObjAny, post } from "../store/types";
 import { showHelp } from "../store/app/actions";
 
 import Header from "../components/Header";
-import ShowPost from "../components/ShowPost";
+// import ShowPost from "../components/ShowPost";
 import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
@@ -85,18 +85,18 @@ const Mine = (props: {
     }
   };
 
-  let header = <Header help={toggleHelp} returnTo='mine' />;
+  let header = <Header />;
 
   const subtitle = (
     <SubTitle title={text["mine.subtitle"]} direction={direction} />
   );
 
-  let content = <PostList posts={postsLcl} action={handleSetPost} />;
+  let content = <PostList posts={postsLcl}  />;
 
   if (post["_id"]) {
-    content = <Post post={post} edit={editPost} action={handleUpdatePost} />;
+    content = <Post />;
     header = (
-      <Header help={toggleHelp} returnTo='mine' edit action={handleAction} />
+      <Header/>
     );
   }
 

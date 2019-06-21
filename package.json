@@ -11,7 +11,8 @@
     "dev": "set NODE_ENV=development && npm run build:live",
     "build": "tsc ./src/*.ts --outDir ./dist",
     "build:live": "nodemon --watch '**/**/*.ts' --exec 'ts-node' src/start.ts",
-    "full": "npm run dev & npm run client",
+    "full": "npm start & npm run client",
+    "full:dev": "npm run dev & npm run client",
     "client": "npm start --prefix client",
     "test": "jest --watchAll",
     "docs:code": "typedoc"

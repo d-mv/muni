@@ -2,7 +2,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import axios from "axios";
 
-import { Action } from "./types";
+import { Action, showPostPayload } from "./types";
 import * as TYPE from "../types";
 
 export const submitPost = (
@@ -65,10 +65,6 @@ export const updatePost = (
   };
 };
 
-export const showPost = (props: {
-  show: boolean;
-  post?: { type: string; id: string };
-}): Action => {
-  const { show, post } = props;
-  return { type: "SHOW_POST", payload: { show, post } };
+export const showPost = (props: showPostPayload): Action => {
+  return { type: "SHOW_POST", payload: { ...props } };
 };

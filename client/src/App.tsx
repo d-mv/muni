@@ -12,6 +12,7 @@ import {
   fetchData
 } from "./store/users/actions";
 import { fetchLocations } from "./store/app/actions";
+import { showPost } from "./store/post/actions";
 
 import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
@@ -22,6 +23,7 @@ import Enter from "./pages/Enter";
 
 import { data } from "./store/types";
 import "./style/App.scss";
+import { showPostPayload } from "./store/post/types";
 
 const App = (props: {
   token: string;
@@ -30,15 +32,20 @@ const App = (props: {
   help: boolean;
   vote: data;
   check: data;
+  post: boolean;
   setModule: (arg0: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   location: data;
   locations: data;
+  posttmp: data;
   fetchLocations: () => void;
   fetchData: (arg0: string) => void;
   cookies: any;
+  showPost: (arg0: showPostPayload) => void;
 }) => {
+  console.log(props.posttmp);
+
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
@@ -79,6 +86,9 @@ const App = (props: {
 
   useEffect(() => {
     setLoading(false);
+    if (props.module != "post") {
+      props.showPost({ show: false });
+    }
   }, [props.module]);
 
   useEffect(() => {
@@ -89,6 +99,12 @@ const App = (props: {
       props.setModule("home");
     }
   }, [props.location]);
+
+  useEffect(() => {
+    if (props.post) {
+      props.setModule("post");
+    }
+  }, [props.post]);
 
   useEffect(() => {
     console.log(10);
@@ -168,15 +184,15 @@ const App = (props: {
         lazy: true
       });
       break;
-    case "municipality":
-      const Municipality = React.lazy(() => import("./pages/Municipality"));
-      show = componentFactory({
-        children: <Municipality />,
-        nav: true,
-        lazy: true,
-        new: true
-      });
-      break;
+    // case "municipality":
+    //   const Municipality = React.lazy(() => import("./pages/Municipality"));
+    //   show = componentFactory({
+    //     children: <Municipality />,
+    //     nav: true,
+    //     lazy: true,
+    //     new: true
+    //   });
+    //   break;
     case "new":
       const New = React.lazy(() => import("./pages/New"));
       show = componentFactory({
@@ -244,7 +260,8 @@ const mapStateToProps = (state: AppState) => {
     help: state.help,
     vote: state.vote,
     check: state.checkTokenResult,
-    post: state.post.show
+    post: state.post.show,
+    posttmp: state.post
   };
 };
 
@@ -256,6 +273,7 @@ export default connect(
     checkToken,
     login,
     fetchLocations,
-    fetchData
+    fetchData,
+    showPost
   }
 )(withCookies(App));

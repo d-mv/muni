@@ -6,35 +6,42 @@ import Register from "../features/Register";
 import LangSwitch from "../components/LangSwitch";
 
 import Page from "../layout/Page";
-import PostComponent from '../features/Post'
+import PostComponent from "../features/Post";
 import style from "./style/Login.module.scss";
 import { data } from "../store/types";
 import Content from "../layout/Content";
 import Header from "../components/Header";
+import { connect } from "react-redux";
+
+import { AppState } from "../store";
+
+import PostUser from '../features/Post/'
+import PostMuni from '../features/Post/PostMuni'
 
 /** Functional component to render login/register page
  * @returns {JSX.Element} - Login page
  */
-const Post = (props: { post: any; locationData: any }) => {
-  const { post } = props;
-
-  const main = "";
-const mockFn=()=>{}
-  const author = post.createdBy === props.locationData._id;
-  const muniUser = props.locationData.type;
-  let header = <Header help={mockFn} returnTo='home' edit action={mockFn} />;
-  if (!author)
-    header = <Header help={mockFn} returnTo='home' complain action={mockFn} />;
-  if (muniUser) header = <Header help={mockFn} returnTo='home' />;
+const Post = (props: {post: data }) => {
+  // TODO: change
+  const component =<PostUser />
+  // const component = props.post.type === "user" ? <PostUser /> : <PostMuni />;
 
   return (
     <Page>
-      {header}
-      <Content padded>
-        <PostComponent post={post} action={mockFn} />;
-      </Content>
+      <Header />
+      <Content padded>{component}</Content>
     </Page>
   );
 };
 
-export default Post;
+const mapStateToProps = (state: AppState) => {
+  return {
+    //@ts-ignore
+    post: state.post.type
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Post);
