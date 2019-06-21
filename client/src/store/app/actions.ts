@@ -5,7 +5,8 @@ import data from "../../data/translation.json";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import locationsList from "../../modules/locations_list";
-import request from "../services";
+import * as request from "../services";
+import axios from 'axios'
 
 const importedData: TYPE.indexedObjAny = data;
 
@@ -71,7 +72,8 @@ export const fetchLocations = (): ThunkAction<
   const url = "/location/list";
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     try {
-      const response: any = await request.locationsList;
+      const response: any = await axios.get(url);
+      console.log(response)
       const { status, code, message, payload } = response.data;
       if (status && payload) {
         dispatch({

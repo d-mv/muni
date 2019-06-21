@@ -58,7 +58,7 @@ const Navigation = (props: any) => {
     case "register":
       component = (
         <nav className={headerStyle}>
-          <NavButton mode='return-welcome' action={action} />
+          <NavButton mode='return-login' action={action} />
           <h1>Our Change</h1>
           <Spacer size={10} units='%' />
         </nav>

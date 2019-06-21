@@ -78,11 +78,6 @@ const Register = (props: {
     setLocation(event.target.value);
   };
 
-  const handleSecondaryButton = () => {
-    props.setModule("login");
-    props.setMessage("");
-  };
-
   // set the form elements
   const showElement = props.loading ? (
     <div className='formLoading'>
@@ -159,9 +154,6 @@ const Register = (props: {
             value={text["login.button.register"]}
             id='submit_button'
           />
-        </Button>
-        <Button mode='secondaryFlat' action={handleSecondaryButton}>
-          {text["login.button.login"]}
         </Button>
       </ButtonsWrapper>
     </form>
