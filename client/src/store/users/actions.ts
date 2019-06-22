@@ -267,9 +267,10 @@ export const register = (
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();
+        console.log(payload)
         dispatch({
           type: "SET_MESSAGE",
-          message: payload.toString()
+          message: payload.message.toString()
         });
         dispatch({
           type: "REGISTER",

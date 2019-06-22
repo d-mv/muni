@@ -251,6 +251,7 @@ const App = (props: {
   const content = loading ? <Loading /> : show;
 
   return content;
+
 };
 
 const mapStateToProps = (state: AppState) => {

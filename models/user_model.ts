@@ -121,7 +121,6 @@ const checkIfEmailNew = (
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
-    assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection(dbcMain)
       .aggregate([
@@ -148,6 +147,9 @@ const checkIfEmailNew = (
         }
       ])
       .toArray((e: any, res: any) => {
+        console.log("email is new?")
+        console.log(e)
+        console.log(res)
         if (e || res.length > 0) {
           callback(false);
         } else {
@@ -438,6 +440,8 @@ export const create = (
   checkIfEmailNew(
     request.email,
     (emailIsNew: boolean) => {
+      console.log("emailIsNew")
+      console.log(emailIsNew)
       if (emailIsNew) {
         encodeString(
           dropQuotes(request.pass),
