@@ -11,8 +11,8 @@ var dotEnv = dotenv.config();
 //     res.send(resp);
 //   });
 // });
-// router.get("/photo", (req: any, res: any, next: any) => {
-//  console.log(req.body)
-//  console.log(req)
-// });
+router.get("/photo", function (req, res, next) {
+    console.log(req.body);
+    console.log(req);
+});
 exports["default"] = router;

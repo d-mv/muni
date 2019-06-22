@@ -284,16 +284,6 @@ exports.vote = function (request, callback) {
     console.log("user");
     console.log(id);
     console.log(user);
-    // findPostById(id, (findPostResult: TYPE.apiResponse) => {
-    //   console.log(findPostResult);
-    //   if (findPostResult.status) {
-    //     const voters = findPostResult.payload.votes;
-    //     const inlcudes = voters.includes(user);
-    //     if (inlcudes) {
-    //       // already voted
-    //       callback(Message.generalError({ subj: "Already voted", code: 401 }));
-    //     } else {
-    // not yet voted
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         if (err) {
@@ -305,20 +295,16 @@ exports.vote = function (request, callback) {
         }
         else {
             var database = MDB.client.db(dbName).collection(dbcMain);
-            // const index = `users.$[].posts.$[reply].${id}`;
-            // setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
-            var dBrequest = {};
-            // dBrequest[index] = user;
-            dBrequest["users.$[].posts.$[reply].votes.$[]"] = user;
+            // let dBrequest: TYPE.data = {};
+            // dBrequest[`users.$[].posts.$[reply].votes.$[]`] = user;
             // update
             database
-                .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $push: { "users.$.posts.$[reply].votes": user } }, 
-            // { $set: { ...dBrequest } },
-            {
+                .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $push: { "users.$.posts.$[reply].votes": user } }, {
                 arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
             })
                 .then(function (document) {
                 // process response
+                console.log(document);
                 callback(Message.updateMessage({
                     subj: "Post",
                     document: {
@@ -333,8 +319,3 @@ exports.vote = function (request, callback) {
         }
     });
 };
-// } else {
-//   callback(findPostResult);
-// }
-// });
-// };
