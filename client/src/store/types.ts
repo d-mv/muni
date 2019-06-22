@@ -89,7 +89,7 @@ export interface post {
   status: string;
   votes: Array<string>;
   newsId?: string;
-  reply?: {
+  reply: {
     date: Date;
     text: string;
     up: string[];

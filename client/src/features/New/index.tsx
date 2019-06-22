@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import { formSection, formSelection } from "../../components/formSection";
-
+import { Preview } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { submitPost } from "../../store/post/actions";
@@ -26,6 +26,7 @@ import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
 import Header from "../../components/Header";
+import { categoryIdToName } from "../../modules/category_processor";
 
 const NewPost = (props: {
   language: data;
@@ -246,7 +247,7 @@ const NewPost = (props: {
 
   const stepTwo =
     step === 2 ? (
-      <div>
+      <div className='none'>
         {formSelection({
           list: getCategories(),
           direction,
@@ -311,22 +312,29 @@ const NewPost = (props: {
 
   const mockFn = (props: any) => {};
 
+  const categoryName = categoryIdToName(categories, props.language.short, category);
+
+
   const post = {
     title,
-    category,
+    category: categoryName,
     problem,
     solution,
     photo,
-    link,
-    _id: "",
-    createdBy: "",
-    date: "",
-    status: "",
-    votes: []
+    link
   };
   // TODO: fix below
-  const preview = null;
-  // step === 6 ? <Post preview post={post} action={mockFn} /> : null;
+  const preview =
+    step === 6 ? (
+      <Preview
+        post={post}
+        direction={direction}
+        text={{
+          problem: text["post.problem"],
+          solution: text["post.solution"]
+        }}
+      />
+    ) : null;
   const loadingElement = loading ? <Loading /> : null;
 
   const goHome = () => {
@@ -338,8 +346,8 @@ const NewPost = (props: {
   };
 
   return (
-    <Content header>
-      <Header {...headerObject} />
+    <Content padded>
+      {/* <Header {...headerObject} /> */}
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}

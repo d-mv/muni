@@ -25,7 +25,7 @@ const Municipality = (props: {
     <Page>
       <Content header>
         <Header {...headerObject} />;
-        <PostList posts={posts} />;
+        <PostList muni posts={posts} />;
       </Content>
     </Page>
   );

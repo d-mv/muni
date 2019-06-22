@@ -32,6 +32,7 @@ const Register = (props: {
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [secondPass, setSecondPass] = useState("");
   const defaultLocation = locations ? locations[0].value : "";
   const [location, setLocation] = useState(defaultLocation);
   const [fName, setFname] = useState("");
@@ -43,14 +44,18 @@ const Register = (props: {
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    props.register({
-      email,
-      pass,
-      location,
-      fName,
-      lName,
-      lang: props.language.short
-    });
+    if (pass !== secondPass) {
+      setMessage(text["register.passwords.dont-match"]);
+    } else {
+      props.register({
+        email,
+        pass,
+        location,
+        fName,
+        lName,
+        lang: props.language.short
+      });
+    }
   };
   // handle fields input changes
   const handleInputChange = (
@@ -67,6 +72,9 @@ const Register = (props: {
         break;
       case "pass":
         setPass(value);
+        break;
+      case "secondPass":
+        setSecondPass(value);
         break;
       default:
         setEmail(value);
@@ -105,6 +113,15 @@ const Register = (props: {
     action: handleInputChange,
     length: 7
   });
+  let passwordSecondElement = formSection({
+    label: text["login.label.password.repeat"],
+    type: "password",
+    name: "secondPass",
+    value: secondPass,
+    placeholder: text["login.prompt.password.repeat"],
+    action: handleInputChange,
+    length: 7
+  });
 
   const locationsElement = formSelection({
     list: locations,
@@ -121,7 +138,7 @@ const Register = (props: {
     placeholder: text["login.prompt.fname"],
     action: handleInputChange,
     length: 2,
-    focus: true
+    focus: !props.loading
   });
   const lNameElement = formSection({
     label: text["login.label.lname"],
@@ -143,6 +160,7 @@ const Register = (props: {
       {lNameElement}
       {emailElement}
       {passwordElement}
+      {passwordSecondElement}
       {/* message & loading */}
       {showElement}
       {/* buttons */}

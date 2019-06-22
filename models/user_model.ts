@@ -121,7 +121,6 @@ const checkIfEmailNew = (
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
-    assert.equal(null, err);
     const db: any = MDB.client.db(dbName);
     db.collection(dbcMain)
       .aggregate([
@@ -148,6 +147,9 @@ const checkIfEmailNew = (
         }
       ])
       .toArray((e: any, res: any) => {
+        console.log("email is new?");
+        console.log(e);
+        console.log(res);
         if (e || res.length > 0) {
           callback(false);
         } else {
@@ -368,8 +370,10 @@ export const isUserNew = (
         }
       ])
       .toArray((err: any, result: any) => {
+        if (err)
+          callback(Message.errorMessage({ action: "isUserNew", e: err }));
         // no result
-        console.log(err)
+        console.log(err);
         console.log("isUserNew?");
         console.log(result);
         console.log(user);
@@ -438,6 +442,8 @@ export const create = (
   checkIfEmailNew(
     request.email,
     (emailIsNew: boolean) => {
+      console.log("emailIsNew");
+      console.log(emailIsNew);
       if (emailIsNew) {
         encodeString(
           dropQuotes(request.pass),
@@ -790,8 +796,7 @@ export const loginAttempt = (
           }
         });
     }
-  })
-    MDB.client.close();;
+  });
 };
 
 export const getLocationInfo = (
@@ -885,7 +890,7 @@ export const getLocationInfo = (
         });
     }
   });
-  MDB.client.close();
+  // MDB.client.close();
 };
 
 export const confirmedEmail = (
@@ -896,7 +901,6 @@ export const confirmedEmail = (
     assert.equal(null, err);
     if (err) {
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
-
     } else {
       let database: any = MDB.client.db(dbName).collection(dbcApp);
       database
@@ -981,8 +985,8 @@ export const confirmedEmail = (
           }
         });
     }
-  })
-    MDB.client.close();;
+  });
+  // MDB.client.close();
 };
 
 export const update = (
@@ -1049,6 +1053,6 @@ export const update = (
           callback(Message.errorMessage({ action: "user update", e }));
         });
     }
-  })
-    MDB.client.close();;
+  });
+  // MDB.client.close();
 };

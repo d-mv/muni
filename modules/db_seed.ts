@@ -242,8 +242,8 @@ const dbSeed = (callback: any) => {
       // create municipality records
       let blockMuni = [];
       const municipalityPosts = faker.random.number({
-        min: 2,
-        max: 4
+        min: 3,
+        max: 10
       });
 
       for (let n = 0; n < municipalityPosts; n++) {
@@ -251,11 +251,11 @@ const dbSeed = (callback: any) => {
         blockMuni.push(post);
       }
 
-      const pinned = buildPost();
+      const pinned = blockMuni[2];
 
       // ! call to update the DB
       update({
-        id: "5d04f0f698de3fce481f0e3f",
+        id: "5ce2a3c945e5451171394b35",
         users: block,
         municipality: blockMuni,
         pinned

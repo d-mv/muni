@@ -38,7 +38,7 @@ const App = (props: {
   location: data;
   locations: data;
   posttmp: data;
-  fetchLocations: (props?:any) => any;
+  fetchLocations: (props?: any) => any;
   fetchData: (arg0: string) => void;
   cookies: any;
   showPost: (arg0: showPostPayload) => void;
@@ -83,19 +83,25 @@ const App = (props: {
       toggleModule("welcome");
     }
   }, [token, cookies]);
-
+  console.log(props.module);
   useEffect(() => {
     console.log(13);
-    setLoading(false);
+    // setLoading(false);
     if (props.module != "post") {
       props.showPost({ show: false });
+    }
+    if (props.module === "home") {
+      setLoading(false);
+    }
+    if (props.module === "welcome" && !cookies.get("token") && !token) {
+      setLoading(false);
     }
   }, [props.module]);
 
   useEffect(() => {
     console.log(7);
     if (Object.keys(props.location).length > 0) {
-      console.log(7.1)
+      console.log(7.1);
       toggleModule("home");
     }
   }, [props.location]);

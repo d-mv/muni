@@ -65,6 +65,12 @@ export const updatePost = (
   };
 };
 
+
+
 export const showPost = (props: showPostPayload): Action => {
   return { type: "SHOW_POST", payload: { ...props } };
 };
+
+export const updatePosts = (props: any) => {
+  return {type:"UPDATE_POSTS",payload: {...props}}
+}

@@ -9,7 +9,8 @@ import {
   login,
   setModule,
   setMessage,
-  setLoading
+  setLoading,
+  typingData
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
@@ -27,34 +28,43 @@ const Login = (props: {
   language: TYPE.indexedObjAny;
   message: string;
   loading: boolean;
+  typed: TYPE.indexedObj;
   login: (arg0: TYPE.login) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   setLoading: (arg0: boolean) => void;
+  typingData: (arg0: TYPE.data) => void;
 }) => {
-  // get the language
+  // get the language[]
   const { text, direction } = props.language;
   // set local hooks
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
   // set message
   const [errorMessage, setErrorMessage] = useState(props.message);
-
+  console.log(props.typed);
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const login: TYPE.login = { email: email, pass: pass };
+    const login: TYPE.login = {
+      email,
+      pass
+    }
     props.login(login);
   };
 
   // handle fields input changes
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { value, name } = event.target;
     setErrorMessage("");
     if (name === "email") {
       setEmail(value);
+      // props.typingData({ email: value });
     } else {
       setPass(value);
+      // props.typingData({ pass: value });
     }
   };
 
@@ -79,7 +89,7 @@ const Login = (props: {
     value: email,
     placeholder: text["login.prompt.email"],
     action: handleInputChange,
-    focus: true
+    focus: !props.loading
   });
 
   let passwordElement = formSection({
@@ -125,11 +135,12 @@ const mapStateToProps = (state: AppState) => {
     registerResult: state.register,
     language: state.language,
     message: state.message,
-    loading: state.loading
+    loading: state.loading,
+    typed: state.typed
   };
 };
 
 export default connect(
   mapStateToProps,
-  { login, setModule, setMessage, setLoading }
+  { login, setModule, setMessage, setLoading, typingData }
 )(Login);

@@ -299,9 +299,14 @@
 .content-padded {
   @extend .content;
   width: 95%;
-  margin: 5rem auto 0 auto;
+  margin: 0 auto;
   padding-bottom: 3rem;
   overflow: hidden;
+}
+
+.content-padded-flat {
+  @extend .content-padded;
+  padding-bottom: 0;
 }
 
 .content-header {
@@ -411,4 +416,9 @@
 .textStandard {
   color: var(--colorDark);
   font: var(--textParaStandard);
+}
+
+.none {
+  margin: 0;
+  padding: 0;
 }

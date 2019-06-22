@@ -44,7 +44,7 @@ export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
         } else {
           callback(Message.notFound("locations"));
         }
-        MDB.client.close();
+        // MDB.client.close();
       })
   });
 };

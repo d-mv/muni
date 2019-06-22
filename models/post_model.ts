@@ -352,16 +352,6 @@ export const vote = (
   console.log(id);
   console.log(user);
 
-  // findPostById(id, (findPostResult: TYPE.apiResponse) => {
-  //   console.log(findPostResult);
-  //   if (findPostResult.status) {
-  //     const voters = findPostResult.payload.votes;
-  //     const inlcudes = voters.includes(user);
-  //     if (inlcudes) {
-  //       // already voted
-  //       callback(Message.generalError({ subj: "Already voted", code: 401 }));
-  //     } else {
-  // not yet voted
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
@@ -374,23 +364,20 @@ export const vote = (
       );
     } else {
       const database: any = MDB.client.db(dbName).collection(dbcMain);
-      // const index = `users.$[].posts.$[reply].${id}`;
-      // setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
-      let dBrequest: TYPE.data = {};
-      // dBrequest[index] = user;
-      dBrequest[`users.$[].posts.$[reply].votes.$[]`] = user;
+      // let dBrequest: TYPE.data = {};
+      // dBrequest[`users.$[].posts.$[reply].votes.$[]`] = user;
       // update
       database
         .updateMany(
           { "users.posts._id": new MDB.ObjectId(id) },
           { $push: { "users.$.posts.$[reply].votes": user } },
-          // { $set: { ...dBrequest } },
           {
             arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
           }
         )
         .then((document: any) => {
           // process response
+          console.log(document);
           callback(
             Message.updateMessage({
               subj: "Post",
@@ -408,8 +395,3 @@ export const vote = (
     }
   });
 };
-// } else {
-//   callback(findPostResult);
-// }
-// });
-// };

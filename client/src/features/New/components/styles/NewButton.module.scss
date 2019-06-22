@@ -18,47 +18,39 @@
   }
 
   @media (max-aspect-ratio: 8/10) {
-    bottom: 5%;
+    bottom: 2rem;
   }
 
   @media (max-aspect-ratio: 7/10) {
-    bottom: 5.5%;
+    bottom: 2.5rem;
   }
 
   @media (max-aspect-ratio: 6/10) {
-    bottom: 5%;
+    bottom: 2.5rem;
   }
 
   @media (max-aspect-ratio: 1/2) {
-    bottom: 6%;
+    bottom: 3rem;
   }
 
   @media (max-aspect-ratio: 4/10) {
-    bottom: 7%;
+    bottom: 4rem;
   }
 
   @media (max-aspect-ratio: 3/10) {
-    bottom: 8%;
-  }
-
-  @media (max-aspect-ratio: 1/5) {
-    bottom: 9%;
-  }
-
-  @media (max-aspect-ratio: 1/10) {
-    bottom: 10%;
+    bottom: 4.5rem;
   }
 
   @media (min-aspect-ratio: 991/1000) and (max-aspect-ratio: 1000/991) {
-    bottom: 3.1%;
+    bottom: 1rem;
   }
 
   @media (min-aspect-ratio: 100/90) {
-    bottom: 3%
+    bottom: 1rem
   }
 
   @media (min-aspect-ratio: 100/85) {
-    bottom: 2.8%
+    bottom: 1rem
   }
   @media (max-width: 399px) {
     left: 41vw;

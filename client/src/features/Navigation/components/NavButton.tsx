@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../../store";
-
+import * as ICON from './NavIcons'
 import { goBack } from "../../../icons";
 
 import style from "./styles/NavButton.module.scss";
@@ -17,7 +17,7 @@ const iconFactory = (props: { icon: string; module: string }) => {
   const iconName = `${props.icon}${
     props.module === props.icon ? "Active" : "Regular"
   }`;
-  const ICON = require("./NavIcons");
+  // const ICON = require("./NavIcons");
   const icons: any = ICON;
   return icons[iconName];
 };
