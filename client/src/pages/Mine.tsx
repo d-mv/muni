@@ -27,10 +27,10 @@ const Mine = (props: {
 
   return (
     <Page data-testid='page__mine'>
-      <Header {...headerObject} />;
+      <Header {...headerObject} />
       <Content padded>
         <SubTitle title={text["mine.subtitle"]} direction={direction} />
-        <PostList posts={posts} />;
+        <PostList posts={posts} />
       </Content>
     </Page>
   );
