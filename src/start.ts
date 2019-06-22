@@ -2,7 +2,7 @@
 
 import app from "./server";
 import debug from "debug";
-import * as https from "https";
+// import * as https from "https";
 import * as http from "http";
 import * as dotenv from "dotenv";
 
@@ -10,7 +10,7 @@ let server: any = http.createServer(app);
 
 const dotEnv = dotenv.config();
 
-if (process.env.NODE_ENV === "production") server = https.createServer(app);
+// if (process.env.NODE_ENV === "production") server = https.createServer(app);
 
 console.log(process.env.NODE_ENV);
 

@@ -309,11 +309,12 @@
   width: 95%;
   margin: 0 auto;
   margin-bottom: 1rem;
+  padding-top: 5rem;
 }
 
 .content-header-sub {
   @extend .content-header;
-  overflow: auto;
+  overflow: none;
 }
 
 .app-logo {

@@ -133,7 +133,6 @@ exports.deletePost = function (props, callback) {
  */
 exports.posts = function (props, callback) {
     Post.list(props, function (modelResponse) {
-        console.log("object");
         callback(modelResponse);
     });
 };
