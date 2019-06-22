@@ -410,3 +410,6 @@ export const fetchData = (
       });
   };
 };
+export const typingData = (data: { [index: string]: string }) => {
+  return { type: "TYPING_DATA", payload: { ...data } };
+};

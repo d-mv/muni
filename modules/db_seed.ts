@@ -251,13 +251,13 @@ const dbSeed = (callback: any) => {
         blockMuni.push(post);
       }
 
-      const pinned = blockMuni;
+      const pinned = blockMuni[2];
 
       // ! call to update the DB
       update({
         id: "5ce589a00a61b5a9ca9d9caf",
         users: block,
-        municipality: blockMuni[2],
+        municipality: blockMuni,
         pinned
       });
 

@@ -79,7 +79,16 @@ export interface setPostsAction {
   posts: any;
 }
 
+export interface typingDataAction {
+  type: 'TYPING_DATA'
+  payload: {
+    value: string,
+    name:string
+  }
+}
+
 export type Action =
+  | typingDataAction
   | fetchDataAction
   | setPostsAction
   | voteAction
@@ -90,7 +99,6 @@ export type Action =
   | checkTokenAction
   | loginAction
   | setModuleUAction
-
   | setLoadingAction
   | registerAction
   | setAuthAction

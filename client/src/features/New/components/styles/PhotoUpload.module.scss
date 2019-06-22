@@ -3,15 +3,25 @@
   box-shadow: var(--boxShadow);
   width: 90%;
   height: 200px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  object-fit: cover;
 }
 
 .imageDef {
   margin: 10px;
   width: 90%;
   height: 200px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  object-fit: cover;
 }
 
 .input {
-  visibility:hidden;
+  visibility: hidden;
   display: none;
 }

@@ -19,7 +19,8 @@ import {
   changeMode,
   loadData,
   setLanguage,
-  setPosts
+  setPosts,
+  typingData
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState, showPostState } from "./defaults";
@@ -57,7 +58,8 @@ const rootReducer = combineReducers({
   step: setStep,
   posts: setPosts,
   update: updatePost,
-  post: showPost
+  post: showPost,
+  typed: typingData
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -88,13 +90,15 @@ export default function configureStore() {
     posts: any;
     update: TYPE.apiResponse;
     post: showPostPayload;
+    typed: TYPE.indexedObj;
   }
 
   const initialState: state = {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "welcome",
+    module: "",
+    // module: "welcome",
     prevModule: "welcome",
     locations: [],
     loading: false,
@@ -111,7 +115,8 @@ export default function configureStore() {
     vote: apiState,
     posts: [],
     update: apiState,
-    post: showPostState
+    post: showPostState,
+    typed: {}
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

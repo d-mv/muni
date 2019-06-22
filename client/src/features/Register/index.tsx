@@ -138,7 +138,7 @@ const Register = (props: {
     placeholder: text["login.prompt.fname"],
     action: handleInputChange,
     length: 2,
-    focus: true
+    focus: !props.loading
   });
   const lNameElement = formSection({
     label: text["login.label.lname"],

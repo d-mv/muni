@@ -17,7 +17,7 @@ const ContentBlock = (props: {
   direction: string;
 }) => {
   return (
-    <Content padded>
+    <Content paddedFlat>
       {props.stepOne}
       {props.stepTwo}
       {props.stepThree}

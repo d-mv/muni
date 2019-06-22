@@ -10,17 +10,16 @@ const Photo = (props: {
   children?: JSX.Element | null;
   direction?: string;
 }) => {
-  const image = {
-    background: `url(${props.photo}) no-repeat scroll center center / cover`
-  };
+  let image = require("../../../assets/image__default.png");
 
-  const photoStyle = props.direction ? style[styleFactory("photo", props.direction)] : style.photo
-  console.log(photoStyle)
-  // const image = {
-  //   background: `url(${imageDecoder(
-  //     props.photo
-  //   )}) no-repeat scroll center center / cover`
-  // };
+  if (props.photo)
+    image = {
+      background: `url(${props.photo}) no-repeat scroll center center / cover`
+    };
+
+  const photoStyle = props.direction
+    ? style[styleFactory("photo", props.direction)]
+    : style.photo;
 
   return (
     <div style={image} className={photoStyle}>
