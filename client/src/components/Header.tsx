@@ -1,4 +1,4 @@
-import { indexedObj} from "../store/types";
+import { indexedObj } from "../store/types";
 
 import { AppState } from "../store";
 import styleFactory from "../modules/style_factory";
@@ -15,10 +15,12 @@ const Header = (props: {
   right?: {
     icon: JSX.Element;
     action: () => void;
+    noRtl?: boolean;
   };
   left?: {
     icon: JSX.Element;
     action: () => void;
+    noRtl?: boolean;
   };
 }) => {
   const [showHelp, setShowHelp] = React.useState(false);
@@ -40,10 +42,14 @@ const Header = (props: {
   };
 
   const left = props.left
-    ? makeIcon(props.left.icon)
+    ? makeIcon(props.left.icon, props.left.noRtl)
     : makeIcon(<Help color='primary' />, true);
 
-  const right = props.right ? makeIcon(props.right.icon) : <div />;
+  const right = props.right ? (
+    makeIcon(props.right.icon, props.right.noRtl)
+  ) : (
+    <div />
+  );
 
   return (
     <header className={styles[styleFactory("plank", direction)]}>

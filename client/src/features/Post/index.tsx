@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { categoryIdToName } from "../../modules/category_processor";
 import { replyCardStyleUtil } from "../../modules/reply_style_generator";
+import { goBack, iconEdit } from "../../icons";
 
 import { AppState } from "../../store";
 import { vote, setModule } from "../../store/users/actions";
@@ -32,6 +33,7 @@ import Line from "../../layout/Line";
 import Content from "../../layout/Content";
 
 import style from "./style/Post.module.scss";
+import styleFactory from "../../modules/style_factory";
 
 const Post = (props: {
   post: post;
@@ -51,7 +53,7 @@ const Post = (props: {
   const [showConfirm, setShowConfirm] = useState(false);
   const [newReply, setNewReply] = useState("");
   const [showNewReply, setShowNewReply] = useState(false);
-  const [post, setPost] = useState(props.post)
+  const [post, setPost] = useState(props.post);
   const {
     _id,
     title,
@@ -77,7 +79,6 @@ const Post = (props: {
 
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    // setPost({ ...post, votes: [...votes, props.location._id] });
     props.vote(_id, props.location._id);
   };
 
@@ -167,12 +168,12 @@ const Post = (props: {
 
     ReplyMessage = reply.text ? (
       <div className={style[replyCardStyle]}>
-        {replyVotes}
-        <Line direction={direction}>
+        <div className={style[styleFactory('replyTitleLine',direction)]}>
+          {replyVotes}
           <span className={style.replyCardTitle}>
             {text["munireply.title"]}
           </span>
-        </Line>
+        </div>
         <div className={style.replyMessage}>{reply.text}</div>
         {reply.text.length > 50 ? (
           <ShowMore
@@ -193,10 +194,17 @@ const Post = (props: {
   const goHome = () => {
     props.setModule(props.prevModule);
   };
+
+  const edit =
+    !author && !muniUser
+      ? {
+          right: { icon: iconEdit("primary"), action: mockFnEdit, noRtl: true }
+        }
+      : null;
   const headerObject = {
     name: props.location.name[props.language.short],
-    right: { icon: <div>edit</div>, action: mockFnEdit },
-    left: { icon: <div>back</div>, action: goHome }
+    ...edit,
+    left: { icon: goBack("primary"), action: goHome }
   };
   return (
     <Content header>
