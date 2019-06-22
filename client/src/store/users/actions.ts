@@ -367,7 +367,6 @@ export const vote = (
         });
       })
       .catch(error => {
-        // const payload = error.response ? error.response.data : error.toString();
         dispatch({
           type: "VOTE",
           payload: error.response

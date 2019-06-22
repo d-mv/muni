@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
 
 import { categoryIdToName } from "../../modules/category_processor";
@@ -43,6 +43,15 @@ const Post = (props: {
   prevModule: string;
 }) => {
   const { categories } = props.location;
+
+  const { direction, text, short } = props.language;
+
+  const [textOpened, setTextOpened] = useState(false);
+  const [replyOpened, setReplyOpened] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [newReply, setNewReply] = useState("");
+  const [showNewReply, setShowNewReply] = useState(false);
+  const [post, setPost] = useState(props.post)
   const {
     _id,
     title,
@@ -54,14 +63,8 @@ const Post = (props: {
     createdBy,
     date,
     reply
-  } = props.post;
-  const { direction, text, short } = props.language;
-
-  const [textOpened, setTextOpened] = React.useState(false);
-  const [replyOpened, setReplyOpened] = React.useState(false);
-  const [showConfirm, setShowConfirm] = React.useState(false);
-  const [newReply, setNewReply] = React.useState("");
-  const [showNewReply, setShowNewReply] = React.useState(false);
+  } = post;
+  // } = props.post;
 
   const showStyle = textOpened ? style.text : style.textClosed;
   const voterText =
@@ -74,7 +77,8 @@ const Post = (props: {
 
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    // props.action({ _id, action: "vote" });
+    // setPost({ ...post, votes: [...votes, props.location._id] });
+    props.vote(_id, props.location._id);
   };
 
   const numbersLine = (
@@ -195,7 +199,7 @@ const Post = (props: {
     left: { icon: <div>back</div>, action: goHome }
   };
   return (
-    <Content header >
+    <Content header>
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={_id} className={style.post}>

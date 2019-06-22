@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 import Modal from "../../../components/Modal";
 
@@ -7,10 +7,6 @@ import Center from "../../../layout/Center";
 
 export const ModalView = (props: { close: () => void; text: string }) => (
   <Modal close={props.close}>
-    <div className={styles.container}>
-      <Center>
-        <span className={styles.text}>{props.text}</span>
-      </Center>
-    </div>
+    <span className={styles.text}>{props.text}</span>
   </Modal>
 );

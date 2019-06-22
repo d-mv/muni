@@ -13,6 +13,10 @@
 }
 
 .content {
-  width: 100%;
-  color:white;
+  width: 75%;
+  padding: 4rem 0;
+  border-radius: var(--borderRadius); background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
