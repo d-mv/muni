@@ -190,12 +190,12 @@ const Post = (props: {
     props.setModule(props.prevModule);
   };
   const headerObject = {
-    name: "",
+    name: props.location.name[props.language.short],
     right: { icon: <div>edit</div>, action: mockFnEdit },
     left: { icon: <div>back</div>, action: goHome }
   };
   return (
-    <Content headerSub>
+    <Content header >
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={_id} className={style.post}>

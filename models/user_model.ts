@@ -369,6 +369,7 @@ export const isUserNew = (
       ])
       .toArray((err: any, result: any) => {
         // no result
+        console.log(err)
         console.log("isUserNew?");
         console.log(result);
         console.log(user);

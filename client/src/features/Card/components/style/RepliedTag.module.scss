@@ -19,4 +19,6 @@
 .tagRTL {
   @extend .tag;
   direction: rtl;
+  border-radius: .4rem 0 0 .4rem;
+
 }

@@ -6,7 +6,7 @@ import * as mongodb from "mongodb";
 import * as assert from "assert";
 const bodyParser = require("body-parser");
 import * as dotenv from "dotenv";
-// import compression from "compression";
+const sslRedirect = require("heroku-ssl-redirect");
 const compression = require("compression");
 
 // routes
@@ -25,6 +25,7 @@ process.on("uncaughtException", err => {
   console.log(err);
 });
 
+app.use(sslRedirect());
 app.use(compression());
 app.use(cors());
 // app.use(express.json());
@@ -33,15 +34,15 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === "production") {
-  app.use((req: any, res: any, next: any) => {
-    if (!/https/.test(req.protocol)) {
-      res.redirect("https://" + req.headers.host + req.url);
-    } else {
-      return next();
-    }
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.all((req: any, res: any, next: any) => {
+//     if (!/https/.test(req.protocol)) {
+//       res.redirect("https://" + req.headers.host + req.url);
+//     } else {
+//       return next();
+//     }
+//   });
+// }
 
 app.use("/api/user", userRouter);
 app.use("/api/location", locationRouter);
