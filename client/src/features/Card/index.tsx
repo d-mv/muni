@@ -27,7 +27,7 @@ const PostCard = (props: {
   showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction, short } = props.language;
-  const { _id, title, date, photo, category, createdBy, reply } = props.post;
+  const { _id, title, date, photo, category, createdBy,reply } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {
@@ -60,12 +60,13 @@ const PostCard = (props: {
         <VoteButton />
       </span>
     ) : (
-      <div className={style.button}/>
+      <div className={style.button} />
     );
 
-  const replyTag = reply ? (
-    <RepliedTag text={text["post.replied"]} direction={direction} />
-  ) : null;
+  const replyTag =
+    reply.text !== "" ? (
+      <RepliedTag text={text["post.replied"]} direction={direction} />
+    ) : null;
 
   return (
     <Card id={_id} direction={direction} action={handleClick}>
