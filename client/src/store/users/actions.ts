@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from "axios";
 import { Action } from "./types";
 import * as TYPE from "../types";
 
-
 import { AnyAction } from "redux";
 import { apiState } from "../defaults";
 
@@ -60,7 +59,7 @@ export const checkToken = (
           dispatch({
             type: "LOGIN",
             payload: { ...response.data, code: response.status }
-          })
+          });
         } else {
           dispatch({ type: "SET", token: "clear" });
           dispatch({
@@ -140,11 +139,6 @@ export const login = (
           type: "SET_POSTS",
           posts: response.data.payload.posts
         });
-
-        // dispatch({
-        //   type: "SET_MESSAGE",
-        //   message: response.data.message || response.data.payload.message
-        // });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[response.data.payload.lang]
@@ -168,7 +162,7 @@ export const login = (
             loading: false
           });
           dispatch({
-            type: "CHANGE_MODE",
+            type: "SET_MODULE",
             mode: "register"
           });
         } else {
@@ -267,7 +261,7 @@ export const register = (
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();
-        console.log(payload)
+        console.log(payload);
         dispatch({
           type: "SET_MESSAGE",
           message: payload.message.toString()
@@ -290,7 +284,6 @@ export const setMessage = (message: string) => {
     message: message
   };
 };
-
 
 /**
  * Action function to load built-in data

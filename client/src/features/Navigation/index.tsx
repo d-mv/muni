@@ -10,6 +10,7 @@ import NavButton from "./components/NavButton";
 import EntranceButton from "./components/EntranceButton";
 
 import { Spacer } from "../../layout/Utils";
+import LangSwitch from "../../components/LangSwitch";
 
 /**
  * Functional component to display a footer wrapper with buttons
@@ -51,7 +52,9 @@ const Navigation = (props: any) => {
         <nav className={headerStyle}>
           <NavButton mode='return-welcome' action={action} />
           <h1>Our Change</h1>
-          <Spacer size={10} units='%' />
+          <div className="langSwitchButton">
+            <LangSwitch />
+          </div>
         </nav>
       );
       break;
@@ -60,7 +63,9 @@ const Navigation = (props: any) => {
         <nav className={headerStyle}>
           <NavButton mode='return-login' action={action} />
           <h1>Our Change</h1>
-          <Spacer size={10} units='%' />
+          <div className='langSwitchButton'>
+            <LangSwitch />
+          </div>
         </nav>
       );
       break;

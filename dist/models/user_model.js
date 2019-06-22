@@ -145,7 +145,6 @@ exports.updateUser = function (id, newFields, callback) {
 var checkIfEmailNew = function (email, callback, app) {
     MDB.client.connect(function (err) {
         assert.equal(null, err);
-        assert.equal(null, err);
         var db = MDB.client.db(dbName);
         db.collection(dbcMain)
             .aggregate([
@@ -172,6 +171,9 @@ var checkIfEmailNew = function (email, callback, app) {
             }
         ])
             .toArray(function (e, res) {
+            console.log("email is new?");
+            console.log(e);
+            console.log(res);
             if (e || res.length > 0) {
                 callback(false);
             }
@@ -385,7 +387,10 @@ exports.isUserNew = function (user, callback) {
             }
         ])
             .toArray(function (err, result) {
+            if (err)
+                callback(Message.errorMessage({ action: "isUserNew", e: err }));
             // no result
+            console.log(err);
             console.log("isUserNew?");
             console.log(result);
             console.log(user);
@@ -450,6 +455,8 @@ exports.create = function (request, callback) {
     // const token = Generate.token();
     var id = new MDB.ObjectId();
     checkIfEmailNew(request.email, function (emailIsNew) {
+        console.log("emailIsNew");
+        console.log(emailIsNew);
         if (emailIsNew) {
             security_1.encodeString(check_strings_1.dropQuotes(request.pass), function (encoded) {
                 if (!encoded.status) {
@@ -770,8 +777,6 @@ exports.loginAttempt = function (user, id, callback) {
             });
         }
     });
-    MDB.client.close();
-    ;
 };
 exports.getLocationInfo = function (user, callback) {
     MDB.client.connect(function (err) {
@@ -863,7 +868,7 @@ exports.getLocationInfo = function (user, callback) {
             });
         }
     });
-    MDB.client.close();
+    // MDB.client.close();
 };
 exports.confirmedEmail = function (_id, callback) {
     MDB.client.connect(function (err) {
@@ -944,8 +949,7 @@ exports.confirmedEmail = function (_id, callback) {
             });
         }
     });
-    MDB.client.close();
-    ;
+    // MDB.client.close();
 };
 exports.update = function (request, callback) {
     // check if post title is available
@@ -997,6 +1001,5 @@ exports.update = function (request, callback) {
             });
         }
     });
-    MDB.client.close();
-    ;
+    // MDB.client.close();
 };

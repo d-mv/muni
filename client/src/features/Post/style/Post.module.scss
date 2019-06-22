@@ -48,10 +48,6 @@
   color: var(--colorDark);
 }
 
-// .buttonWrapper {
-//   margin: 0;
-//   // margin: 2rem auto 5rem auto;
-// }
 
 .replyCard {
   margin-bottom: .5rem;
@@ -116,73 +112,6 @@
   overflow: scroll;
 }
 
-// .setOfThumbs {
-//   position: relative;
-//   margin: 0;
-//   padding: 0;
-//   bottom: 2.5rem;
-//   height: 4rem;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: row;
-
-//   svg {
-//     height: 3rem;
-//     margin: 0 2rem;
-//     position: relative;
-
-//     &:first-of-type {
-//       transform: rotate(180deg);
-//     }
-
-//     &:last-of-type {
-//       bottom: 1.3rem;
-//     }
-//   }
-// }
-
-// .replyVotes {
-//   height: 3rem;
-//   width: fit-content;
-//   // border: 1px solid red;
-//   margin-top: 1rem;
-//   margin-bottom: 1rem;
-//   padding: .2rem .5rem;
-//   display: flex;
-//   margin-left: -1px;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   align-items: center;
-//   background-color: white;
-
-//   P {
-//     text-align: center;
-//     font: var(--textParaStandard);
-//     margin: 0 1rem;
-//     // min-width: 2rem;
-
-//     &:last-of-type {
-//       color: var(--colorAttention);
-//     }
-
-//     &:first-of-type {
-//       color: var(--colorSecondary); // padding: 0;
-//     }
-
-//   }
-
-//   svg {
-//     margin: 0 1rem;
-//     height: 2rem;
-//     width: 2rem;
-
-//     &:last-of-type {
-//       transform: rotate(180deg)
-//     }
-//   }
-
-// }
 
 .voted {
   position: relative;

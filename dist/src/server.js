@@ -8,7 +8,7 @@ var mongodb = require("mongodb");
 var assert = require("assert");
 var bodyParser = require("body-parser");
 var dotenv = require("dotenv");
-// import compression from "compression";
+var sslRedirect = require("heroku-ssl-redirect");
 var compression = require("compression");
 // routes
 // import router from '../routes';
@@ -23,6 +23,7 @@ process.on("uncaughtException", function (err) {
     console.log(new Date());
     console.log(err);
 });
+app.use(sslRedirect());
 app.use(compression());
 app.use(cors());
 // app.use(express.json());
@@ -30,16 +31,15 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
-if (process.env.NODE_ENV === "production") {
-    app.use(function (req, res, next) {
-        if (!/https/.test(req.protocol)) {
-            res.redirect("https://" + req.headers.host + req.url);
-        }
-        else {
-            return next();
-        }
-    });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.all((req: any, res: any, next: any) => {
+//     if (!/https/.test(req.protocol)) {
+//       res.redirect("https://" + req.headers.host + req.url);
+//     } else {
+//       return next();
+//     }
+//   });
+// }
 app.use("/api/user", user_router_1["default"]);
 app.use("/api/location", location_router_1["default"]);
 app.use("/api/post", post_router_1["default"]);

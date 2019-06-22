@@ -2,7 +2,7 @@ import React from "react";
 
 import postDays from "../../../modules/post_days";
 
-import style from "./styles/Age.module.scss";
+import style from "./style/Age.module.scss";
 
 const Age = (props: {
   date: string;

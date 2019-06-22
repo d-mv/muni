@@ -23,9 +23,6 @@ const Enter = (props: { register?: boolean; locations?: data }) => {
   return (
     <Page opposite>
       {show}
-      <div className={style.langSwitch}>
-        <LangSwitch />
-      </div>
     </Page>
   );
 };
