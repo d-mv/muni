@@ -18,6 +18,7 @@ import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 
 import button from "../../components/style/Button.module.scss";
+import { type } from "os";
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -38,8 +39,8 @@ const Login = (props: {
   // get the language[]
   const { text, direction } = props.language;
   // set local hooks
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const [email, setEmail] = useState(props.typed?props.typed.email:'');
+  const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
   // set message
   const [errorMessage, setErrorMessage] = useState(props.message);
   console.log(props.typed);

@@ -114,6 +114,7 @@ export const login = (
       type: "SET_MESSAGE",
       message: ""
     });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
     dispatch({
       type: "SET_LOADING",
       loading: true
@@ -185,6 +186,10 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     dispatch({ type: "SET_MODULE", module: "welcome" });
     dispatch({ type: "SET", token: "clear" });
     dispatch({
+      type: "TYPING_DATA",
+      payload: { email: "", pass: "", fName: "", lName: "", location: "" }
+    });
+    dispatch({
       type: "SET_MESSAGE",
       message: ""
     });
@@ -226,6 +231,8 @@ export const register = (
       type: "SET_LOADING",
       loading: true
     });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
+
     // proceed with request
     axios({
       method: "post",

@@ -25,18 +25,22 @@ const Register = (props: {
   register: (arg0: TYPE.register) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
+  typed: TYPE.indexedObj;
 }) => {
   // get the language
   const { text, direction } = props.language;
   const { locations } = props;
 
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [email, setEmail] = useState(props.typed ? props.typed.email : "");
+  const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
   const [secondPass, setSecondPass] = useState("");
-  const defaultLocation = locations ? locations[0].value : "";
-  const [location, setLocation] = useState(defaultLocation);
-  const [fName, setFname] = useState("");
-  const [lName, setLname] = useState("");
+  // if there are locations - use the first one
+  const defaultLocation = locations.length > 0 ? locations[0].value : "";
+  const [location, setLocation] = useState(
+    props.typed ? props.typed.location : defaultLocation
+  );
+  const [fName, setFname] = useState(props.typed ? props.typed.fName : "");
+  const [lName, setLname] = useState(props.typed ? props.typed.lName : "");
 
   const [errorMessage, setErrorMessage] = useState(props.message);
 
@@ -184,7 +188,8 @@ const mapStateToProps = (state: AppState) => {
     registerResult: state.register,
     language: state.language,
     message: state.message,
-    loading: state.loading
+    loading: state.loading,
+    typed: state.typed
   };
 };
 
