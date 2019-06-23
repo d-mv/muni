@@ -55,7 +55,7 @@ router.get("/list", function (req, res, next) {
 });
 // GET request for list of posts
 router.get("/:id/posts", function (req, res, next) {
-    show_request_1.showRequest("loc.get_posts", req.headers, [req.body, req.headers.token]);
+    show_request_1.showRequest("loc.get_posts", req.params.id, [req.body, req.headers.token]);
     var ng = function (code, packageToSend, message) {
         res
             .cookie("token", "", {
@@ -93,7 +93,7 @@ router.get("/:id/posts", function (req, res, next) {
                     res.status(controllerResponse.code).send(controllerResponse);
                 });
             }
-        });
+        }, true);
     }
 });
 // create

@@ -9,7 +9,8 @@ import {
   setToken,
   checkToken,
   login,
-  fetchData
+  fetchData,
+  getPosts
 } from "./store/users/actions";
 import { fetchLocations, prevModule } from "./store/app/actions";
 import { showPost } from "./store/post/actions";
@@ -41,15 +42,15 @@ const App = (props: {
   fetchLocations: (props?: any) => any;
   fetchData: (arg0: string) => void;
   cookies: any;
+  posts: data;
   showPost: (arg0: showPostPayload) => void;
   prevModule: (arg0: string) => void;
+  getPosts: (arg0: string) => void;
 }) => {
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
-  axios.defaults.headers = { token };
-
-  console.log(props.module);
+  const [localToken, setLocalToken] = useState(token);
 
   const toggleModule = (module: string) => {
     props.prevModule(props.module);
@@ -58,74 +59,115 @@ const App = (props: {
 
   // set cookies if token changes
   useEffect(() => {
+    console.log("1. check token");
     // if 'clear'
     if (props.token === "clear") {
-      console.log(0);
+      console.log("- clear token");
       cookies.set("token", "");
       props.setToken("");
       toggleModule("welcome");
     } else if (
       props.token !== "" &&
       props.token !== "clear" &&
+      Object.keys(props.location).length === 0
+    ) {
+      console.log("- token is in state, but no data");
+      axios.defaults.headers = { token };
+      props.fetchData(token);
+    } else if (
+      props.token !== "" &&
+      props.token !== "clear" &&
       Object.keys(props.location).length > 0
     ) {
-      // if token IS
+      console.log("- token is in state, data is present");
       cookies.set("token", props.token);
-      console.log(5);
-      if (props.locations.length > 0) toggleModule("home");
-    } else if (props.token !== "" && props.token !== "clear") {
-      props.fetchData(token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
-      console.log(2);
+      console.log("- token is in cookies");
       props.checkToken(cookies.get("token"));
-    } else {
-      console.log("6 - no token, no cookie");
+    }
+    // else if (props.token !== "" && props.token !== "clear") {
+    //   console.log("- data is missing");
+    //   props.fetchData(token);
+    // }
+    else {
+      console.log("- no state, to cookie");
       toggleModule("welcome");
     }
+    // check locations
+    // if (props.locations.length > 0) {
+    //   toggleModule("home");
+    // } else {
+    //   console.log("- locations are not present");
+    //   props.fetchLocations();
+    // }
   }, [token, cookies]);
-  console.log(props.module);
+
   useEffect(() => {
-    console.log(13);
+    console.log("2. triggered module");
     // setLoading(false);
     if (props.module != "post") {
+      console.log("- module is not post, clear it");
       props.showPost({ show: false });
     }
     if (props.module === "home") {
+      console.log("- module is home");
       setLoading(false);
     }
     if (props.module === "welcome" && !cookies.get("token") && !token) {
+      console.log("- module is welcome, no token whatsoever");
       setLoading(false);
     }
   }, [props.module]);
 
   useEffect(() => {
-    console.log(7);
-    if (Object.keys(props.location).length > 0) {
-      console.log(7.1);
+    console.log("3. triggered location");
+    if (Object.keys(props.location).length > 0 && props.posts.length > 0) {
+      console.log("- location data & posts present, go home");
       toggleModule("home");
-    }
+    } else if (Object.keys(props.location).length > 0 && props.posts.length === 0 && localToken!='') {
+      console.log("- location data present, get posts");
+      axios.defaults.headers = { token };
+      props.getPosts(props.location.location)
+           }
   }, [props.location]);
 
+ useEffect(() => {
+   console.log("6. triggered posts");
+   if (props.posts.length > 0) {
+     console.log("- posts are there, show post");
+     toggleModule("home");
+   }
+ }, [props.posts]);
+
   useEffect(() => {
-    console.log(12);
+    console.log("4. triggered post");
     if (props.post) {
+      console.log("- post is there, show post");
       toggleModule("post");
     }
   }, [props.post]);
 
   useEffect(() => {
-    console.log(10);
+    console.log("4. check token status");
     if (props.check.status) {
-      props.fetchData(token);
-    } else {
+      console.log("- token check is positive, set to local");
+      setLocalToken(token);
+      // props.fetchData(token);
     }
   }, [props.check.status]);
 
   // fetch locations
+  // useEffect(() => {
+  //   console.log('5. fetch locations once');
+  //   props.fetchLocations();
+  // }, []);
+
   useEffect(() => {
-    console.log(11);
-    props.fetchLocations();
-  }, []);
+    if (props.locations.length === 0) {
+      console.log("5. locations not available, get them");
+      props.fetchLocations();
+    }
+  });
 
   const handleNewButtonClick = () => {
     toggleModule("new");
@@ -270,7 +312,8 @@ const mapStateToProps = (state: AppState) => {
     vote: state.vote,
     check: state.checkTokenResult,
     post: state.post.show,
-    posttmp: state.post
+    posttmp: state.post,
+    posts: state.posts
   };
 };
 
@@ -284,6 +327,7 @@ export default connect(
     fetchLocations,
     fetchData,
     showPost,
-    prevModule
+    prevModule,
+    getPosts
   }
 )(withCookies(App));

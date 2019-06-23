@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-
+import axios, { AxiosResponse } from "axios";
 import { categoryIdToName } from "../../modules/category_processor";
 import { replyCardStyleUtil } from "../../modules/reply_style_generator";
 import { goBack, iconEdit } from "../../icons";
 
 import { AppState } from "../../store";
-import { vote, setModule } from "../../store/users/actions";
+import { vote, setModule, fetchData,getPosts } from "../../store/users/actions";
 import { updatePost } from "../../store/post/actions";
 import { indexedObjAny, post, data } from "../../store/types";
 
@@ -42,7 +42,10 @@ const Post = (props: {
   vote: (arg0: string, arg1: string) => void;
   updatePost: (arg0: any) => void;
   setModule: (arg0: string) => void;
+  fetchData: (arg0: string) => void;
+  getPosts: (arg0: string) => void;
   prevModule: string;
+  token: string;
 }) => {
   const { categories } = props.location;
 
@@ -53,6 +56,7 @@ const Post = (props: {
   const [showConfirm, setShowConfirm] = useState(false);
   const [newReply, setNewReply] = useState("");
   const [showNewReply, setShowNewReply] = useState(false);
+
   const [post, setPost] = useState(props.post);
   const {
     _id,
@@ -77,9 +81,22 @@ const Post = (props: {
     less: text["post.show-less"]
   };
 
+
+
+
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    props.vote(_id, props.location._id);
+    // props.vote(_id, props.location._id);
+    const url = `/post/${_id}/vote?user=${props.location._id}`;
+    axios({
+      method: "patch",
+      url
+    })
+      .then((response: AxiosResponse<any>) => {
+        setPost({ ...post, votes: [...post.votes, props.location._id] });
+        props.getPosts(props.location.location)
+      })
+      .catch((error: AxiosResponse<any>) => console.log(error));
   };
 
   const numbersLine = (
@@ -168,7 +185,7 @@ const Post = (props: {
 
     ReplyMessage = reply.text ? (
       <div className={style[replyCardStyle]}>
-        <div className={style[styleFactory('replyTitleLine',direction)]}>
+        <div className={style[styleFactory("replyTitleLine", direction)]}>
           {replyVotes}
           <span className={style.replyCardTitle}>
             {text["munireply.title"]}
@@ -258,11 +275,12 @@ const mapStateToProps = (state: AppState) => {
     // @ts-ignore
     post: state.posts.filter((post: any) => post._id === state.post._id)[0],
     mode: state.mode,
-    prevModule: state.prevModule
+    prevModule: state.prevModule,
+    token: state.token
   };
 };
 
 export default connect(
   mapStateToProps,
-  { vote, updatePost, setModule }
+  { vote, updatePost, setModule, fetchData, getPosts }
 )(Post);

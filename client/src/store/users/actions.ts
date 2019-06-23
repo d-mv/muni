@@ -7,7 +7,7 @@ import { AnyAction } from "redux";
 import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
-
+export * from "./posts";
 const importedData: TYPE.indexedObjAny = data;
 
 /**
@@ -51,8 +51,8 @@ export const checkToken = (
     })
       .then(response => {
         const payload = response.data;
-        console.log(response.data);
-        console.log("checktoken - payload.status: " + payload.status);
+        // console.log(response.data);
+        // console.log("checktoken - payload.status: " + payload.status);
         if (payload.status) {
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });
@@ -77,6 +77,10 @@ export const checkToken = (
       })
       .catch(error => {
         console.log(error);
+        dispatch({
+          type: "SET_LOCATION_DATA",
+          data: error.data
+        });
       });
   };
 };
@@ -133,13 +137,13 @@ export const login = (
         console.log(response);
         console.log(response.data);
 
-        dispatch({ type: "SET_MODULE", module });
+        // dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET_AUTH", status: true });
         dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
-        dispatch({
-          type: "SET_POSTS",
-          posts: response.data.payload.posts
-        });
+        // dispatch({
+        //   type: "SET_POSTS",
+        //   posts: response.data.payload.posts
+        // });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[response.data.payload.lang]
@@ -397,7 +401,7 @@ export const fetchData = (
       .then((response: AxiosResponse<any>) => {
         const payload = response.data;
         dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
-        dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
+        // dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[payload.payload.lang]
@@ -409,14 +413,18 @@ export const fetchData = (
         // });
       })
       .catch(error => {
+        console.log(error);
         dispatch({
           type: "SET_LOCATION_DATA",
-          // type: "FETCH_DATA",
-          payload: error.response
+          data: error.data
         });
       });
   };
 };
 export const typingData = (data: { [index: string]: string }) => {
   return { type: "TYPING_DATA", payload: { ...data } };
+};
+
+export const cachePost = (post: TYPE.post): Action => {
+  return { type: "CACHE_POST", post };
 };

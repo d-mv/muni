@@ -90,7 +90,7 @@ export interface post {
   votes: Array<string>;
   newsId?: string;
   reply: {
-    date: Date;
+    date: string;
     text: string;
     up: string[];
     down: string[];

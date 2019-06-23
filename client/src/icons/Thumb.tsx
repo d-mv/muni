@@ -2,7 +2,7 @@ import React from "react";
 import { colorsArray } from "../style/_colors";
 
 const Thumb = (props: { frame: string; fill: string }) => {
-  console.log(props);
+  // console.log(props);
   return (
     <svg
       viewBox='0 0 246 218'

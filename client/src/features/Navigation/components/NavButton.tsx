@@ -40,7 +40,7 @@ const NavButton = (props: {
   const testId = `${mode}__button`;
 
   const actionHandler = (action?: any) => {
-    console.log(action)
+    // console.log(action)
     if (props.action) props.action(action);
   };
 

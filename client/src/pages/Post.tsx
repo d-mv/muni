@@ -14,7 +14,7 @@ import Page from "../layout/Page";
 const Post = (props: { muni?: boolean }) => {
   // TODO: change
   const component = props.muni ? <PostMuni /> : <PostUser />;
-console.log(props.muni)
+// console.log(props.muni)
   return <Page>{component}</Page>;
 };
 

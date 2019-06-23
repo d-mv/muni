@@ -9,7 +9,7 @@ export const submitPost = (
   props: any
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = "/post/create";
-  console.log(props);
+  // console.log(props);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // proceed with request
     axios
@@ -41,7 +41,7 @@ export const updatePost = (
   props: any
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/post/${props._id}`;
-  console.log(props);
+  // console.log(props);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // proceed with request
     axios
@@ -74,3 +74,4 @@ export const showPost = (props: showPostPayload): Action => {
 export const updatePosts = (props: any) => {
   return {type:"UPDATE_POSTS",payload: {...props}}
 }
+

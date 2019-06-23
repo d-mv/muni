@@ -73,7 +73,7 @@ export const fetchLocations = (): ThunkAction<
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     try {
       const response: any = await axios.get(url);
-      console.log(response)
+      // console.log(response)
       const { status, code, message, payload } = response.data;
       if (status && payload) {
         dispatch({
@@ -92,10 +92,11 @@ export const fetchLocations = (): ThunkAction<
         });
       }
     } catch (error) {
-      const payload = error.response ? error.response.data : error.toString();
+      console.log(error);
+      // const payload = error ? error.response.data : error.toString();
       dispatch({
         type: "FETCH_LOCATIONS",
-        payload
+        payload: error
       });
     }
   };

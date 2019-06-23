@@ -6,6 +6,7 @@ import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
 import { post, indexedObjAny, data } from "../../store/types";
+import {cachePost} from '../../store/users/actions'
 import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
 import VoteButton from "../../components/VoteButton";
@@ -27,7 +28,7 @@ const PostCard = (props: {
   showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction, short } = props.language;
-  const { _id, title, date, photo, category, createdBy,reply } = props.post;
+  const { _id, title, date, photo, category, createdBy, reply } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {

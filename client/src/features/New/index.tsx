@@ -108,7 +108,7 @@ const NewPost = (props: {
       }
     }
   };
-  console.log(step);
+  // console.log(step);
   const handleBackStep = () => {
     if (step - 1 > 0) {
       setStep(step - 1);

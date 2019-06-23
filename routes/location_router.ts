@@ -62,7 +62,7 @@ router.get("/list", (req: any, res: any, next: any) => {
 
 // GET request for list of posts
 router.get("/:id/posts", (req: any, res: any, next: any) => {
-  showRequest("loc.get_posts", req.headers, [req.body, req.headers.token]);
+  showRequest("loc.get_posts", req.params.id, [req.body, req.headers.token]);
 
   const ng = (code: number, packageToSend?: any, message?: string) => {
     res
@@ -102,7 +102,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
           }
         );
       }
-    });
+    },true);
   }
 });
 

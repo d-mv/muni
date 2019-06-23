@@ -71,7 +71,8 @@ export const compareStringToHash = (
  */
 export const checkToken = (
   token: string,
-  callback: (arg0: TYPE.apiResponse) => void
+  callback: (arg0: TYPE.apiResponse) => void,
+  nodata?: boolean
 ) => {
   jwt.verify(token, passPhrase, (err: any, decoded: any) => {
     if (err) {
@@ -95,25 +96,30 @@ export const checkToken = (
             // user is not super
             User.getUserById(decoded.id, (getUserByIdResponse: any) => {
               if (getUserByIdResponse.status) {
-                User.getLocationInfo(
-                  decoded.id,
-                  (modelReply: TYPE.apiResponse) => {
-                    console.log("getUserByIdResponse");
-                    console.log(getUserByIdResponse);
-                    const replyPayload = {
-                      ...modelReply.payload,
-                      lang: getUserByIdResponse.language,
-                      type: getUserByIdResponse.type
-                    };
-                    callback({ ...modelReply, payload: replyPayload });
-                  }
-                );
+                if (nodata) {
+                  callback(
+                    Message.foundMessage("token OK", {payload:{ id: decoded.id }})
+                  );
+                } else {
+                  User.getLocationInfo(
+                    decoded.id,
+                    (modelReply: TYPE.apiResponse) => {
+                      console.log("getUserByIdResponse");
+                      console.log(getUserByIdResponse);
+                      const replyPayload = {
+                        ...modelReply.payload,
+                        lang: getUserByIdResponse.language,
+                        type: getUserByIdResponse.type
+                      };
+                      callback({ ...modelReply, payload: replyPayload });
+                    }
+                  );
+                }
               } else {
                 callback(getUserByIdResponse);
               }
             });
           } else {
-
             callback({ ...response, payload: { id: decoded.id } });
           }
         });

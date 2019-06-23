@@ -87,7 +87,14 @@ export interface typingDataAction {
   }
 }
 
+
+export interface cachePost {
+  type: "CACHE_POST",
+  post: TYPE.post
+}
+
 export type Action =
+  | cachePost
   | typingDataAction
   | fetchDataAction
   | setPostsAction

@@ -40,31 +40,21 @@ export const list = (
             }
           },
           {
-            $unwind: {
-              path: "$users",
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
-            $replaceRoot: {
-              newRoot: "$users"
-            }
-          },
-          {
-            $unwind: {
-              path: "$posts",
-              preserveNullAndEmptyArrays: true
+            $project: {
+              posts: "$users.posts"
             }
           },
           {
             $project: {
-              _id: 0,
-              posts: 1
-            }
-          },
-          {
-            $replaceRoot: {
-              newRoot: "$posts"
+              allPosts: {
+                $reduce: {
+                  input: "$posts",
+                  initialValue: [],
+                  in: {
+                    $concatArrays: ["$$value", "$$this"]
+                  }
+                }
+              }
             }
           }
         ])
@@ -84,7 +74,7 @@ export const list = (
             callback(
               Message.positiveMessage({
                 subj: `Found ${result.length} post(s)`,
-                payload: result
+                payload: result[0].allPosts
               })
             );
           }
@@ -368,9 +358,13 @@ export const vote = (
       // dBrequest[`users.$[].posts.$[reply].votes.$[]`] = user;
       // update
       database
-        .updateMany(
+        .update(
           { "users.posts._id": new MDB.ObjectId(id) },
-          { $push: { "users.$.posts.$[reply].votes": user } },
+          {
+            $addToSet: {
+              "users.$.posts.$[reply].votes": new MDB.ObjectId(user)
+            }
+          },
           {
             arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
           }

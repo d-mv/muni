@@ -43,7 +43,7 @@ const Login = (props: {
   const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
   // set message
   const [errorMessage, setErrorMessage] = useState(props.message);
-  console.log(props.typed);
+  // console.log(props.typed);
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
