@@ -1,8 +1,6 @@
 import React from "react";
 import { imageDecoder, imageEncoder } from "../../../modules/image_coder";
 
-import Block from "../../../layout/Block";
-
 import button from "../../../components/style/Button.module.scss";
 import style from "./styles/PhotoUpload.module.scss";
 

@@ -14,7 +14,6 @@ exports.__esModule = true;
 var assert = require("assert");
 var dotenv = require("dotenv");
 var MDB = require("../modules/db_connect");
-var find_post_by_id_1 = require("./find_post_by_id");
 var Message = require("../modules/response_message");
 // constant variables
 var dotEnv = dotenv.config();
@@ -175,7 +174,7 @@ exports.update = function (request, callback) {
         assert.equal(null, err);
         if (err) {
             // return error with connection
-            callback(Message.errorMessage({ action: "connection to DB (5)", e: err }));
+            callback(Message.errorMessage({ action: "connection to DB (7)", e: err }));
         }
         else {
             // set database
@@ -219,55 +218,59 @@ exports.update = function (request, callback) {
  */
 exports.deletePost = function (request, callback) {
     // check if post title is available
-    find_post_by_id_1["default"](request.postId, function (findPostResult) {
-        // if status true inform, that user exists
-        // if status false, proceed with creation
-        if (findPostResult.code !== 200) {
-            // send message
-            callback(findPostResult);
-        }
-        else if (
-        // checking authorization
-        request.user.level === "su" ||
-            findPostResult.payload.createdBy == request.user.payload.id) {
-            // authenticated
-            MDB.client.connect(function (err) {
-                assert.equal(null, err);
-                if (err) {
-                    // return error with connection
-                    callback(Message.errorMessage({ action: "connection to DB (5)", e: err }));
-                }
-                else {
-                    // set database
-                    var database = MDB.client.db(dbName).collection(dbcMain);
-                    // update
-                    database
-                        .update({ "users.posts._id": new MDB.ObjectId(request.postId) }, {
-                        $pull: {
-                            "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
-                        }
-                    })
-                        .then(function (document) {
-                        // process response
-                        callback(Message.updateMessage({
-                            subj: "Post",
-                            document: {
-                                ok: document.result.ok,
-                                nModified: document.result.nModified
-                            }
-                        }));
-                    })["catch"](function (e) {
-                        assert.equal(null, e);
-                        callback(Message.errorMessage({ action: "post update", e: e }));
-                    });
-                }
-            });
+    // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
+    //   // if status true inform, that user exists
+    //   // if status false, proceed with creation
+    //   if (findPostResult.code !== 200) {
+    //     // send message
+    //     callback(findPostResult);
+    //   } else if (
+    //     // checking authorization
+    //     request.user.level === "su" ||
+    //     findPostResult.payload.createdBy == request.user.payload.id
+    //   ) {
+    // authenticated
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({ action: "connection to DB (5)", e: err }));
         }
         else {
-            callback(Message.notAuthMessage("You need to be either owner or administrator to edit this post"));
+            // set database
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // update
+            database
+                .update({ "users.posts._id": new MDB.ObjectId(request.postId) }, {
+                $pull: {
+                    "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
+                }
+            })
+                .then(function (document) {
+                // process response
+                callback(Message.updateMessage({
+                    subj: "Post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post update", e: e }));
+            });
         }
     });
 };
+//     } else {
+//       callback(
+//         Message.notAuthMessage(
+//           "You need to be either owner or administrator to edit this post"
+//         )
+//       );
+//     }
+//   });
+// };
 exports.vote = function (request, callback) {
     var id = request.id, user = request.user;
     console.log("id");
@@ -279,7 +282,7 @@ exports.vote = function (request, callback) {
         if (err) {
             // return error with connection
             callback(Message.errorMessage({
-                action: "connection to DB (5)",
+                action: "connection to DB (6)",
                 e: err
             }));
         }
@@ -309,6 +312,49 @@ exports.vote = function (request, callback) {
             })["catch"](function (e) {
                 assert.equal(null, e);
                 callback(Message.errorMessage({ action: "post update", e: e }));
+            });
+        }
+    });
+};
+exports.replyVote = function (request, callback) {
+    console.log("requets to update reply votes:");
+    console.log(request);
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({
+                action: "connection to DB (8)",
+                e: err
+            }));
+        }
+        else {
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // if true - vote up
+            var subj = request.vote
+                ? { "users.$.posts.$[reply].reply.up": new MDB.ObjectId(request.user) }
+                : {
+                    "users.$.posts.$[reply].reply.down": new MDB.ObjectId(request.user)
+                };
+            database
+                .update({ "users.posts._id": new MDB.ObjectId(request.post) }, {
+                $addToSet: subj
+            }, {
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(request.post) }]
+            })
+                .then(function (document) {
+                // process response
+                console.log(document);
+                callback(Message.updateMessage({
+                    subj: "Post reply vote",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post reply voteupdate", e: e }));
             });
         }
     });

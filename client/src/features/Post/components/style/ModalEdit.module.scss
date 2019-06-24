@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+
+  p {
+    width: fit-content;
+    font: var(--textPostCardTitle);
+    color: var(--colorDark);
+  }
+
+  div {
+    margin-top: 5%;
+  }
+}

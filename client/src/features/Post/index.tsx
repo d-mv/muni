@@ -35,14 +35,12 @@ import {
   ConfirmDelete
 } from "./components";
 
-import Line from "../../layout/Line";
 import Content from "../../layout/Content";
 
 import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
 import { showPostPayload } from "../../store/post/types";
-import { showPostState } from "../../store/defaults";
 
 const Post = (props: {
   post: post;
@@ -51,24 +49,26 @@ const Post = (props: {
   vote: (arg0: string, arg1: string) => void;
   updatePost: (arg0: any) => void;
   setModule: (arg0: string) => void;
-  fetchData: (arg0: string) => void;
   getPosts: (arg0: string) => void;
   prevModule: string;
   token: string;
   deletePost: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
 }) => {
+  // destructuring props
   const { categories } = props.location;
-
   const { direction, text, short } = props.language;
-
+  // state
   const [textOpened, setTextOpened] = useState(false);
   const [replyOpened, setReplyOpened] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [newReply, setNewReply] = useState("");
   const [showNewReply, setShowNewReply] = useState(false);
-
   const [post, setPost] = useState(props.post);
+  const [edit, setEdit] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+
+  // destructuring state
   const {
     _id,
     title,
@@ -81,8 +81,8 @@ const Post = (props: {
     date,
     reply
   } = post;
-  // } = props.post;
 
+  // definitions
   const showStyle = textOpened ? style.text : style.textClosed;
   const voterText =
     votes.length === 1 ? text["post.voter"] : text["post.voters"];
@@ -91,7 +91,67 @@ const Post = (props: {
     more: text["post.show-more"],
     less: text["post.show-less"]
   };
+  const includes = votes.includes(props.location._id);
+  const author = createdBy === props.location._id;
+  const muniUser = props.location.type === "muni";
+  const allowToReply = [...post.reply.up, ...post.reply.down].includes(
+    props.location._id
+  );
 
+  // toggles
+  const toggleShowNewReplyButton = () => {
+    setShowNewReply(!showNewReply);
+  };
+  const toggleEdit = () => {
+    setEdit(!edit);
+  };
+  const toggleDeleteConfirmation = () => {
+    setDeleteConfirmation(!deleteConfirmation);
+  };
+
+  // small functions
+  const goHome = () => {
+    props.setModule(props.prevModule);
+  };
+  const handleDelete = (mode: string) => {
+    if (mode === "secondary") {
+      props.deletePost(_id);
+      props.getPosts(props.location.location);
+      props.setModule("home");
+    }
+  };
+  const handleNewReplyChange = (event: any) => {
+    switch (event.target.name) {
+      case "replyText":
+        setNewReply(event.target.value);
+        break;
+    }
+  };
+  const handleNewReplySubmit = () => {
+    if (newReply) {
+      props.updatePost({
+        _id: _id,
+        fields: { reply: { text: newReply, date: new Date() } }
+      });
+    }
+    setShowNewReply(false);
+  };
+  // !
+  const handleRemovePhoto = () => {
+    setPost({ ...post, photo: "" });
+  };
+  const handleRemoveLink = () => {
+    setPost({ ...post, link: "" });
+  };
+  const handleSetPhoto = (photo: string) => {
+    setPost({ ...post, photo });
+  };
+  const handleSetLink = (link: string) => {
+    setPost({ ...post, link });
+  };
+  // ! -
+
+  // async handlers
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
     // props.vote(_id, props.location._id);
@@ -106,6 +166,7 @@ const Post = (props: {
       })
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
+
   const handleReplyVoting = (updown: boolean) => {
     console.log(updown);
     let newVotesUp = reply.up;
@@ -132,29 +193,8 @@ const Post = (props: {
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
 
-  const handleNewReplyChange = (event: any) => {
-    switch (event.target.name) {
-      case "replyText":
-        setNewReply(event.target.value);
-        break;
-    }
-  };
-
-  const handleNewReplySubmit = () => {
-    if (newReply) {
-      props.updatePost({
-        _id: _id,
-        fields: { reply: { text: newReply, date: new Date() } }
-      });
-    }
-    setShowNewReply(false);
-  };
-
-  const toggleShowNewReplyButton = () => {
-    setShowNewReply(!showNewReply);
-  };
+  // numbers line
   const ageText: { [index: string]: string } = text["post.age"];
-
   const numbersLine = (
     <NumbersLine
       date={date}
@@ -165,13 +205,10 @@ const Post = (props: {
     />
   );
 
+  // setting up components
   const modal = showConfirm ? (
     <ModalView close={handleVoteClick} text={text["vote.thanks"]} />
   ) : null;
-
-  const includes = votes.includes(props.location._id);
-  const author = createdBy === props.location._id;
-  const muniUser = props.location.type === "muni";
 
   let voteButton =
     includes || author || muniUser ? null : (
@@ -192,6 +229,7 @@ const Post = (props: {
     muniUser && !reply ? (
       <NewReplyButton action={toggleShowNewReplyButton} />
     ) : null;
+
   newReplyComponent = showNewReply ? (
     <Modal disabled close={handleNewReplySubmit}>
       <NewReply
@@ -206,10 +244,7 @@ const Post = (props: {
     </Modal>
   ) : null;
 
-  const allowToReply = [...post.reply.up, ...post.reply.down].includes(
-    props.location._id
-  );
-
+  // if there is muni reply
   if (reply) {
     const { replyCardStyle, replyCardColor } = replyCardStyleUtil(
       reply,
@@ -223,7 +258,6 @@ const Post = (props: {
     } else if (allowToReply) {
       setOfThumbs = <Voted text={text["post.voted"]} direction={direction} />;
     }
-
     const replyVotes = (
       <ReplyVotes replies={{ up: reply.up, down: reply.down }} />
     );
@@ -250,23 +284,6 @@ const Post = (props: {
     ) : null;
   }
 
-  // TODO: change
-  const [edit, setEdit] = useState(false);
-  const toggleEdit = () => {
-    setEdit(!edit);
-  };
-  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
-  const toggleDeleteConfirmation = () => {
-    setDeleteConfirmation(!deleteConfirmation);
-  };
-  const handleDelete = (mode: string) => {
-    if (mode === "secondary") {
-      props.deletePost(_id);
-      props.getPosts(props.location.location);
-      props.setModule("home");
-    }
-  };
-
   const deleteConfirmationComponent = deleteConfirmation ? (
     <ConfirmDelete
       text={text["post.delete.confirm"]}
@@ -275,6 +292,7 @@ const Post = (props: {
       direction={direction}
     />
   ) : null;
+
   const deleteButton = edit ? (
     <div className={style.deleteButton}>
       <Button mode='attention' action={toggleDeleteConfirmation}>
@@ -283,21 +301,23 @@ const Post = (props: {
     </div>
   ) : null;
 
-  const goHome = () => {
-    props.setModule(props.prevModule);
-  };
-
   const editIcon =
     author && !muniUser
       ? {
-          right: { icon: iconEdit("primary"), action: toggleEdit, noRtl: true }
+          right: {
+            icon: iconEdit("primary"),
+            action: toggleEdit,
+            noRtl: true
+          }
         }
       : null;
+
   const headerObject = {
     name: props.location.name[props.language.short],
     ...editIcon,
     left: { icon: goBack("primary"), action: goHome }
   };
+
   return (
     <Content header>
       <Header {...headerObject} />
@@ -308,8 +328,25 @@ const Post = (props: {
             title={title}
             numbersLine={numbersLine}
           />
-          <Photo src={photo} edit={edit} />
-          <Link primary text={link} direction={direction} edit={edit} />
+          <Photo
+            src={photo}
+            edit={edit}
+            actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
+          />
+          <Link
+            primary
+            text={link}
+            direction={direction}
+            edit={edit}
+            actions={{ set: handleSetLink, remove: handleRemoveLink }}
+            editText={{
+              message: text["post.link.edit"],
+              confirm: text["confirm"],
+              cancel: text["cancel"],
+              label: text["new.field.link.label"],
+              placeholder: text["new.field.link.prompt"]
+            }}
+          />
           <div className={showStyle}>
             <Text
               step
@@ -337,7 +374,9 @@ const Post = (props: {
         {newReplyButton}
         {newReplyComponent}
         {ReplyMessage}
-        <div className={style.replyVoted}>{setOfThumbs}</div>
+        {reply.text ? (
+          <div className={style.replyVoted}>{setOfThumbs}</div>
+        ) : null}
         {deleteButton}
         {deleteConfirmationComponent}
       </div>

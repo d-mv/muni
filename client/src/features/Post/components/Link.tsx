@@ -3,9 +3,16 @@ import React from "react";
 import { IconLink, IconEdit, IconDelete } from "../../../icons";
 
 import styles from "./style/Link.module.scss";
+import { ModalEdit } from "./ModalEdit";
 
-const iconWrapper = (style: string, icon: JSX.Element) => (
-  <div className={styles[style]}>{icon}</div>
+const iconWrapper = (
+  style: string,
+  icon: JSX.Element,
+  onClick?: () => void
+) => (
+  <div className={styles[style]} onClick={onClick}>
+    {icon}
+  </div>
 );
 
 export const Link = (props: {
@@ -14,42 +21,83 @@ export const Link = (props: {
   primary?: boolean;
   secondary?: boolean;
   edit?: boolean;
+  actions?: { set: (arg0: string) => void; remove: () => void };
+  editText?: {
+    message: string;
+    confirm: string;
+    cancel: string;
+    label: string;
+    placeholder: string;
+  };
 }) => {
+  const [link, setLink] = React.useState(props.text);
+  const [showEdit, setShowEdit] = React.useState(false);
   const mainStyle = props.edit ? styles.editing : styles.show;
   const color = props.secondary ? "secondary" : "primary";
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setLink(event.target.value);
+  };
+  const toggleShowEdit = () => {
+    setShowEdit(!showEdit);
+  };
+
+  const handleYesNo = (mode: string) => {
+    if (mode === "primary") {
+      toggleShowEdit();
+      if (props.actions) props.actions.set(link);
+    }
+  };
+
+  const handleRemove = () => {
+    if (props.actions) props.actions.remove();
+  };
+  const editText = props.editText
+    ? props.editText
+    : { message: "Edit the link", confirm: "Save", cancel: "Cancel" };
+  const inputText = props.editText
+    ? props.editText
+    : { label: "Link", placeholder: "enter the link" };
+
+  const modal = (
+    <ModalEdit close={toggleShowEdit} action={handleYesNo} text={editText}>
+      {
+        <div className='section'>
+          <input
+            autoFocus={true}
+            type='text'
+            name='link'
+            value={link}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(event)
+            }
+            placeholder={props.editText ? props.editText.placeholder : ""}
+            required
+          />
+        </div>
+      }
+    </ModalEdit>
+  );
   const iconLink = iconWrapper("link", <IconLink color={color} />);
-  const iconDelete = iconWrapper("delete", <IconDelete color={color} />);
-  const iconEdit = iconWrapper("edit", <IconEdit color={color} />);
-
-  // let icon;
-  // if (!props.edit && props.primary) {
-  //   icon = <IconLink primary />;
-  // } else if (!props.edit && props.secondary) {
-  //   icon = <IconLink secondary />;
-  // } else if (props.edit && props.primary) {
-  //   icon = <IconEdit primary />;
-  // } else if (props.edit && props.secondary) {
-  //   icon = <IconEdit secondary />;
-  // }
-
-  // console.log(props.edit);
-
-  // const editIcon = (
-  //   <span className={style.edit}>
-  //     <IconDelete primary />
-  //   </span>
-  // );
-  // const linkEditStyle = props.edit ? style.linkEdit : style.link;
-
+  const iconDelete = iconWrapper(
+    "delete",
+    <IconDelete color={color} />,
+    handleRemove
+  );
+  const iconEdit = iconWrapper(
+    "edit",
+    <IconEdit color={color} />,
+    toggleShowEdit
+  );
   return (
     <div className={mainStyle}>
       {iconEdit}
-      {/* <div className={styles.line}> */}
-        {iconLink}
+      {iconLink}
       <div className={styles.text}>{props.text}</div>
-      {/* </div> */}
       {iconDelete}
+      {showEdit ? modal : null}
     </div>
   );
 };
-

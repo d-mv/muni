@@ -8,7 +8,6 @@ import findPostById from "./find_post_by_id";
 import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
-import { apiResponse } from "client/src/store/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -399,7 +398,7 @@ export interface replyVoteModel {
 }
 export const replyVote = (
   request: replyVoteModel,
-  callback: (arg0: apiResponse) => void
+  callback: (arg0: TYPE.apiResponse) => void
 ) => {
   console.log("requets to update reply votes:");
   console.log(request);

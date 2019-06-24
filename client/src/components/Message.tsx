@@ -2,15 +2,12 @@ import React from "react";
 
 import styleFactory from "../modules/style_factory";
 
-import style from "./styles/Message.module.scss";
+import style from "./style/Message.module.scss";
 
 /**
  * React JSX component to wrap message
- *
  * @param {object} props - Children to display, mode/color
- *
  * @returns {JSX.Element}
- *
  */
 const Message = (props: { children: any; direction: string; mode: string;use?:string }) => {
   const styles: any = style;

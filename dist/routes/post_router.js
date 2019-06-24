@@ -1,9 +1,21 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 exports.__esModule = true;
 var express = require("express");
 var dotenv = require("dotenv");
 var compare_objects_1 = require("../modules/compare_objects");
 var PostController = require("../controllers/post_controller");
+var show_request_1 = require("../modules/show_request");
 var router = express.Router();
 // redirect to home for rest of routes
 var dotEnv = dotenv.config();
@@ -85,7 +97,27 @@ router.patch("/:id/vote", function (req, res, next) {
  * @param {object} next
  */
 router["delete"]("/:id", function (req, res, next) {
-    PostController.deletePost(req, function (controllerResponse) {
+    show_request_1.showRequest("loc.delete_post", req.headers, [
+        req.params,
+        req.headers.token,
+        req.query
+    ]);
+    var request = {
+        token: req.headers.token,
+        post: req.params.id
+    };
+    PostController.deletePost(request, function (controllerResponse) {
+        res.status(controllerResponse.code).send(controllerResponse);
+    });
+});
+router.get("/:id/reply/vote", function (req, res, next) {
+    show_request_1.showRequest("loc.reply_vote", req.headers, [
+        req.params,
+        req.headers.token,
+        req.query
+    ]);
+    var request = __assign({ token: req.headers.token, post: req.params.id }, req.query);
+    PostController.replyVote(request, function (controllerResponse) {
         res.status(controllerResponse.code).send(controllerResponse);
     });
 });

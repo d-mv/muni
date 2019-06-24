@@ -12,7 +12,6 @@ var dotEnv = dotenv.config();
 var redirectUrl = process.env.SELF || "httpL//localhost:8080";
 var replyCache = {
     list: { time: new Date(), req: "", reply: "" }
-    // create: { time: new Date(), req: "" },
     // login: { time: new Date(), req: "" },
     // id: { time: new Date(), req: "" },
     // posts: { time: new Date(), req: "" }

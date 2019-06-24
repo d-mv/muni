@@ -345,7 +345,7 @@ const NewPost = (props: {
     name: "New Post",
     left: { icon: <div>back</div>, action: goHome }
   };
-
+console.log(message)
   return (
     <Content padded>
       {/* <Header {...headerObject} /> */}

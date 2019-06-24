@@ -90,7 +90,10 @@
           "message": "Are you sure you want to delete the petition?",
           "buttonYes": "Yes",
           "buttonNo": "No"
-        }
+        },
+        "post.link.edit": "Edit the link below",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
       }
     },
     "עב": {
@@ -183,7 +186,11 @@
           "message": "Are you sure you want to delete the petition?",
           "buttonYes": "Yes",
           "buttonNo": "No"
-        }
+        },
+        "new.message.urlMalformed": "URL is malformed",
+        "post.link.edit": "Edit the link below",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
       }
     },
     "ع": {
@@ -276,7 +283,10 @@
           "message": "Are you sure you want to delete the petition?",
           "buttonYes": "Yes",
           "buttonNo": "No"
-        }
+        },
+        "post.link.edit": "Edit the link below",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
       }
     }
   }
