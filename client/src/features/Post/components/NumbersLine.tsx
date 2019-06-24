@@ -11,7 +11,7 @@ import style from "./style/NumbersLine.module.scss";
 
 export  const NumbersLine = (props: {
   date: string;
-  daysText: Array<string>;
+  daysText: {[index:string]:string};
   direction: string;
   votes: number;
   voterText: string;

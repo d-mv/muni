@@ -10,10 +10,11 @@ const PhotoUpload = (props: {
   label: string;
   direction: string;
   action: (arg0: any) => void;
+  photo?: string;
 }) => {
   const defaultPhoto =
     "https://res.cloudinary.com/diciu4xpu/image/upload/v1560088174/dev/photo.svg";
-  const [photo, setPhoto] = React.useState();
+  const [photo, setPhoto] = React.useState(props.photo ? props.photo : null);
 
   /**
    * Function to convert file to base64, send it to props,set local URL as preview
@@ -34,7 +35,7 @@ const PhotoUpload = (props: {
   );
 
   return (
-    <Block border>
+    <div className={style.container}>
       {showPhoto}
       <input
         id='file'
@@ -46,7 +47,7 @@ const PhotoUpload = (props: {
       <label htmlFor='file' className={button.primarySmall}>
         {props.label}
       </label>
-    </Block>
+    </div>
   );
 };
 

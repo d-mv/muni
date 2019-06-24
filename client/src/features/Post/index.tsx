@@ -147,10 +147,13 @@ const Post = (props: {
   const toggleShowNewReplyButton = () => {
     setShowNewReply(!showNewReply);
   };
+  const ageText: { [index: string]: string } = text["post.age"];
+
+
   const numbersLine = (
     <NumbersLine
       date={date}
-      daysText={[text["post.age.day"], text["post.age.days"]]}
+      daysText={ageText}
       direction={direction}
       votes={votes.length}
       voterText={voterText}

@@ -29,6 +29,7 @@ const PostCard = (props: {
   const handleClick = () => {
     props.showPost({ show: true, type: "muni", _id: _id });
   };
+  const ageText: { [index: string]: string } = text["post.age"];
 
   return (
     <Card id={_id} direction={direction} action={handleClick}>
@@ -43,11 +44,7 @@ const PostCard = (props: {
         <section
           id='age'
           className={direction === "rtl" ? style.dataRTL : style.data}>
-          <Age
-            date={date}
-            text={[text["post.age.day"], text["post.age.days"]]}
-            direction={direction}
-          />
+          <Age date={date} text={ageText} direction={direction} />
         </section>
       </section>
     </Card>

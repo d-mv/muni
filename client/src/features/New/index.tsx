@@ -297,6 +297,7 @@ const NewPost = (props: {
           label={text["new.field.photo.prompt"]}
           direction={direction}
           action={handleSetPhoto}
+          photo={photo}
         />
         {formSection({
           label: text["new.field.link.label"],
@@ -352,7 +353,7 @@ const NewPost = (props: {
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
       </Center>
-      <Paragraph direction={direction}>{text["new.steps.step.1"]}</Paragraph>
+      <Paragraph direction={direction}>{text[`new.steps.step.${step}`]}</Paragraph>
       <ContentBlock
         stepOne={stepOne}
         stepTwo={stepTwo}

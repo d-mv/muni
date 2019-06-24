@@ -68,7 +68,7 @@ const PostCard = (props: {
     reply.text !== "" ? (
       <RepliedTag text={text["post.replied"]} direction={direction} />
     ) : null;
-
+  const ageText: { [index: string]: string } = text["post.age"];
   return (
     <Card id={_id} direction={direction} action={handleClick}>
       <Photo photo={photo} direction={direction}>
@@ -83,11 +83,7 @@ const PostCard = (props: {
         <section
           id='age'
           className={direction === "rtl" ? style.dataRTL : style.data}>
-          <Age
-            date={date}
-            text={[text["post.age.day"], text["post.age.days"]]}
-            direction={direction}
-          />
+          <Age date={date} text={ageText} direction={direction} />
           {voterElement}
           {voteButtonElement}
         </section>
