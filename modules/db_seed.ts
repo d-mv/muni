@@ -255,7 +255,7 @@ const dbSeed = (callback: any) => {
 
       // ! call to update the DB
       update({
-        id: "5ce2a3c945e5451171394b35",
+        id: "5d04f0f698de3fce481f0e3f",
         users: block,
         municipality: blockMuni,
         pinned

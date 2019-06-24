@@ -133,7 +133,7 @@ const App = (props: {
 
  useEffect(() => {
    console.log("6. triggered posts");
-   if (props.posts.length > 0) {
+   if (props.posts.length > 0 && props.module !== 'post') {
      console.log("- posts are there, show post");
      toggleModule("home");
    }
