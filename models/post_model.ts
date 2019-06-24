@@ -8,6 +8,7 @@ import findPostById from "./find_post_by_id";
 import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
+import { apiResponse } from "client/src/store/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -385,6 +386,68 @@ export const vote = (
         .catch((e: any) => {
           assert.equal(null, e);
           callback(Message.errorMessage({ action: "post update", e }));
+        });
+    }
+  });
+};
+
+export interface replyVoteModel {
+  post: string;
+  user: string;
+  vote: string;
+}
+export const replyVote = (
+  request: replyVoteModel,
+  callback: (arg0: apiResponse) => void
+) => {
+  console.log("requets to update reply votes:");
+  console.log(request);
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({
+          action: "connection to DB (6)",
+          e: err
+        })
+      );
+    } else {
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // if true - vote up
+      const subj = request.vote
+        ? { "users.$.posts.$[reply].reply.up": new MDB.ObjectId(request.user) }
+        : {
+            "users.$.posts.$[reply].reply.down": new MDB.ObjectId(request.user)
+          };
+      database
+        .update(
+          { "users.posts._id": new MDB.ObjectId(request.post) },
+          {
+            $addToSet: subj
+          },
+          {
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(request.post) }]
+          }
+        )
+        .then((document: any) => {
+          // process response
+          console.log(document);
+          callback(
+            Message.updateMessage({
+              subj: "Post reply vote",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(
+            Message.errorMessage({ action: "post reply voteupdate", e })
+          );
         });
     }
   });

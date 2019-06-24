@@ -6,7 +6,12 @@ import { replyCardStyleUtil } from "../../modules/reply_style_generator";
 import { goBack, iconEdit } from "../../icons";
 
 import { AppState } from "../../store";
-import { vote, setModule, fetchData,getPosts } from "../../store/users/actions";
+import {
+  vote,
+  setModule,
+  fetchData,
+  getPosts
+} from "../../store/users/actions";
 import { updatePost } from "../../store/post/actions";
 import { indexedObjAny, post, data } from "../../store/types";
 
@@ -81,9 +86,6 @@ const Post = (props: {
     less: text["post.show-less"]
   };
 
-
-
-
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
     // props.vote(_id, props.location._id);
@@ -94,11 +96,57 @@ const Post = (props: {
     })
       .then((response: AxiosResponse<any>) => {
         setPost({ ...post, votes: [...post.votes, props.location._id] });
-        props.getPosts(props.location.location)
+        props.getPosts(props.location.location);
+      })
+      .catch((error: AxiosResponse<any>) => console.log(error));
+  };
+  const handleReplyVoting = (updown: boolean) => {
+    console.log(updown);
+    let newVotesUp = reply.up;
+    let newVotesDown = reply.down;
+
+    if (updown) {
+      newVotesUp.push(props.location._id);
+    } else {
+      newVotesDown.push(props.location._id);
+    }
+
+    const url = `/post/${_id}/reply/vote?user=${props.location._id}&vote=${updown}`;
+    axios({
+      method: "get",
+      url
+    })
+      .then((response: AxiosResponse<any>) => {
+        setPost({
+          ...post,
+          reply: { ...post.reply, up: newVotesUp, down: newVotesDown }
+        });
+        props.getPosts(props.location.location);
       })
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
 
+  const handleNewReplyChange = (event: any) => {
+    switch (event.target.name) {
+      case "replyText":
+        setNewReply(event.target.value);
+        break;
+    }
+  };
+
+  const handleNewReplySubmit = () => {
+    if (newReply) {
+      props.updatePost({
+        _id: _id,
+        fields: { reply: { text: newReply, date: new Date() } }
+      });
+    }
+    setShowNewReply(false);
+  };
+
+  const toggleShowNewReplyButton = () => {
+    setShowNewReply(!showNewReply);
+  };
   const numbersLine = (
     <NumbersLine
       date={date}
@@ -127,28 +175,6 @@ const Post = (props: {
   if (votes.includes(props.location._id))
     voteButton = <Voted text={text["post.voted"]} direction={direction} />;
 
-  const handleNewReplyChange = (event: any) => {
-    switch (event.target.name) {
-      case "replyText":
-        setNewReply(event.target.value);
-        break;
-    }
-  };
-
-  const handleNewReplySubmit = () => {
-    if (newReply) {
-      props.updatePost({
-        _id: _id,
-        fields: { reply: { text: newReply, date: new Date() } }
-      });
-    }
-    setShowNewReply(false);
-  };
-
-  const toggleShowNewReplyButton = () => {
-    setShowNewReply(!showNewReply);
-  };
-
   let newReplyButton: any = "";
   let newReplyComponent: any = "";
   let ReplyMessage: any = "";
@@ -172,13 +198,24 @@ const Post = (props: {
     </Modal>
   ) : null;
 
+  const allowToReply = [...post.reply.up, ...post.reply.down].includes(
+    props.location._id
+  );
+
   if (reply) {
     const { replyCardStyle, replyCardColor } = replyCardStyleUtil(
       reply,
       replyOpened
     );
 
-    setOfThumbs = reply.text ? <SetOfThumbs fill={replyCardColor} /> : null;
+    if (reply.text && !allowToReply) {
+      setOfThumbs = (
+        <SetOfThumbs fill={replyCardColor} onClick={handleReplyVoting} />
+      );
+    } else if (allowToReply) {
+      setOfThumbs = <Voted text={text["post.voted"]} direction={direction} />;
+    }
+
     const replyVotes = (
       <ReplyVotes replies={{ up: reply.up, down: reply.down }} />
     );
@@ -262,7 +299,7 @@ const Post = (props: {
         {newReplyButton}
         {newReplyComponent}
         {ReplyMessage}
-        {setOfThumbs}
+        <div className={style.replyVoted}>{setOfThumbs}</div>
       </div>
     </Content>
   );

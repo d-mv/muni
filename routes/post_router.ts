@@ -1,3 +1,4 @@
+import { token } from "./../modules/token_gen";
 const express = require("express");
 import * as dotenv from "dotenv";
 
@@ -5,6 +6,7 @@ import compareObjects from "../modules/compare_objects";
 
 import * as PostController from "../controllers/post_controller";
 import { apiResponse } from "../src/types";
+import { showRequest } from "../modules/show_request";
 const router = express.Router();
 // redirect to home for rest of routes
 const dotEnv = dotenv.config();
@@ -97,6 +99,24 @@ router.patch("/:id/vote", (req: any, res: any, next: any) => {
 router.delete("/:id", (req: any, res: any, next: any) => {
   PostController.deletePost(req, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
+  });
+});
+
+router.get("/:id/reply/vote", (req: any, res: any, next: any) => {
+  showRequest("loc.reply_vote", req.headers, [
+    req.params,
+    req.headers.token,
+    req.query
+  ]);
+  // { token: "", post: "", user: "", vote: ""}
+  const request = {
+    token: req.headers.token,
+    post: req.params.id,
+    ...req.query
+  };
+
+  PostController.replyVote(request, (controllerResponse: apiResponse) => {
+     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
 

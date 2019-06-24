@@ -64,8 +64,8 @@
 
   .replyTitleLine {
     width: 100%;
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
@@ -122,13 +122,17 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  // height: 100%;
   overflow: scroll;
 }
-
 
 .voted {
   position: relative;
   margin: 0 auto;
   bottom: 1.5rem;
+}
+
+.replyVoted {
+  position: relative;
+  margin: 0 auto;
+  bottom: 2.5rem;
 }

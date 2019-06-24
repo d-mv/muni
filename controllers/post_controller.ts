@@ -1,3 +1,4 @@
+import { replyVoteModel } from './../models/post_model';
 import * as Post from "../models/post_model";
 
 // import { checkToken } from "../modules/check_token";
@@ -41,7 +42,7 @@ export const createPost = (
   query: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  console.log(Object.keys(query))
+  console.log(Object.keys(query));
   checkToken(query.token, (checkTokenResponse: TYPE.apiResponse) => {
     console.log(Object.keys(checkTokenResponse.payload));
     const { _id } = checkTokenResponse.payload;
@@ -158,13 +159,61 @@ export const posts = (
   });
 };
 
-export const vote = (props: { id: string, user: string }, callback: (arg0: TYPE.apiResponse) => void) => {
-  const {id,user} = props
-  if (id === '' || user === '' || user.length !== 24 || id.length !== 24) {
-    callback(Message.requestError('ID/User malformed'))
+export const vote = (
+  props: { id: string; user: string },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const { id, user } = props;
+  if (id === "" || user === "" || user.length !== 24 || id.length !== 24) {
+    callback(Message.requestError("ID/User malformed"));
   } else {
     Post.vote({ id, user }, (modelResponse: TYPE.apiResponse) => {
       callback(modelResponse);
     });
   }
+};
+
+export interface replyVoteProps {
+  token: string;
+  post: string;
+  user: string;
+  vote: string;
 }
+
+export const replyVote = (
+  request: replyVoteProps,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const { token, post, user, vote } = request;
+
+  if (!token) {
+    // if token is not present send code/message
+    callback(requestError("Token is missing"));
+  } else {
+    // token is present, check it
+    checkToken(
+      token,
+      (checkTokenResponse: TYPE.apiResponse) => {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+          // negative code
+          callback(checkTokenResponse);
+        } else {
+          // positive code = 200
+          Post.replyVote(
+            {
+              post,
+              user,
+              vote
+            },
+            (modelResponse: TYPE.apiResponse) => {
+              // callback with response
+              callback(modelResponse);
+            }
+          );
+        }
+      },
+      true
+    );
+  }
+};

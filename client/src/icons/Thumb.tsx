@@ -1,9 +1,7 @@
 import React from "react";
 import { colorsArray } from "../style/_colors";
 
-const Thumb = (props: { frame: string; fill: string }) => {
-  // console.log(props);
-  return (
+const Thumb = (props: { frame: string; fill: string }) =>
     <svg
       viewBox='0 0 246 218'
       fillRule='evenodd'
@@ -32,7 +30,6 @@ const Thumb = (props: { frame: string; fill: string }) => {
         transform='matrix(1.58488 0 0 1.58488 .007 -14.196)'
       />
     </svg>
-  );
-};
+
 
 export default Thumb;

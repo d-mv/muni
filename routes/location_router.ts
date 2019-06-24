@@ -14,7 +14,6 @@ const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 let replyCache: any = {
   list: { time: new Date(), req: "", reply: "" }
-  // create: { time: new Date(), req: "" },
   // login: { time: new Date(), req: "" },
   // id: { time: new Date(), req: "" },
   // posts: { time: new Date(), req: "" }
@@ -105,6 +104,8 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
     },true);
   }
 });
+
+
 
 // create
 router.post("/create", (req: any, res: any, next: any) => {
