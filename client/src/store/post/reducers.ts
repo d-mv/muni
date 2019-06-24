@@ -23,3 +23,11 @@ export const showPost = (state = { show: false }, action: Action) => {
   }
   return state;
 };
+
+export const deletePost = (state = {}, action: Action) => {
+  switch (action.type) {
+    case "DELETE_POST":
+      return { ...state, ...action.payload };
+  }
+  return state;
+};

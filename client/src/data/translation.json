@@ -84,7 +84,13 @@
         "munireply.title": "MUNICIPALITY",
         "register.passwords.dont-match": "Password don't match",
         "login.label.password.repeat": "Repeat password",
-        "login.prompt.password.repeat": "type your password again"
+        "login.prompt.password.repeat": "type your password again",
+        "post.delete.button": "Delete post",
+        "post.delete.confirm": {
+          "message": "Are you sure you want to delete the petition?",
+          "buttonYes": "Yes",
+          "buttonNo": "No"
+        }
       }
     },
     "עב": {
@@ -171,7 +177,13 @@
         "munireply.title": "MUNICIPALITY",
         "register.passwords.dont-match": "Password don't match",
         "login.label.password.repeat": "Repeat password",
-        "login.prompt.password.repeat": "type your password again"
+        "login.prompt.password.repeat": "type your password again",
+        "post.delete.button": "Delete post",
+        "post.delete.confirm": {
+          "message": "Are you sure you want to delete the petition?",
+          "buttonYes": "Yes",
+          "buttonNo": "No"
+        }
       }
     },
     "ع": {
@@ -258,7 +270,13 @@
         "munireply.title": "MUNICIPALITY",
         "register.passwords.dont-match": "Password don't match",
         "login.label.password.repeat": "Repeat password",
-        "login.prompt.password.repeat": "type your password again"
+        "login.prompt.password.repeat": "type your password again",
+        "post.delete.button": "Delete post",
+        "post.delete.confirm": {
+          "message": "Are you sure you want to delete the petition?",
+          "buttonYes": "Yes",
+          "buttonNo": "No"
+        }
       }
     }
   }

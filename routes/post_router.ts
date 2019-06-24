@@ -97,7 +97,18 @@ router.patch("/:id/vote", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.delete("/:id", (req: any, res: any, next: any) => {
-  PostController.deletePost(req, (controllerResponse: apiResponse) => {
+  showRequest("loc.delete_post", req.headers, [
+    req.params,
+    req.headers.token,
+    req.query
+  ]);
+
+  const request = {
+    token: req.headers.token,
+    post: req.params.id
+  };
+
+  PostController.deletePost(request, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });
@@ -108,7 +119,7 @@ router.get("/:id/reply/vote", (req: any, res: any, next: any) => {
     req.headers.token,
     req.query
   ]);
-  // { token: "", post: "", user: "", vote: ""}
+
   const request = {
     token: req.headers.token,
     post: req.params.id,
@@ -116,7 +127,7 @@ router.get("/:id/reply/vote", (req: any, res: any, next: any) => {
   };
 
   PostController.replyVote(request, (controllerResponse: apiResponse) => {
-     res.status(controllerResponse.code).send(controllerResponse);
+    res.status(controllerResponse.code).send(controllerResponse);
   });
 });
 

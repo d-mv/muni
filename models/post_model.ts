@@ -211,7 +211,7 @@ export const update = (
     if (err) {
       // return error with connection
       callback(
-        Message.errorMessage({ action: "connection to DB (5)", e: err })
+        Message.errorMessage({ action: "connection to DB (7)", e: err })
       );
     } else {
       // set database
@@ -268,65 +268,66 @@ export const deletePost = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
-  findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
-    // if status true inform, that user exists
-    // if status false, proceed with creation
-    if (findPostResult.code !== 200) {
-      // send message
-      callback(findPostResult);
-    } else if (
-      // checking authorization
-      request.user.level === "su" ||
-      findPostResult.payload.createdBy == request.user.payload.id
-    ) {
-      // authenticated
-      MDB.client.connect(err => {
-        assert.equal(null, err);
-        if (err) {
-          // return error with connection
-          callback(
-            Message.errorMessage({ action: "connection to DB (5)", e: err })
-          );
-        } else {
-          // set database
-          const database: any = MDB.client.db(dbName).collection(dbcMain);
-          // update
-          database
-            .update(
-              { "users.posts._id": new MDB.ObjectId(request.postId) },
-              {
-                $pull: {
-                  "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
-                }
-              }
-            )
-            .then((document: any) => {
-              // process response
-              callback(
-                Message.updateMessage({
-                  subj: "Post",
-                  document: {
-                    ok: document.result.ok,
-                    nModified: document.result.nModified
-                  }
-                })
-              );
-            })
-            .catch((e: any) => {
-              assert.equal(null, e);
-              callback(Message.errorMessage({ action: "post update", e }));
-            });
-        }
-      });
-    } else {
+  // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
+  //   // if status true inform, that user exists
+  //   // if status false, proceed with creation
+  //   if (findPostResult.code !== 200) {
+  //     // send message
+  //     callback(findPostResult);
+  //   } else if (
+  //     // checking authorization
+  //     request.user.level === "su" ||
+  //     findPostResult.payload.createdBy == request.user.payload.id
+  //   ) {
+  // authenticated
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
       callback(
-        Message.notAuthMessage(
-          "You need to be either owner or administrator to edit this post"
-        )
+        Message.errorMessage({ action: "connection to DB (5)", e: err })
       );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // update
+      database
+        .update(
+          { "users.posts._id": new MDB.ObjectId(request.postId) },
+          {
+            $pull: {
+              "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
+            }
+          }
+        )
+        .then((document: any) => {
+          // process response
+          callback(
+            Message.updateMessage({
+              subj: "Post",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "post update", e }));
+        });
     }
   });
 };
+//     } else {
+//       callback(
+//         Message.notAuthMessage(
+//           "You need to be either owner or administrator to edit this post"
+//         )
+//       );
+//     }
+//   });
+// };
 
 export const vote = (
   request: {
@@ -349,7 +350,7 @@ export const vote = (
       // return error with connection
       callback(
         Message.errorMessage({
-          action: "connection to DB (5)",
+          action: "connection to DB (6)",
           e: err
         })
       );
@@ -408,7 +409,7 @@ export const replyVote = (
       // return error with connection
       callback(
         Message.errorMessage({
-          action: "connection to DB (6)",
+          action: "connection to DB (8)",
           e: err
         })
       );

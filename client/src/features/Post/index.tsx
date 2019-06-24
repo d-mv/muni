@@ -12,7 +12,7 @@ import {
   fetchData,
   getPosts
 } from "../../store/users/actions";
-import { updatePost } from "../../store/post/actions";
+import { updatePost, deletePost, showPost } from "../../store/post/actions";
 import { indexedObjAny, post, data } from "../../store/types";
 
 import VoteButton from "../../components/VoteButton";
@@ -31,7 +31,8 @@ import {
   SetOfThumbs,
   ReplyVotes,
   NewReplyButton,
-  ModalView
+  ModalView,
+  ConfirmDelete
 } from "./components";
 
 import Line from "../../layout/Line";
@@ -39,6 +40,9 @@ import Content from "../../layout/Content";
 
 import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
+import Button from "../../components/Button";
+import { showPostPayload } from "../../store/post/types";
+import { showPostState } from "../../store/defaults";
 
 const Post = (props: {
   post: post;
@@ -51,6 +55,8 @@ const Post = (props: {
   getPosts: (arg0: string) => void;
   prevModule: string;
   token: string;
+  deletePost: (arg0: string) => void;
+  showPost: (arg0: showPostPayload) => void;
 }) => {
   const { categories } = props.location;
 
@@ -149,7 +155,6 @@ const Post = (props: {
   };
   const ageText: { [index: string]: string } = text["post.age"];
 
-
   const numbersLine = (
     <NumbersLine
       date={date}
@@ -246,21 +251,51 @@ const Post = (props: {
   }
 
   // TODO: change
-  const mockEdit = false;
-  const mockFnEdit = () => {};
+  const [edit, setEdit] = useState(false);
+  const toggleEdit = () => {
+    setEdit(!edit);
+  };
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const toggleDeleteConfirmation = () => {
+    setDeleteConfirmation(!deleteConfirmation);
+  };
+  const handleDelete = (mode: string) => {
+    if (mode === "secondary") {
+      props.deletePost(_id);
+      props.getPosts(props.location.location);
+      props.setModule("home");
+    }
+  };
+
+  const deleteConfirmationComponent = deleteConfirmation ? (
+    <ConfirmDelete
+      text={text["post.delete.confirm"]}
+      close={toggleDeleteConfirmation}
+      action={handleDelete}
+      direction={direction}
+    />
+  ) : null;
+  const deleteButton = edit ? (
+    <div className={style.deleteButton}>
+      <Button mode='attention' action={toggleDeleteConfirmation}>
+        {text["post.delete.button"]}
+      </Button>
+    </div>
+  ) : null;
+
   const goHome = () => {
     props.setModule(props.prevModule);
   };
 
-  const edit =
-    !author && !muniUser
+  const editIcon =
+    author && !muniUser
       ? {
-          right: { icon: iconEdit("primary"), action: mockFnEdit, noRtl: true }
+          right: { icon: iconEdit("primary"), action: toggleEdit, noRtl: true }
         }
       : null;
   const headerObject = {
     name: props.location.name[props.language.short],
-    ...edit,
+    ...editIcon,
     left: { icon: goBack("primary"), action: goHome }
   };
   return (
@@ -273,8 +308,8 @@ const Post = (props: {
             title={title}
             numbersLine={numbersLine}
           />
-          <Photo src={photo} edit={mockEdit} />
-          <Link primary text={link} direction={direction} edit={mockEdit} />
+          <Photo src={photo} edit={edit} />
+          <Link primary text={link} direction={direction} edit={edit} />
           <div className={showStyle}>
             <Text
               step
@@ -303,6 +338,8 @@ const Post = (props: {
         {newReplyComponent}
         {ReplyMessage}
         <div className={style.replyVoted}>{setOfThumbs}</div>
+        {deleteButton}
+        {deleteConfirmationComponent}
       </div>
     </Content>
   );
@@ -322,5 +359,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { vote, updatePost, setModule, fetchData, getPosts }
+  { vote, updatePost, setModule, fetchData, getPosts, deletePost, showPost }
 )(Post);

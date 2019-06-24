@@ -4,7 +4,7 @@ import axios from "axios";
 import { logger } from "redux-logger";
 
 import { setStep, showHelp, fetchLocations, prevModule } from "./app/reducers";
-import { submitPost, updatePost, showPost } from "./post/reducers";
+import { submitPost, updatePost, showPost, deletePost } from "./post/reducers";
 import {
   vote,
   setToken,
@@ -61,7 +61,8 @@ const rootReducer = combineReducers({
   update: updatePost,
   post: showPost,
   typed: typingData,
-  cached: cachePost
+  cached: cachePost,
+  deleted: deletePost
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -94,6 +95,7 @@ export default function configureStore() {
     post: showPostPayload;
     typed: TYPE.indexedObj;
     cached: any;
+    deleted: any;
   }
 
   const initialState: state = {
@@ -120,7 +122,8 @@ export default function configureStore() {
     update: apiState,
     post: showPostState,
     typed: {},
-    cached: emptyPost
+    cached: emptyPost,
+    deleted: apiState
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

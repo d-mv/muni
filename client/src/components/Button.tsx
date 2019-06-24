@@ -10,12 +10,14 @@ const Button = (props: {
   disabled?: boolean;
   label?: string;
   title?: string;
+  actionMessage?: (arg0: string) => void;
 }) => {
   let undefined;
   const buttonStyle = style[props.mode] || style.trans;
 
   const handleClick = () => {
     if (props.action) props.action();
+    if (props.actionMessage) props.actionMessage(props.mode);
   };
 
   return (

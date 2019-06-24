@@ -1,4 +1,4 @@
-import { replyVoteModel } from './../models/post_model';
+import { replyVoteModel } from "./../models/post_model";
 import * as Post from "../models/post_model";
 
 // import { checkToken } from "../modules/check_token";
@@ -118,30 +118,35 @@ export const deletePost = (
   props: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  if (!props.headers.token) {
+  if (!props.token) {
     // if token is not present send code/message
     callback(requestError("Token is missing"));
   } else {
     // token is present, check it
-    checkToken(props.headers.token, (checkTokenResponse: TYPE.apiResponse) => {
-      // check if code is not positive
-      if (checkTokenResponse.code !== 200) {
-        // negative code
-        callback(checkTokenResponse);
-      } else {
-        // positive code = 200
-        Post.deletePost(
-          {
-            postId: props.params.id,
-            user: checkTokenResponse
-          },
-          (modelResponse: TYPE.apiResponse) => {
-            // callback with response
-            callback(modelResponse);
-          }
-        );
-      }
-    });
+    checkToken(
+      props.token,
+      (checkTokenResponse: TYPE.apiResponse) => {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+          // negative code
+          callback(checkTokenResponse);
+        } else {
+          console.log(checkTokenResponse);
+
+          Post.deletePost(
+            {
+              postId: props.post,
+              user: checkTokenResponse.payload.id
+            },
+            (modelResponse: TYPE.apiResponse) => {
+              // callback with response
+              callback(modelResponse);
+            }
+          );
+        }
+      },
+      true
+    );
   }
 };
 

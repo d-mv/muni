@@ -65,13 +65,37 @@ export const updatePost = (
   };
 };
 
-
-
 export const showPost = (props: showPostPayload): Action => {
   return { type: "SHOW_POST", payload: { ...props } };
 };
 
 export const updatePosts = (props: any) => {
-  return {type:"UPDATE_POSTS",payload: {...props}}
-}
+  return { type: "UPDATE_POSTS", payload: { ...props } };
+};
 
+export const deletePost = (
+  post: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/post/${post}`;
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // proceed with request
+    axios
+      .delete(url)
+      .then(response => {
+        dispatch({
+          type: "DELETE_POST",
+          payload: {
+            ...response.data,
+            code: response.status
+          }
+        });
+      })
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "DELETE_POST",
+          payload
+        });
+      });
+  };
+};

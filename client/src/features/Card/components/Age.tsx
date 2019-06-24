@@ -14,9 +14,6 @@ const Age = (props: {
   let elementStyle = { age: style.age, text: style.text };
 
   let text = props.text[Object.keys(ageResponse)[0]];
-console.log(Object.keys(ageResponse)[0]);
-console.log(props.text);
-// console.log(object)
   if (props.direction === "rtl") elementStyle.age = style.ageR;
   return (
     <p className={elementStyle.age}>
