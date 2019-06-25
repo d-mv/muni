@@ -70,44 +70,30 @@ export const createPost = (
  * @return {callback} - Callback function to return response
  */
 export const updatePost = (
-  props: any,
+  request: { token: string; post: string },
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  if (Object.keys(props.body).length === 0) {
-    // if request body is empty
-    callback(requestError("Wrong/malformed request"));
-  } else {
-    if (!props.headers.token) {
-      // if token is not present send code/message
-      callback(requestError("Token is missing"));
-    } else {
-      // token is present, check it
-      checkToken(
-        props.headers.token,
-        (checkTokenResponse: TYPE.apiResponse) => {
-          // check if code is not positive
-          if (checkTokenResponse.code !== 200) {
-            // negative code
-            callback(checkTokenResponse);
-          } else {
-            // positive code = 200
-            Post.update(
-              {
-                fields: props.body.fields,
-                postId: props.params.id,
-                user: checkTokenResponse.payload._id
-              },
-              (modelResponse: TYPE.apiResponse) => {
-                // callback with response
-                callback(modelResponse);
-              }
-            );
-          }
-        }
-      );
-    }
-  }
+  const { token, post } = request;
+  const postObject = JSON.parse(post);
+  checkToken(
+    token,
+    (checkTokenResponse: TYPE.apiResponse) => {
+      // check if code is not positive
+      if (checkTokenResponse.code !== 200) {
+        // negative code
+        callback(checkTokenResponse);
+      } else {
+        // positive code = 200
+        Post.update(postObject, (modelResponse: TYPE.apiResponse) => {
+          // callback with response
+          callback(modelResponse);
+        });
+      }
+    },
+    true
+  );
 };
+
 /**
  * Function to delete post
  * @function deletePost

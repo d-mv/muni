@@ -80,6 +80,7 @@ const App = (props: {
       Object.keys(props.location).length > 0
     ) {
       console.log("- token is in state, data is present");
+      props.getPosts(props.location.location);
       cookies.set("token", props.token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log("- token is in cookies");
@@ -107,6 +108,7 @@ const App = (props: {
     // setLoading(false);
     if (props.module != "post") {
       console.log("- module is not post, clear it");
+
       props.showPost({ show: false });
     }
     if (props.module === "home") {

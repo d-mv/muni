@@ -9,6 +9,7 @@ export * from "./down";
 export * from "./iconCreateNew";
 export * from "./IconLink";
 export * from "./DownArrow";
+export * from './close'
 
 export const IconEdit = (props: { color: string }) => {
   return (
@@ -59,4 +60,3 @@ export const IconDelete = (props: { color: string }) => {
   );
 };
 
-export const iconClose = (color: string) => <svg />;

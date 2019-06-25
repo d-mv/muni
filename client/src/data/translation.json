@@ -93,7 +93,13 @@
         },
         "post.link.edit": "Edit the link below",
         "confirm": "Confirm",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+
+        "post.update.confirm": {
+          "message": "Do you want to save?",
+          "buttonYes": "Yes",
+          "buttonNo": "No"
+        }
       }
     },
     "עב": {
@@ -190,7 +196,12 @@
         "new.message.urlMalformed": "URL is malformed",
         "post.link.edit": "Edit the link below",
         "confirm": "Confirm",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "post.update.confirm": {
+          "message": "Do you want to save?",
+          "buttonYes": "Yes",
+          "buttonNo": "No"
+        }
       }
     },
     "ع": {
@@ -286,7 +297,12 @@
         },
         "post.link.edit": "Edit the link below",
         "confirm": "Confirm",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "post.update.confirm": {
+          "message": "Do you want to save?",
+          "buttonYes": "Yes",
+          "buttonNo": "No"
+        }
       }
     }
   }

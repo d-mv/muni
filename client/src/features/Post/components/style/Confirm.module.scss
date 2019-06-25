@@ -1,17 +1,18 @@
 .container {
-  display:flex;
+  display: flex;
   flex-direction: column;
   padding: 2rem;
-  text-align:center;
+  text-align: center;
 
-  background-color: var(--colorWhite); width: fit-content;
+  background-color: var(--colorWhite);
+  width: fit-content;
   font: var(--textPostCardTitle);
   color: var(--colorDark);
 }
 
 .buttons {
   margin-top: 2rem;
-  display:flex;
+  display: flex;
   flex-direction: row;
 }
 

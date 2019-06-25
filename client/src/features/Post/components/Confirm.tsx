@@ -1,16 +1,17 @@
 import React from "react";
 import Modal from "../../../components/Modal";
 
-import styles from "./style/ConfirmDelete.module.scss";
+import styles from "./style/Confirm.module.scss";
 import Button from "../../../components/Button";
 import styleFactory from "../../../modules/style_factory";
 
-export const ConfirmDelete = (props: {
+export const Confirm = (props: {
   text: { message: string; buttonYes: string; buttonNo: string };
   close: () => void;
   action: (arg0: string) => void;
   direction: string;
-}) => (
+}) => {console.log(props.text);
+  return (
   <Modal close={props.close}>
     <div className={styles.container}>
       {props.text.message}
@@ -28,4 +29,4 @@ export const ConfirmDelete = (props: {
       </div>
     </div>
   </Modal>
-);
+);}

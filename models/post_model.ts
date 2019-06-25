@@ -8,6 +8,7 @@ import findPostById from "./find_post_by_id";
 import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
+import { indexedObj } from "client/src/store/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -177,33 +178,18 @@ export const create = (
  * @callback callback - Callback function to return response
  */
 export const update = (
-  request: {
-    fields: { [index: string]: string };
-    postId: string;
-    user: any;
-  },
+  request: TYPE.indexedObj,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  // check if post title is available
-  // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
-  // if status true inform, that user exists
-  // if status false, proceed with creation
-
-  // if (findPostResult.code !== 200) {
-  // send message
-  // callback(findPostResult);
-  // } else if (
-  // checking authorization
-  //   request.user.level === "su" ||
-  //   findPostResult.payload.createdBy == request.user.payload.id
-  // ) {
-  // authenticated
-  console.log(request);
+  // extract id from post object
+  const id = request._id;
+  const post: indexedObj = request;
+  delete post._id;
 
   const setRequest: any = {};
   // prepare the request
-  Object.keys(request.fields).forEach((key: string) => {
-    setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
+  Object.keys(post).forEach((key: string) => {
+    setRequest[`users.$[].posts.$[reply].${key}`] = post[key];
   });
   MDB.client.connect(err => {
     assert.equal(null, err);
@@ -219,10 +205,10 @@ export const update = (
       console.log(setRequest);
       database
         .updateMany(
-          { "users.posts._id": new MDB.ObjectId(request.postId) },
+          { "users.posts._id": new MDB.ObjectId(id) },
           { $set: { ...setRequest } },
           {
-            arrayFilters: [{ "reply._id": new MDB.ObjectId(request.postId) }]
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
           }
         )
         .then((document: any) => {
@@ -243,16 +229,7 @@ export const update = (
         });
     }
   });
-  // } else {
-  //   callback(
-  //     Message.notAuthMessage(
-  //       "You need to be either owner or administrator to edit this post"
-  //     )
-  //   );
-  // }
 };
-// );
-// };
 /**
  * Function to delete post
  * @function deletePost

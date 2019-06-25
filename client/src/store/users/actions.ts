@@ -109,6 +109,10 @@ export const login = (
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/user/login?pass=${props.pass}&email=${props.email}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
     // clear state
     dispatch({
       type: "LOGIN",
@@ -119,10 +123,6 @@ export const login = (
       message: ""
     });
     dispatch({ type: "TYPING_DATA", payload: { ...props } });
-    dispatch({
-      type: "SET_LOADING",
-      loading: true
-    });
     // proceed with request
     axios({
       method: "get",
@@ -134,15 +134,12 @@ export const login = (
         const module = "home";
         // const token = response.data.token;
 
-        console.log(response);
-        console.log(response.data);
-
         // dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET_AUTH", status: true });
         dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
         // dispatch({
-        //   type: "SET_POSTS",
-        //   posts: response.data.payload.posts
+        //   type: "SET_MESSAGE",
+        //   message: response.data.payload.message
         // });
         dispatch({
           type: "SET_LANGUAGE",
@@ -160,6 +157,8 @@ export const login = (
       })
       .catch(error => {
         console.log(error);
+        console.log(error.response);
+        console.log(error.response.data);
         const payload = error.response ? error.response.data : error.toString();
         if (payload.code === 404) {
           dispatch({
@@ -170,12 +169,11 @@ export const login = (
             type: "SET_MODULE",
             mode: "register"
           });
-        } else {
-          dispatch({
-            type: "SET_MESSAGE",
-            message: payload.message || ""
-          });
         }
+        dispatch({
+          type: "SET_MESSAGE",
+          message: payload.message || payload || ""
+        });
         dispatch({
           type: "LOGIN",
           payload

@@ -13,7 +13,8 @@ const dotEnv = dotenv.config();
 const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 let replyCache: any = {
-  create: { time: new Date(), req: "", reply: "" }
+  create: { time: new Date(), req: "", reply: "" },
+  update: { time: new Date(), req: "", reply: "" }
 };
 
 // storing
@@ -67,8 +68,19 @@ router.post("/create", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.patch("/:id", (req: any, res: any, next: any) => {
-  if (req.body) {
-    PostController.updatePost(req, (controllerResponse: apiResponse) => {
+  // information
+  console.log(`§ update post...`);
+  showRequest("lcn.check", req.headers, [req.body, req.headers.token]);
+
+  if (double("update", req.body, 600)) {
+    console.log("~> consider double");
+    res
+      .status(replyCache["update"].reply.code)
+      .send(replyCache["update"].reply);
+  } else {
+    const request = { token: req.headers.token, post: req.body.post };
+    PostController.updatePost(request, (controllerResponse: apiResponse) => {
+      caching("update", req.body, controllerResponse);
       res.status(controllerResponse.code).send(controllerResponse);
     });
   }

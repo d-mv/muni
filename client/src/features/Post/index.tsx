@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import axios, { AxiosResponse } from "axios";
 import { categoryIdToName } from "../../modules/category_processor";
 import { replyCardStyleUtil } from "../../modules/reply_style_generator";
-import { goBack, iconEdit } from "../../icons";
+import { goBack, iconEdit, iconClose } from "../../icons";
 
 import { AppState } from "../../store";
 import {
@@ -32,7 +32,7 @@ import {
   ReplyVotes,
   NewReplyButton,
   ModalView,
-  ConfirmDelete
+  Confirm
 } from "./components";
 
 import Content from "../../layout/Content";
@@ -67,6 +67,7 @@ const Post = (props: {
   const [post, setPost] = useState(props.post);
   const [edit, setEdit] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [updateConfirmation, showUpdateConfirmation] = useState(false);
 
   // destructuring state
   const {
@@ -105,6 +106,10 @@ const Post = (props: {
   const toggleEdit = () => {
     setEdit(!edit);
   };
+  const toggleCloseSave = () => {
+    showUpdateConfirmation(!updateConfirmation);
+  };
+
   const toggleDeleteConfirmation = () => {
     setDeleteConfirmation(!deleteConfirmation);
   };
@@ -136,6 +141,26 @@ const Post = (props: {
     }
     setShowNewReply(false);
   };
+  const handleUpdate = (answer: string) => {
+    console.log(answer);
+    if (answer === "attention") {
+      toggleEdit();
+      setPost(props.post);
+      toggleCloseSave();
+    } else {
+      const url = `/post/${_id}`;
+      axios
+        .patch(url, { post: JSON.stringify(post) })
+        .then((response: AxiosResponse<any>) => {
+          toggleEdit();
+          props.getPosts(props.location.location);
+        })
+        .catch((reason: any) => {
+          console.log(reason);
+        });
+    }
+  };
+
   // !
   const handleRemovePhoto = () => {
     setPost({ ...post, photo: "" });
@@ -154,7 +179,6 @@ const Post = (props: {
   // async handlers
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    // props.vote(_id, props.location._id);
     const url = `/post/${_id}/vote?user=${props.location._id}`;
     axios({
       method: "patch",
@@ -230,20 +254,6 @@ const Post = (props: {
       <NewReplyButton action={toggleShowNewReplyButton} />
     ) : null;
 
-  newReplyComponent = showNewReply ? (
-    <Modal disabled close={handleNewReplySubmit}>
-      <NewReply
-        label={text["newreply.label"]}
-        value={newReply}
-        placeholder={text["newreply.placeholder"]}
-        action={handleNewReplyChange}
-        direction={direction}
-        submit={handleNewReplySubmit}
-        submitText={text["login.button.submit"]}
-      />
-    </Modal>
-  ) : null;
-
   // if there is muni reply
   if (reply) {
     const { replyCardStyle, replyCardColor } = replyCardStyleUtil(
@@ -283,14 +293,39 @@ const Post = (props: {
       </div>
     ) : null;
   }
-
+  // modals
   const deleteConfirmationComponent = deleteConfirmation ? (
-    <ConfirmDelete
+    <Confirm
       text={text["post.delete.confirm"]}
       close={toggleDeleteConfirmation}
       action={handleDelete}
       direction={direction}
     />
+  ) : null;
+
+  newReplyComponent = showNewReply ? (
+    <Modal disabled close={handleNewReplySubmit}>
+      <NewReply
+        label={text["newreply.label"]}
+        value={newReply}
+        placeholder={text["newreply.placeholder"]}
+        action={handleNewReplyChange}
+        direction={direction}
+        submit={handleNewReplySubmit}
+        submitText={text["login.button.submit"]}
+      />
+    </Modal>
+  ) : null;
+
+  const updateConfirmComponent = updateConfirmation ? (
+    <div>
+      <Confirm
+        text={text["post.update.confirm"]}
+        close={toggleCloseSave}
+        action={handleUpdate}
+        direction={direction}
+      />
+    </div>
   ) : null;
 
   const deleteButton = edit ? (
@@ -301,7 +336,8 @@ const Post = (props: {
     </div>
   ) : null;
 
-  const editIcon =
+  // default
+  let editIcon =
     author && !muniUser
       ? {
           right: {
@@ -311,6 +347,15 @@ const Post = (props: {
           }
         }
       : null;
+  // edit mode
+  if (edit)
+    editIcon = {
+      right: {
+        icon: iconClose("primary"),
+        action: toggleCloseSave,
+        noRtl: true
+      }
+    };
 
   const headerObject = {
     name: props.location.name[props.language.short],
@@ -379,6 +424,7 @@ const Post = (props: {
         ) : null}
         {deleteButton}
         {deleteConfirmationComponent}
+        {updateConfirmComponent}
       </div>
     </Content>
   );
