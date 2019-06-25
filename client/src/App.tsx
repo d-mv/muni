@@ -46,6 +46,7 @@ const App = (props: {
   showPost: (arg0: showPostPayload) => void;
   prevModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
+  type: any;
 }) => {
   const { token } = props;
   const { cookies } = props;
@@ -57,9 +58,17 @@ const App = (props: {
     props.setModule(module);
   };
 
+  // useEffect(() => {
+  //   if (props.type && props.type === "muni") {
+  //     const app: any = document.getElementById("app");
+  //     app.style.backgroundColor = "var(--colorSecondary)";
+  //   }
+  // }, [props.type]);
+
   // set cookies if token changes
   useEffect(() => {
     console.log("1. check token");
+    axios.defaults.headers = { token };
     // if 'clear'
     if (props.token === "clear") {
       console.log("- clear token");
@@ -72,7 +81,7 @@ const App = (props: {
       Object.keys(props.location).length === 0
     ) {
       console.log("- token is in state, but no data");
-      axios.defaults.headers = { token };
+
       props.fetchData(token);
     } else if (
       props.token !== "" &&
@@ -126,20 +135,24 @@ const App = (props: {
     if (Object.keys(props.location).length > 0 && props.posts.length > 0) {
       console.log("- location data & posts present, go home");
       toggleModule("home");
-    } else if (Object.keys(props.location).length > 0 && props.posts.length === 0 && localToken!='') {
+    } else if (
+      Object.keys(props.location).length > 0 &&
+      props.posts.length === 0 &&
+      localToken != ""
+    ) {
       console.log("- location data present, get posts");
-      axios.defaults.headers = { token };
-      props.getPosts(props.location.location)
-           }
+
+      props.getPosts(props.location.location);
+    }
   }, [props.location]);
 
- useEffect(() => {
-   console.log("6. triggered posts");
-   if (props.posts.length > 0 && props.module !== 'post') {
-     console.log("- posts are there, show post");
-     toggleModule("home");
-   }
- }, [props.posts]);
+  useEffect(() => {
+    console.log("6. triggered posts");
+    if (props.posts.length > 0 && props.module !== "post") {
+      console.log("- posts are there, show post");
+      toggleModule("home");
+    }
+  }, [props.posts]);
 
   useEffect(() => {
     console.log("4. triggered post");
@@ -175,8 +188,10 @@ const App = (props: {
     toggleModule("new");
   };
 
-  const AppComponent = (props: { children: any }) => (
-    <div className='app'>{props.children}</div>
+  const AppComponent = (appProps: { children: any }) => (
+    <div className={props.type === "muni" ? "appMuni" : "app"}>
+      {appProps.children}
+    </div>
   );
   const LazyComponent = (props: { children: any }) => (
     <Suspense fallback={<Loading />}>{props.children}</Suspense>
@@ -315,7 +330,8 @@ const mapStateToProps = (state: AppState) => {
     check: state.checkTokenResult,
     post: state.post.show,
     posttmp: state.post,
-    posts: state.posts
+    posts: state.posts,
+    type: state.type
   };
 };
 

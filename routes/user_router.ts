@@ -261,6 +261,8 @@ router.get("/login", (req: any, res: any, next: any) => {
         query: req.query
       },
       (controllerResponse: apiResponse) => {
+        console.log("controllerResponse");
+        console.log(controllerResponse);
         if (controllerResponse.status) {
           // process token/cookie
           const cookieIngredients = {
@@ -271,8 +273,10 @@ router.get("/login", (req: any, res: any, next: any) => {
               _id: controllerResponse.payload._id
             }
           };
-          const response = cookieFactory(cookieIngredients);
-
+          const response:any= cookieFactory(cookieIngredients);
+//  console.log("cookieFactory Response");
+//  console.log(response.message);
+//  console.log(Object.keys(response));
           const packageToSend = {
             code: response.code,
             message: response.message.message,

@@ -1,4 +1,4 @@
-import { emptyPost } from './../defaults';
+import { emptyPost } from "./../defaults";
 import { Action } from "./types";
 import { data, indexedObjAny } from "../types";
 import { apiState } from "../defaults";
@@ -143,10 +143,18 @@ export const typingData = (state = {}, action: Action) => {
   return state;
 };
 
-export const cachePost = (state = {cached:emptyPost}, action: Action) => {
+export const cachePost = (state = { cached: emptyPost }, action: Action) => {
   switch (action.type) {
     case "CACHE_POST":
       return { ...state, ...action.post };
+  }
+  return state;
+};
+
+export const userType = (state = {}, action: Action) => {
+  switch (action.type) {
+    case "USER_TYPE":
+      return action.user;
   }
   return state;
 };

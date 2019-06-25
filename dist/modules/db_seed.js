@@ -37,7 +37,8 @@ var update = function (props) {
             $set: {
                 users: props.users,
                 municipality: props.municipality,
-                pinned: props.pinned
+                pinned: props.pinned,
+                admins: props.admins
             }
         }, { upsert: true })
             .then(function (document) {
@@ -135,10 +136,6 @@ var buildPost = function (user, createdBy, category) {
 var dbSeed = function (callback) {
     // qty of users
     var users = 5;
-    //   faker.random.number({
-    //   min: 5,
-    //   max: 10
-    // });
     // categories
     var categories = [
         "5d0515f6765ce120e4bdf6a8",
@@ -147,7 +144,7 @@ var dbSeed = function (callback) {
         "5d05160d765ce120e4bdf6aa",
         "5d051602765ce120e4bdf6a9"
     ];
-    var languages = ["en", "עב"];
+    var languages = ["en", "עב", "ع"];
     // generate hash for password
     security_1.encodeString("1234567", function (encoded) {
         if (!encoded.status) {
@@ -157,7 +154,6 @@ var dbSeed = function (callback) {
             // set the block of data
             var block = [];
             // generate user ids
-            // let userIds = [];
             for (var i = 0; i < users; i++) {
                 userIds.push(new MDB.ObjectId());
             }
@@ -193,13 +189,12 @@ var dbSeed = function (callback) {
                 _id: new MDB.ObjectId(),
                 fName: faker.name.firstName(),
                 lName: faker.name.lastName(),
-                email: faker.internet.email(),
+                email: "user@muni.com",
                 language: languages[Math.floor(Math.random() * languages.length)],
                 pass: encoded.payload,
                 type: "muni",
                 posts: []
             };
-            block.push(muniUser);
             // create municipality records
             var blockMuni = [];
             var municipalityPosts = faker.random.number({
@@ -216,7 +211,8 @@ var dbSeed = function (callback) {
                 id: "5d04f0f698de3fce481f0e3f",
                 users: block,
                 municipality: blockMuni,
-                pinned: pinned
+                pinned: pinned,
+                admins: [muniUser]
             });
             // report
             callback({

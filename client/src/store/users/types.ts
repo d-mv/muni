@@ -80,20 +80,24 @@ export interface setPostsAction {
 }
 
 export interface typingDataAction {
-  type: 'TYPING_DATA'
+  type: "TYPING_DATA";
   payload: {
-    value: string,
-    name:string
-  }
+    value: string;
+    name: string;
+  };
 }
 
-
+export interface userTypeAction {
+  type: "USER_TYPE";
+  user: string;
+}
 export interface cachePost {
-  type: "CACHE_POST",
-  post: TYPE.post
+  type: "CACHE_POST";
+  post: TYPE.post;
 }
 
 export type Action =
+  | userTypeAction
   | cachePost
   | typingDataAction
   | fetchDataAction

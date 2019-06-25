@@ -81,6 +81,8 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
     // token is present
     // check if token valid
     checkToken(req.headers.token, (checkTokenResponse: any) => {
+      console.log("checkTokenResponse");
+      console.log(checkTokenResponse);
       // reassign code
       const code = checkTokenResponse.code;
       delete checkTokenResponse.code;

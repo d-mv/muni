@@ -14,6 +14,7 @@
     :root {
       --colorPrimary: #478fdf;
       --colorWhite: #fcfcfc;
+      --colorSecondary: #379B37;
       --pageShadow: 0 0.1rem 0.3rem rgba(68, 68, 68, 0.4);
       --pageShadowOpposite: 0 -0.3rem 0.3rem 0.3rem var(--colorDarkTransLight);
     }
@@ -25,34 +26,26 @@
       right: 0;
       background-color: var(--colorPrimary);
     }
-    .welcome,
-    .page,
-    .pageOpposite,
-    .pageWithContent {
+    .appMuni {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: var(--colorSecondary);
+    }
+
+    .welcome {
       position: fixed;
       left: 0;
       right: 0;
       background-color: var(--colorWhite);
       box-sizing: border-box;
       overflow: scroll;
-    }
-    .page,
-    .pageWithContent,
-    .welcome {
       bottom: 6rem;
       top: 0;
-    }
-    .pageOpposite {
-      top: 6rem;
-      bottom: 0;
-    }
-    .welcome,
-    .page,
-    .pageWithContent {
       box-shadow: var(--pageShadow);
       border-radius: 0 0 2.5rem 2.5rem;
-    }
-    .welcome {
       background: rgba(0, 0, 0, 0)
         url("https://res.cloudinary.com/diciu4xpu/image/upload/v1560150315/muni/photo-1509580357930-a711cf9d888d.jpg")
         no-repeat scroll center center / cover;
@@ -61,16 +54,6 @@
       -o-background-size: cover;
       background-size: cover;
       object-fit: cover;
-    }
-
-    .pageOpposite {
-      border-radius: 2.5rem 2.5rem 0 0;
-      box-shadow: var(--pageShadowOpposite);
-      border-top: 0.3rem solid var(--colorWhite) !important;
-    }
-
-    .pageWithContent {
-      border-bottom: 0.3rem solid var(--colorWhite) !important;
     }
   </style>
   <body>

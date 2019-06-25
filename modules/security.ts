@@ -98,7 +98,13 @@ export const checkToken = (
               if (getUserByIdResponse.status) {
                 if (nodata) {
                   callback(
-                    Message.foundMessage("token OK", {payload:{ id: decoded.id }})
+                    Message.foundMessage("token OK", {
+                      payload: {
+                        id: decoded.id,
+                        lang: getUserByIdResponse.language,
+                        type: getUserByIdResponse.type
+                      }
+                    })
                   );
                 } else {
                   User.getLocationInfo(

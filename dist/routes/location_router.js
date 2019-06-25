@@ -74,6 +74,8 @@ router.get("/:id/posts", function (req, res, next) {
         // token is present
         // check if token valid
         security_1.checkToken(req.headers.token, function (checkTokenResponse) {
+            console.log("checkTokenResponse");
+            console.log(checkTokenResponse);
             // reassign code
             var code = checkTokenResponse.code;
             delete checkTokenResponse.code;

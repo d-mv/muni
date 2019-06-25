@@ -21,7 +21,8 @@ import {
   setLanguage,
   setPosts,
   typingData,
-  cachePost
+  cachePost,
+  userType
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState, showPostState, emptyPost } from "./defaults";
@@ -62,7 +63,8 @@ const rootReducer = combineReducers({
   post: showPost,
   typed: typingData,
   cached: cachePost,
-  deleted: deletePost
+  deleted: deletePost,
+  type: userType
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -96,6 +98,7 @@ export default function configureStore() {
     typed: TYPE.indexedObj;
     cached: any;
     deleted: any;
+    type: string;
   }
 
   const initialState: state = {
@@ -123,7 +126,8 @@ export default function configureStore() {
     post: showPostState,
     typed: {},
     cached: emptyPost,
-    deleted: apiState
+    deleted: apiState,
+    type: ""
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

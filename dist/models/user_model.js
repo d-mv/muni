@@ -69,23 +69,23 @@ exports.getUserById = function (id, callback) {
             callback(Message.errorMessage({ action: "connection to DB", e: err }));
         }
         else {
-            var database = MDB.client.db(dbName).collection(dbcMain);
-            database
+            var database_1 = MDB.client.db(dbName).collection(dbcMain);
+            database_1
                 .aggregate([
                 {
                     $match: {
-                        "users._id": new MDB.ObjectId(id)
+                        "admins._id": new MDB.ObjectId(id)
                     }
                 },
                 {
                     $unwind: {
-                        path: "$users",
+                        path: "$admins",
                         preserveNullAndEmptyArrays: true
                     }
                 },
                 {
                     $replaceRoot: {
-                        newRoot: "$users"
+                        newRoot: "$admins"
                     }
                 },
                 {
@@ -99,8 +99,48 @@ exports.getUserById = function (id, callback) {
                     callback(Message.notFound("user"));
                 }
                 else {
+                    console.log(res);
                     if (res.length === 0) {
-                        callback(Message.notFound("user"));
+                        database_1
+                            .aggregate([
+                            {
+                                $match: {
+                                    "users._id": new MDB.ObjectId(id)
+                                }
+                            },
+                            {
+                                $unwind: {
+                                    path: "$users",
+                                    preserveNullAndEmptyArrays: true
+                                }
+                            },
+                            {
+                                $replaceRoot: {
+                                    newRoot: "$users"
+                                }
+                            },
+                            {
+                                $match: {
+                                    _id: new MDB.ObjectId(id)
+                                }
+                            }
+                        ])
+                            .toArray(function (e, res) {
+                            if (e) {
+                                callback(Message.notFound("user"));
+                            }
+                            else {
+                                if (res.length === 0) {
+                                    callback(Message.notFound("user"));
+                                }
+                                else {
+                                    callback(Message.foundMessage("user", {
+                                        language: res[0].language,
+                                        type: res[0].type
+                                    }));
+                                }
+                            }
+                        });
                     }
                     else {
                         callback(Message.foundMessage("user", {
@@ -190,8 +230,8 @@ exports.verifyUser = function (_id, callback) {
             callback(Message.errorMessage({ action: "connection to DB", e: err }));
         }
         else {
-            var database_1 = MDB.client.db(dbName).collection(dbcMain);
-            database_1
+            var database_2 = MDB.client.db(dbName).collection(dbcMain);
+            database_2
                 .aggregate([
                 {
                     $unwind: {
@@ -232,8 +272,8 @@ exports.verifyUser = function (_id, callback) {
                         posts: [],
                         settings: result[0].settings
                     };
-                    database_1 = MDB.client.db(dbName).collection(dbcMain);
-                    database_1
+                    database_2 = MDB.client.db(dbName).collection(dbcMain);
+                    database_2
                         .updateOne({ _id: new MDB.ObjectId(result[0].location) }, { $push: { users: newUser } })
                         .then(function (dbReply) {
                         // if OK
@@ -536,14 +576,41 @@ exports.create = function (request, callback) {
  * @callback loginCallback - Function to return result (TYPE.apiResponse)
  */
 exports.login = function (user, callback) {
-    // try login as SU
-    exports.suLoginAttempt(user, function (suCheckResponse) {
-        // callback if logged in or wrong password
-        if (suCheckResponse.status || suCheckResponse.code === 401) {
-            callback(suCheckResponse);
+    exports.IsUserMuni(user, function (muniUserResponse) {
+        console.log("muniUserResponse");
+        console.log(muniUserResponse);
+        if (muniUserResponse.status) {
+            security_1.compareStringToHash(user.pass, muniUserResponse.payload.pass, function (response) {
+                console.log(response);
+                if (typeof response === "boolean") {
+                    // if it's true/false
+                    if (response) {
+                        // if matching
+                        var lang_1 = muniUserResponse.payload.language;
+                        var type_1 = muniUserResponse.payload.type;
+                        var user_1 = muniUserResponse.payload._id;
+                        var location_1 = muniUserResponse.payload.location;
+                        exports.getLocationInfoQ(location_1, function (dataResponse) {
+                            var replyPayload = __assign({}, dataResponse.payload, { lang: lang_1,
+                                type: type_1, _id: user_1 });
+                            callback(__assign({}, dataResponse, { payload: replyPayload }));
+                        });
+                    }
+                    else {
+                        // if not matching
+                        callback(Message.generalError({
+                            subj: "Wrong password",
+                            code: 401
+                        }));
+                    }
+                }
+                else {
+                    // if it's error
+                    callback(response);
+                }
+            });
         }
         else {
-            // check if user exists
             exports.isUserNew(user, function (newUserResponse) {
                 // if 1 only user found, attempt to login
                 if (newUserResponse.status) {
@@ -554,11 +621,11 @@ exports.login = function (user, callback) {
                             // if it's true/false
                             if (response) {
                                 // if matching
-                                var lang_1 = newUserResponse.payload.language;
+                                var lang_2 = newUserResponse.payload.language;
                                 exports.getLocationInfo(newUserResponse.payload._id, function (dataResponse) {
                                     // console.log("dataResponse");
                                     // console.log(Object.keys(dataResponse));
-                                    var replyPayload = __assign({}, dataResponse.payload, { lang: lang_1 });
+                                    var replyPayload = __assign({}, dataResponse.payload, { lang: lang_2 });
                                     callback(__assign({}, dataResponse, { payload: replyPayload }));
                                 });
                             }
@@ -582,6 +649,94 @@ exports.login = function (user, callback) {
                 }
             });
         }
+    });
+};
+exports.IsUserMuni = function (user, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        var db = MDB.client.db(dbName);
+        db.collection(dbcMain)
+            .aggregate([
+            {
+                $match: {
+                    "admins.email": user.email
+                }
+            }
+        ])
+            .toArray(function (errL, resultL) {
+            console.log("resultL");
+            console.log(resultL);
+            if (err)
+                callback(Message.errorMessage({ action: "isUserNew", e: errL }));
+            var response = {
+                status: false,
+                message: "User not found (email is not registered)",
+                code: 404
+            };
+            if (resultL.length > 1) {
+                // if too many results
+                response.message = "Contact administrator (too many results)";
+                response.code = 500;
+                callback(response);
+            }
+            else if (resultL.length === 0) {
+                // if too many results
+                callback(Message.notFound("muni user"));
+            }
+            else {
+                var location_2 = resultL[0]._id;
+                db.collection(dbcMain)
+                    .aggregate([
+                    {
+                        $match: {
+                            "admins.email": user.email
+                        }
+                    },
+                    {
+                        $project: {
+                            admins: 1
+                        }
+                    },
+                    {
+                        $unwind: {
+                            path: "$admins",
+                            preserveNullAndEmptyArrays: true
+                        }
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot: "$admins"
+                        }
+                    },
+                    {
+                        $match: {
+                            email: user.email
+                        }
+                    }
+                ])
+                    .toArray(function (err, result) {
+                    if (err)
+                        callback(Message.errorMessage({ action: "isUserNew", e: err }));
+                    else if (result.length > 1) {
+                        // if too many results
+                        response.message = "Contact administrator (too many results)";
+                        response.code = 500;
+                    }
+                    else if (result.length === 1) {
+                        // match
+                        // const reply = result[0];
+                        // const location = result[0]._id;
+                        response = {
+                            status: true,
+                            message: "User found",
+                            code: 200,
+                            payload: __assign({}, result[0], { location: location_2 })
+                        };
+                    }
+                    callback(response);
+                });
+            }
+        });
     });
 };
 /**
@@ -868,7 +1023,6 @@ exports.getLocationInfo = function (user, callback) {
             });
         }
     });
-    // MDB.client.close();
 };
 exports.confirmedEmail = function (_id, callback) {
     MDB.client.connect(function (err) {
@@ -877,8 +1031,8 @@ exports.confirmedEmail = function (_id, callback) {
             callback(Message.errorMessage({ action: "connection to DB", e: err }));
         }
         else {
-            var database_2 = MDB.client.db(dbName).collection(dbcApp);
-            database_2
+            var database_3 = MDB.client.db(dbName).collection(dbcApp);
+            database_3
                 .aggregate([
                 {
                     $unwind: {
@@ -912,19 +1066,19 @@ exports.confirmedEmail = function (_id, callback) {
                 }
                 else {
                     // if found
-                    var user_1 = result[0];
-                    console.log(user_1);
-                    var location_1 = user_1.location;
-                    delete user_1.location;
-                    database_2
+                    var user_2 = result[0];
+                    console.log(user_2);
+                    var location_3 = user_2.location;
+                    delete user_2.location;
+                    database_3
                         .update({ _id: new MDB.ObjectId(dbAppId) }, { $pull: { newUsers: { _id: new MDB.ObjectId(_id) } } })
                         .then(function (document) {
                         // process response
-                        database_2 = MDB.client.db(dbName).collection(dbcMain);
-                        database_2
+                        database_3 = MDB.client.db(dbName).collection(dbcMain);
+                        database_3
                             .updateOne({
-                            _id: new MDB.ObjectId(location_1)
-                        }, { $push: { users: user_1 } })
+                            _id: new MDB.ObjectId(location_3)
+                        }, { $push: { users: user_2 } })
                             .then(function (documentCreate) {
                             // check if result is positive adn callback result
                             callback(Message.updateMessage({
@@ -1002,4 +1156,94 @@ exports.update = function (request, callback) {
         }
     });
     // MDB.client.close();
+};
+exports.getLocationInfoQ = function (location, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            callback(Message.errorMessage({ action: "connection to DB", e: err }));
+        }
+        else {
+            var database = MDB.client.db(dbName).collection(dbcApp);
+            var categories_2;
+            database
+                .aggregate([
+                {
+                    $project: {
+                        _id: 0,
+                        categories: 1
+                    }
+                }
+            ])
+                .toArray(function (err, result) {
+                if (err) {
+                    callback(Message.errorMessage({
+                        action: "get categories",
+                        e: err
+                    }));
+                }
+                else if (result.length === 0) {
+                    // if no - response
+                    callback(Message.notFound("categories not found"));
+                }
+                else if (result.length > 1) {
+                    // if too many results
+                    callback(Message.tooManyResultsMessage("get categories"));
+                }
+                else {
+                    categories_2 = result[0].categories;
+                }
+            });
+            database = MDB.client.db(dbName).collection(dbcMain);
+            database
+                .aggregate([
+                {
+                    $match: {
+                        _id: new MDB.ObjectId(location)
+                    }
+                },
+                {
+                    $project: {
+                        name: 1,
+                        location: "$_id",
+                        pinned: 1,
+                        municipality: 1,
+                        _id: 0,
+                        posts: {
+                            $reduce: {
+                                input: "$users.posts",
+                                initialValue: [],
+                                "in": {
+                                    $concatArrays: ["$$value", "$$this"]
+                                }
+                            }
+                        }
+                    }
+                }
+            ])
+                .toArray(function (err, result) {
+                if (err) {
+                    // if error
+                    callback(Message.errorMessage({ action: "user match", e: err }));
+                }
+                else if (result.length === 0) {
+                    // if no - response
+                    callback(Message.notFound("user not found"));
+                }
+                else if (result.length > 1) {
+                    // if too many results
+                    callback(Message.tooManyResultsMessage("user matching"));
+                }
+                else {
+                    // if found
+                    callback(Message.positiveMessage({
+                        subj: "User login is OK",
+                        payload: {
+                            payload: __assign({ categories: categories_2 }, result[0])
+                        }
+                    }));
+                }
+            });
+        }
+    });
 };

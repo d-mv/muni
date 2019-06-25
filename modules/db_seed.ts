@@ -34,6 +34,7 @@ const update = (props: {
   users: any;
   municipality: any;
   pinned: any;
+  admins: any[];
 }) => {
   const dbName = "muni";
   MDB.client.connect(err => {
@@ -49,7 +50,8 @@ const update = (props: {
           $set: {
             users: props.users,
             municipality: props.municipality,
-            pinned: props.pinned
+            pinned: props.pinned,
+            admins: props.admins
           }
         },
         { upsert: true }
@@ -168,10 +170,6 @@ const buildPost = (
 const dbSeed = (callback: any) => {
   // qty of users
   const users = 5;
-  //   faker.random.number({
-  //   min: 5,
-  //   max: 10
-  // });
   // categories
   const categories = [
     "5d0515f6765ce120e4bdf6a8",
@@ -180,7 +178,7 @@ const dbSeed = (callback: any) => {
     "5d05160d765ce120e4bdf6aa",
     "5d051602765ce120e4bdf6a9"
   ];
-  const languages = ["en", "עב"];
+  const languages = ["en", "עב", "ع"];
 
   // generate hash for password
   encodeString("1234567", (encoded: TYPE.intApiResponseTYPE) => {
@@ -190,7 +188,6 @@ const dbSeed = (callback: any) => {
       // set the block of data
       let block = [];
       // generate user ids
-      // let userIds = [];
       for (let i = 0; i < users; i++) {
         userIds.push(new MDB.ObjectId());
       }
@@ -230,14 +227,12 @@ const dbSeed = (callback: any) => {
         _id: new MDB.ObjectId(),
         fName: faker.name.firstName(),
         lName: faker.name.lastName(),
-        email: faker.internet.email(),
+        email: "user@muni.com",
         language: languages[Math.floor(Math.random() * languages.length)],
         pass: encoded.payload,
         type: "muni",
         posts: []
       };
-
-      block.push(muniUser);
 
       // create municipality records
       let blockMuni = [];
@@ -258,7 +253,8 @@ const dbSeed = (callback: any) => {
         id: "5d04f0f698de3fce481f0e3f",
         users: block,
         municipality: blockMuni,
-        pinned
+        pinned,
+        admins: [muniUser]
       });
 
       // report

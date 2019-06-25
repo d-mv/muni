@@ -95,7 +95,13 @@ exports.checkToken = function (token, callback, nodata) {
                         User.getUserById(decoded.id, function (getUserByIdResponse) {
                             if (getUserByIdResponse.status) {
                                 if (nodata) {
-                                    callback(Message.foundMessage("token OK", { payload: { id: decoded.id } }));
+                                    callback(Message.foundMessage("token OK", {
+                                        payload: {
+                                            id: decoded.id,
+                                            lang: getUserByIdResponse.language,
+                                            type: getUserByIdResponse.type
+                                        }
+                                    }));
                                 }
                                 else {
                                     User.getLocationInfo(decoded.id, function (modelReply) {

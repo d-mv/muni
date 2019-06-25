@@ -51,8 +51,6 @@ export const checkToken = (
     })
       .then(response => {
         const payload = response.data;
-        // console.log(response.data);
-        // console.log("checktoken - payload.status: " + payload.status);
         if (payload.status) {
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });
@@ -141,6 +139,12 @@ export const login = (
         //   type: "SET_MESSAGE",
         //   message: response.data.payload.message
         // });
+        if (response.data.payload.type) {
+          dispatch({
+            type: "USER_TYPE",
+            user: response.data.payload.type
+          });
+        }
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[response.data.payload.lang]
