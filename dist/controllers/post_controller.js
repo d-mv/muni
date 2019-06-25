@@ -61,38 +61,23 @@ exports.createPost = function (query, callback) {
  * @param {object} props - Incoming feed from router
  * @return {callback} - Callback function to return response
  */
-exports.updatePost = function (props, callback) {
-    if (Object.keys(props.body).length === 0) {
-        // if request body is empty
-        callback(response_message_1.requestError("Wrong/malformed request"));
-    }
-    else {
-        if (!props.headers.token) {
-            // if token is not present send code/message
-            callback(response_message_1.requestError("Token is missing"));
+exports.updatePost = function (request, callback) {
+    var token = request.token, post = request.post;
+    var postObject = JSON.parse(post);
+    security_1.checkToken(token, function (checkTokenResponse) {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+            // negative code
+            callback(checkTokenResponse);
         }
         else {
-            // token is present, check it
-            security_1.checkToken(props.headers.token, function (checkTokenResponse) {
-                // check if code is not positive
-                if (checkTokenResponse.code !== 200) {
-                    // negative code
-                    callback(checkTokenResponse);
-                }
-                else {
-                    // positive code = 200
-                    Post.update({
-                        fields: props.body.fields,
-                        postId: props.params.id,
-                        user: checkTokenResponse.payload._id
-                    }, function (modelResponse) {
-                        // callback with response
-                        callback(modelResponse);
-                    });
-                }
+            // positive code = 200
+            Post.update(postObject, function (modelResponse) {
+                // callback with response
+                callback(modelResponse);
             });
         }
-    }
+    }, true);
 };
 /**
  * Function to delete post

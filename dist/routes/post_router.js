@@ -21,7 +21,8 @@ var router = express.Router();
 var dotEnv = dotenv.config();
 var redirectUrl = process.env.SELF || "httpL//localhost:8080";
 var replyCache = {
-    create: { time: new Date(), req: "", reply: "" }
+    create: { time: new Date(), req: "", reply: "" },
+    update: { time: new Date(), req: "", reply: "" }
 };
 // storing
 var caching = function (cacheId, req, reply) {
@@ -69,8 +70,19 @@ router.post("/create", function (req, res, next) {
  * @param {object} next
  */
 router.patch("/:id", function (req, res, next) {
-    if (req.body) {
-        PostController.updatePost(req, function (controllerResponse) {
+    // information
+    console.log("\u00A7 update post...");
+    show_request_1.showRequest("lcn.check", req.headers, [req.body, req.headers.token]);
+    if (double("update", req.body, 600)) {
+        console.log("~> consider double");
+        res
+            .status(replyCache["update"].reply.code)
+            .send(replyCache["update"].reply);
+    }
+    else {
+        var request = { token: req.headers.token, post: req.body.post };
+        PostController.updatePost(request, function (controllerResponse) {
+            caching("update", req.body, controllerResponse);
             res.status(controllerResponse.code).send(controllerResponse);
         });
     }

@@ -151,24 +151,14 @@ exports.create = function (request, callback) {
  * @callback callback - Callback function to return response
  */
 exports.update = function (request, callback) {
-    // check if post title is available
-    // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
-    // if status true inform, that user exists
-    // if status false, proceed with creation
-    // if (findPostResult.code !== 200) {
-    // send message
-    // callback(findPostResult);
-    // } else if (
-    // checking authorization
-    //   request.user.level === "su" ||
-    //   findPostResult.payload.createdBy == request.user.payload.id
-    // ) {
-    // authenticated
-    console.log(request);
+    // extract id from post object
+    var id = request._id;
+    var post = request;
+    delete post._id;
     var setRequest = {};
     // prepare the request
-    Object.keys(request.fields).forEach(function (key) {
-        setRequest["users.$[].posts.$[reply]." + key] = request.fields[key];
+    Object.keys(post).forEach(function (key) {
+        setRequest["users.$[].posts.$[reply]." + key] = post[key];
     });
     MDB.client.connect(function (err) {
         assert.equal(null, err);
@@ -182,8 +172,8 @@ exports.update = function (request, callback) {
             // update
             console.log(setRequest);
             database
-                .updateMany({ "users.posts._id": new MDB.ObjectId(request.postId) }, { $set: __assign({}, setRequest) }, {
-                arrayFilters: [{ "reply._id": new MDB.ObjectId(request.postId) }]
+                .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $set: __assign({}, setRequest) }, {
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
             })
                 .then(function (document) {
                 // process response
@@ -200,16 +190,7 @@ exports.update = function (request, callback) {
             });
         }
     });
-    // } else {
-    //   callback(
-    //     Message.notAuthMessage(
-    //       "You need to be either owner or administrator to edit this post"
-    //     )
-    //   );
-    // }
 };
-// );
-// };
 /**
  * Function to delete post
  * @function deletePost

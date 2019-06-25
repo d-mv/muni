@@ -3,11 +3,12 @@ import { indexedObj } from "../store/types";
 import { AppState } from "../store";
 import styleFactory from "../modules/style_factory";
 import Button from "./Button";
-import Help from "../icons/Help";
+import { iconHelp } from "../icons/";
 import React from "react";
 import Title from "./Title";
 import { connect } from "react-redux";
 import styles from "./style/Header.module.scss";
+import Help from "../features/Help";
 
 const Header = (props: {
   language: indexedObj;
@@ -34,8 +35,12 @@ const Header = (props: {
     return <div className={style}>{icon}</div>;
   };
 
+  const toggleHelp = () => {
+    setShowHelp(!showHelp);
+  };
+
   const handleLeftAction = () => {
-    props.left ? props.left.action() : setShowHelp(!showHelp);
+    props.left ? props.left.action() : toggleHelp();
   };
   const handleRightAction = () => {
     if (props.right) props.right.action();
@@ -43,7 +48,7 @@ const Header = (props: {
 
   const left = props.left
     ? makeIcon(props.left.icon, props.left.noRtl)
-    : makeIcon(<Help color='primary' />, true);
+    : makeIcon(iconHelp("primary"), true);
 
   const right = props.right ? (
     makeIcon(props.right.icon, props.right.noRtl)
@@ -60,6 +65,7 @@ const Header = (props: {
       <Button mode='minimal' action={handleRightAction}>
         {right}
       </Button>
+      {showHelp ? <Help showHelp={toggleHelp} /> : null}
     </header>
   );
 };

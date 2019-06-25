@@ -2,12 +2,149 @@
   opacity: 0;
   animation: var(--aniHelpContent);
   color: white;
+  z-index: 50;
 }
 
 .central {
   width: 100%;
   position: fixed;
   top: 45%;
-  z-index: 101;
+  z-index: 51;
   text-align: center;
+}
+
+.header {
+  width: 100%;
+  height: 5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 51;
+}
+
+.headerRTL {
+  @extend .header;
+  direction: rtl;
+}
+
+.icon {
+  height: 65%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconRTL {
+  @extend .icon;
+  transform: rotate(180deg);
+}
+
+.title {
+  color: var(--colorWhite);
+  text-align: center;
+  font: var(--textPageTitle);
+}
+
+.titleRTL {
+  @extend .title;
+  font: var(--textPageTitleR);
+}
+
+.headerDesc {
+  position: fixed;
+  top: 4.5rem;
+  left: 1rem;
+  width: 10rem;
+  font: var(--textParaStandardR);
+  font-style: italic;
+}
+
+.headerDescRTL {
+  @extend .headerDesc;
+  left: 70%;
+  direction: rtl;
+}
+
+.pinned {
+  position: fixed;
+  top: 15rem;
+  width: 100%;
+  text-align: center;
+  font: var(--textParaStandardR);
+  font-style: italic;
+
+}
+
+.card {
+  position: fixed;
+  top: 24rem;
+  border-radius: var(--borderRadius);
+  border: var(--border);
+  width: 95%;
+  height: 17rem;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8rem;
+
+  div {
+    font: var(--textParaStandardR);
+    font-style: italic;
+    margin: .5rem auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .photo {
+    position: relative;
+    bottom: 3rem;
+  }
+
+  .category {
+    position: relative;
+    top: 1rem;
+  }
+
+  .title {
+    position: relative;
+  }
+
+  .lineThree {
+    position: relative;
+    bottom: 1rem;
+  }
+}
+
+.voteButtonText {
+  position: absolute;
+  bottom: 11rem;
+  width: 100%;
+  text-align: center;
+  font: var(--textParaStandardR);
+  font-style: italic;
+}
+
+.navLeft {
+  position: absolute;
+  bottom: 2rem;
+  font: var(--textParaStandardR);
+  font-style: italic;
+  width: 40vw;
+  text-align: center;
+  left: 0;
+}
+
+.navRight {
+  position: absolute;
+  bottom: 2rem;
+  font: var(--textParaStandardR);
+  font-style: italic;
+  width: 40vw;
+  text-align: center;
+  right: 0;
 }

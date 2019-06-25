@@ -94,12 +94,20 @@
         "post.link.edit": "Edit the link below",
         "confirm": "Confirm",
         "cancel": "Cancel",
-
         "post.update.confirm": {
           "message": "Do you want to save?",
           "buttonYes": "Yes",
           "buttonNo": "No"
-        }
+        },
+        "help.mycity": "my city",
+        "help.button.help": "press on Help button to close",
+        "help.post.pinned": "a pinned municipality post",
+        "help.post.photo": "petition photo with tag 'REPLIED' if municipality has replied",
+        "help.post.category": "petition category",
+        "help.post.title": "petition title",
+        "help.post.age": "petition age and quantity of supporters",
+        "help.new": "create a new petition",
+        "help.navigation": "navigation"
       }
     },
     "עב": {
@@ -201,7 +209,16 @@
           "message": "Do you want to save?",
           "buttonYes": "Yes",
           "buttonNo": "No"
-        }
+        },
+        "help.mycity": "my city",
+        "help.button.help": "press on Help button to close",
+        "help.post.pinned": "a pinned municipality post",
+        "help.post.photo": "petition photo with tag 'REPLIED' if municipality has replied",
+        "help.post.category": "petition category",
+        "help.post.title": "petition title",
+        "help.post.age": "petition age and quantity of supporters",
+        "help.new": "ליצור עתירה חדשה",
+        "help.navigation": "navigation"
       }
     },
     "ع": {
@@ -302,7 +319,16 @@
           "message": "Do you want to save?",
           "buttonYes": "Yes",
           "buttonNo": "No"
-        }
+        },
+        "help.mycity": "my city",
+        "help.button.help": "press on Help button to close",
+        "help.post.pinned": "a pinned municipality post",
+        "help.post.photo": "petition photo with tag 'REPLIED' if municipality has replied",
+        "help.post.category": "petition category",
+        "help.post.title": "petition title",
+        "help.post.age": "petition age and quantity of supporters",
+        "help.new": "create a new petition",
+        "help.navigation": "navigation"
       }
     }
   }

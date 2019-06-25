@@ -10,6 +10,7 @@ export * from "./iconCreateNew";
 export * from "./IconLink";
 export * from "./DownArrow";
 export * from './close'
+export * from './help'
 
 export const IconEdit = (props: { color: string }) => {
   return (

@@ -188,26 +188,26 @@ const App = (props: {
     nav?: boolean;
     new?: boolean;
   }) => {
-    const Help = React.lazy(() => import("./features/Help"));
-    const help = props.help ? (
-      <LazyComponent>
-        <Help />
-      </LazyComponent>
-    ) : null;
+    // const Help = React.lazy(() => import("./features/Help"));
+    // const help = props.help ? (
+    //   <LazyComponent>
+    //     <Help />
+    //   </LazyComponent>
+    // ) : null;
     const nav = CFProps.nav ? <Navigation /> : null;
     const newButton = CFProps.new ? (
       <NewButton action={handleNewButtonClick} />
     ) : null;
     let content = CFProps.lazy ? (
       <AppComponent>
-        {help}
+        {/* {help} */}
         {nav}
         {newButton}
         <LazyComponent>{CFProps.children}</LazyComponent>
       </AppComponent>
     ) : (
       <AppComponent>
-        {help}
+        {/* {help} */}
         {nav}
         {newButton}
         {CFProps.children}

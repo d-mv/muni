@@ -4,11 +4,8 @@ import * as dotenv from "dotenv";
 import * as User from "./user_model";
 
 import * as MDB from "../modules/db_connect";
-import findPostById from "./find_post_by_id";
-import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
-import { indexedObj } from "client/src/store/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -183,7 +180,7 @@ export const update = (
 ) => {
   // extract id from post object
   const id = request._id;
-  const post: indexedObj = request;
+  const post: TYPE.indexedObj = request;
   delete post._id;
 
   const setRequest: any = {};
