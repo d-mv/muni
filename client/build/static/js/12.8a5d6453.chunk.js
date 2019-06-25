@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[12],{143:function(a,e,n){"use strict";n.r(e);var t=n(0),o=n.n(t),c=n(7),l=n(77),i=n(31),r=n(113),u=n(76);e.default=Object(c.b)(function(a){return{posts:a.locationData.municipality,language:a.language,location:a.locationData}},{})(function(a){var e=a.posts,n={name:a.location.name[a.language.short]};return o.a.createElement(i.a,null,o.a.createElement(u.a,{header:!0},o.a.createElement(l.a,n),";",o.a.createElement(r.a,{muni:!0,posts:e}),";"))})}}]);
+//# sourceMappingURL=12.8a5d6453.chunk.js.map
