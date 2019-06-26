@@ -1313,3 +1313,54 @@ export const getLocationInfoQ = (
     }
   });
 };
+
+export const muniLogin = (
+  user: TYPE.IncLoginTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  IsUserMuni(user, (muniUserResponse: TYPE.apiResponse) => {
+    console.log("muniUserResponse");
+    console.log(muniUserResponse);
+    if (muniUserResponse.status) {
+      compareStringToHash(
+        user.pass,
+        muniUserResponse.payload.pass,
+        (response: boolean | TYPE.apiResponse) => {
+          console.log(response);
+          if (typeof response === "boolean") {
+            // if it's true/false
+            if (response) {
+              // if matching
+              const lang = muniUserResponse.payload.language;
+              const type = muniUserResponse.payload.type;
+              const user = muniUserResponse.payload._id;
+              const location = muniUserResponse.payload.location;
+              getLocationInfoQ(location, (dataResponse: TYPE.apiResponse) => {
+                const replyPayload = {
+                  ...dataResponse.payload,
+                  lang,
+                  type,
+                  _id: user
+                };
+                callback({ ...dataResponse, payload: replyPayload });
+              });
+            } else {
+              // if not matching
+              callback(
+                Message.generalError({
+                  subj: "Wrong password",
+                  code: 401
+                })
+              );
+            }
+          } else {
+            // if it's error
+            callback(response);
+          }
+        }
+      );
+    } else {
+      callback(Message.notFound("user"));
+    }
+  });
+};

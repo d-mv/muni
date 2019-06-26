@@ -283,7 +283,7 @@ const Post = (props: {
         <div className={style.replyMessage}>{reply.text}</div>
         {reply.text.length > 50 ? (
           <ShowMore
-            color='white'
+            color={replyCardColor === "white" ? "primary" : "white"}
             title={showMoreLessText}
             direction={direction}
             opened={replyOpened}
@@ -292,7 +292,9 @@ const Post = (props: {
         ) : null}
       </div>
     ) : null;
+    if (muniUser) setOfThumbs = null;
   }
+
   // modals
   const deleteConfirmationComponent = deleteConfirmation ? (
     <Confirm

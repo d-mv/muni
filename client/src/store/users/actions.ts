@@ -125,20 +125,12 @@ export const login = (
     axios({
       method: "get",
       url
-      // withCredentials: true
     })
       .then(response => {
         // if successful change page
         const module = "home";
-        // const token = response.data.token;
-
-        // dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET_AUTH", status: true });
         dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
-        // dispatch({
-        //   type: "SET_MESSAGE",
-        //   message: response.data.payload.message
-        // });
         if (response.data.payload.type) {
           dispatch({
             type: "USER_TYPE",
@@ -160,9 +152,6 @@ export const login = (
         });
       })
       .catch(error => {
-        console.log(error);
-        console.log(error.response);
-        console.log(error.response.data);
         const payload = error.response ? error.response.data : error.toString();
         if (payload.code === 404) {
           dispatch({
@@ -429,4 +418,72 @@ export const typingData = (data: { [index: string]: string }) => {
 
 export const cachePost = (post: TYPE.post): Action => {
   return { type: "CACHE_POST", post };
+};
+
+export const muniLogin = (
+  props: TYPE.login
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/muni/login?pass=${props.pass}&email=${props.email}`;
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
+    // clear state
+    dispatch({
+      type: "LOGIN",
+      payload: apiState
+    });
+    dispatch({
+      type: "SET_MESSAGE",
+      message: ""
+    });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
+    // proceed with request
+    axios({
+      method: "get",
+      url
+    })
+      .then(response => {
+        // if successful change page
+        if (response.data.status) {
+          dispatch({ type: "SET_AUTH", status: true });
+          dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+          if (response.data.payload.type) {
+            dispatch({
+              type: "USER_TYPE",
+              user: response.data.payload.type
+            });
+          }
+          dispatch({
+            type: "SET_LANGUAGE",
+            data: importedData.language[response.data.payload.lang]
+          });
+          dispatch({ type: "SET", token: response.data.token });
+        } else { dispatch({
+                   type: "SET_MESSAGE",
+                   message: response.data.message
+                 });}
+        dispatch({
+          type: "LOGIN",
+          payload: { ...response.data, code: response.status }
+        });
+        dispatch({
+          type: "SET_LOADING",
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "SET_MESSAGE",
+          message: payload.message || payload || ""
+        });
+        dispatch({
+          type: "LOGIN",
+          payload
+        });
+      });
+  };
 };

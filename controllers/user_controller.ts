@@ -86,6 +86,19 @@ export const login = (
   });
   // }
 };
+export const muniLogin = (
+  props: { query: { [index: string]: string } },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  // check fields
+  const user: any = props.query;
+  console.log("calling muni login");
+  // request User model
+  User.muniLogin(user, (modelResponse: TYPE.apiResponse) => {
+    callback(modelResponse);
+  });
+  // }
+};
 
 export const update = (
   id: string, query: indexedObj,

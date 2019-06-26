@@ -181,7 +181,7 @@
   @media (max-width: 650px) {}
 
   @media (min-width: 651px) {
-    font-size: 100%;
+    font-size: 50%;
   }
 
   * {
@@ -220,6 +220,8 @@
   top: 0;
   box-shadow: var(--pageShadow);
   border-radius: 0 0 2.5rem 2.5rem;
+  border-bottom: 0.3rem solid var(--colorWhite) !important;
+
 }
 
 // .welcome {
@@ -239,9 +241,4 @@
   border-radius: 2.5rem 2.5rem 0 0;
   box-shadow: var(--pageShadowOpposite);
   border-top: 0.3rem solid var(--colorWhite) !important;
-}
-
-.pageWithContent {
-  @extend .page;
-  border-bottom: 0.3rem solid var(--colorWhite) !important;
 }

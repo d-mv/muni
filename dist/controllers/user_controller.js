@@ -78,6 +78,16 @@ exports.login = function (props, callback) {
     });
     // }
 };
+exports.muniLogin = function (props, callback) {
+    // check fields
+    var user = props.query;
+    console.log("calling muni login");
+    // request User model
+    User.muniLogin(user, function (modelResponse) {
+        callback(modelResponse);
+    });
+    // }
+};
 exports.update = function (id, query, callback) {
     User.update({ id: id, query: query }, function (modelResponse) {
         callback(modelResponse);

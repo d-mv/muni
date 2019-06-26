@@ -104,6 +104,28 @@
   }
 }
 
+.cardWhiteClosed {
+  @extend .replyCard;
+  color: var(--colorDark);
+  border: var(--borderTransparetn);
+  background-color: var(--colorWhite);
+
+  .replyMessage {
+    height: 5rem;
+    overflow: hidden;
+  }
+}
+
+.cardWhiteOpen {
+  @extend .cardWhiteClosed;
+  height: fit-content;
+
+  .replyMessage {
+    height: auto;
+    overflow: none;
+  }
+}
+
 .cardAttentionClosed {
   @extend .cardSecondaryClosed;
   background-color: var(--colorAttention);

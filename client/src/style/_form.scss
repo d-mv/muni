@@ -177,3 +177,16 @@
     margin-right: .8rem;
   }
 }
+
+.formDesktop {
+  @extend .formLeft;
+  background-color: white;
+}
+
+.formDesktopRTL {
+  @extend .formRight;
+  padding: 2rem;
+  border-radius: .4rem;
+  box-shadow: var(--boxShadow);
+    background-color: white;
+}

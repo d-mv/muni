@@ -1247,3 +1247,43 @@ exports.getLocationInfoQ = function (location, callback) {
         }
     });
 };
+exports.muniLogin = function (user, callback) {
+    exports.IsUserMuni(user, function (muniUserResponse) {
+        console.log("muniUserResponse");
+        console.log(muniUserResponse);
+        if (muniUserResponse.status) {
+            security_1.compareStringToHash(user.pass, muniUserResponse.payload.pass, function (response) {
+                console.log(response);
+                if (typeof response === "boolean") {
+                    // if it's true/false
+                    if (response) {
+                        // if matching
+                        var lang_3 = muniUserResponse.payload.language;
+                        var type_2 = muniUserResponse.payload.type;
+                        var user_3 = muniUserResponse.payload._id;
+                        var location_4 = muniUserResponse.payload.location;
+                        exports.getLocationInfoQ(location_4, function (dataResponse) {
+                            var replyPayload = __assign({}, dataResponse.payload, { lang: lang_3,
+                                type: type_2, _id: user_3 });
+                            callback(__assign({}, dataResponse, { payload: replyPayload }));
+                        });
+                    }
+                    else {
+                        // if not matching
+                        callback(Message.generalError({
+                            subj: "Wrong password",
+                            code: 401
+                        }));
+                    }
+                }
+                else {
+                    // if it's error
+                    callback(response);
+                }
+            });
+        }
+        else {
+            callback(Message.notFound("user"));
+        }
+    });
+};

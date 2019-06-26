@@ -13,6 +13,7 @@ const compression = require("compression");
 // import router from '../routes';
 import apiRouter from "../routes/api_router";
 import userRouter from "../routes/user_router";
+import muniRouter from "../routes/muni_router";
 import locationRouter from "../routes/location_router";
 import postRouter from "../routes/post_router";
 
@@ -45,6 +46,7 @@ app.use(cookieParser());
 // }
 
 app.use("/api/user", userRouter);
+app.use("/api/muni", muniRouter);
 app.use("/api/location", locationRouter);
 app.use("/api/post", postRouter);
 app.use("/api", apiRouter);

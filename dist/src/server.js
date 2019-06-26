@@ -14,6 +14,7 @@ var compression = require("compression");
 // import router from '../routes';
 var api_router_1 = require("../routes/api_router");
 var user_router_1 = require("../routes/user_router");
+var muni_router_1 = require("../routes/muni_router");
 var location_router_1 = require("../routes/location_router");
 var post_router_1 = require("../routes/post_router");
 var dotEnv = dotenv.config();
@@ -41,6 +42,7 @@ app.use(cookieParser());
 //   });
 // }
 app.use("/api/user", user_router_1["default"]);
+app.use("/api/muni", muni_router_1["default"]);
 app.use("/api/location", location_router_1["default"]);
 app.use("/api/post", post_router_1["default"]);
 app.use("/api", api_router_1["default"]);

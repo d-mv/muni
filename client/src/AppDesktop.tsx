@@ -19,7 +19,7 @@ import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
 
 import Loading from "./pages/Loading";
-import Welcome from "./pages/Welcome";
+import Welcome from "./pages/WelcomeDesktop";
 
 import { data } from "./store/types";
 import "./style/App.scss";
@@ -219,15 +219,15 @@ const App = (props: {
     let content = CFProps.lazy ? (
       <AppComponent>
         {/* {help} */}
-        {nav}
-        {newButton}
+        {/* {nav} */}
+        {/* {newButton} */}
         <LazyComponent>{CFProps.children}</LazyComponent>
       </AppComponent>
     ) : (
       <AppComponent>
         {/* {help} */}
-        {nav}
-        {newButton}
+        {/* {nav} */}
+        {/* {newButton} */}
         {CFProps.children}
       </AppComponent>
     );
@@ -273,7 +273,7 @@ const App = (props: {
       });
       break;
     case "home":
-      const Home = React.lazy(() => import("./pages/Home"));
+      const Home = React.lazy(() => import("./pages/HomeDesktop"));
       show = componentFactory({
         children: <Home />,
         nav: true,
