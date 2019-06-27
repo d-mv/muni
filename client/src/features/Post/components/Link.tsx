@@ -80,7 +80,7 @@ export const Link = (props: {
       }
     </ModalEdit>
   );
-  const iconLink = iconWrapper("link", <IconLink color={color} />);
+
   const iconDelete = iconWrapper(
     "delete",
     <IconDelete color={color} />,
@@ -91,11 +91,23 @@ export const Link = (props: {
     <IconEdit color={color} />,
     toggleShowEdit
   );
+
+  const openLink = () => {
+    let url = props.text;
+    if (props.text.substr(0, 4) !== "http") {
+      url = `https://${props.text}`;
+    }
+    window.open(props.text, "_blank");
+  };
+  const iconLink = iconWrapper("link", <IconLink color={color} />, openLink);
+  
   return (
     <div className={mainStyle}>
       {iconEdit}
       {iconLink}
-      <div className={styles.text}>{props.text}</div>
+      <div className={styles.text} onClick={() => openLink()}>
+        {props.text}
+      </div>
       {iconDelete}
       {showEdit ? modal : null}
     </div>

@@ -18,7 +18,8 @@
     width: 2rem;
     padding: 1rem;
     height: 2rem;
-    color: red;
+    // color: red;
+    cursor: pointer;
   }
 
   .text {
@@ -29,6 +30,8 @@
     grid-row-start: 1;
     grid-column-end: 3;
     grid-row-end: 2;
+    cursor: pointer;
+    text-decoration: underline;
   }
 
   .delete {
@@ -41,7 +44,7 @@
   @extend .show;
 
   .edit {
-    display:block;
+    display: block;
     align-self: center;
     grid-column-start: 1;
     grid-row-start: 1;
@@ -51,7 +54,7 @@
     width: 2rem;
     padding: 1rem;
     height: 2rem;
-    color: red;
+    // color: red;
   }
 
   .text {
@@ -65,7 +68,7 @@
   }
 
   .delete {
-    display:block;
+    display: block;
     align-self: center;
     visibility: visible;
     grid-column-start: 3;
