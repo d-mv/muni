@@ -90,22 +90,18 @@ export const createMuni = (
  * @return {callback} - Callback function to return response
  */
 export const updatePost = (
-  request: { token: string; post: string },
+  request: { token: string; post: any },
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   const { token, post } = request;
-  const postObject = JSON.parse(post);
+  // const postObject = JSON.parse(post);
   checkToken(
     token,
     (checkTokenResponse: TYPE.apiResponse) => {
-      // check if code is not positive
       if (checkTokenResponse.code !== 200) {
-        // negative code
         callback(checkTokenResponse);
       } else {
-        // positive code = 200
-        Post.update(postObject, (modelResponse: TYPE.apiResponse) => {
-          // callback with response
+        Post.update(post, (modelResponse: TYPE.apiResponse) => {
           callback(modelResponse);
         });
       }
@@ -118,7 +114,7 @@ export const updateMuniPost = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   const { token, location, post } = request;
-  const postObject = JSON.parse(post);
+  // const postObject = JSON.parse(post);
   checkToken(
     token,
     (checkTokenResponse: TYPE.apiResponse) => {
@@ -128,8 +124,9 @@ export const updateMuniPost = (
         callback(checkTokenResponse);
       } else {
         // positive code = 200
+          console.log(Object.keys(request.post));
         Post.updateMuni(
-          { post: postObject, location },
+          { post, location },
           (modelResponse: TYPE.apiResponse) => {
             // callback with response
             callback(modelResponse);

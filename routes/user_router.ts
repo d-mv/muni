@@ -262,7 +262,7 @@ router.get("/login", (req: any, res: any, next: any) => {
       },
       (controllerResponse: apiResponse) => {
         console.log("controllerResponse");
-        console.log(controllerResponse);
+        // console.log(controllerResponse);
         if (controllerResponse.status) {
           // process token/cookie
           const cookieIngredients = {
@@ -362,7 +362,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
     // token is present
     // check if token valid
     checkToken(req.headers.token, checkTokenResponse => {
-      console.log(checkTokenResponse);
+      // console.log(checkTokenResponse);
       // reassign code
       const code = checkTokenResponse.code;
       delete checkTokenResponse.code;

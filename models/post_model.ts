@@ -289,13 +289,18 @@ export const createMuni = (
  * @callback callback - Callback function to return response
  */
 export const update = (
-  request: TYPE.indexedObj,
+  request: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
+  console.log("update");
+  // console.log(request.reply.text);
   // extract id from post object
   const id = request._id;
   const post: TYPE.indexedObj = request;
   delete post._id;
+
+console.log(Object.keys(request))
+console.log(post.title)
 
   const setRequest: any = {};
   // prepare the request
@@ -313,7 +318,7 @@ export const update = (
       // set database
       const database: any = MDB.client.db(dbName).collection(dbcMain);
       // update
-      console.log(setRequest);
+      // console.log(setRequest);
       database
         .updateMany(
           { "users.posts._id": new MDB.ObjectId(id) },
@@ -323,6 +328,7 @@ export const update = (
           }
         )
         .then((document: any) => {
+          // console.log(document)
           // process response
           callback(
             Message.updateMessage({
@@ -546,13 +552,15 @@ export const updateMuni = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   console.log("updateMuni");
+   console.log(request);
   console.log(Object.keys(request.post));
   console.log(request.post.text);
+  // console.log(request);
 
-  const location = request.location;
-  const post: TYPE.indexedObj = request.post;
-  const id = post._id;
-  delete post._id;
+  const {location, post} = request;
+  // const post: TYPE.indexedObj = request.post;
+  // const id = post._id;
+  // delete post._id;
 
   let setRequest: any = [];
   Object.keys(post).forEach((key: string) => {
@@ -574,7 +582,7 @@ export const updateMuni = (
           { _id: new MDB.ObjectId(location) },
           { $set: { "municipality.$[reply]": post } },
           {
-            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(post._id) }]
           }
         )
         .then((document: any) => {
@@ -641,3 +649,4 @@ export const deleteMuniPost = (
     }
   });
 };
+

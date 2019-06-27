@@ -82,7 +82,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
     // check if token valid
     checkToken(req.headers.token, (checkTokenResponse: any) => {
       console.log("checkTokenResponse");
-      console.log(checkTokenResponse);
+      // console.log(checkTokenResponse);
       // reassign code
       const code = checkTokenResponse.code;
       delete checkTokenResponse.code;
@@ -91,7 +91,7 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
         // clear cookies  and send code/message
         ng(code, checkTokenResponse);
       } else {
-        console.log(checkTokenResponse);
+        // console.log(checkTokenResponse);
         PostController.posts(
           {
             location: req.params.id,
@@ -145,10 +145,10 @@ router.get("/:id/muniposts", (req: any, res: any, next: any) => {
             level: checkTokenResponse.level || ""
           },
           (controllerResponse: apiResponse) => {
-            console.log('news:')
-            console.log(typeof controllerResponse);
-            console.log(Object.keys(controllerResponse));
-            console.log(controllerResponse.message);
+            // console.log('news:')
+            // console.log(typeof controllerResponse);
+            // console.log(Object.keys(controllerResponse));
+            // console.log(controllerResponse.message);
             res.status(controllerResponse.code).send(controllerResponse);
           }
         );
@@ -245,7 +245,7 @@ router.patch("/:id", (req: any, res: any, next: any) => {
       // check if token valid
       checkToken(req.headers.token, (checkTokenResponse: any) => {
         // reassign code
-        console.log(checkTokenResponse);
+        // console.log(checkTokenResponse);
         const code = checkTokenResponse.code;
         delete checkTokenResponse.code;
         // check if code is not positive
@@ -307,7 +307,7 @@ router.delete("/:id", (req: any, res: any, next: any) => {
       // check if token valid
       checkToken(req.headers.token, (checkTokenResponse: any) => {
         // reassign code
-        console.log(checkTokenResponse);
+        // console.log(checkTokenResponse);
         const code = checkTokenResponse.code;
         delete checkTokenResponse.code;
         // check if code is not positive

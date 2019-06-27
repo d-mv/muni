@@ -50,7 +50,9 @@ export const checkToken = (
       headers: { token }
     })
       .then(response => {
+
         const payload = response.data;
+        console.log(payload);
         if (payload.status) {
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });

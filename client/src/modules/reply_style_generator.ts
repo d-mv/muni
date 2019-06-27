@@ -11,8 +11,8 @@ export const replyCardStyleUtil = (
   },
   opened: boolean
 ) => {
-  const up = reply.up.length;
-  const down = reply.down.length;
+  const up = reply.up ? reply.up.length : 0;
+  const down = reply.down ? reply.down.length : 0;
 
   let replyCardColor = "secondary";
   if (up < down) replyCardColor = "attention";

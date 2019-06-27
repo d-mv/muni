@@ -41,7 +41,7 @@ export const updatePost = (
   props: any
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/post/${props._id}`;
-  // console.log(props);
+  console.log(props);
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // proceed with request
     axios

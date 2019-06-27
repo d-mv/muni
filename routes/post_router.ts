@@ -2,7 +2,7 @@ import { token } from "./../modules/token_gen";
 const express = require("express");
 import * as dotenv from "dotenv";
 
-import compareObjects from "../modules/compare_objects";
+// import compareObjects from "../modules/compare_objects";
 
 import * as PostController from "../controllers/post_controller";
 import { apiResponse } from "../src/types";
@@ -30,13 +30,13 @@ const double = (cacheId: string, req: any, time: number) => {
   const now: any = new Date();
   const diff = now - last;
 
-  let reply =
-    diff < 1000 * time && cache.reply !== "" && compareObjects(req, cache.req);
-  // if return list
-  if (req === "") {
-    reply = diff < 1000 * time && cache.reply !== "";
-  }
-  return reply;
+//   let reply =
+//     diff < 1000 * time && cache.reply !== "" && compareObjects(req, cache.req);
+//   // if return list
+//   if (req === "") {
+//     reply = diff < 1000 * time && cache.reply !== "";
+//   }
+//   return reply;
 };
 
 /**
@@ -47,17 +47,17 @@ router.post("/create", (req: any, res: any, next: any) => {
   console.log(`§ create post...`);
   // showRequest("lcn.check", req.headers, [req.body, req.headers]);
 
-  if (double("create", req.body, 600)) {
-    console.log("~> consider double");
-    res
-      .status(replyCache["create"].reply.code)
-      .send(replyCache["create"].reply);
-  } else {
+  // if (double("create", req.body, 600)) {
+  //   console.log("~> consider double");
+  //   res
+  //     .status(replyCache["create"].reply.code)
+  //     .send(replyCache["create"].reply);
+  // } else {
     PostController.createPost(req.body, (controllerResponse: apiResponse) => {
       caching("create", req.body, controllerResponse);
       res.status(controllerResponse.code).send(controllerResponse);
     });
-  }
+  // }
 });
 
 /**
@@ -72,18 +72,18 @@ router.patch("/:id", (req: any, res: any, next: any) => {
   console.log(`§ update post...`);
   showRequest("lcn.check", req.headers, [req.body, req.headers.token]);
 
-  if (double("update", req.body, 600)) {
-    console.log("~> consider double");
-    res
-      .status(replyCache["update"].reply.code)
-      .send(replyCache["update"].reply);
-  } else {
-    const request = { token: req.headers.token, post: req.body.post };
+  // if (double("update", req.body, 600)) {
+  //   console.log("~> consider double");
+  //   res
+  //     .status(replyCache["update"].reply.code)
+  //     .send(replyCache["update"].reply);
+  // } else {
+    const request = { token: req.headers.token, post: req.body.post ? req.body.post : req.body };
     PostController.updatePost(request, (controllerResponse: apiResponse) => {
       caching("update", req.body, controllerResponse);
       res.status(controllerResponse.code).send(controllerResponse);
     });
-  }
+  // }
 });
 
 /**

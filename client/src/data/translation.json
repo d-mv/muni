@@ -205,33 +205,32 @@
         "login.label.password.repeat": "חזור על הסיסמה",
         "login.prompt.password.repeat": "הזן את הסיסמה שלך שוב",
         "post.age": {
-          "day(s)": "day(s)",
-          "hour(s)": "hour(s)",
-          "minute(s)": "minute(s)"
-        },
-        "post.delete.button": "Delete post",
+          "day(s)": "ימים",
+          "hour(s)": "שעות",
+          "minute(s)": "דקות"
+        },"post.delete.button": "מחק עצומה",
         "post.delete.confirm": {
-          "message": "Are you sure you want to delete the petition?",
-          "buttonYes": "Yes",
-          "buttonNo": "No"
+          "message": "אתה בטוח שברצונך למחוק את העצומה?",
+          "buttonYes": "אישור",
+          "buttonNo": "ביטול"
         },
-        "post.link.edit": "Edit the link below",
-        "confirm": "Confirm",
-        "cancel": "Cancel",
+        "post.link.edit": "ערוך את הקישור למטה",
+        "confirm": "אישור",
+        "cancel": "ביטול",
         "post.update.confirm": {
-          "message": "Do you want to save?",
-          "buttonYes": "Yes",
-          "buttonNo": "No"
+          "message": "לשמור את העדכון?",
+          "buttonYes": "אישור",
+          "buttonNo": "ביטול"
         },
-        "help.mycity": "my city",
-        "help.button.help": "press on Help button to close",
-        "help.post.pinned": "a pinned municipality post",
-        "help.post.photo": "petition photo with tag 'REPLIED' if municipality has replied",
-        "help.post.category": "petition category",
-        "help.post.title": "petition title",
-        "help.post.age": "petition age and quantity of supporters",
-        "help.new": "create a new petition",
-        "help.navigation": "navigation",
+        "help.mycity": "העיר שלי",
+        "help.button.help": "לחץ על ״?״ לסגירת ההדרכה",
+        "help.post.pinned": "הודעת עירייה מסומנת",
+        "help.post.photo": "עצומה עם תג ״יש מענה״ אם העירייה הגיבה לעצומה",
+        "help.post.category": "קטגוריית העצומה",
+        "help.post.title": "כותרת העצומה",
+        "help.post.age": "זמן פרסום העצומה ומספר תומכים",
+        "help.new": "ליצור עתירה חדשה",
+        "help.navigation": "ניווט",
         "muni-reply.edit": "Edit",
         "muni-reply.delete": "Delete",
         "muni-reply.delete.text": {
@@ -329,33 +328,32 @@
         "login.label.password.repeat": "اعد كلمة المرور",
         "login.prompt.password.repeat": "اعد كلمة المرور",
         "post.age": {
-          "day(s)": "day(s)",
-          "hour(s)": "hour(s)",
-          "minute(s)": "minute(s)"
-        },
-        "post.delete.button": "Delete post",
+          "day(s)": "أيام",
+          "hour(s)": "ساعات",
+          "minute(s)": "دقائق"
+        },"post.delete.button": "حذف المنشور",
         "post.delete.confirm": {
-          "message": "Are you sure you want to delete the petition?",
-          "buttonYes": "Yes",
-          "buttonNo": "No"
+          "message": "الرجاء التأكيد حذف المنشور",
+          "buttonYes": "تأكيد",
+          "buttonNo": "الغاء"
         },
-        "post.link.edit": "Edit the link below",
-        "confirm": "Confirm",
-        "cancel": "Cancel",
+        "post.link.edit": "تغيير الرابط ادناه",
+        "confirm": "تأكيد",
+        "cancel": "الغاء",
         "post.update.confirm": {
-          "message": "Do you want to save?",
-          "buttonYes": "Yes",
-          "buttonNo": "No"
+          "message": "الرجاء تأكيد حفظ التغييرات",
+          "buttonYes": "تأكيد",
+          "buttonNo": "الغاء"
         },
-        "help.mycity": "my city",
-        "help.button.help": "press on Help button to close",
-        "help.post.pinned": "a pinned municipality post",
-        "help.post.photo": "petition photo with tag 'REPLIED' if municipality has replied",
-        "help.post.category": "petition category",
-        "help.post.title": "petition title",
-        "help.post.age": "petition age and quantity of supporters",
-        "help.new": "create a new petition",
-        "help.navigation": "navigation",
+        "help.mycity": "بلدتي",
+        "help.button.help": "اضغط على علامة السؤال للخروج من الارشادات",
+        "help.post.pinned": "منشور مثبت من البلدية",
+        "help.post.photo": " منشور مع وسم 'تم الرد' اذا تم الرد من قبل البلدية ",
+        "help.post.category": "فئة العريضة",
+        "help.post.title": "عنوان العريضة",
+        "help.post.age": "وقت نشر العريضة وعدد الداعمين",
+        "help.new": "انشاء عريضة جديدة",
+        "help.navigation": "للتنقل بين الاقسام",
         "muni-reply.edit": "Edit",
         "muni-reply.delete": "Delete",
         "muni-reply.delete.text": {

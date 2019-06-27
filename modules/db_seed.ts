@@ -112,6 +112,7 @@ const buildPost = (
   category?: ObjectId
 ) => {
   let post = {};
+  const replyOr = replyOrNotReply();
   if (user) {
     post = {
       _id: new MDB.ObjectId(),
@@ -132,20 +133,24 @@ const buildPost = (
         })
       ),
       reply: {
-        text: replyOrNotReply() || "",
+        text: replyOr ? replyOr : "",
         date: new Date(),
-        up: idsArray(
-          faker.random.number({
-            min: 0,
-            max: 4
-          })
-        ),
-        down: idsArray(
-          faker.random.number({
-            min: 0,
-            max: 4
-          })
-        )
+        up: replyOr
+          ? idsArray(
+              faker.random.number({
+                min: 0,
+                max: 4
+              })
+            )
+          : [],
+        down: replyOr
+          ? idsArray(
+              faker.random.number({
+                min: 0,
+                max: 4
+              })
+            )
+          : []
       }
     };
   } else {

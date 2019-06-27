@@ -23,6 +23,7 @@ const PostMuni = (props: {
   setModule: (arg0: string) => void;
   getMuniPosts: (arg0: string) => void;
   prevModule: string;
+  type: any;
 }) => {
   const { direction, text } = props.language;
   const [post, setPost] = useState(props.post);
@@ -42,7 +43,7 @@ const PostMuni = (props: {
     reply
   } = post;
   // !
-  const muniUser = true;
+  const muniUser = props.type === "muni";
 
   const toggleMuniEdit = () => {
     setMuniEdit(!muniEdit);
@@ -70,7 +71,7 @@ const PostMuni = (props: {
     } else {
       const url = `/muni/${props.location.location}`;
       axios
-        .patch(url, { post: JSON.stringify(post) })
+        .patch(url, { ...post })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEdit();
           props.getMuniPosts(props.location.location);
@@ -216,7 +217,8 @@ const mapStateToProps = (state: AppState) => {
     post: state.news.filter(
       // @ts-ignore
       (post: any) => post._id === state.post._id
-    )[0]
+    )[0],
+    type: state.type
   };
 };
 

@@ -90,7 +90,7 @@ const App = (props: {
       Object.keys(props.location).length === 0
     ) {
       console.log("- token is in state, but no data");
-
+      cookies.set("token", props.token);
       props.fetchData(token);
     } else if (
       props.token !== "" &&
@@ -98,6 +98,7 @@ const App = (props: {
       Object.keys(props.location).length > 0
     ) {
       console.log("- token is in state, data is present");
+      // cookies.set("token", props.token);
       fetchPostsNews();
       // props.getPosts(props.location.location);
       // props.getMuniPosts(props.location.location);

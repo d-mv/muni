@@ -51,6 +51,7 @@ const Login = (props: {
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setErrorMessage('')
     const login: TYPE.login = {
       email,
       pass
@@ -79,6 +80,7 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setModule("register");
+    setErrorMessage('')
     props.setMessage("");
   };
 

@@ -100,9 +100,19 @@ const Post = (props: {
   const includes = votes.includes(props.location._id);
   const author = createdBy === props.location._id;
   const muniUser = props.location.type === "muni";
-  const allowToReply = [...post.reply.up, ...post.reply.down].includes(
-    props.location._id
-  );
+
+  let allowToReply = false;
+  if (!post.reply.up && !post.reply.down) {
+    allowToReply = true;
+  } else if (post.reply.up.length > 0 && post.reply.down.length > 0) {
+    allowToReply = [...post.reply.up, ...post.reply.down].includes(
+      props.location._id
+    );
+  } else if (post.reply.up.length > 0) {
+    allowToReply = post.reply.up.includes(props.location._id);
+  } else if (post.reply.down.length > 0) {
+    allowToReply = post.reply.down.includes(props.location._id);
+  }
 
   // toggles
   const toggleShowNewReplyButton = () => {
@@ -142,26 +152,27 @@ const Post = (props: {
   };
   // TODO:
   const handleDeleteMuniReply = (mode: string) => {
-    console.log(mode);
+ console.log("handleDeleteMuniReply");
     if (mode === "primary") {
-     const newPost = {
-       ...post,
-       reply: { text: '', date: new Date(), up: [], down: [] }
-     };
-     const url = `/post/${_id}`;
-     axios
-       .patch(url, { post: JSON.stringify(newPost) })
-       .then((response: AxiosResponse<any>) => {
-         toggleMuniEditModal();
-         props.getPosts(props.location.location);
-       })
-       .catch((reason: any) => {
-         console.log(reason);
-       });
+      const newPost = {
+        ...post,
+        reply: { text: "", date: new Date(), up: [], down: [] }
+      };
+      const url = `/post/${_id}`;
+      axios
+        .patch(url, { ...newPost })
+        .then((response: AxiosResponse<any>) => {
+          toggleDeleteConfirmation()
+          // toggleMuniEditModal();
+          props.getPosts(props.location.location);
+        })
+        .catch((reason: any) => {
+          console.log(reason);
+        });
     }
   };
   const handleEditMuniReply = (mode: string) => {
-    console.log(mode);
+    console.log("handleEditMuniReply");
     if (mode === "primary") {
       const newPost = {
         ...post,
@@ -169,7 +180,7 @@ const Post = (props: {
       };
       const url = `/post/${_id}`;
       axios
-        .patch(url, { post: JSON.stringify(newPost) })
+        .patch(url, { ...newPost })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEditModal();
           props.getPosts(props.location.location);
@@ -196,11 +207,12 @@ const Post = (props: {
   const handleNewReplySubmit = () => {
     if (newReply) {
       props.updatePost({
-        _id: _id,
-        fields: { reply: { text: newReply, date: new Date() } }
+        ...post,
+        reply: { text: newReply, date: new Date() }
       });
+      setShowNewReply(false);
+      props.getPosts(props.location.location);
     }
-    setShowNewReply(false);
   };
   const handleUpdate = (answer: string) => {
     console.log(answer);
@@ -211,7 +223,7 @@ const Post = (props: {
     } else {
       const url = `/post/${_id}`;
       axios
-        .patch(url, { post: JSON.stringify(post) })
+        .patch(url, { ...post })
         .then((response: AxiosResponse<any>) => {
           toggleEdit();
           props.getPosts(props.location.location);
@@ -305,13 +317,12 @@ const Post = (props: {
   if (votes.includes(props.location._id))
     voteButton = <Voted text={text["post.voted"]} direction={direction} />;
 
-  let newReplyButton: any = "";
   let newReplyComponent: any = "";
   let ReplyMessage: any = "";
   let setOfThumbs: any = "";
 
-  newReplyButton =
-    muniUser && !reply ? (
+  const newReplyButton =
+    muniUser && !reply.text ? (
       <NewReplyButton action={toggleShowNewReplyButton} />
     ) : null;
 
