@@ -76,17 +76,13 @@ exports.createMuni = function (query, callback) {
  */
 exports.updatePost = function (request, callback) {
     var token = request.token, post = request.post;
-    var postObject = JSON.parse(post);
+    // const postObject = JSON.parse(post);
     security_1.checkToken(token, function (checkTokenResponse) {
-        // check if code is not positive
         if (checkTokenResponse.code !== 200) {
-            // negative code
             callback(checkTokenResponse);
         }
         else {
-            // positive code = 200
-            Post.update(postObject, function (modelResponse) {
-                // callback with response
+            Post.update(post, function (modelResponse) {
                 callback(modelResponse);
             });
         }
@@ -94,7 +90,7 @@ exports.updatePost = function (request, callback) {
 };
 exports.updateMuniPost = function (request, callback) {
     var token = request.token, location = request.location, post = request.post;
-    var postObject = JSON.parse(post);
+    // const postObject = JSON.parse(post);
     security_1.checkToken(token, function (checkTokenResponse) {
         // check if code is not positive
         if (checkTokenResponse.code !== 200) {
@@ -103,7 +99,8 @@ exports.updateMuniPost = function (request, callback) {
         }
         else {
             // positive code = 200
-            Post.updateMuni({ post: postObject, location: location }, function (modelResponse) {
+            console.log(Object.keys(request.post));
+            Post.updateMuni({ post: post, location: location }, function (modelResponse) {
                 // callback with response
                 callback(modelResponse);
             });

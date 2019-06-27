@@ -255,7 +255,7 @@ router.get("/login", function (req, res, next) {
             query: req.query
         }, function (controllerResponse) {
             console.log("controllerResponse");
-            console.log(controllerResponse);
+            // console.log(controllerResponse);
             if (controllerResponse.status) {
                 // process token/cookie
                 var cookieIngredients = {
@@ -352,7 +352,7 @@ router.get("/:id/posts", function (req, res, next) {
         // token is present
         // check if token valid
         security_1.checkToken(req.headers.token, function (checkTokenResponse) {
-            console.log(checkTokenResponse);
+            // console.log(checkTokenResponse);
             // reassign code
             var code = checkTokenResponse.code;
             delete checkTokenResponse.code;

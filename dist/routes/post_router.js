@@ -13,7 +13,7 @@ var __assign = (this && this.__assign) || function () {
 exports.__esModule = true;
 var express = require("express");
 var dotenv = require("dotenv");
-var compare_objects_1 = require("../modules/compare_objects");
+// import compareObjects from "../modules/compare_objects";
 var PostController = require("../controllers/post_controller");
 var show_request_1 = require("../modules/show_request");
 var router = express.Router();
@@ -35,12 +35,13 @@ var double = function (cacheId, req, time) {
     var last = cache.time;
     var now = new Date();
     var diff = now - last;
-    var reply = diff < 1000 * time && cache.reply !== "" && compare_objects_1["default"](req, cache.req);
-    // if return list
-    if (req === "") {
-        reply = diff < 1000 * time && cache.reply !== "";
-    }
-    return reply;
+    //   let reply =
+    //     diff < 1000 * time && cache.reply !== "" && compareObjects(req, cache.req);
+    //   // if return list
+    //   if (req === "") {
+    //     reply = diff < 1000 * time && cache.reply !== "";
+    //   }
+    //   return reply;
 };
 /**
  * Route to create post, using POST method with object in body
@@ -49,18 +50,17 @@ router.post("/create", function (req, res, next) {
     // information
     console.log("\u00A7 create post...");
     // showRequest("lcn.check", req.headers, [req.body, req.headers]);
-    if (double("create", req.body, 600)) {
-        console.log("~> consider double");
-        res
-            .status(replyCache["create"].reply.code)
-            .send(replyCache["create"].reply);
-    }
-    else {
-        PostController.createPost(req.body, function (controllerResponse) {
-            caching("create", req.body, controllerResponse);
-            res.status(controllerResponse.code).send(controllerResponse);
-        });
-    }
+    // if (double("create", req.body, 600)) {
+    //   console.log("~> consider double");
+    //   res
+    //     .status(replyCache["create"].reply.code)
+    //     .send(replyCache["create"].reply);
+    // } else {
+    PostController.createPost(req.body, function (controllerResponse) {
+        caching("create", req.body, controllerResponse);
+        res.status(controllerResponse.code).send(controllerResponse);
+    });
+    // }
 });
 /**
  * Route to update post, using PATCH method with object in body
@@ -73,19 +73,18 @@ router.patch("/:id", function (req, res, next) {
     // information
     console.log("\u00A7 update post...");
     show_request_1.showRequest("lcn.check", req.headers, [req.body, req.headers.token]);
-    if (double("update", req.body, 600)) {
-        console.log("~> consider double");
-        res
-            .status(replyCache["update"].reply.code)
-            .send(replyCache["update"].reply);
-    }
-    else {
-        var request = { token: req.headers.token, post: req.body.post };
-        PostController.updatePost(request, function (controllerResponse) {
-            caching("update", req.body, controllerResponse);
-            res.status(controllerResponse.code).send(controllerResponse);
-        });
-    }
+    // if (double("update", req.body, 600)) {
+    //   console.log("~> consider double");
+    //   res
+    //     .status(replyCache["update"].reply.code)
+    //     .send(replyCache["update"].reply);
+    // } else {
+    var request = { token: req.headers.token, post: req.body.post ? req.body.post : req.body };
+    PostController.updatePost(request, function (controllerResponse) {
+        caching("update", req.body, controllerResponse);
+        res.status(controllerResponse.code).send(controllerResponse);
+    });
+    // }
 });
 /**
  * Route to update post, using PATCH method with object in body

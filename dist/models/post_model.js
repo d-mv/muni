@@ -241,10 +241,14 @@ exports.createMuni = function (request, callback) {
  * @callback callback - Callback function to return response
  */
 exports.update = function (request, callback) {
+    console.log("update");
+    // console.log(request.reply.text);
     // extract id from post object
     var id = request._id;
     var post = request;
     delete post._id;
+    console.log(Object.keys(request));
+    console.log(post.title);
     var setRequest = {};
     // prepare the request
     Object.keys(post).forEach(function (key) {
@@ -260,12 +264,13 @@ exports.update = function (request, callback) {
             // set database
             var database = MDB.client.db(dbName).collection(dbcMain);
             // update
-            console.log(setRequest);
+            // console.log(setRequest);
             database
                 .updateMany({ "users.posts._id": new MDB.ObjectId(id) }, { $set: __assign({}, setRequest) }, {
                 arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
             })
                 .then(function (document) {
+                // console.log(document)
                 // process response
                 callback(Message.updateMessage({
                     subj: "Post",
@@ -432,12 +437,14 @@ exports.replyVote = function (request, callback) {
 };
 exports.updateMuni = function (request, callback) {
     console.log("updateMuni");
+    console.log(request);
     console.log(Object.keys(request.post));
     console.log(request.post.text);
-    var location = request.location;
-    var post = request.post;
-    var id = post._id;
-    delete post._id;
+    // console.log(request);
+    var location = request.location, post = request.post;
+    // const post: TYPE.indexedObj = request.post;
+    // const id = post._id;
+    // delete post._id;
     var setRequest = [];
     Object.keys(post).forEach(function (key) {
         setRequest["municipality.$[reply]." + key] = post[key];
@@ -453,7 +460,7 @@ exports.updateMuni = function (request, callback) {
             var database = MDB.client.db(dbName).collection(dbcMain);
             database
                 .updateMany({ _id: new MDB.ObjectId(location) }, { $set: { "municipality.$[reply]": post } }, {
-                arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(post._id) }]
             })
                 .then(function (document) {
                 // process response

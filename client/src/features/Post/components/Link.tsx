@@ -97,10 +97,10 @@ export const Link = (props: {
     if (props.text.substr(0, 4) !== "http") {
       url = `https://${props.text}`;
     }
-    window.open(props.text, "_blank");
+    window.open(url, "_blank");
   };
   const iconLink = iconWrapper("link", <IconLink color={color} />, openLink);
-  
+
   return (
     <div className={mainStyle}>
       {iconEdit}

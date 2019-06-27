@@ -75,7 +75,7 @@ router.get("/:id/posts", function (req, res, next) {
         // check if token valid
         security_1.checkToken(req.headers.token, function (checkTokenResponse) {
             console.log("checkTokenResponse");
-            console.log(checkTokenResponse);
+            // console.log(checkTokenResponse);
             // reassign code
             var code = checkTokenResponse.code;
             delete checkTokenResponse.code;
@@ -85,7 +85,7 @@ router.get("/:id/posts", function (req, res, next) {
                 ng(code, checkTokenResponse);
             }
             else {
-                console.log(checkTokenResponse);
+                // console.log(checkTokenResponse);
                 PostController.posts({
                     location: req.params.id,
                     user: checkTokenResponse.payload.id,
@@ -135,10 +135,10 @@ router.get("/:id/muniposts", function (req, res, next) {
                     user: checkTokenResponse.payload.id,
                     level: checkTokenResponse.level || ""
                 }, function (controllerResponse) {
-                    console.log('news:');
-                    console.log(typeof controllerResponse);
-                    console.log(Object.keys(controllerResponse));
-                    console.log(controllerResponse.message);
+                    // console.log('news:')
+                    // console.log(typeof controllerResponse);
+                    // console.log(Object.keys(controllerResponse));
+                    // console.log(controllerResponse.message);
                     res.status(controllerResponse.code).send(controllerResponse);
                 });
             }
@@ -230,7 +230,7 @@ router.patch("/:id", function (req, res, next) {
             // check if token valid
             security_1.checkToken(req.headers.token, function (checkTokenResponse) {
                 // reassign code
-                console.log(checkTokenResponse);
+                // console.log(checkTokenResponse);
                 var code = checkTokenResponse.code;
                 delete checkTokenResponse.code;
                 // check if code is not positive
@@ -290,7 +290,7 @@ router["delete"]("/:id", function (req, res, next) {
             // check if token valid
             security_1.checkToken(req.headers.token, function (checkTokenResponse) {
                 // reassign code
-                console.log(checkTokenResponse);
+                // console.log(checkTokenResponse);
                 var code = checkTokenResponse.code;
                 delete checkTokenResponse.code;
                 // check if code is not positive

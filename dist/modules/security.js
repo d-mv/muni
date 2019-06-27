@@ -88,34 +88,33 @@ exports.checkToken = function (token, callback, nodata) {
                     message: "Token is valid",
                     code: 200
                 };
-                User.isUserSuper(decoded.id, function (modelResponse) {
-                    response_1.level = modelResponse ? "su" : "";
-                    if (!modelResponse) {
-                        // user is not super
-                        User.getUserById(decoded.id, function (getUserByIdResponse) {
-                            if (getUserByIdResponse.status) {
-                                if (nodata) {
-                                    callback(Message.foundMessage("token OK", {
-                                        payload: {
-                                            id: decoded.id,
-                                            lang: getUserByIdResponse.language,
-                                            type: getUserByIdResponse.type
-                                        }
-                                    }));
+                // User.isUserSuper(decoded.id, (modelResponse: boolean) => {
+                //   response.level = modelResponse ? "su" : "";
+                //   if (!modelResponse) {
+                // user is not super
+                User.getUserById(decoded.id, function (getUserByIdResponse) {
+                    if (getUserByIdResponse.status) {
+                        if (nodata) {
+                            callback(Message.foundMessage("token OK", {
+                                payload: {
+                                    id: decoded.id,
+                                    lang: getUserByIdResponse.language,
+                                    type: getUserByIdResponse.type
                                 }
-                                else {
-                                    User.getLocationInfo(decoded.id, function (modelReply) {
-                                        console.log("getUserByIdResponse");
-                                        console.log(getUserByIdResponse);
-                                        var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language, type: getUserByIdResponse.type });
-                                        callback(__assign({}, modelReply, { payload: replyPayload }));
-                                    });
-                                }
-                            }
-                            else {
-                                callback(getUserByIdResponse);
-                            }
-                        });
+                            }));
+                        }
+                        else {
+                            User.getLocationInfo(decoded.id, function (modelReply) {
+                                console.log("getUserByIdResponse");
+                                console.log(getUserByIdResponse);
+                                var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language, type: getUserByIdResponse.type });
+                                callback(__assign({}, modelReply, { payload: replyPayload }));
+                            });
+                        }
+                        //   } else {
+                        //     callback(getUserByIdResponse);
+                        //   }
+                        // });
                     }
                     else {
                         callback(__assign({}, response_1, { payload: { id: decoded.id } }));

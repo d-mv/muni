@@ -99,6 +99,8 @@ exports.getUserById = function (id, callback) {
                     callback(Message.notFound("user"));
                 }
                 else {
+                    console.log('get user by id - muni result');
+                    console.log(res);
                     console.log(res);
                     if (res.length === 0) {
                         database_1
@@ -125,18 +127,18 @@ exports.getUserById = function (id, callback) {
                                 }
                             }
                         ])
-                            .toArray(function (e, res) {
+                            .toArray(function (e, res2) {
                             if (e) {
                                 callback(Message.notFound("user"));
                             }
                             else {
-                                if (res.length === 0) {
+                                if (res2.length === 0) {
                                     callback(Message.notFound("user"));
                                 }
                                 else {
                                     callback(Message.foundMessage("user", {
-                                        language: res[0].language,
-                                        type: res[0].type
+                                        language: res2[0].language,
+                                        type: res2[0].type
                                     }));
                                 }
                             }

@@ -60,7 +60,7 @@ router.patch("/:id", function (req, res, next) {
     //     .status(replyCache["update"].reply.code)
     //     .send(replyCache["update"].reply);
     // } else {
-    var request = { token: req.headers.token, location: req.params.id, post: req.body.post };
+    var request = { token: req.headers.token, location: req.params.id, post: req.body };
     PostController.updateMuniPost(request, function (controllerResponse) {
         caching("update", req.body, controllerResponse);
         res.status(controllerResponse.code).send(controllerResponse);
