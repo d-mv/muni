@@ -78,6 +78,10 @@ export interface setPostsAction {
   type: "SET_POSTS";
   posts: any;
 }
+export interface setMuniPostsAction {
+  type: "SET_MUNIPOSTS";
+  posts: any;
+}
 
 export interface typingDataAction {
   type: "TYPING_DATA";
@@ -96,7 +100,9 @@ export interface cachePost {
   post: TYPE.post;
 }
 
+
 export type Action =
+  | setMuniPostsAction
   | userTypeAction
   | cachePost
   | typingDataAction

@@ -23,6 +23,7 @@ const Header = (props: {
     action: () => void;
     noRtl?: boolean;
   };
+  type: any;
 }) => {
   const [showHelp, setShowHelp] = React.useState(false);
   const { direction } = props.language;
@@ -48,7 +49,7 @@ const Header = (props: {
 
   const left = props.left
     ? makeIcon(props.left.icon, props.left.noRtl)
-    : makeIcon(iconHelp("primary"), true);
+    : makeIcon(iconHelp(props.type === "muni" ? "secondary" : "primary"), true);
 
   const right = props.right ? (
     makeIcon(props.right.icon, props.right.noRtl)
@@ -72,7 +73,8 @@ const Header = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language
+    language: state.language,
+    type: state.type
   };
 };
 

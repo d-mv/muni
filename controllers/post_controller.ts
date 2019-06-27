@@ -62,6 +62,26 @@ export const createPost = (
     }
   });
 };
+export const createMuni = (
+  query: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  console.log(Object.keys(query));
+  checkToken(
+    query.token,
+    (checkTokenResponse: TYPE.apiResponse) => {
+      console.log(Object.keys(checkTokenResponse.payload));
+      const request = {
+        location: query.location,
+        post: query.post
+      };
+      Post.createMuni(request, (modelResponse: TYPE.apiResponse) => {
+        callback(modelResponse);
+      });
+    },
+    true
+  );
+};
 
 /**
  * Function to update post
@@ -88,6 +108,33 @@ export const updatePost = (
           // callback with response
           callback(modelResponse);
         });
+      }
+    },
+    true
+  );
+};
+export const updateMuniPost = (
+  request: { token: string; location: string; post: string },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const { token, location, post } = request;
+  const postObject = JSON.parse(post);
+  checkToken(
+    token,
+    (checkTokenResponse: TYPE.apiResponse) => {
+      // check if code is not positive
+      if (checkTokenResponse.code !== 200) {
+        // negative code
+        callback(checkTokenResponse);
+      } else {
+        // positive code = 200
+        Post.updateMuni(
+          { post: postObject, location },
+          (modelResponse: TYPE.apiResponse) => {
+            // callback with response
+            callback(modelResponse);
+          }
+        );
       }
     },
     true
@@ -135,6 +182,41 @@ export const deletePost = (
     );
   }
 };
+export const deleteMuniPost = (
+  props: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  if (!props.token) {
+    // if token is not present send code/message
+    callback(requestError("Token is missing"));
+  } else {
+    // token is present, check it
+    checkToken(
+      props.token,
+      (checkTokenResponse: TYPE.apiResponse) => {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+          // negative code
+          callback(checkTokenResponse);
+        } else {
+          console.log(checkTokenResponse);
+
+          Post.deleteMuniPost(
+            {
+              postId: props.post,
+              location: props.location
+            },
+            (modelResponse: TYPE.apiResponse) => {
+              // callback with response
+              callback(modelResponse);
+            }
+          );
+        }
+      },
+      true
+    );
+  }
+};
 
 /** Get the list of locations
  * @function posts
@@ -146,6 +228,14 @@ export const posts = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   Post.list(props, (modelResponse: TYPE.apiResponse) => {
+    callback(modelResponse);
+  });
+};
+export const muniPosts = (
+  props: TYPE.IncPostsListTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  Post.listMuni(props, (modelResponse: TYPE.apiResponse) => {
     callback(modelResponse);
   });
 };

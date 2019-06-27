@@ -10,7 +10,8 @@ import {
   checkToken,
   login,
   fetchData,
-  getPosts
+  getPosts,
+  getMuniPosts
 } from "./store/users/actions";
 import { fetchLocations, prevModule } from "./store/app/actions";
 import { showPost } from "./store/post/actions";
@@ -46,6 +47,7 @@ const App = (props: {
   showPost: (arg0: showPostPayload) => void;
   prevModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
+  getMuniPosts: (arg0: string) => void;
   type: any;
 }) => {
   const { token } = props;
@@ -93,6 +95,7 @@ const App = (props: {
     ) {
       console.log("- token is in state, data is present");
       props.getPosts(props.location.location);
+      props.getMuniPosts(props.location.location);
       cookies.set("token", props.token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log("- token is in cookies");
@@ -146,6 +149,7 @@ const App = (props: {
       console.log("- location data present, get posts");
 
       props.getPosts(props.location.location);
+      props.getMuniPosts(props.location.location);
     }
   }, [props.location]);
 
@@ -293,7 +297,7 @@ const App = (props: {
     case "login":
       const Login = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
-        children: <Login />,
+        children: <Login desktop />,
         nav: true,
         lazy: true
       });
@@ -349,6 +353,7 @@ export default connect(
     fetchData,
     showPost,
     prevModule,
-    getPosts
+    getPosts,
+    getMuniPosts
   }
 )(withCookies(App));

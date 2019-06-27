@@ -106,6 +106,56 @@ router.get("/:id/posts", (req: any, res: any, next: any) => {
     },true);
   }
 });
+router.get("/:id/muniposts", (req: any, res: any, next: any) => {
+  showRequest("loc.get_muniposts", req.params.id, [req.body, req.headers.token]);
+
+  const ng = (code: number, packageToSend?: any, message?: string) => {
+    res
+      .cookie("token", "", {
+        expire: "",
+        httpOnly: false,
+        secure: false
+      })
+      .status(code)
+      .send(packageToSend || { status: false, message });
+  };
+  // check if token is available
+  if (!req.headers.token) {
+    // if not present, clear cookies and send code/message
+    ng(406, "Token is missing");
+  } else {
+    // token is present
+    // check if token valid
+    checkToken(req.headers.token, (checkTokenResponse: any) => {
+      // console.log("checkTokenResponse");
+      // console.log(checkTokenResponse);
+      // reassign code
+      const code = checkTokenResponse.code;
+      delete checkTokenResponse.code;
+      // check if code is not positive
+      if (code !== 200) {
+        // clear cookies  and send code/message
+        ng(code, checkTokenResponse);
+      } else {
+        // console.log(checkTokenResponse);
+        PostController.muniPosts(
+          {
+            location: req.params.id,
+            user: checkTokenResponse.payload.id,
+            level: checkTokenResponse.level || ""
+          },
+          (controllerResponse: apiResponse) => {
+            console.log('news:')
+            console.log(typeof controllerResponse);
+            console.log(Object.keys(controllerResponse));
+            console.log(controllerResponse.message);
+            res.status(controllerResponse.code).send(controllerResponse);
+          }
+        );
+      }
+    },true);
+  }
+});
 
 
 

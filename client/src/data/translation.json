@@ -119,7 +119,9 @@
           "message": "Edit the text below",
           "confirm": "Confirm",
           "cancel": "Cancel"
-        }
+        },
+        "help.new.muni": "create a new post",
+        "muni.post.prompt.text":"enter the text"
       }
     },
     "עב": {
@@ -241,7 +243,9 @@
           "message": "Edit the text below",
           "confirm": "Confirm",
           "cancel": "Cancel"
-        }
+        },
+        "help.new.muni": "create a new post",
+        "muni.post.prompt.text":"enter the text"
       }
     },
     "ع": {
@@ -363,7 +367,9 @@
           "message": "Edit the text below",
           "confirm": "Confirm",
           "cancel": "Cancel"
-        }
+        },
+        "help.new.muni": "create a new post",
+        "muni.post.prompt.text":"enter the text"
       }
     }
   }

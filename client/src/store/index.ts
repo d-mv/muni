@@ -1,3 +1,4 @@
+import { getMuniPosts } from "./users/posts";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
@@ -22,7 +23,8 @@ import {
   setPosts,
   typingData,
   cachePost,
-  userType
+  userType,
+  setMuniPosts
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState, showPostState, emptyPost } from "./defaults";
@@ -64,7 +66,8 @@ const rootReducer = combineReducers({
   typed: typingData,
   cached: cachePost,
   deleted: deletePost,
-  type: userType
+  type: userType,
+  news: setMuniPosts
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -99,6 +102,7 @@ export default function configureStore() {
     cached: any;
     deleted: any;
     type: string;
+    news: any;
   }
 
   const initialState: state = {
@@ -127,7 +131,8 @@ export default function configureStore() {
     typed: {},
     cached: emptyPost,
     deleted: apiState,
-    type: ""
+    type: "",
+    news: []
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

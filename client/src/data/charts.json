@@ -1,0 +1,16 @@
+{
+  "5ce589a00a61b5a9ca9d9caf": [
+    {
+      "name": "Votes, per petiiton",
+      "url": "https://charts.mongodb.com/charts-m220js-zjtqv/embed/charts?id=d6fecdcc-582b-4d2e-8e81-c3740a2f2755&tenant=b877ca60-6a48-4905-bc3e-c7f74418d5d7"
+    },
+    {
+      "name": "Municipality Replies, UP vs DOWN",
+      "url": "https://charts.mongodb.com/charts-m220js-zjtqv/embed/charts?id=84cd1412-4e12-4625-8b13-e52bd23a9c77&tenant=b877ca60-6a48-4905-bc3e-c7f74418d5d7"
+    },
+    {
+      "name": "Petitions per Month",
+      "url": "https://charts.mongodb.com/charts-m220js-zjtqv/embed/charts?id=ee8ce1fe-267b-4ca2-a1a2-2b151597c246&tenant=b877ca60-6a48-4905-bc3e-c7f74418d5d7"
+    }
+  ]
+}

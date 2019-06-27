@@ -8,8 +8,8 @@ const ContentBlock = (props: {
   stepOne: React.ClassicElement<any> | null;
   stepTwo: React.ClassicElement<any> | null;
   stepThree: React.ClassicElement<any> | null;
-  stepFour: React.ClassicElement<any> | null;
-  stepFive: React.ClassicElement<any> | null;
+  stepFour?: React.ClassicElement<any> | null;
+  stepFive?: React.ClassicElement<any> | null;
   preview: React.ClassicElement<any> | null;
   loadingElement: React.ClassicElement<any> | null;
   message: string;

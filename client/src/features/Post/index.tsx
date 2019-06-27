@@ -22,7 +22,6 @@ import Modal from "../../components/Modal";
 import {
   Photo,
   Link,
-  Text,
   TopBlock,
   ShowMore,
   NumbersLine,
@@ -35,6 +34,7 @@ import {
   Confirm,
   ModalEdit
 } from "./components";
+import Text from "./components/Text";
 
 import Content from "../../layout/Content";
 
@@ -121,7 +121,6 @@ const Post = (props: {
 
   const toggleMuniEdit = () => {
     setMuniEdit(!muniEdit);
-    // if (muniEdit) setNewReply(reply.text);
   };
   const toggleMuniDeleteConfirmation = () => {
     setMuniDeleteConfirmation(!muniDeleteConfirmation);
@@ -144,21 +143,16 @@ const Post = (props: {
   // TODO:
   const handleDeleteMuniReply = (mode: string) => {
     console.log(mode);
-    if (mode === "secondary") {
-      // props.deletePost(_id);
-      // props.getPosts(props.location.location);
-      // props.setModule("home");
-    }
-  };
-  const handleEditMuniReply = (mode: string) => {
-    console.log(mode);
     if (mode === "primary") {
-      const newPost = {...post,reply:{text:newReply,date: new Date(),up:[],down:[]}}
+     const newPost = {
+       ...post,
+       reply: { text: '', date: new Date(), up: [], down: [] }
+     };
      const url = `/post/${_id}`;
      axios
        .patch(url, { post: JSON.stringify(newPost) })
        .then((response: AxiosResponse<any>) => {
-         toggleMuniEditModal()
+         toggleMuniEditModal();
          props.getPosts(props.location.location);
        })
        .catch((reason: any) => {
@@ -166,10 +160,25 @@ const Post = (props: {
        });
     }
   };
-
-  const handleSubmitReplyUpdate = () => {
-
-  }
+  const handleEditMuniReply = (mode: string) => {
+    console.log(mode);
+    if (mode === "primary") {
+      const newPost = {
+        ...post,
+        reply: { text: newReply, date: new Date(), up: [], down: [] }
+      };
+      const url = `/post/${_id}`;
+      axios
+        .patch(url, { post: JSON.stringify(newPost) })
+        .then((response: AxiosResponse<any>) => {
+          toggleMuniEditModal();
+          props.getPosts(props.location.location);
+        })
+        .catch((reason: any) => {
+          console.log(reason);
+        });
+    }
+  };
 
   const handleReplyChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -349,8 +358,6 @@ const Post = (props: {
           text={text["muni-reply.delete.text"]}></ModalEdit>
       ) : null;
 
-      // setNewReply(reply.text)
-
       muniEditModal = showMuniEditModal ? (
         <ModalEdit
           close={toggleMuniEditModal}
@@ -448,7 +455,7 @@ const Post = (props: {
     author || muniUser
       ? {
           right: {
-            icon: iconEdit("primary"),
+            icon: iconEdit(muniUser ? "secondary" : "primary"),
             action: muniUser ? toggleMuniEdit : toggleEdit,
             noRtl: true
           }

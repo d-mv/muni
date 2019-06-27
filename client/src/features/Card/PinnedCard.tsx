@@ -22,6 +22,7 @@ const PinnedCard = (props: {
   post: postMuni;
   language: indexedObjAny;
   showPost: (arg0: showPostPayload) => void;
+  type: any;
 }) => {
   const handleClick = () => {
     props.showPost({ show: true, type: "muni", _id: props.post._id });
@@ -36,7 +37,10 @@ const PinnedCard = (props: {
       margin={25}
       action={handleClick}>
       <div className={style[iconStyle]}>
-        <IconMunicipality filled color='primary' />
+        <IconMunicipality
+          filled
+          color={props.type === "muni" ? "secondary" : "primary"}
+        />
       </div>
       <Block>
         <Line direction={direction}>
@@ -57,7 +61,8 @@ const PinnedCard = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language
+    language: state.language,
+    type: state.type
   };
 };
 

@@ -20,8 +20,29 @@ export const getPosts = (
           posts: response.data.payload
         });
       })
-      .catch((e:any) => {
-        console.log(e)
+      .catch((e: any) => {
+        console.log(e);
+      });
+  };
+};
+export const getMuniPosts = (
+  location: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/location/${location}/muniposts`;
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    axios({
+      method: "get",
+      url
+    })
+      .then(response => {
+        console.log(response)
+        dispatch({
+          type: "SET_MUNIPOSTS",
+          posts: response.data.payload
+        });
+      })
+      .catch((e: any) => {
+        console.log(e);
       });
   };
 };

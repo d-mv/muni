@@ -135,6 +135,13 @@ export const setPosts = (state = [], action: Action) => {
   }
   return state;
 };
+export const setMuniPosts = (state = [], action: Action) => {
+  switch (action.type) {
+    case "SET_MUNIPOSTS":
+      return action.posts;
+  }
+  return state;
+};
 export const typingData = (state = {}, action: Action) => {
   switch (action.type) {
     case "TYPING_DATA":

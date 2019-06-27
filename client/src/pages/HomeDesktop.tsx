@@ -11,10 +11,11 @@ import PostList from "../components/PostList";
 
 import Page from "../layout/Page";
 import Content from "../layout/Content";
-import { data, post } from "../store/types";
+import { data, post, indexedObjAny } from "../store/types";
 import style from "./style/HomeDesktop.module.scss";
 import Card from "../features/Card";
 import Button from "../components/Button";
+import chartsData from '../data/charts.json'
 
 const Home = (props: {
   posts: post[];
@@ -24,6 +25,8 @@ const Home = (props: {
   logOff: () => {}
 }) => {
   const { text } = props.language;
+const charts:indexedObjAny=chartsData
+
 
 
   const sortPostList = (posts: post[]) => {
@@ -46,14 +49,19 @@ const Home = (props: {
         </div>
       </div>
       <div className={style.content}>
-        <div className={style.graphs}></div>
-        <div className={style.posts}>
+        <div className={style.graphs}>{charts[props.location.location].map((chart: any) =>
+          <div>
+            <div className={style.chartTitle}>{chart.name}</div>
+            <iframe title="static_html" className={style.chart} src={chart.url}/>
+         </div>
+        )}</div>
+        {/* <div className={style.posts}>
           {props.posts.map((post: any) => (
             <div key={post._id} className={style.post}>
               <Card post={post} />
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

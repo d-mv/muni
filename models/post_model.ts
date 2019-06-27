@@ -80,6 +80,62 @@ export const list = (
     }
   });
 };
+export const listMuni = (
+  query: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      const database = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $match: {
+              _id: new MDB.ObjectId(query.location)
+            }
+          },
+          {
+            $unwind: {
+              path: "$municipality",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$municipality"
+            }
+          }
+        ])
+        .toArray((e: any, result: any) => {
+          if (e) {
+            // if error
+            callback(
+              Message.errorMessage({
+                action: "municipality posts (by location) search",
+                e
+              })
+            );
+          } else if (result.length === 0) {
+            // not found
+            callback(Message.notFound("municipality posts"));
+          } else {
+            // bingo
+
+            // return result
+            callback(
+              Message.positiveMessage({
+                subj: `Found ${result.length} municipality post(s)`,
+                payload: result
+              })
+            );
+          }
+        });
+    }
+  });
+};
 
 export const checkByTitle = (
   location: string,
@@ -107,10 +163,8 @@ export const checkByTitle = (
 
 /**
  * Function to create post
- *
  * @param {object} request - New post fields and user ID
  * @callback callback - Callback function to return response
- *
  */
 export const create = (
   request: TYPE.newPostRequest,
@@ -166,6 +220,66 @@ export const create = (
       }
     }
   );
+};
+export const createMuni = (
+  request: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const newPost = {
+    ...request.post,
+    _id: new MDB.ObjectId(),
+    date: new Date(),
+    status: "active"
+  };
+  const database: any = MDB.client.db(dbName).collection(dbcMain);
+  database
+    .update(
+      {
+        _id: new MDB.ObjectId(request.location)
+      },
+      { $push: { municipality: newPost } }
+    )
+    .then((document: any) => {
+      // process response
+      if (request.post.pinned) {
+        database
+          .update(
+            {
+              _id: new MDB.ObjectId(request.location)
+            },
+            { pinned: newPost }
+          )
+          .then((pinned: any) => {
+            callback(
+              Message.updateMessage({
+                subj: "Pinned post",
+                document: {
+                  ok: document.result.ok,
+                  nModified: document.result.nModified
+                }
+              })
+            );
+          })
+          .catch((e: any) => {
+            assert.equal(null, e);
+            callback(Message.errorMessage({ action: "pinned post create", e }));
+          });
+      } else {
+        callback(
+          Message.updateMessage({
+            subj: "Post",
+            document: {
+              ok: document.result.ok,
+              nModified: document.result.nModified
+            }
+          })
+        );
+      }
+    })
+    .catch((e: any) => {
+      assert.equal(null, e);
+      callback(Message.errorMessage({ action: "pinned post create", e }));
+    });
 };
 
 /**
@@ -422,6 +536,107 @@ export const replyVote = (
           callback(
             Message.errorMessage({ action: "post reply voteupdate", e })
           );
+        });
+    }
+  });
+};
+
+export const updateMuni = (
+  request: TYPE.data,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  console.log("updateMuni");
+  console.log(Object.keys(request.post));
+  console.log(request.post.text);
+
+  const location = request.location;
+  const post: TYPE.indexedObj = request.post;
+  const id = post._id;
+  delete post._id;
+
+  let setRequest: any = [];
+  Object.keys(post).forEach((key: string) => {
+    setRequest[`municipality.$[reply].${key}`] = post[key];
+  });
+
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({ action: "connection to DB (P1)", e: err })
+      );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .updateMany(
+          { _id: new MDB.ObjectId(location) },
+          { $set: { "municipality.$[reply]": post } },
+          {
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+          }
+        )
+        .then((document: any) => {
+          // process response
+          console.log(document);
+          callback(
+            Message.updateMessage({
+              subj: "Post",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "post update", e }));
+        });
+    }
+  });
+};
+export const deleteMuniPost = (
+  request: {
+    postId: string;
+    location: string;
+  },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({ action: "connection to DB (5)", e: err })
+      );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // update
+      database
+        .update(
+          { _id: new MDB.ObjectId(request.location) },
+          {
+            $pull: { municipality: { _id: new MDB.ObjectId(request.postId) } }
+          }
+        )
+        .then((document: any) => {
+          // process response
+          callback(
+            Message.updateMessage({
+              subj: "Post",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "post update", e }));
         });
     }
   });

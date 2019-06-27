@@ -12,7 +12,7 @@ import style from "./style/index.module.scss";
 import header from "../../../components/style/Header.module.scss";
 import Title from "../../../components/Title";
 
-const Home = (props: { language: data; cancel: () => void }) => {
+const Home = (props: { language: data; cancel: () => void,type:any }) => {
   const { direction, text } = props.language;
 
   const headerStyle = style[styleFactory("header", direction)];
@@ -41,7 +41,9 @@ const Home = (props: { language: data; cancel: () => void }) => {
         <div className={style.lineThree}>{text["help.post.age"]}</div>
       </section>
       <section>
-        <div className={style.voteButtonText}>{text["help.new"]}</div>
+        <div className={style.voteButtonText}>
+          {text[props.type === "muni" ? "help.new.muni" : "help.new"]}
+        </div>
       </section>
       <section>
         <div className={style.navLeft}>{text["help.navigation"]}</div>
@@ -53,7 +55,8 @@ const Home = (props: { language: data; cancel: () => void }) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language
+    language: state.language,
+    type:state.type
   };
 };
 
