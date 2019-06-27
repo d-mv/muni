@@ -35,11 +35,6 @@
         "login.message.default": "Please, enter your login details",
         "confirmation.message": "We have sent you a confirmation email. Please, click on 'Verify' button in the email and then you can login with your provided credentials",
         "card.button.vote": "Support",
-        "post.age": {
-          "day(s)": "day(s)",
-          "hour(s)": "hour(s)",
-          "minute(s)": "minute(s)"
-        },
         "post.voter": "supporter",
         "post.voters": "supporters",
         "post.replied": "replied",
@@ -52,7 +47,7 @@
         "new.steps.button.submit": "SUBMIT",
         "new.steps.title": "New Petition...",
         "new.steps.button.cancel": "CANCEL",
-        "new.steps.step.1": "Write your petition title, Get people attention with a short title that focuses on the change you'd like them to support.",
+        "new.steps.step.1": "1. Write your petition title, Get people attention with a short title that focuses on the change you'd like them to support.",
         "new.steps.step.2": "2. Please choose a category for your petition from the categories below",
         "new.steps.step.3": "3. Explain the problem you want to solve. People are more likely to support your petition if it’s clear why you care. Explain how this change will impact you, your family, or your community.",
         "new.steps.step.4": "4. Suggest a solution for your problem that authorities can use.",
@@ -85,6 +80,11 @@
         "register.passwords.dont-match": "Password don't match",
         "login.label.password.repeat": "Repeat password",
         "login.prompt.password.repeat": "type your password again",
+        "post.age": {
+          "day(s)": "day(s)",
+          "hour(s)": "hour(s)",
+          "minute(s)": "minute(s)"
+        },
         "post.delete.button": "Delete post",
         "post.delete.confirm": {
           "message": "Are you sure you want to delete the petition?",
@@ -107,7 +107,19 @@
         "help.post.title": "petition title",
         "help.post.age": "petition age and quantity of supporters",
         "help.new": "create a new petition",
-        "help.navigation": "navigation"
+        "help.navigation": "navigation",
+        "muni-reply.edit": "Edit",
+        "muni-reply.delete": "Delete",
+        "muni-reply.delete.text": {
+          "message": "Are you sure you want to delete?",
+          "confirm": "Yes",
+          "cancel": "No"
+        },
+        "muni-reply.edit.text": {
+          "message": "Edit the text below",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        }
       }
     },
     "עב": {
@@ -119,7 +131,7 @@
         "Feb",
         "Mar",
         "Apr",
-        "מאי",
+        "May",
         "Jun",
         "Jul",
         "Aug",
@@ -140,21 +152,16 @@
         "login.prompt.fname": "הזן את השם הפרטי שלך",
         "login.label.lname": "שם משפחה",
         "login.prompt.lname": "הזן את שם המשפחה שלך",
-        "login.button.submit": "שלח",
+        "login.button.submit": "הירשם",
         "login.button.register": "חשבון חדש",
         "login.button.login": "כניסה",
         "login.message.default": "אנא, הזן את פרטי הכניסה שלך",
         "confirmation.message": "הודעת אימות נשלחה לכתובת לאימייל שלך. תוכל להמשיך עם ההרשמה לאחר אימות האימייל שלך.",
         "card.button.vote": "לתמיכה",
-        "post.age": {
-          "day(s)": "יום (ים)",
-          "hour(s)": "שעה (ים)",
-          "minute(s)": "דקות"
-        },
         "post.voter": "תומך",
         "post.voters": "תומכים",
-        "post.replied": "replied",
-        "post.voted": "you have voted",
+        "post.replied": "יש מענה",
+        "post.voted": "כבר הצבעת",
         "profile.text.changeLanguage": "בחר, בחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד הלחצן למטה",
         "profile.text.logOff": "אנא לחץ על הלחצן למטה אם אתה רוצה לצאת מהאפליקצייה. יהיה עליך להתחבר מחדש אם ברצונך להשתמש באפליקציה שוב.",
         "profile.button.logOff": "התנתק",
@@ -188,20 +195,24 @@
         "post.show-more": "קרא עוד",
         "post.show-less": "קרא פחות",
         "mine.subtitle": "העתירות שלי",
-        "vote.thanks": "Thank you for your vote",
-        "newreply.label": "Your reply:",
-        "newreply.placeholder": "please, enter your reply",
-        "munireply.title": "MUNICIPALITY",
-        "register.passwords.dont-match": "Password don't match",
-        "login.label.password.repeat": "Repeat password",
-        "login.prompt.password.repeat": "type your password again",
+        "vote.thanks": "תודה על התמיכה",
+        "newreply.label": "תגובתך:",
+        "newreply.placeholder": "נא להזין את התגובה שלך",
+        "munireply.title": "תגובת העירייה",
+        "register.passwords.dont-match": "הסיסמה לא תואמת",
+        "login.label.password.repeat": "חזור על הסיסמה",
+        "login.prompt.password.repeat": "הזן את הסיסמה שלך שוב",
+        "post.age": {
+          "day(s)": "day(s)",
+          "hour(s)": "hour(s)",
+          "minute(s)": "minute(s)"
+        },
         "post.delete.button": "Delete post",
         "post.delete.confirm": {
           "message": "Are you sure you want to delete the petition?",
           "buttonYes": "Yes",
           "buttonNo": "No"
         },
-        "new.message.urlMalformed": "URL is malformed",
         "post.link.edit": "Edit the link below",
         "confirm": "Confirm",
         "cancel": "Cancel",
@@ -217,8 +228,20 @@
         "help.post.category": "petition category",
         "help.post.title": "petition title",
         "help.post.age": "petition age and quantity of supporters",
-        "help.new": "ליצור עתירה חדשה",
-        "help.navigation": "navigation"
+        "help.new": "create a new petition",
+        "help.navigation": "navigation",
+        "muni-reply.edit": "Edit",
+        "muni-reply.delete": "Delete",
+        "muni-reply.delete.text": {
+          "message": "Are you sure you want to delete?",
+          "confirm": "Yes",
+          "cancel": "No"
+        },
+        "muni-reply.edit.text": {
+          "message": "Edit the text below",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        }
       }
     },
     "ع": {
@@ -256,15 +279,10 @@
         "login.message.default": "الرجاء ادخال تفاصيلك الشخصية",
         "confirmation.message": "الرجاء فحص صنظوق بريدكم الالكتروني, قمنا بارسال رسالة للتأكد من بريدكم, الرجاء الضغط على زر التأكيد لكي تتمكنوا من الاستمرار ",
         "card.button.vote": "تأييد",
-        "post.age": {
-          "day(s)": "day(s)",
-          "hour(s)": "hour(s)",
-          "minute(s)": "minute(s)"
-        },
         "post.voter": "مؤيد",
         "post.voters": "مؤيدين",
-        "post.replied": "replied",
-        "post.voted": "you have voted",
+        "post.replied": "تم الرد",
+        "post.voted": "قمت بالتصويت مسبقا",
         "profile.text.changeLanguage": "من فضلك اختر لغة التطبيق. اللغة اللتي تم اختيارها تظهر اسفل بجانب زر التغيير",
         "profile.text.logOff": "الرجاء الضغط على الزر اسفل الصفحة لتسجيل الخروج. ستحتاجون لتسجيل الدخول من جديد اذا اردتم استعمال التطبيق.",
         "profile.button.logOff": "تسجيل الخروج",
@@ -299,13 +317,18 @@
         "post.show-more": "اقرأ اكثر",
         "post.show-less": "تقليص",
         "mine.subtitle": "منشوراتي",
-        "vote.thanks": "Thank you for your vote",
-        "newreply.label": "Your reply:",
-        "newreply.placeholder": "please, enter your reply",
-        "munireply.title": "MUNICIPALITY",
-        "register.passwords.dont-match": "Password don't match",
-        "login.label.password.repeat": "Repeat password",
-        "login.prompt.password.repeat": "type your password again",
+        "vote.thanks": "شكرا لك على دعمك",
+        "newreply.label": "ردّك:",
+        "newreply.placeholder": "الرجاء ادخال ردك",
+        "munireply.title": "رد البلدية",
+        "register.passwords.dont-match": "كلمة المرور غير متناسبة",
+        "login.label.password.repeat": "اعد كلمة المرور",
+        "login.prompt.password.repeat": "اعد كلمة المرور",
+        "post.age": {
+          "day(s)": "day(s)",
+          "hour(s)": "hour(s)",
+          "minute(s)": "minute(s)"
+        },
         "post.delete.button": "Delete post",
         "post.delete.confirm": {
           "message": "Are you sure you want to delete the petition?",
@@ -328,7 +351,19 @@
         "help.post.title": "petition title",
         "help.post.age": "petition age and quantity of supporters",
         "help.new": "create a new petition",
-        "help.navigation": "navigation"
+        "help.navigation": "navigation",
+        "muni-reply.edit": "Edit",
+        "muni-reply.delete": "Delete",
+        "muni-reply.delete.text": {
+          "message": "Are you sure you want to delete?",
+          "confirm": "Yes",
+          "cancel": "No"
+        },
+        "muni-reply.edit.text": {
+          "message": "Edit the text below",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        }
       }
     }
   }

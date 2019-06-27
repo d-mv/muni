@@ -32,7 +32,8 @@ import {
   ReplyVotes,
   NewReplyButton,
   ModalView,
-  Confirm
+  Confirm,
+  ModalEdit
 } from "./components";
 
 import Content from "../../layout/Content";
@@ -62,12 +63,16 @@ const Post = (props: {
   const [textOpened, setTextOpened] = useState(false);
   const [replyOpened, setReplyOpened] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [newReply, setNewReply] = useState("");
+  const [newReply, setNewReply] = useState(props.post.reply.text);
   const [showNewReply, setShowNewReply] = useState(false);
   const [post, setPost] = useState(props.post);
   const [edit, setEdit] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [updateConfirmation, showUpdateConfirmation] = useState(false);
+  const [muniEdit, setMuniEdit] = useState(false);
+  const [muniDeleteConfirmation, setMuniDeleteConfirmation] = useState(false);
+  const [showMuniEditModal, setMuniEditModal] = useState(false);
+  // const [text]
 
   // destructuring state
   const {
@@ -114,6 +119,17 @@ const Post = (props: {
     setDeleteConfirmation(!deleteConfirmation);
   };
 
+  const toggleMuniEdit = () => {
+    setMuniEdit(!muniEdit);
+    // if (muniEdit) setNewReply(reply.text);
+  };
+  const toggleMuniDeleteConfirmation = () => {
+    setMuniDeleteConfirmation(!muniDeleteConfirmation);
+  };
+  const toggleMuniEditModal = () => {
+    setMuniEditModal(!showMuniEditModal);
+  };
+
   // small functions
   const goHome = () => {
     props.setModule(props.prevModule);
@@ -125,6 +141,42 @@ const Post = (props: {
       props.setModule("home");
     }
   };
+  // TODO:
+  const handleDeleteMuniReply = (mode: string) => {
+    console.log(mode);
+    if (mode === "secondary") {
+      // props.deletePost(_id);
+      // props.getPosts(props.location.location);
+      // props.setModule("home");
+    }
+  };
+  const handleEditMuniReply = (mode: string) => {
+    console.log(mode);
+    if (mode === "primary") {
+      const newPost = {...post,reply:{text:newReply,date: new Date(),up:[],down:[]}}
+     const url = `/post/${_id}`;
+     axios
+       .patch(url, { post: JSON.stringify(newPost) })
+       .then((response: AxiosResponse<any>) => {
+         toggleMuniEditModal()
+         props.getPosts(props.location.location);
+       })
+       .catch((reason: any) => {
+         console.log(reason);
+       });
+    }
+  };
+
+  const handleSubmitReplyUpdate = () => {
+
+  }
+
+  const handleReplyChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setNewReply(event.target.value);
+  };
+
   const handleNewReplyChange = (event: any) => {
     switch (event.target.name) {
       case "replyText":
@@ -271,7 +323,57 @@ const Post = (props: {
     const replyVotes = (
       <ReplyVotes replies={{ up: reply.up, down: reply.down }} />
     );
+    let setOfEditButtons = null;
+    let muniDeleteModal = null;
+    let muniEditModal = null;
 
+    if (muniUser) {
+      setOfEditButtons = muniEdit ? (
+        <div className={style[styleFactory("replyEditButtons", direction)]}>
+          <Button
+            mode='secondary'
+            title={text["muni-reply.edit"]}
+            action={toggleMuniEditModal}
+          />
+          <Button
+            mode='attention'
+            title={text["muni-reply.delete"]}
+            actionMessage={toggleMuniDeleteConfirmation}
+          />
+        </div>
+      ) : null;
+      muniDeleteModal = muniDeleteConfirmation ? (
+        <ModalEdit
+          close={toggleMuniDeleteConfirmation}
+          action={handleDeleteMuniReply}
+          text={text["muni-reply.delete.text"]}></ModalEdit>
+      ) : null;
+
+      // setNewReply(reply.text)
+
+      muniEditModal = showMuniEditModal ? (
+        <ModalEdit
+          close={toggleMuniEditModal}
+          action={handleEditMuniReply}
+          text={text["muni-reply.edit.text"]}>
+          {
+            <div className='section'>
+              <input
+                autoFocus={true}
+                type='text'
+                name='reply'
+                value={newReply}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  handleReplyChange(event)
+                }
+                placeholder={text["muni.post.prompt.text"]}
+                required
+              />
+            </div>
+          }
+        </ModalEdit>
+      ) : null;
+    }
     ReplyMessage = reply.text ? (
       <div className={style[replyCardStyle]}>
         <div className={style[styleFactory("replyTitleLine", direction)]}>
@@ -280,7 +382,7 @@ const Post = (props: {
             {text["munireply.title"]}
           </span>
         </div>
-        <div className={style.replyMessage}>{reply.text}</div>
+        <div className={style.replyMessage}>{newReply}</div>
         {reply.text.length > 50 ? (
           <ShowMore
             color={replyCardColor === "white" ? "primary" : "white"}
@@ -290,6 +392,9 @@ const Post = (props: {
             action={setReplyOpened}
           />
         ) : null}
+        {setOfEditButtons}
+        {muniDeleteModal}
+        {muniEditModal}
       </div>
     ) : null;
     if (muniUser) setOfThumbs = null;
@@ -340,21 +445,21 @@ const Post = (props: {
 
   // default
   let editIcon =
-    author && !muniUser
+    author || muniUser
       ? {
           right: {
             icon: iconEdit("primary"),
-            action: toggleEdit,
+            action: muniUser ? toggleMuniEdit : toggleEdit,
             noRtl: true
           }
         }
       : null;
   // edit mode
-  if (edit)
+  if (edit || muniEdit)
     editIcon = {
       right: {
-        icon: iconClose("primary"),
-        action: toggleCloseSave,
+        icon: iconClose(muniEdit ? "secondary" : "primary"),
+        action: muniEdit ? toggleMuniEdit : toggleCloseSave,
         noRtl: true
       }
     };
@@ -362,7 +467,7 @@ const Post = (props: {
   const headerObject = {
     name: props.location.name[props.language.short],
     ...editIcon,
-    left: { icon: goBack("primary"), action: goHome }
+    left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };
 
   return (

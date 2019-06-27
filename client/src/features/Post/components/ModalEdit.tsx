@@ -9,7 +9,7 @@ export const ModalEdit = (props: {
   close: () => void;
   text: { message: string; confirm: string; cancel: string };
   action: (arg0: string) => void;
-  children: any;
+  children?: any;
 }) => {
   const mockFn = () => {};
   return (

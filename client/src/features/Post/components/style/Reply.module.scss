@@ -1,51 +1,22 @@
-.post {
-  border: var(--border);
-  margin-bottom: .5rem;
-  width: 95%;
-  margin: 0 auto;
-
-  h4 {
-    margin: 0 var(--distStandard);
-    font: var(--textPageSubTitle);
-  }
-}
-
-.text {
-  transition: var(--boxTransitionSlow);
-}
-
-.textClosed {
-  @extend .text;
-  height: 15rem;
-  overflow: hidden;
-}
-
-
-.voteButton {
-  position: relative;
-  margin: 0;
-  bottom: 2rem;
+.replyEditButtons {
   width: 100%;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
 }
 
-.square {
-  position: fixed;
-  top: 30%;
-  left: 15%;
-  width: 70%;
-  display: flex;
-  padding: 4rem 0;
-  justify-content: center;
-  background-color: var(--colorWhite);
+.replyEditButtonsRTL {
+  @extend .replyEditButtons;
+  direction: rtl
 }
 
-
-.modalText {
-  width: fit-content;
-  font: var(--textPostCardTitle);
-  color: var(--colorDark);
+.replyVoted {
+  position: relative;
+  margin: 0 auto;
+  bottom: 2.5rem;
 }
 
 
@@ -139,42 +110,4 @@
     height: auto;
     overflow: none;
   }
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  overflow: scroll;
-}
-
-.voted {
-  position: relative;
-  margin: 0 auto;
-  bottom: 1.5rem;
-}
-
-.replyVoted {
-  position: relative;
-  margin: 0 auto;
-  bottom: 2.5rem;
-}
-
-.deleteButton {
-  width: 80%;
-  margin: 1rem auto;
-}
-
-.replyEditButtons {
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: .5rem;
-}
-
-.replyEditButtonsRTL {
-  @extend .replyEditButtons;
-  direction: rtl
 }
