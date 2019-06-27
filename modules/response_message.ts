@@ -82,7 +82,7 @@ export const notAuthMessage = (subj: string) => {
 export const notFound = (subj: string) => {
   return {
     status: false,
-    message: `No ${subj} found in the DB`,
+    message: `No ${subj} found.`,
     code: 203
   };
 };

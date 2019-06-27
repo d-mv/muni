@@ -254,6 +254,8 @@ router.get("/login", function (req, res, next) {
         UserController.login({
             query: req.query
         }, function (controllerResponse) {
+            console.log("controllerResponse");
+            console.log(controllerResponse);
             if (controllerResponse.status) {
                 // process token/cookie
                 var cookieIngredients = {
@@ -265,6 +267,9 @@ router.get("/login", function (req, res, next) {
                     }
                 };
                 var response = security_1.cookieFactory(cookieIngredients);
+                //  console.log("cookieFactory Response");
+                //  console.log(response.message);
+                //  console.log(Object.keys(response));
                 var packageToSend = {
                     code: response.code,
                     message: response.message.message,

@@ -4,18 +4,17 @@ import Category from "../../Card/components/Category";
 
 import Section from "../../../layout/Section";
 
-import styles from './style/TopBlock.module.scss'
+import styles from "./style/TopBlock.module.scss";
 
 export const TopBlock = (props: {
-  category: string;
+  category?: string;
   title: string;
-  numbersLine: React.ClassicElement<any>;
-}) => {
-  return (
-    <Section narrow>
-      <Category category={props.category} />
-      <h3 className={styles.title}>{props.title}</h3>
-      {props.numbersLine}
-    </Section>
-  );
-};
+  numbersLine?: React.ClassicElement<any>;
+  muni?: boolean;
+}) => (
+  <Section narrow>
+    {props.muni ? null : <Category category={props.category || ""} />}
+    <h3 className={styles.title}>{props.title}</h3>
+    {props.muni ? null : props.numbersLine}
+  </Section>
+);

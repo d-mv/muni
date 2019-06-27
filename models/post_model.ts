@@ -4,8 +4,6 @@ import * as dotenv from "dotenv";
 import * as User from "./user_model";
 
 import * as MDB from "../modules/db_connect";
-import findPostById from "./find_post_by_id";
-import findPostByTitle from "./find_post_by_title";
 import * as Message from "../modules/response_message";
 import * as TYPE from "../src/types";
 
@@ -40,31 +38,21 @@ export const list = (
             }
           },
           {
-            $unwind: {
-              path: "$users",
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
-            $replaceRoot: {
-              newRoot: "$users"
-            }
-          },
-          {
-            $unwind: {
-              path: "$posts",
-              preserveNullAndEmptyArrays: true
+            $project: {
+              posts: "$users.posts"
             }
           },
           {
             $project: {
-              _id: 0,
-              posts: 1
-            }
-          },
-          {
-            $replaceRoot: {
-              newRoot: "$posts"
+              allPosts: {
+                $reduce: {
+                  input: "$posts",
+                  initialValue: [],
+                  in: {
+                    $concatArrays: ["$$value", "$$this"]
+                  }
+                }
+              }
             }
           }
         ])
@@ -84,6 +72,62 @@ export const list = (
             callback(
               Message.positiveMessage({
                 subj: `Found ${result.length} post(s)`,
+                payload: result[0].allPosts
+              })
+            );
+          }
+        });
+    }
+  });
+};
+export const listMuni = (
+  query: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      const database = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $match: {
+              _id: new MDB.ObjectId(query.location)
+            }
+          },
+          {
+            $unwind: {
+              path: "$municipality",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$municipality"
+            }
+          }
+        ])
+        .toArray((e: any, result: any) => {
+          if (e) {
+            // if error
+            callback(
+              Message.errorMessage({
+                action: "municipality posts (by location) search",
+                e
+              })
+            );
+          } else if (result.length === 0) {
+            // not found
+            callback(Message.notFound("municipality posts"));
+          } else {
+            // bingo
+
+            // return result
+            callback(
+              Message.positiveMessage({
+                subj: `Found ${result.length} municipality post(s)`,
                 payload: result
               })
             );
@@ -119,10 +163,8 @@ export const checkByTitle = (
 
 /**
  * Function to create post
- *
  * @param {object} request - New post fields and user ID
  * @callback callback - Callback function to return response
- *
  */
 export const create = (
   request: TYPE.newPostRequest,
@@ -179,6 +221,66 @@ export const create = (
     }
   );
 };
+export const createMuni = (
+  request: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const newPost = {
+    ...request.post,
+    _id: new MDB.ObjectId(),
+    date: new Date(),
+    status: "active"
+  };
+  const database: any = MDB.client.db(dbName).collection(dbcMain);
+  database
+    .update(
+      {
+        _id: new MDB.ObjectId(request.location)
+      },
+      { $push: { municipality: newPost } }
+    )
+    .then((document: any) => {
+      // process response
+      if (request.post.pinned) {
+        database
+          .update(
+            {
+              _id: new MDB.ObjectId(request.location)
+            },
+            { pinned: newPost }
+          )
+          .then((pinned: any) => {
+            callback(
+              Message.updateMessage({
+                subj: "Pinned post",
+                document: {
+                  ok: document.result.ok,
+                  nModified: document.result.nModified
+                }
+              })
+            );
+          })
+          .catch((e: any) => {
+            assert.equal(null, e);
+            callback(Message.errorMessage({ action: "pinned post create", e }));
+          });
+      } else {
+        callback(
+          Message.updateMessage({
+            subj: "Post",
+            document: {
+              ok: document.result.ok,
+              nModified: document.result.nModified
+            }
+          })
+        );
+      }
+    })
+    .catch((e: any) => {
+      assert.equal(null, e);
+      callback(Message.errorMessage({ action: "pinned post create", e }));
+    });
+};
 
 /**
  * Function to update post
@@ -187,40 +289,25 @@ export const create = (
  * @callback callback - Callback function to return response
  */
 export const update = (
-  request: {
-    fields: { [index: string]: string };
-    postId: string;
-    user: any;
-  },
+  request: TYPE.indexedObj,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  // check if post title is available
-  // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
-  // if status true inform, that user exists
-  // if status false, proceed with creation
-
-  // if (findPostResult.code !== 200) {
-  // send message
-  // callback(findPostResult);
-  // } else if (
-  // checking authorization
-  //   request.user.level === "su" ||
-  //   findPostResult.payload.createdBy == request.user.payload.id
-  // ) {
-  // authenticated
-  console.log(request);
+  // extract id from post object
+  const id = request._id;
+  const post: TYPE.indexedObj = request;
+  delete post._id;
 
   const setRequest: any = {};
   // prepare the request
-  Object.keys(request.fields).forEach((key: string) => {
-    setRequest[`users.$[].posts.$[reply].${key}`] = request.fields[key];
+  Object.keys(post).forEach((key: string) => {
+    setRequest[`users.$[].posts.$[reply].${key}`] = post[key];
   });
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
       // return error with connection
       callback(
-        Message.errorMessage({ action: "connection to DB (5)", e: err })
+        Message.errorMessage({ action: "connection to DB (7)", e: err })
       );
     } else {
       // set database
@@ -229,10 +316,10 @@ export const update = (
       console.log(setRequest);
       database
         .updateMany(
-          { "users.posts._id": new MDB.ObjectId(request.postId) },
+          { "users.posts._id": new MDB.ObjectId(id) },
           { $set: { ...setRequest } },
           {
-            arrayFilters: [{ "reply._id": new MDB.ObjectId(request.postId) }]
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
           }
         )
         .then((document: any) => {
@@ -253,16 +340,7 @@ export const update = (
         });
     }
   });
-  // } else {
-  //   callback(
-  //     Message.notAuthMessage(
-  //       "You need to be either owner or administrator to edit this post"
-  //     )
-  //   );
-  // }
 };
-// );
-// };
 /**
  * Function to delete post
  * @function deletePost
@@ -277,65 +355,66 @@ export const deletePost = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   // check if post title is available
-  findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
-    // if status true inform, that user exists
-    // if status false, proceed with creation
-    if (findPostResult.code !== 200) {
-      // send message
-      callback(findPostResult);
-    } else if (
-      // checking authorization
-      request.user.level === "su" ||
-      findPostResult.payload.createdBy == request.user.payload.id
-    ) {
-      // authenticated
-      MDB.client.connect(err => {
-        assert.equal(null, err);
-        if (err) {
-          // return error with connection
-          callback(
-            Message.errorMessage({ action: "connection to DB (5)", e: err })
-          );
-        } else {
-          // set database
-          const database: any = MDB.client.db(dbName).collection(dbcMain);
-          // update
-          database
-            .update(
-              { "users.posts._id": new MDB.ObjectId(request.postId) },
-              {
-                $pull: {
-                  "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
-                }
-              }
-            )
-            .then((document: any) => {
-              // process response
-              callback(
-                Message.updateMessage({
-                  subj: "Post",
-                  document: {
-                    ok: document.result.ok,
-                    nModified: document.result.nModified
-                  }
-                })
-              );
-            })
-            .catch((e: any) => {
-              assert.equal(null, e);
-              callback(Message.errorMessage({ action: "post update", e }));
-            });
-        }
-      });
-    } else {
+  // findPostById(request.postId, (findPostResult: TYPE.apiResponse) => {
+  //   // if status true inform, that user exists
+  //   // if status false, proceed with creation
+  //   if (findPostResult.code !== 200) {
+  //     // send message
+  //     callback(findPostResult);
+  //   } else if (
+  //     // checking authorization
+  //     request.user.level === "su" ||
+  //     findPostResult.payload.createdBy == request.user.payload.id
+  //   ) {
+  // authenticated
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
       callback(
-        Message.notAuthMessage(
-          "You need to be either owner or administrator to edit this post"
-        )
+        Message.errorMessage({ action: "connection to DB (5)", e: err })
       );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // update
+      database
+        .update(
+          { "users.posts._id": new MDB.ObjectId(request.postId) },
+          {
+            $pull: {
+              "users.$[].posts": { _id: new MDB.ObjectId(request.postId) }
+            }
+          }
+        )
+        .then((document: any) => {
+          // process response
+          callback(
+            Message.updateMessage({
+              subj: "Post",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "post update", e }));
+        });
     }
   });
 };
+//     } else {
+//       callback(
+//         Message.notAuthMessage(
+//           "You need to be either owner or administrator to edit this post"
+//         )
+//       );
+//     }
+//   });
+// };
 
 export const vote = (
   request: {
@@ -358,7 +437,7 @@ export const vote = (
       // return error with connection
       callback(
         Message.errorMessage({
-          action: "connection to DB (5)",
+          action: "connection to DB (6)",
           e: err
         })
       );
@@ -368,9 +447,13 @@ export const vote = (
       // dBrequest[`users.$[].posts.$[reply].votes.$[]`] = user;
       // update
       database
-        .updateMany(
+        .update(
           { "users.posts._id": new MDB.ObjectId(id) },
-          { $push: { "users.$.posts.$[reply].votes": user } },
+          {
+            $addToSet: {
+              "users.$.posts.$[reply].votes": new MDB.ObjectId(user)
+            }
+          },
           {
             arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
           }
@@ -378,6 +461,169 @@ export const vote = (
         .then((document: any) => {
           // process response
           console.log(document);
+          callback(
+            Message.updateMessage({
+              subj: "Post",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "post update", e }));
+        });
+    }
+  });
+};
+
+export interface replyVoteModel {
+  post: string;
+  user: string;
+  vote: string;
+}
+export const replyVote = (
+  request: replyVoteModel,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  console.log("requets to update reply votes:");
+  console.log(request);
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({
+          action: "connection to DB (8)",
+          e: err
+        })
+      );
+    } else {
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // if true - vote up
+      const subj = request.vote
+        ? { "users.$.posts.$[reply].reply.up": new MDB.ObjectId(request.user) }
+        : {
+            "users.$.posts.$[reply].reply.down": new MDB.ObjectId(request.user)
+          };
+      database
+        .update(
+          { "users.posts._id": new MDB.ObjectId(request.post) },
+          {
+            $addToSet: subj
+          },
+          {
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(request.post) }]
+          }
+        )
+        .then((document: any) => {
+          // process response
+          console.log(document);
+          callback(
+            Message.updateMessage({
+              subj: "Post reply vote",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(
+            Message.errorMessage({ action: "post reply voteupdate", e })
+          );
+        });
+    }
+  });
+};
+
+export const updateMuni = (
+  request: TYPE.data,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  console.log("updateMuni");
+  console.log(Object.keys(request.post));
+  console.log(request.post.text);
+
+  const location = request.location;
+  const post: TYPE.indexedObj = request.post;
+  const id = post._id;
+  delete post._id;
+
+  let setRequest: any = [];
+  Object.keys(post).forEach((key: string) => {
+    setRequest[`municipality.$[reply].${key}`] = post[key];
+  });
+
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({ action: "connection to DB (P1)", e: err })
+      );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .updateMany(
+          { _id: new MDB.ObjectId(location) },
+          { $set: { "municipality.$[reply]": post } },
+          {
+            arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+          }
+        )
+        .then((document: any) => {
+          // process response
+          console.log(document);
+          callback(
+            Message.updateMessage({
+              subj: "Post",
+              document: {
+                ok: document.result.ok,
+                nModified: document.result.nModified
+              }
+            })
+          );
+        })
+        .catch((e: any) => {
+          assert.equal(null, e);
+          callback(Message.errorMessage({ action: "post update", e }));
+        });
+    }
+  });
+};
+export const deleteMuniPost = (
+  request: {
+    postId: string;
+    location: string;
+  },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      // return error with connection
+      callback(
+        Message.errorMessage({ action: "connection to DB (5)", e: err })
+      );
+    } else {
+      // set database
+      const database: any = MDB.client.db(dbName).collection(dbcMain);
+      // update
+      database
+        .update(
+          { _id: new MDB.ObjectId(request.location) },
+          {
+            $pull: { municipality: { _id: new MDB.ObjectId(request.postId) } }
+          }
+        )
+        .then((document: any) => {
+          // process response
           callback(
             Message.updateMessage({
               subj: "Post",

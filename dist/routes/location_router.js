@@ -12,7 +12,6 @@ var dotEnv = dotenv.config();
 var redirectUrl = process.env.SELF || "httpL//localhost:8080";
 var replyCache = {
     list: { time: new Date(), req: "", reply: "" }
-    // create: { time: new Date(), req: "" },
     // login: { time: new Date(), req: "" },
     // id: { time: new Date(), req: "" },
     // posts: { time: new Date(), req: "" }
@@ -55,7 +54,7 @@ router.get("/list", function (req, res, next) {
 });
 // GET request for list of posts
 router.get("/:id/posts", function (req, res, next) {
-    show_request_1.showRequest("loc.get_posts", req.headers, [req.body, req.headers.token]);
+    show_request_1.showRequest("loc.get_posts", req.params.id, [req.body, req.headers.token]);
     var ng = function (code, packageToSend, message) {
         res
             .cookie("token", "", {
@@ -75,6 +74,8 @@ router.get("/:id/posts", function (req, res, next) {
         // token is present
         // check if token valid
         security_1.checkToken(req.headers.token, function (checkTokenResponse) {
+            console.log("checkTokenResponse");
+            console.log(checkTokenResponse);
             // reassign code
             var code = checkTokenResponse.code;
             delete checkTokenResponse.code;
@@ -93,7 +94,7 @@ router.get("/:id/posts", function (req, res, next) {
                     res.status(controllerResponse.code).send(controllerResponse);
                 });
             }
-        });
+        }, true);
     }
 });
 // create

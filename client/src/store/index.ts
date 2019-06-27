@@ -1,10 +1,11 @@
+import { getMuniPosts } from "./users/posts";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
 import { setStep, showHelp, fetchLocations, prevModule } from "./app/reducers";
-import { submitPost, updatePost, showPost } from "./post/reducers";
+import { submitPost, updatePost, showPost, deletePost } from "./post/reducers";
 import {
   vote,
   setToken,
@@ -20,10 +21,13 @@ import {
   loadData,
   setLanguage,
   setPosts,
-  typingData
+  typingData,
+  cachePost,
+  userType,
+  setMuniPosts
 } from "./users/reducers";
 import * as TYPE from "./types";
-import { apiState, showPostState } from "./defaults";
+import { apiState, showPostState, emptyPost } from "./defaults";
 
 import data from "../data/translation.json";
 import { showPostPayload } from "./post/types";
@@ -59,7 +63,11 @@ const rootReducer = combineReducers({
   posts: setPosts,
   update: updatePost,
   post: showPost,
-  typed: typingData
+  typed: typingData,
+  cached: cachePost,
+  deleted: deletePost,
+  type: userType,
+  news: setMuniPosts
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -91,6 +99,10 @@ export default function configureStore() {
     update: TYPE.apiResponse;
     post: showPostPayload;
     typed: TYPE.indexedObj;
+    cached: any;
+    deleted: any;
+    type: string;
+    news: any;
   }
 
   const initialState: state = {
@@ -116,7 +128,11 @@ export default function configureStore() {
     posts: [],
     update: apiState,
     post: showPostState,
-    typed: {}
+    typed: {},
+    cached: emptyPost,
+    deleted: apiState,
+    type: "",
+    news: []
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

@@ -9,7 +9,9 @@ import {
   setToken,
   checkToken,
   login,
-  fetchData
+  fetchData,
+  getPosts,
+  getMuniPosts
 } from "./store/users/actions";
 import { fetchLocations, prevModule } from "./store/app/actions";
 import { showPost } from "./store/post/actions";
@@ -41,98 +43,167 @@ const App = (props: {
   fetchLocations: (props?: any) => any;
   fetchData: (arg0: string) => void;
   cookies: any;
+  posts: data;
   showPost: (arg0: showPostPayload) => void;
   prevModule: (arg0: string) => void;
+  getPosts: (arg0: string) => void;
+  getMuniPosts: (arg0: string) => void;
+  type: any;
 }) => {
   const { token } = props;
   const { cookies } = props;
   const [loading, setLoading] = useState(true);
-  axios.defaults.headers = { token };
+  const [localToken, setLocalToken] = useState(token);
 
-  console.log(props.module);
+  const fetchPostsNews = () => {
+    console.log("fetching petitions...");
+    props.getPosts(props.location.location);
+    console.log("fetching news...");
+    props.getMuniPosts(props.location.location);
+  };
 
   const toggleModule = (module: string) => {
     props.prevModule(props.module);
     props.setModule(module);
   };
 
+  // useEffect(() => {
+  //   if (props.type && props.type === "muni") {
+  //     const app: any = document.getElementById("app");
+  //     app.style.backgroundColor = "var(--colorSecondary)";
+  //   }
+  // }, [props.type]);
+
   // set cookies if token changes
   useEffect(() => {
+    console.log("1. check token");
+    axios.defaults.headers = { token };
     // if 'clear'
     if (props.token === "clear") {
-      console.log(0);
+      console.log("- clear token");
       cookies.set("token", "");
       props.setToken("");
       toggleModule("welcome");
     } else if (
       props.token !== "" &&
       props.token !== "clear" &&
+      Object.keys(props.location).length === 0
+    ) {
+      console.log("- token is in state, but no data");
+
+      props.fetchData(token);
+    } else if (
+      props.token !== "" &&
+      props.token !== "clear" &&
       Object.keys(props.location).length > 0
     ) {
-      // if token IS
+      console.log("- token is in state, data is present");
+      fetchPostsNews();
+      // props.getPosts(props.location.location);
+      // props.getMuniPosts(props.location.location);
       cookies.set("token", props.token);
-      console.log(5);
-      if (props.locations.length > 0) toggleModule("home");
-    } else if (props.token !== "" && props.token !== "clear") {
-      props.fetchData(token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
-      console.log(2);
+      console.log("- token is in cookies");
       props.checkToken(cookies.get("token"));
-    } else {
-      console.log("6 - no token, no cookie");
+    }
+    // else if (props.token !== "" && props.token !== "clear") {
+    //   console.log("- data is missing");
+    //   props.fetchData(token);
+    // }
+    else {
+      console.log("- no state, to cookie");
       toggleModule("welcome");
     }
+    // check locations
+    // if (props.locations.length > 0) {
+    //   toggleModule("home");
+    // } else {
+    //   console.log("- locations are not present");
+    //   props.fetchLocations();
+    // }
   }, [token, cookies]);
-  console.log(props.module);
+
   useEffect(() => {
-    console.log(13);
+    console.log("2. triggered module");
     // setLoading(false);
     if (props.module != "post") {
+      console.log("- module is not post, clear it");
+
       props.showPost({ show: false });
     }
     if (props.module === "home") {
+      console.log("- module is home");
       setLoading(false);
     }
     if (props.module === "welcome" && !cookies.get("token") && !token) {
+      console.log("- module is welcome, no token whatsoever");
       setLoading(false);
     }
   }, [props.module]);
 
   useEffect(() => {
-    console.log(7);
-    if (Object.keys(props.location).length > 0) {
-      console.log(7.1);
+    console.log("3. triggered location");
+    if (Object.keys(props.location).length > 0 && props.posts.length > 0) {
+      console.log("- location data & posts present, go home");
       toggleModule("home");
+    } else if (
+      Object.keys(props.location).length > 0 &&
+      props.posts.length === 0 &&
+      localToken != ""
+    ) {
+      console.log("- location data present, get posts");
+      fetchPostsNews();
+      // props.getPosts(props.location.location);
+      // props.getMuniPosts(props.location.location);
     }
   }, [props.location]);
 
   useEffect(() => {
-    console.log(12);
+    console.log("6. triggered posts");
+    if (props.posts.length > 0 && props.module !== "post") {
+      console.log("- posts are there, show post");
+      toggleModule("home");
+    }
+  }, [props.posts]);
+
+  useEffect(() => {
+    console.log("4. triggered post");
     if (props.post) {
+      console.log("- post is there, show post");
       toggleModule("post");
     }
   }, [props.post]);
 
   useEffect(() => {
-    console.log(10);
+    console.log("4. check token status");
     if (props.check.status) {
-      props.fetchData(token);
-    } else {
+      console.log("- token check is positive, set to local");
+      setLocalToken(token);
+      // props.fetchData(token);
     }
   }, [props.check.status]);
 
   // fetch locations
+  // useEffect(() => {
+  //   console.log('5. fetch locations once');
+  //   props.fetchLocations();
+  // }, []);
+
   useEffect(() => {
-    console.log(11);
-    props.fetchLocations();
-  }, []);
+    if (props.locations.length === 0) {
+      console.log("5. locations not available, get them");
+      props.fetchLocations();
+    }
+  });
 
   const handleNewButtonClick = () => {
     toggleModule("new");
   };
 
-  const AppComponent = (props: { children: any }) => (
-    <div className='app'>{props.children}</div>
+  const AppComponent = (appProps: { children: any }) => (
+    <div className={props.type === "muni" ? "appMuni" : "app"}>
+      {appProps.children}
+    </div>
   );
   const LazyComponent = (props: { children: any }) => (
     <Suspense fallback={<Loading />}>{props.children}</Suspense>
@@ -144,26 +215,26 @@ const App = (props: {
     nav?: boolean;
     new?: boolean;
   }) => {
-    const Help = React.lazy(() => import("./features/Help"));
-    const help = props.help ? (
-      <LazyComponent>
-        <Help />
-      </LazyComponent>
-    ) : null;
+    // const Help = React.lazy(() => import("./features/Help"));
+    // const help = props.help ? (
+    //   <LazyComponent>
+    //     <Help />
+    //   </LazyComponent>
+    // ) : null;
     const nav = CFProps.nav ? <Navigation /> : null;
     const newButton = CFProps.new ? (
       <NewButton action={handleNewButtonClick} />
     ) : null;
     let content = CFProps.lazy ? (
       <AppComponent>
-        {help}
+        {/* {help} */}
         {nav}
         {newButton}
         <LazyComponent>{CFProps.children}</LazyComponent>
       </AppComponent>
     ) : (
       <AppComponent>
-        {help}
+        {/* {help} */}
         {nav}
         {newButton}
         {CFProps.children}
@@ -195,8 +266,9 @@ const App = (props: {
       break;
     case "new":
       const New = React.lazy(() => import("./pages/New"));
+      const module = props.type === "muni" ? <New muni /> : <New />;
       show = componentFactory({
-        children: <New />,
+        children: module,
         nav: true,
         lazy: true
       });
@@ -270,7 +342,9 @@ const mapStateToProps = (state: AppState) => {
     vote: state.vote,
     check: state.checkTokenResult,
     post: state.post.show,
-    posttmp: state.post
+    posttmp: state.post,
+    posts: state.posts,
+    type: state.type
   };
 };
 
@@ -284,6 +358,8 @@ export default connect(
     fetchLocations,
     fetchData,
     showPost,
-    prevModule
+    prevModule,
+    getPosts,
+    getMuniPosts
   }
 )(withCookies(App));

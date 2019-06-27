@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 
 import App from "./App";
+import AppDesktop from "./AppDesktop";
 import * as serviceWorker from "./serviceWorker";
 import configureStore from "./store";
 
@@ -11,11 +12,14 @@ import "./style/start.scss";
 
 const store = configureStore();
 
+const width = window.screen.width > 500;
+const height = window.screen.height > 500;
+
+const app = width && height ? <AppDesktop /> : <App />;
+
 ReactDOM.render(
   <CookiesProvider>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Provider store={store}>{app}</Provider>
   </CookiesProvider>,
   document.getElementById("root")
 );

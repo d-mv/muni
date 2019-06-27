@@ -1,0 +1,113 @@
+.replyEditButtons {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.replyEditButtonsRTL {
+  @extend .replyEditButtons;
+  direction: rtl
+}
+
+.replyVoted {
+  position: relative;
+  margin: 0 auto;
+  bottom: 2.5rem;
+}
+
+
+.replyCard {
+  margin-bottom: .5rem;
+  width: 95%;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--boxShadow);
+
+  .replyMessage {
+    font: var(--textParaStandard);
+    margin: .5rem 1rem;
+  }
+
+  .replyTitleLine {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .replyTitleLineRTL {
+    @extend .replyTitleLine;
+    flex-direction: row-reverse;
+  }
+
+  .replyCardTitle {
+    margin: 0 1rem;
+    font: var(--textPageSubTitle);
+  }
+}
+
+
+.cardSecondaryClosed {
+  @extend .replyCard;
+  color: white;
+  border: var(--borderTransparetn);
+  background-color: var(--colorSecondary);
+
+  .replyMessage {
+    height: 5rem;
+    overflow: hidden;
+  }
+}
+
+.cardSecondaryOpen {
+  @extend .cardSecondaryClosed;
+  height: fit-content;
+
+  .replyMessage {
+    height: auto;
+    overflow: none;
+  }
+}
+
+.cardWhiteClosed {
+  @extend .replyCard;
+  color: var(--colorDark);
+  border: var(--borderTransparetn);
+  background-color: var(--colorWhite);
+
+  .replyMessage {
+    height: 5rem;
+    overflow: hidden;
+  }
+}
+
+.cardWhiteOpen {
+  @extend .cardWhiteClosed;
+  height: fit-content;
+
+  .replyMessage {
+    height: auto;
+    overflow: none;
+  }
+}
+
+.cardAttentionClosed {
+  @extend .cardSecondaryClosed;
+  background-color: var(--colorAttention);
+}
+
+.cardAttentionOpen {
+  @extend .cardAttentionClosed;
+  height: fit-content;
+
+  .replyMessage {
+    height: auto;
+    overflow: none;
+  }
+}

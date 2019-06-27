@@ -24,7 +24,7 @@ const Mine = (props: {
   const headerObject = {
     name: props.location.name[props.language.short]
   };
-
+console.log(posts)
   return (
     <Page data-testid='page__mine'>
       <Header {...headerObject} />

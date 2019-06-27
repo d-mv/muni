@@ -1,3 +1,4 @@
+import { replyVoteModel } from "./../models/post_model";
 import * as Post from "../models/post_model";
 
 // import { checkToken } from "../modules/check_token";
@@ -41,7 +42,7 @@ export const createPost = (
   query: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  console.log(Object.keys(query))
+  console.log(Object.keys(query));
   checkToken(query.token, (checkTokenResponse: TYPE.apiResponse) => {
     console.log(Object.keys(checkTokenResponse.payload));
     const { _id } = checkTokenResponse.payload;
@@ -61,6 +62,26 @@ export const createPost = (
     }
   });
 };
+export const createMuni = (
+  query: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  console.log(Object.keys(query));
+  checkToken(
+    query.token,
+    (checkTokenResponse: TYPE.apiResponse) => {
+      console.log(Object.keys(checkTokenResponse.payload));
+      const request = {
+        location: query.location,
+        post: query.post
+      };
+      Post.createMuni(request, (modelResponse: TYPE.apiResponse) => {
+        callback(modelResponse);
+      });
+    },
+    true
+  );
+};
 
 /**
  * Function to update post
@@ -69,44 +90,57 @@ export const createPost = (
  * @return {callback} - Callback function to return response
  */
 export const updatePost = (
-  props: any,
+  request: { token: string; post: string },
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  if (Object.keys(props.body).length === 0) {
-    // if request body is empty
-    callback(requestError("Wrong/malformed request"));
-  } else {
-    if (!props.headers.token) {
-      // if token is not present send code/message
-      callback(requestError("Token is missing"));
-    } else {
-      // token is present, check it
-      checkToken(
-        props.headers.token,
-        (checkTokenResponse: TYPE.apiResponse) => {
-          // check if code is not positive
-          if (checkTokenResponse.code !== 200) {
-            // negative code
-            callback(checkTokenResponse);
-          } else {
-            // positive code = 200
-            Post.update(
-              {
-                fields: props.body.fields,
-                postId: props.params.id,
-                user: checkTokenResponse.payload._id
-              },
-              (modelResponse: TYPE.apiResponse) => {
-                // callback with response
-                callback(modelResponse);
-              }
-            );
-          }
-        }
-      );
-    }
-  }
+  const { token, post } = request;
+  const postObject = JSON.parse(post);
+  checkToken(
+    token,
+    (checkTokenResponse: TYPE.apiResponse) => {
+      // check if code is not positive
+      if (checkTokenResponse.code !== 200) {
+        // negative code
+        callback(checkTokenResponse);
+      } else {
+        // positive code = 200
+        Post.update(postObject, (modelResponse: TYPE.apiResponse) => {
+          // callback with response
+          callback(modelResponse);
+        });
+      }
+    },
+    true
+  );
 };
+export const updateMuniPost = (
+  request: { token: string; location: string; post: string },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const { token, location, post } = request;
+  const postObject = JSON.parse(post);
+  checkToken(
+    token,
+    (checkTokenResponse: TYPE.apiResponse) => {
+      // check if code is not positive
+      if (checkTokenResponse.code !== 200) {
+        // negative code
+        callback(checkTokenResponse);
+      } else {
+        // positive code = 200
+        Post.updateMuni(
+          { post: postObject, location },
+          (modelResponse: TYPE.apiResponse) => {
+            // callback with response
+            callback(modelResponse);
+          }
+        );
+      }
+    },
+    true
+  );
+};
+
 /**
  * Function to delete post
  * @function deletePost
@@ -117,30 +151,70 @@ export const deletePost = (
   props: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  if (!props.headers.token) {
+  if (!props.token) {
     // if token is not present send code/message
     callback(requestError("Token is missing"));
   } else {
     // token is present, check it
-    checkToken(props.headers.token, (checkTokenResponse: TYPE.apiResponse) => {
-      // check if code is not positive
-      if (checkTokenResponse.code !== 200) {
-        // negative code
-        callback(checkTokenResponse);
-      } else {
-        // positive code = 200
-        Post.deletePost(
-          {
-            postId: props.params.id,
-            user: checkTokenResponse
-          },
-          (modelResponse: TYPE.apiResponse) => {
-            // callback with response
-            callback(modelResponse);
-          }
-        );
-      }
-    });
+    checkToken(
+      props.token,
+      (checkTokenResponse: TYPE.apiResponse) => {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+          // negative code
+          callback(checkTokenResponse);
+        } else {
+          console.log(checkTokenResponse);
+
+          Post.deletePost(
+            {
+              postId: props.post,
+              user: checkTokenResponse.payload.id
+            },
+            (modelResponse: TYPE.apiResponse) => {
+              // callback with response
+              callback(modelResponse);
+            }
+          );
+        }
+      },
+      true
+    );
+  }
+};
+export const deleteMuniPost = (
+  props: any,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  if (!props.token) {
+    // if token is not present send code/message
+    callback(requestError("Token is missing"));
+  } else {
+    // token is present, check it
+    checkToken(
+      props.token,
+      (checkTokenResponse: TYPE.apiResponse) => {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+          // negative code
+          callback(checkTokenResponse);
+        } else {
+          console.log(checkTokenResponse);
+
+          Post.deleteMuniPost(
+            {
+              postId: props.post,
+              location: props.location
+            },
+            (modelResponse: TYPE.apiResponse) => {
+              // callback with response
+              callback(modelResponse);
+            }
+          );
+        }
+      },
+      true
+    );
   }
 };
 
@@ -157,14 +231,70 @@ export const posts = (
     callback(modelResponse);
   });
 };
+export const muniPosts = (
+  props: TYPE.IncPostsListTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  Post.listMuni(props, (modelResponse: TYPE.apiResponse) => {
+    callback(modelResponse);
+  });
+};
 
-export const vote = (props: { id: string, user: string }, callback: (arg0: TYPE.apiResponse) => void) => {
-  const {id,user} = props
-  if (id === '' || user === '' || user.length !== 24 || id.length !== 24) {
-    callback(Message.requestError('ID/User malformed'))
+export const vote = (
+  props: { id: string; user: string },
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const { id, user } = props;
+  if (id === "" || user === "" || user.length !== 24 || id.length !== 24) {
+    callback(Message.requestError("ID/User malformed"));
   } else {
     Post.vote({ id, user }, (modelResponse: TYPE.apiResponse) => {
       callback(modelResponse);
     });
   }
+};
+
+export interface replyVoteProps {
+  token: string;
+  post: string;
+  user: string;
+  vote: string;
 }
+
+export const replyVote = (
+  request: replyVoteProps,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  const { token, post, user, vote } = request;
+
+  if (!token) {
+    // if token is not present send code/message
+    callback(requestError("Token is missing"));
+  } else {
+    // token is present, check it
+    checkToken(
+      token,
+      (checkTokenResponse: TYPE.apiResponse) => {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+          // negative code
+          callback(checkTokenResponse);
+        } else {
+          // positive code = 200
+          Post.replyVote(
+            {
+              post,
+              user,
+              vote
+            },
+            (modelResponse: TYPE.apiResponse) => {
+              // callback with response
+              callback(modelResponse);
+            }
+          );
+        }
+      },
+      true
+    );
+  }
+};

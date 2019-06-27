@@ -86,3 +86,8 @@
     }
   }
 }
+
+.wrapperMuni {
+  @extend .wrapper;
+  background-color: var(--colorSecondary);
+}

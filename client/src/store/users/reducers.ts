@@ -1,3 +1,4 @@
+import { emptyPost } from "./../defaults";
 import { Action } from "./types";
 import { data, indexedObjAny } from "../types";
 import { apiState } from "../defaults";
@@ -103,10 +104,7 @@ export const loadData = (state = {}, action: Action): data => {
  * @param action
  * @returns {string}
  */
-export const setLanguage = (
-  state = {},
-  action: Action
-): indexedObjAny => {
+export const setLanguage = (state = {}, action: Action): indexedObjAny => {
   switch (action.type) {
     case "SET_LANGUAGE":
       return { ...action.data };
@@ -137,10 +135,33 @@ export const setPosts = (state = [], action: Action) => {
   }
   return state;
 };
+export const setMuniPosts = (state = [], action: Action) => {
+  switch (action.type) {
+    case "SET_MUNIPOSTS":
+      return action.posts;
+  }
+  return state;
+};
 export const typingData = (state = {}, action: Action) => {
   switch (action.type) {
     case "TYPING_DATA":
-      return {...state,...action.payload}
+      return { ...state, ...action.payload };
   }
-  return state
-}
+  return state;
+};
+
+export const cachePost = (state = { cached: emptyPost }, action: Action) => {
+  switch (action.type) {
+    case "CACHE_POST":
+      return { ...state, ...action.post };
+  }
+  return state;
+};
+
+export const userType = (state = {}, action: Action) => {
+  switch (action.type) {
+    case "USER_TYPE":
+      return action.user;
+  }
+  return state;
+};

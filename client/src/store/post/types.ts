@@ -19,4 +19,13 @@ export interface showPostAction {
   payload: showPostPayload;
 }
 
-export type Action = showPostAction | submitPostAction | updatePostAction;
+export interface deletePostAction {
+  type: "DELETE_POST";
+  payload: TYPE.apiResponse;
+}
+
+export type Action =
+  | deletePostAction
+  | showPostAction
+  | submitPostAction
+  | updatePostAction;

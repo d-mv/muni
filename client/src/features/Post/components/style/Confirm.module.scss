@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  text-align: center;
+
+  background-color: var(--colorWhite);
+  width: fit-content;
+  font: var(--textPostCardTitle);
+  color: var(--colorDark);
+}
+
+.buttons {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.buttonsRTL {
+  @extend .buttons;
+  flex-direction: row-reverse;
+}

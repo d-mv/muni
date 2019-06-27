@@ -108,7 +108,7 @@ const NewPost = (props: {
       }
     }
   };
-  console.log(step);
+  // console.log(step);
   const handleBackStep = () => {
     if (step - 1 > 0) {
       setStep(step - 1);
@@ -297,6 +297,7 @@ const NewPost = (props: {
           label={text["new.field.photo.prompt"]}
           direction={direction}
           action={handleSetPhoto}
+          photo={photo}
         />
         {formSection({
           label: text["new.field.link.label"],
@@ -344,7 +345,7 @@ const NewPost = (props: {
     name: "New Post",
     left: { icon: <div>back</div>, action: goHome }
   };
-
+console.log(message)
   return (
     <Content padded>
       {/* <Header {...headerObject} /> */}
@@ -352,7 +353,7 @@ const NewPost = (props: {
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
       </Center>
-      <Paragraph direction={direction}>{text["new.steps.step.1"]}</Paragraph>
+      <Paragraph direction={direction}>{text[`new.steps.step.${step}`]}</Paragraph>
       <ContentBlock
         stepOne={stepOne}
         stepTwo={stepTwo}

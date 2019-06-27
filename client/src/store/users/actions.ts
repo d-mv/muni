@@ -7,7 +7,7 @@ import { AnyAction } from "redux";
 import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
-
+export * from "./posts";
 const importedData: TYPE.indexedObjAny = data;
 
 /**
@@ -51,8 +51,6 @@ export const checkToken = (
     })
       .then(response => {
         const payload = response.data;
-        console.log(response.data);
-        console.log("checktoken - payload.status: " + payload.status);
         if (payload.status) {
           dispatch({ type: "SET", token });
           dispatch({ type: "SET_AUTH", status: true });
@@ -77,6 +75,10 @@ export const checkToken = (
       })
       .catch(error => {
         console.log(error);
+        dispatch({
+          type: "SET_LOCATION_DATA",
+          data: error.data
+        });
       });
   };
 };
@@ -105,6 +107,10 @@ export const login = (
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/user/login?pass=${props.pass}&email=${props.email}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
     // clear state
     dispatch({
       type: "LOGIN",
@@ -114,31 +120,23 @@ export const login = (
       type: "SET_MESSAGE",
       message: ""
     });
-    dispatch({
-      type: "SET_LOADING",
-      loading: true
-    });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
     // proceed with request
     axios({
       method: "get",
       url
-      // withCredentials: true
     })
       .then(response => {
         // if successful change page
         const module = "home";
-        // const token = response.data.token;
-
-        console.log(response);
-        console.log(response.data);
-
-        dispatch({ type: "SET_MODULE", module });
         dispatch({ type: "SET_AUTH", status: true });
         dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
-        dispatch({
-          type: "SET_POSTS",
-          posts: response.data.payload.posts
-        });
+        if (response.data.payload.type) {
+          dispatch({
+            type: "USER_TYPE",
+            user: response.data.payload.type
+          });
+        }
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[response.data.payload.lang]
@@ -154,7 +152,6 @@ export const login = (
         });
       })
       .catch(error => {
-        console.log(error);
         const payload = error.response ? error.response.data : error.toString();
         if (payload.code === 404) {
           dispatch({
@@ -165,12 +162,11 @@ export const login = (
             type: "SET_MODULE",
             mode: "register"
           });
-        } else {
-          dispatch({
-            type: "SET_MESSAGE",
-            message: payload.message || ""
-          });
         }
+        dispatch({
+          type: "SET_MESSAGE",
+          message: payload.message || payload || ""
+        });
         dispatch({
           type: "LOGIN",
           payload
@@ -184,6 +180,10 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     dispatch({ type: "SET_AUTH", status: false });
     dispatch({ type: "SET_MODULE", module: "welcome" });
     dispatch({ type: "SET", token: "clear" });
+    dispatch({
+      type: "TYPING_DATA",
+      payload: { email: "", pass: "", fName: "", lName: "", location: "" }
+    });
     dispatch({
       type: "SET_MESSAGE",
       message: ""
@@ -226,6 +226,8 @@ export const register = (
       type: "SET_LOADING",
       loading: true
     });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
+
     // proceed with request
     axios({
       method: "post",
@@ -390,7 +392,7 @@ export const fetchData = (
       .then((response: AxiosResponse<any>) => {
         const payload = response.data;
         dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
-        dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
+        // dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[payload.payload.lang]
@@ -402,14 +404,86 @@ export const fetchData = (
         // });
       })
       .catch(error => {
+        console.log(error);
         dispatch({
           type: "SET_LOCATION_DATA",
-          // type: "FETCH_DATA",
-          payload: error.response
+          data: error.data
         });
       });
   };
 };
 export const typingData = (data: { [index: string]: string }) => {
   return { type: "TYPING_DATA", payload: { ...data } };
+};
+
+export const cachePost = (post: TYPE.post): Action => {
+  return { type: "CACHE_POST", post };
+};
+
+export const muniLogin = (
+  props: TYPE.login
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/muni/login?pass=${props.pass}&email=${props.email}`;
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
+    // clear state
+    dispatch({
+      type: "LOGIN",
+      payload: apiState
+    });
+    dispatch({
+      type: "SET_MESSAGE",
+      message: ""
+    });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
+    // proceed with request
+    axios({
+      method: "get",
+      url
+    })
+      .then(response => {
+        // if successful change page
+        if (response.data.status) {
+          dispatch({ type: "SET_AUTH", status: true });
+          dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+          if (response.data.payload.type) {
+            dispatch({
+              type: "USER_TYPE",
+              user: response.data.payload.type
+            });
+          }
+          dispatch({
+            type: "SET_LANGUAGE",
+            data: importedData.language[response.data.payload.lang]
+          });
+          dispatch({ type: "SET", token: response.data.token });
+        } else { dispatch({
+                   type: "SET_MESSAGE",
+                   message: response.data.message
+                 });}
+        dispatch({
+          type: "LOGIN",
+          payload: { ...response.data, code: response.status }
+        });
+        dispatch({
+          type: "SET_LOADING",
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        const payload = error.response ? error.response.data : error.toString();
+        dispatch({
+          type: "SET_MESSAGE",
+          message: payload.message || payload || ""
+        });
+        dispatch({
+          type: "LOGIN",
+          payload
+        });
+      });
+  };
 };

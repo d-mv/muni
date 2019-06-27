@@ -1,3 +1,4 @@
+import { token } from "./../modules/token_gen";
 const express = require("express");
 import * as dotenv from "dotenv";
 
@@ -5,13 +6,15 @@ import compareObjects from "../modules/compare_objects";
 
 import * as PostController from "../controllers/post_controller";
 import { apiResponse } from "../src/types";
+import { showRequest } from "../modules/show_request";
 const router = express.Router();
 // redirect to home for rest of routes
 const dotEnv = dotenv.config();
 const redirectUrl = process.env.SELF || "httpL//localhost:8080";
 
 let replyCache: any = {
-  create: { time: new Date(), req: "", reply: "" }
+  create: { time: new Date(), req: "", reply: "" },
+  update: { time: new Date(), req: "", reply: "" }
 };
 
 // storing
@@ -65,8 +68,19 @@ router.post("/create", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.patch("/:id", (req: any, res: any, next: any) => {
-  if (req.body) {
-    PostController.updatePost(req, (controllerResponse: apiResponse) => {
+  // information
+  console.log(`§ update post...`);
+  showRequest("lcn.check", req.headers, [req.body, req.headers.token]);
+
+  if (double("update", req.body, 600)) {
+    console.log("~> consider double");
+    res
+      .status(replyCache["update"].reply.code)
+      .send(replyCache["update"].reply);
+  } else {
+    const request = { token: req.headers.token, post: req.body.post };
+    PostController.updatePost(request, (controllerResponse: apiResponse) => {
+      caching("update", req.body, controllerResponse);
       res.status(controllerResponse.code).send(controllerResponse);
     });
   }
@@ -95,7 +109,36 @@ router.patch("/:id/vote", (req: any, res: any, next: any) => {
  * @param {object} next
  */
 router.delete("/:id", (req: any, res: any, next: any) => {
-  PostController.deletePost(req, (controllerResponse: apiResponse) => {
+  showRequest("loc.delete_post", req.headers, [
+    req.params,
+    req.headers.token,
+    req.query
+  ]);
+
+  const request = {
+    token: req.headers.token,
+    post: req.params.id
+  };
+
+  PostController.deletePost(request, (controllerResponse: apiResponse) => {
+    res.status(controllerResponse.code).send(controllerResponse);
+  });
+});
+
+router.get("/:id/reply/vote", (req: any, res: any, next: any) => {
+  showRequest("loc.reply_vote", req.headers, [
+    req.params,
+    req.headers.token,
+    req.query
+  ]);
+
+  const request = {
+    token: req.headers.token,
+    post: req.params.id,
+    ...req.query
+  };
+
+  PostController.replyVote(request, (controllerResponse: apiResponse) => {
     res.status(controllerResponse.code).send(controllerResponse);
   });
 });

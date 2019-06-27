@@ -78,16 +78,33 @@ export interface setPostsAction {
   type: "SET_POSTS";
   posts: any;
 }
-
-export interface typingDataAction {
-  type: 'TYPING_DATA'
-  payload: {
-    value: string,
-    name:string
-  }
+export interface setMuniPostsAction {
+  type: "SET_MUNIPOSTS";
+  posts: any;
 }
 
+export interface typingDataAction {
+  type: "TYPING_DATA";
+  payload: {
+    value: string;
+    name: string;
+  };
+}
+
+export interface userTypeAction {
+  type: "USER_TYPE";
+  user: string;
+}
+export interface cachePost {
+  type: "CACHE_POST";
+  post: TYPE.post;
+}
+
+
 export type Action =
+  | setMuniPostsAction
+  | userTypeAction
+  | cachePost
   | typingDataAction
   | fetchDataAction
   | setPostsAction

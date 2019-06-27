@@ -29,22 +29,23 @@ export const getUserById = (
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database: any = MDB.client.db(dbName).collection(dbcMain);
+
       database
         .aggregate([
           {
             $match: {
-              "users._id": new MDB.ObjectId(id)
+              "admins._id": new MDB.ObjectId(id)
             }
           },
           {
             $unwind: {
-              path: "$users",
+              path: "$admins",
               preserveNullAndEmptyArrays: true
             }
           },
           {
             $replaceRoot: {
-              newRoot: "$users"
+              newRoot: "$admins"
             }
           },
           {
@@ -57,8 +58,48 @@ export const getUserById = (
           if (e) {
             callback(Message.notFound("user"));
           } else {
+            console.log(res);
             if (res.length === 0) {
-              callback(Message.notFound("user"));
+              database
+                .aggregate([
+                  {
+                    $match: {
+                      "users._id": new MDB.ObjectId(id)
+                    }
+                  },
+                  {
+                    $unwind: {
+                      path: "$users",
+                      preserveNullAndEmptyArrays: true
+                    }
+                  },
+                  {
+                    $replaceRoot: {
+                      newRoot: "$users"
+                    }
+                  },
+                  {
+                    $match: {
+                      _id: new MDB.ObjectId(id)
+                    }
+                  }
+                ])
+                .toArray((e: any, res: any) => {
+                  if (e) {
+                    callback(Message.notFound("user"));
+                  } else {
+                    if (res.length === 0) {
+                      callback(Message.notFound("user"));
+                    } else {
+                      callback(
+                        Message.foundMessage("user", {
+                          language: res[0].language,
+                          type: res[0].type
+                        })
+                      );
+                    }
+                  }
+                });
             } else {
               callback(
                 Message.foundMessage("user", {
@@ -399,6 +440,7 @@ export const isUserNew = (
       });
   });
 };
+
 // ** done
 /**
  * Check if user is a super
@@ -538,13 +580,48 @@ export const login = (
   user: TYPE.IncLoginTYPE,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  // try login as SU
-  suLoginAttempt(user, (suCheckResponse: TYPE.apiResponse) => {
-    // callback if logged in or wrong password
-    if (suCheckResponse.status || suCheckResponse.code === 401) {
-      callback(suCheckResponse);
+  IsUserMuni(user, (muniUserResponse: TYPE.apiResponse) => {
+    console.log("muniUserResponse");
+    console.log(muniUserResponse);
+    if (muniUserResponse.status) {
+      compareStringToHash(
+        user.pass,
+        muniUserResponse.payload.pass,
+        (response: boolean | TYPE.apiResponse) => {
+          console.log(response);
+          if (typeof response === "boolean") {
+            // if it's true/false
+            if (response) {
+              // if matching
+              const lang = muniUserResponse.payload.language;
+              const type = muniUserResponse.payload.type;
+              const user = muniUserResponse.payload._id;
+              const location = muniUserResponse.payload.location;
+              getLocationInfoQ(location, (dataResponse: TYPE.apiResponse) => {
+                const replyPayload = {
+                  ...dataResponse.payload,
+                  lang,
+                  type,
+                  _id: user
+                };
+                callback({ ...dataResponse, payload: replyPayload });
+              });
+            } else {
+              // if not matching
+              callback(
+                Message.generalError({
+                  subj: "Wrong password",
+                  code: 401
+                })
+              );
+            }
+          } else {
+            // if it's error
+            callback(response);
+          }
+        }
+      );
     } else {
-      // check if user exists
       isUserNew(user, (newUserResponse: TYPE.apiResponse) => {
         // if 1 only user found, attempt to login
         if (newUserResponse.status) {
@@ -589,6 +666,96 @@ export const login = (
         }
       });
     }
+  });
+};
+
+export const IsUserMuni = (
+  user: TYPE.IncLoginTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    const db: any = MDB.client.db(dbName);
+    db.collection(dbcMain)
+      .aggregate([
+        {
+          $match: {
+            "admins.email": user.email
+          }
+        }
+      ])
+      .toArray((errL: any, resultL: any) => {
+        console.log("resultL");
+        console.log(resultL);
+        if (err)
+          callback(Message.errorMessage({ action: "isUserNew", e: errL }));
+        let response: TYPE.apiResponse = {
+          status: false,
+          message: "User not found (email is not registered)",
+          code: 404
+        };
+        if (resultL.length > 1) {
+          // if too many results
+          response.message = "Contact administrator (too many results)";
+          response.code = 500;
+          callback(response);
+        } else if (resultL.length === 0) {
+          // if too many results
+          callback(Message.notFound("muni user"));
+        } else {
+          const location = resultL[0]._id;
+
+          db.collection(dbcMain)
+            .aggregate([
+              {
+                $match: {
+                  "admins.email": user.email
+                }
+              },
+              {
+                $project: {
+                  admins: 1
+                }
+              },
+              {
+                $unwind: {
+                  path: "$admins",
+                  preserveNullAndEmptyArrays: true
+                }
+              },
+              {
+                $replaceRoot: {
+                  newRoot: "$admins"
+                }
+              },
+              {
+                $match: {
+                  email: user.email
+                }
+              }
+            ])
+            .toArray((err: any, result: any) => {
+              if (err)
+                callback(Message.errorMessage({ action: "isUserNew", e: err }));
+              else if (result.length > 1) {
+                // if too many results
+                response.message = "Contact administrator (too many results)";
+                response.code = 500;
+              } else if (result.length === 1) {
+                // match
+                // const reply = result[0];
+                // const location = result[0]._id;
+                response = {
+                  status: true,
+                  message: "User found",
+                  code: 200,
+                  payload: { ...result[0], location }
+                };
+              }
+              callback(response);
+            });
+        }
+      });
   });
 };
 
@@ -890,7 +1057,6 @@ export const getLocationInfo = (
         });
     }
   });
-  // MDB.client.close();
 };
 
 export const confirmedEmail = (
@@ -1055,4 +1221,146 @@ export const update = (
     }
   });
   // MDB.client.close();
+};
+
+export const getLocationInfoQ = (
+  location: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    if (err) {
+      callback(Message.errorMessage({ action: "connection to DB", e: err }));
+    } else {
+      let database: any = MDB.client.db(dbName).collection(dbcApp);
+      let categories: Array<string>;
+      database
+        .aggregate([
+          {
+            $project: {
+              _id: 0,
+              categories: 1
+            }
+          }
+        ])
+        .toArray((err: any, result: any) => {
+          if (err) {
+            callback(
+              Message.errorMessage({
+                action: "get categories",
+                e: err
+              })
+            );
+          } else if (result.length === 0) {
+            // if no - response
+            callback(Message.notFound("categories not found"));
+          } else if (result.length > 1) {
+            // if too many results
+            callback(Message.tooManyResultsMessage("get categories"));
+          } else {
+            categories = result[0].categories;
+          }
+        });
+      database = MDB.client.db(dbName).collection(dbcMain);
+      database
+        .aggregate([
+          {
+            $match: {
+              _id: new MDB.ObjectId(location)
+            }
+          },
+          {
+            $project: {
+              name: 1,
+              location: "$_id",
+              pinned: 1,
+              municipality: 1,
+              _id: 0,
+              posts: {
+                $reduce: {
+                  input: "$users.posts",
+                  initialValue: [],
+                  in: {
+                    $concatArrays: ["$$value", "$$this"]
+                  }
+                }
+              }
+            }
+          }
+        ])
+        .toArray((err: any, result: any) => {
+          if (err) {
+            // if error
+            callback(Message.errorMessage({ action: "user match", e: err }));
+          } else if (result.length === 0) {
+            // if no - response
+            callback(Message.notFound("user not found"));
+          } else if (result.length > 1) {
+            // if too many results
+            callback(Message.tooManyResultsMessage("user matching"));
+          } else {
+            // if found
+            callback(
+              Message.positiveMessage({
+                subj: "User login is OK",
+                payload: {
+                  payload: { categories, ...result[0] }
+                }
+              })
+            );
+          }
+        });
+    }
+  });
+};
+
+export const muniLogin = (
+  user: TYPE.IncLoginTYPE,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  IsUserMuni(user, (muniUserResponse: TYPE.apiResponse) => {
+    console.log("muniUserResponse");
+    console.log(muniUserResponse);
+    if (muniUserResponse.status) {
+      compareStringToHash(
+        user.pass,
+        muniUserResponse.payload.pass,
+        (response: boolean | TYPE.apiResponse) => {
+          console.log(response);
+          if (typeof response === "boolean") {
+            // if it's true/false
+            if (response) {
+              // if matching
+              const lang = muniUserResponse.payload.language;
+              const type = muniUserResponse.payload.type;
+              const user = muniUserResponse.payload._id;
+              const location = muniUserResponse.payload.location;
+              getLocationInfoQ(location, (dataResponse: TYPE.apiResponse) => {
+                const replyPayload = {
+                  ...dataResponse.payload,
+                  lang,
+                  type,
+                  _id: user
+                };
+                callback({ ...dataResponse, payload: replyPayload });
+              });
+            } else {
+              // if not matching
+              callback(
+                Message.generalError({
+                  subj: "Wrong password",
+                  code: 401
+                })
+              );
+            }
+          } else {
+            // if it's error
+            callback(response);
+          }
+        }
+      );
+    } else {
+      callback(Message.notFound("user"));
+    }
+  });
 };

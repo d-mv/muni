@@ -78,7 +78,7 @@ exports.notAuthMessage = function (subj) {
 exports.notFound = function (subj) {
     return {
         status: false,
-        message: "No " + subj + " found in the DB",
+        message: "No " + subj + " found.",
         code: 203
     };
 };

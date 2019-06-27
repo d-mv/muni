@@ -71,7 +71,7 @@ exports.compareStringToHash = function (text, hash, callback) {
  * @param {string} token
  * @callback - Callback function to return the message w/payload or not
  */
-exports.checkToken = function (token, callback) {
+exports.checkToken = function (token, callback, nodata) {
     jwt.verify(token, passPhrase, function (err, decoded) {
         if (err) {
             callback(Message.errorMessage({ action: "reading token", e: err }));
@@ -94,12 +94,23 @@ exports.checkToken = function (token, callback) {
                         // user is not super
                         User.getUserById(decoded.id, function (getUserByIdResponse) {
                             if (getUserByIdResponse.status) {
-                                User.getLocationInfo(decoded.id, function (modelReply) {
-                                    console.log("getUserByIdResponse");
-                                    console.log(getUserByIdResponse);
-                                    var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language, type: getUserByIdResponse.type });
-                                    callback(__assign({}, modelReply, { payload: replyPayload }));
-                                });
+                                if (nodata) {
+                                    callback(Message.foundMessage("token OK", {
+                                        payload: {
+                                            id: decoded.id,
+                                            lang: getUserByIdResponse.language,
+                                            type: getUserByIdResponse.type
+                                        }
+                                    }));
+                                }
+                                else {
+                                    User.getLocationInfo(decoded.id, function (modelReply) {
+                                        console.log("getUserByIdResponse");
+                                        console.log(getUserByIdResponse);
+                                        var replyPayload = __assign({}, modelReply.payload, { lang: getUserByIdResponse.language, type: getUserByIdResponse.type });
+                                        callback(__assign({}, modelReply, { payload: replyPayload }));
+                                    });
+                                }
                             }
                             else {
                                 callback(getUserByIdResponse);

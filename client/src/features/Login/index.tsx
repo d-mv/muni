@@ -10,7 +10,8 @@ import {
   setModule,
   setMessage,
   setLoading,
-  typingData
+  typingData,
+  muniLogin
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
@@ -18,6 +19,8 @@ import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 
 import button from "../../components/style/Button.module.scss";
+import { type } from "os";
+import styleFactory from "../../modules/style_factory";
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -30,27 +33,33 @@ const Login = (props: {
   loading: boolean;
   typed: TYPE.indexedObj;
   login: (arg0: TYPE.login) => void;
+  muniLogin: (arg0: TYPE.login) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   setLoading: (arg0: boolean) => void;
   typingData: (arg0: TYPE.data) => void;
+  desktop?: boolean;
 }) => {
   // get the language[]
   const { text, direction } = props.language;
   // set local hooks
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const [email, setEmail] = useState(props.typed ? props.typed.email : "");
+  const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
   // set message
   const [errorMessage, setErrorMessage] = useState(props.message);
-  console.log(props.typed);
+  // console.log(props.typed);
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const login: TYPE.login = {
       email,
       pass
+    };
+    if (props.desktop) {
+      props.muniLogin(login);
+    } else {
+      props.login(login);
     }
-    props.login(login);
   };
 
   // handle fields input changes
@@ -102,9 +111,12 @@ const Login = (props: {
     length: 7
   });
 
+  let loginStyle = direction === "rtl" ? "formRight" : "formLeft";
+  if (props.desktop) loginStyle = styleFactory("formDesktop", direction);
+
   return (
     <form
-      className={direction === "rtl" ? "formRight" : "formLeft"}
+      className={loginStyle}
       onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
         handleSubmit(event)
       }>
@@ -142,5 +154,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { login, setModule, setMessage, setLoading, typingData }
+  { login, setModule, setMessage, setLoading, typingData,muniLogin }
 )(Login);
