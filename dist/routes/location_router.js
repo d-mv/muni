@@ -97,6 +97,54 @@ router.get("/:id/posts", function (req, res, next) {
         }, true);
     }
 });
+router.get("/:id/muniposts", function (req, res, next) {
+    show_request_1.showRequest("loc.get_muniposts", req.params.id, [req.body, req.headers.token]);
+    var ng = function (code, packageToSend, message) {
+        res
+            .cookie("token", "", {
+            expire: "",
+            httpOnly: false,
+            secure: false
+        })
+            .status(code)
+            .send(packageToSend || { status: false, message: message });
+    };
+    // check if token is available
+    if (!req.headers.token) {
+        // if not present, clear cookies and send code/message
+        ng(406, "Token is missing");
+    }
+    else {
+        // token is present
+        // check if token valid
+        security_1.checkToken(req.headers.token, function (checkTokenResponse) {
+            // console.log("checkTokenResponse");
+            // console.log(checkTokenResponse);
+            // reassign code
+            var code = checkTokenResponse.code;
+            delete checkTokenResponse.code;
+            // check if code is not positive
+            if (code !== 200) {
+                // clear cookies  and send code/message
+                ng(code, checkTokenResponse);
+            }
+            else {
+                // console.log(checkTokenResponse);
+                PostController.muniPosts({
+                    location: req.params.id,
+                    user: checkTokenResponse.payload.id,
+                    level: checkTokenResponse.level || ""
+                }, function (controllerResponse) {
+                    console.log('news:');
+                    console.log(typeof controllerResponse);
+                    console.log(Object.keys(controllerResponse));
+                    console.log(controllerResponse.message);
+                    res.status(controllerResponse.code).send(controllerResponse);
+                });
+            }
+        }, true);
+    }
+});
 // create
 router.post("/create", function (req, res, next) {
     show_request_1.showRequest("loc.create", req.headers, [req.body, req.headers.token]);

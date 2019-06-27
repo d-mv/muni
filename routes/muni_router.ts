@@ -6,7 +6,6 @@ import * as PostController from "../controllers/post_controller";
 
 import { cookieFactory } from "../modules/security";
 import { apiResponse } from "../src/types";
-import { showRequest } from 'modules/show_request';
 
 const router = express.Router();
 

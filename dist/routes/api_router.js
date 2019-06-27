@@ -2,15 +2,15 @@
 exports.__esModule = true;
 var express = require("express");
 var dotenv = require("dotenv");
-var db_seed_1 = require("../modules/db_seed");
+// import dbSeed from "../modules/db_seed";
 var router = express.Router();
 var dotEnv = dotenv.config();
 // ! seed the db with users/posts
-router.get("/seed", function (req, res, next) {
-    db_seed_1["default"](function (resp) {
-        res.send(resp);
-    });
-});
+// router.get("/seed", (req: any, res: any, next: any) => {
+//   dbSeed((resp: any) => {
+//     res.send(resp);
+//   });
+// });
 router.get("/photo", function (req, res, next) {
     console.log(req.body);
     console.log(req);

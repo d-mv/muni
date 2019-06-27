@@ -82,6 +82,57 @@ exports.list = function (query, callback) {
         }
     });
 };
+exports.listMuni = function (query, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            callback(Message.errorMessage({ action: "connection to DB", e: err }));
+        }
+        else {
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            database
+                .aggregate([
+                {
+                    $match: {
+                        _id: new MDB.ObjectId(query.location)
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$municipality",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: "$municipality"
+                    }
+                }
+            ])
+                .toArray(function (e, result) {
+                if (e) {
+                    // if error
+                    callback(Message.errorMessage({
+                        action: "municipality posts (by location) search",
+                        e: e
+                    }));
+                }
+                else if (result.length === 0) {
+                    // not found
+                    callback(Message.notFound("municipality posts"));
+                }
+                else {
+                    // bingo
+                    // return result
+                    callback(Message.positiveMessage({
+                        subj: "Found " + result.length + " municipality post(s)",
+                        payload: result
+                    }));
+                }
+            });
+        }
+    });
+};
 exports.checkByTitle = function (location, title, callback) {
     var database = MDB.client.db(dbName).collection(dbcMain);
     database
@@ -104,10 +155,8 @@ exports.checkByTitle = function (location, title, callback) {
 };
 /**
  * Function to create post
- *
  * @param {object} request - New post fields and user ID
  * @callback callback - Callback function to return response
- *
  */
 exports.create = function (request, callback) {
     exports.checkByTitle(request.location, request.post.title, function (checkResponse) {
@@ -142,6 +191,47 @@ exports.create = function (request, callback) {
                 callback(Message.errorMessage({ action: "post create", e: e }));
             });
         }
+    });
+};
+exports.createMuni = function (request, callback) {
+    var newPost = __assign({}, request.post, { _id: new MDB.ObjectId(), date: new Date(), status: "active" });
+    var database = MDB.client.db(dbName).collection(dbcMain);
+    database
+        .update({
+        _id: new MDB.ObjectId(request.location)
+    }, { $push: { municipality: newPost } })
+        .then(function (document) {
+        // process response
+        if (request.post.pinned) {
+            database
+                .update({
+                _id: new MDB.ObjectId(request.location)
+            }, { pinned: newPost })
+                .then(function (pinned) {
+                callback(Message.updateMessage({
+                    subj: "Pinned post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "pinned post create", e: e }));
+            });
+        }
+        else {
+            callback(Message.updateMessage({
+                subj: "Post",
+                document: {
+                    ok: document.result.ok,
+                    nModified: document.result.nModified
+                }
+            }));
+        }
+    })["catch"](function (e) {
+        assert.equal(null, e);
+        callback(Message.errorMessage({ action: "pinned post create", e: e }));
     });
 };
 /**
@@ -336,6 +426,79 @@ exports.replyVote = function (request, callback) {
             })["catch"](function (e) {
                 assert.equal(null, e);
                 callback(Message.errorMessage({ action: "post reply voteupdate", e: e }));
+            });
+        }
+    });
+};
+exports.updateMuni = function (request, callback) {
+    console.log("updateMuni");
+    console.log(Object.keys(request.post));
+    console.log(request.post.text);
+    var location = request.location;
+    var post = request.post;
+    var id = post._id;
+    delete post._id;
+    var setRequest = [];
+    Object.keys(post).forEach(function (key) {
+        setRequest["municipality.$[reply]." + key] = post[key];
+    });
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({ action: "connection to DB (P1)", e: err }));
+        }
+        else {
+            // set database
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            database
+                .updateMany({ _id: new MDB.ObjectId(location) }, { $set: { "municipality.$[reply]": post } }, {
+                arrayFilters: [{ "reply._id": new MDB.ObjectId(id) }]
+            })
+                .then(function (document) {
+                // process response
+                console.log(document);
+                callback(Message.updateMessage({
+                    subj: "Post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post update", e: e }));
+            });
+        }
+    });
+};
+exports.deleteMuniPost = function (request, callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        if (err) {
+            // return error with connection
+            callback(Message.errorMessage({ action: "connection to DB (5)", e: err }));
+        }
+        else {
+            // set database
+            var database = MDB.client.db(dbName).collection(dbcMain);
+            // update
+            database
+                .update({ _id: new MDB.ObjectId(request.location) }, {
+                $pull: { municipality: { _id: new MDB.ObjectId(request.postId) } }
+            })
+                .then(function (document) {
+                // process response
+                callback(Message.updateMessage({
+                    subj: "Post",
+                    document: {
+                        ok: document.result.ok,
+                        nModified: document.result.nModified
+                    }
+                }));
+            })["catch"](function (e) {
+                assert.equal(null, e);
+                callback(Message.errorMessage({ action: "post update", e: e }));
             });
         }
     });

@@ -55,6 +55,19 @@ exports.createPost = function (query, callback) {
         }
     });
 };
+exports.createMuni = function (query, callback) {
+    console.log(Object.keys(query));
+    security_1.checkToken(query.token, function (checkTokenResponse) {
+        console.log(Object.keys(checkTokenResponse.payload));
+        var request = {
+            location: query.location,
+            post: query.post
+        };
+        Post.createMuni(request, function (modelResponse) {
+            callback(modelResponse);
+        });
+    }, true);
+};
 /**
  * Function to update post
  * @function updatePost
@@ -73,6 +86,24 @@ exports.updatePost = function (request, callback) {
         else {
             // positive code = 200
             Post.update(postObject, function (modelResponse) {
+                // callback with response
+                callback(modelResponse);
+            });
+        }
+    }, true);
+};
+exports.updateMuniPost = function (request, callback) {
+    var token = request.token, location = request.location, post = request.post;
+    var postObject = JSON.parse(post);
+    security_1.checkToken(token, function (checkTokenResponse) {
+        // check if code is not positive
+        if (checkTokenResponse.code !== 200) {
+            // negative code
+            callback(checkTokenResponse);
+        }
+        else {
+            // positive code = 200
+            Post.updateMuni({ post: postObject, location: location }, function (modelResponse) {
                 // callback with response
                 callback(modelResponse);
             });
@@ -111,6 +142,32 @@ exports.deletePost = function (props, callback) {
         }, true);
     }
 };
+exports.deleteMuniPost = function (props, callback) {
+    if (!props.token) {
+        // if token is not present send code/message
+        callback(response_message_1.requestError("Token is missing"));
+    }
+    else {
+        // token is present, check it
+        security_1.checkToken(props.token, function (checkTokenResponse) {
+            // check if code is not positive
+            if (checkTokenResponse.code !== 200) {
+                // negative code
+                callback(checkTokenResponse);
+            }
+            else {
+                console.log(checkTokenResponse);
+                Post.deleteMuniPost({
+                    postId: props.post,
+                    location: props.location
+                }, function (modelResponse) {
+                    // callback with response
+                    callback(modelResponse);
+                });
+            }
+        }, true);
+    }
+};
 /** Get the list of locations
  * @function posts
  * @param  {object} props - Request in the form of IncPostsListTYPE
@@ -118,6 +175,11 @@ exports.deletePost = function (props, callback) {
  */
 exports.posts = function (props, callback) {
     Post.list(props, function (modelResponse) {
+        callback(modelResponse);
+    });
+};
+exports.muniPosts = function (props, callback) {
+    Post.listMuni(props, function (modelResponse) {
         callback(modelResponse);
     });
 };
