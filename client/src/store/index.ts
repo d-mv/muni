@@ -4,14 +4,20 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { setStep, showHelp, fetchLocations, prevModule } from "./app/reducers";
+import {
+  setStep,
+  showHelp,
+  fetchLocations,
+  prevModule,
+  setModule
+} from "./app/reducers";
 import { submitPost, updatePost, showPost, deletePost } from "./post/reducers";
 import {
   vote,
   setToken,
   checkToken,
   login,
-  setModule,
+  // setModule,
   register,
   setLoading,
   setAuth,

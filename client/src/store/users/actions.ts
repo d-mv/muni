@@ -67,7 +67,7 @@ export const checkToken = (
             data: ""
           });
           dispatch({ type: "SET_AUTH", status: false });
-          dispatch({ type: "SET_MODULE", module: "login" });
+          // dispatch({ type: "SET_MODULE", module: "login" });
         }
         // if negative - return the data
         dispatch({
@@ -160,10 +160,10 @@ export const login = (
             type: "SET_LOADING",
             loading: false
           });
-          dispatch({
-            type: "SET_MODULE",
-            mode: "register"
-          });
+          // dispatch({
+          //   type: "SET_MODULE",
+          //   mode: "register"
+          // });
         }
         dispatch({
           type: "SET_MESSAGE",
@@ -180,7 +180,7 @@ export const login = (
 export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch({ type: "SET_AUTH", status: false });
-    dispatch({ type: "SET_MODULE", module: "welcome" });
+    // dispatch({ type: "SET_MODULE", module: "welcome" });
     dispatch({ type: "SET", token: "clear" });
     dispatch({
       type: "TYPING_DATA",
@@ -252,7 +252,7 @@ export const register = (
             type: "SET_MESSAGE",
             message: response.data.payload.message
           });
-          dispatch({ type: "SET_MODULE", module: "confirmation" });
+          // dispatch({ type: "SET_MODULE", module: "confirmation" });
         }
         dispatch({
           type: "SET_LOADING",

@@ -5,7 +5,7 @@ import axios from "axios";
 import { AppState } from "./store";
 
 import {
-  setModule,
+  // setModule,
   setToken,
   checkToken,
   login,
@@ -13,7 +13,7 @@ import {
   getPosts,
   getMuniPosts
 } from "./store/users/actions";
-import { fetchLocations, prevModule } from "./store/app/actions";
+import { fetchLocations, setModule } from "./store/app/actions";
 import { showPost } from "./store/post/actions";
 
 import NewButton from "./features/New/components/NewButton";
@@ -34,7 +34,7 @@ const App = (props: {
   vote: data;
   check: data;
   post: boolean;
-  setModule: (arg0: string) => void;
+  setModule: (arg0: string,arg1:string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   location: data;
@@ -45,7 +45,7 @@ const App = (props: {
   cookies: any;
   posts: data;
   showPost: (arg0: showPostPayload) => void;
-  prevModule: (arg0: string) => void;
+  // prevModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
   getMuniPosts: (arg0: string) => void;
   type: any;
@@ -59,8 +59,8 @@ const App = (props: {
 
 
   const toggleModule = (module: string) => {
-    props.prevModule(props.module);
-    props.setModule(module);
+    // props.prevModule(props.module);
+    props.setModule(props.module,module);
   };
 
   // useEffect(() => {
@@ -203,6 +203,7 @@ const App = (props: {
   const LazyComponent = (props: { children: any }) => (
     <Suspense fallback={<Loading />}>{props.children}</Suspense>
   );
+  const config = { action: handleNewButtonClick, user: true };
 
   const componentFactory = (CFProps: {
     children: any;
@@ -218,7 +219,7 @@ const App = (props: {
     // ) : null;
     const nav = CFProps.nav ? <Navigation /> : null;
     const newButton = CFProps.new ? (
-      <NewButton action={handleNewButtonClick} />
+      <NewButton config={config} />
     ) : null;
     let content = CFProps.lazy ? (
       <AppComponent>
@@ -352,7 +353,7 @@ export default connect(
     fetchLocations,
     fetchData,
     showPost,
-    prevModule,
+    // prevModule,
     getPosts,
     getMuniPosts
   }

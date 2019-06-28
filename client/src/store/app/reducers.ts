@@ -80,3 +80,10 @@ export const prevModule = (state = "welcome", action: Action) => {
   }
   return state
 };
+export const setModule = (state = "welcome", action: Action) => {
+  switch (action.type) {
+    case "SET_MODULE":
+      return action.module;
+  }
+  return state
+};
