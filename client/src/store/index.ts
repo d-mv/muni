@@ -94,7 +94,7 @@ export default function configureStore() {
     data: TYPE.indexedObjAny;
     language: TYPE.indexedObjAny;
     locationData: TYPE.data;
-    auth: boolean;
+    auth: TYPE.indexedObj;
     step: number;
     submitPost: TYPE.apiResponse;
     help: boolean;
@@ -124,7 +124,7 @@ export default function configureStore() {
     data: data,
     language: data.language["עב"],
     locationData: {},
-    auth: false,
+    auth: {},
     step: 1,
     submitPost: apiState,
     help: false,

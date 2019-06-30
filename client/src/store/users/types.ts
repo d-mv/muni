@@ -40,7 +40,10 @@ export interface setMessageAction {
 
 export interface setAuthAction {
   type: "SET_AUTH";
-  status: boolean;
+  payload: {
+    _id: string;
+    location: string;
+  };
 }
 export interface setLocationDataAction {
   type: "SET_LOCATION_DATA";
@@ -99,7 +102,6 @@ export interface cachePost {
   type: "CACHE_POST";
   post: TYPE.post;
 }
-
 
 export type Action =
   | setMuniPostsAction

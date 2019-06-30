@@ -1,6 +1,6 @@
 import { emptyPost } from "./../defaults";
 import { Action } from "./types";
-import { data, indexedObjAny } from "../types";
+import { data, indexedObjAny, indexedObj } from "../types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action) => {
@@ -58,7 +58,7 @@ export const register = (state = apiState, action: Action) => {
   return { ...state };
 };
 
-export const setModule = (state = '', action: Action): string => {
+export const setModule = (state = "", action: Action): string => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module ? action.module : state;
@@ -66,10 +66,10 @@ export const setModule = (state = '', action: Action): string => {
   return state;
 };
 
-export const setAuth = (state = false, action: Action): boolean => {
+export const setAuth = (state = {}, action: Action): indexedObj => {
   switch (action.type) {
     case "SET_AUTH":
-      return action ? true : false;
+      return { ...state, ...action.payload };
   }
   return state;
 };

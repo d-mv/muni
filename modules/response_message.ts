@@ -116,3 +116,20 @@ export const positiveMessage = (props: {
     return { ...message, ...props.payload };
   }
 };
+// v2
+export const positive = (props: {
+  subj: string;
+  code?: number;
+  payload?: [] | any;
+}) => {
+  let message = {
+    status: true,
+    message: props.subj,
+    code: props.code || 200
+  };
+  // if (Array.isArray(props.payload)) {
+    return { ...message, payload: props.payload };
+  // } else {
+    // return { ...message, ...props.payload };
+  // }
+};

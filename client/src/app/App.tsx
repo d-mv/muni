@@ -29,9 +29,11 @@ import {
   Mine,
   Post
 } from "./components/Factory";
-import { data } from "../store/types";
+import { data, indexedObj, indexedObjAny } from "../store/types";
 import "../style/App.scss";
 import { showPostPayload } from "../store/post/types";
+import { IndexOptions } from "mongodb";
+import logger from "../modules/logger";
 
 const App = (props: {
   token: string;
@@ -46,6 +48,7 @@ const App = (props: {
   checkToken: (arg0: string) => void;
   data: data;
   locations: data;
+  location: string;
   posttmp: data;
   fetchLocations: (props?: any) => any;
   fetchData: (arg0: string) => void;
@@ -57,18 +60,19 @@ const App = (props: {
   getMuniPosts: (arg0: string) => void;
   type: any;
   userMuni: boolean;
+  auth: indexedObj;
+  news:indexedObjAny
 }) => {
-  const { token, userMuni, cookies } = props;
-  const { location } = props.data;
+  const { token, userMuni, cookies, location, auth,posts,news } = props;
 
   const [loading, setLoading] = useState(true);
   const [localToken, setLocalToken] = useState(token);
 
   const fetchPostsNews = () => {
     console.log("fetching petitions...");
-    props.getPosts(location);
+    props.getPosts(auth.location);
     console.log("fetching news...");
-    props.getMuniPosts(location);
+    props.getMuniPosts(auth.location);
   };
 
   const toggleModule = (module: string) => {
@@ -84,39 +88,74 @@ const App = (props: {
   // }, [props.type]);
 
   // set cookies if token changes
+
   useEffect(() => {
-    console.log("1. check token");
-    axios.defaults.headers = { token };
-    // if 'clear'
-    if (props.token === "clear") {
-      console.log("- clear token");
-      cookies.set("token", "");
-      props.setToken("");
-      toggleModule("welcome");
-    } else if (
-      props.token !== "" &&
-      props.token !== "clear" &&
-      Object.keys(props.data).length === 0
-    ) {
-      console.log("- token is in state, but no data");
-      cookies.set("token", props.token);
-      props.fetchData(token);
-    } else if (
-      props.token !== "" &&
-      props.token !== "clear" &&
-      Object.keys(props.data).length > 0
-    ) {
-      console.log("- token is in state, data is present");
-      fetchPostsNews();
-      cookies.set("token", props.token);
-    } else if (cookies.get("token") && cookies.get("token").length > 0) {
-      console.log("- token is in cookies");
-      props.checkToken(cookies.get("token"));
+    logger({ text: "main process is", emph: "launched", type: "positive" });
+
+    if (auth._id && auth.location && token) {
+      logger({ text: "auth is", emph: "true", type: "positive" });
+      // set auth settings for axios
+      axios.defaults.headers = { token };
+      
+      if (posts.length > 0) {
+        logger({ text: "posts are", emph: "true", type: "positive" });
+      } else {
+        logger({ text: "posts are", emph: "false", type: "attention" });
+        fetchPostsNews()
+      }
     } else {
-      console.log("- no state, to cookie");
-      toggleModule("welcome");
+      logger({ text: "auth is", emph: "false", type: "attention" });
+      const cookie = cookies.get('token')
+
+      if (cookie) {
+        logger({ text: "cookie is", emph: "true", type: "positive" });
+        props.checkToken(cookie);
+      } else {
+        // TODO:
+      }
+
     }
-  }, [token, cookies]);
+  }, [token, auth, cookies]);
+
+  // useEffect(() => {
+  //   console.log("1. check token");
+  //   axios.defaults.headers = { token };
+  //   // if 'clear'
+  //   if (props.token === "clear") {
+  //     console.log("- clear token");
+  //     cookies.set("token", "");
+  //     props.setToken("");
+  //     toggleModule("welcome");
+  //   }
+  //   // token in state, no data
+  //   else if (
+  //     props.token !== "" &&
+  //     props.token !== "clear" &&
+  //     Object.keys(props.data).length === 0
+  //   ) {
+  //     console.log("- token is in state, but no data");
+  //     cookies.set("token", props.token);
+  //     props.fetchData(token);
+  //   }
+  //     // token & data === true
+  //   else if (
+  //     props.token !== "" &&
+  //     props.token !== "clear" &&
+  //     Object.keys(props.data).length > 0
+  //   ) {
+  //     console.log("- token is in state, data is present");
+  //     fetchPostsNews();
+  //     cookies.set("token", props.token);
+  //   }
+  //   // token is cookies
+  //   else if (cookies.get("token") && cookies.get("token").length > 0) {
+  //     console.log("- token is in cookies");
+  //     props.checkToken(cookies.get("token"));
+  //   } else {
+  //     console.log("- no state, to welcome");
+  //     toggleModule("welcome");
+  //   }
+  // }, [token, cookies]);
 
   useEffect(() => {
     console.log("2. triggered module");
@@ -177,7 +216,7 @@ const App = (props: {
   useEffect(() => {
     if (props.locations.length === 0) {
       console.log("5. locations not available, get them");
-      props.fetchLocations();
+      // props.fetchLocations();
     }
   });
 
@@ -234,6 +273,7 @@ const mapStateToProps = (state: AppState) => {
     loginResult: state.login,
     data: state.locationData,
     locations: state.locations,
+    location: state.locationData.location,
     help: state.help,
     vote: state.vote,
     check: state.checkTokenResult,
@@ -241,7 +281,9 @@ const mapStateToProps = (state: AppState) => {
     posttmp: state.post,
     posts: state.posts,
     type: state.type,
-    userMuni: state.type === "muni"
+    userMuni: state.type === "muni",
+    auth: state.auth,
+    news:state.news
   };
 };
 

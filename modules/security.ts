@@ -229,3 +229,32 @@ export const verifyId = (
     }
   });
 };
+
+// v2 method
+export const verifyToken = async (id: string) =>
+  jwt.verify(id, passPhrase, (err: any, decoded: any) => {
+    if (err) {
+      return Message.errorMessage({ action: "reading ID", e: err });
+    } else {
+      const now: any = new Date();
+      const expiry: any = new Date(decoded.exp * 1000);
+      const authedHours = Math.round((expiry - now) / 3600000);
+      // check time validity
+      if (authedHours <= 720 && authedHours >= 0) {
+        // good
+        return Message.positive({
+          subj: "ID is valid",
+          code: 200,
+          payload: { _id: decoded.id }
+        });
+      } else if (authedHours > 720) {
+        // unauth
+        return Message.notAuthMessage("id is expired");
+      } else {
+        // smth wrong
+        return Message.wrongDbMessage(
+          "The difference between 'issued' and 'expired' is wrong"
+        );
+      }
+    }
+  });

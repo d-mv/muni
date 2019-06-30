@@ -8,6 +8,7 @@ import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
 export * from "./posts";
+export * from './auth'
 const importedData: TYPE.indexedObjAny = data;
 
 /**
@@ -39,55 +40,55 @@ export const changeMode = (mode: string): Action => {
  * @param {string} token
  * @return {Promise} - Returns promise resolved with the help of Thunk
  */
-export const checkToken = (
-  token: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = "/user/check";
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    axios({
-      method: "get",
-      url,
-      headers: { token }
-    })
-      .then(response => {
+// export const checkToken = (
+//   token: string
+// ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+//   const url = "/user/check";
+//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+//     axios({
+//       method: "get",
+//       url,
+//       headers: { token }
+//     })
+//       .then(response => {
 
-        const payload = response.data;
-        console.log(payload);
-        if (payload.status) {
-          dispatch({ type: "SET", token });
-          dispatch({ type: "SET_AUTH", status: true });
-          dispatch({
-            type: "LOGIN",
-            payload: { ...response.data, code: response.status }
-          });
-        } else {
-          dispatch({ type: "SET", token: "clear" });
-          dispatch({
-            type: "SET_LOCATION_DATA",
-            data: ""
-          });
-          dispatch({ type: "SET_AUTH", status: false });
-          // dispatch({ type: "SET_MODULE", module: "login" });
-        }
-        // if negative - return the data
-        dispatch({
-          type: "CHECK",
-          payload: { ...response.data, code: response.status }
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: "SET_LOCATION_DATA",
-          data: error.data
-        });
-      });
-  };
-};
+//         const payload = response.data;
+//         console.log(payload);
+//         if (payload.status) {
+//           dispatch({ type: "SET", token });
+//           dispatch({ type: "SET_AUTH", status: true });
+//           dispatch({
+//             type: "LOGIN",
+//             payload: { ...response.data, code: response.status }
+//           });
+//         } else {
+//           dispatch({ type: "SET", token: "clear" });
+//           dispatch({
+//             type: "SET_LOCATION_DATA",
+//             data: ""
+//           });
+//           dispatch({ type: "SET_AUTH", status: false });
+//           // dispatch({ type: "SET_MODULE", module: "login" });
+//         }
+//         // if negative - return the data
+//         dispatch({
+//           type: "CHECK",
+//           payload: { ...response.data, code: response.status }
+//         });
+//       })
+//       .catch(error => {
+//         console.log(error);
+//         dispatch({
+//           type: "SET_LOCATION_DATA",
+//           data: error.data
+//         });
+//       });
+//   };
+// };
 
-export const setAuth = (status: boolean): Action => {
-  return { type: "SET_AUTH", status };
-};
+// export const setAuth = (status: boolean): Action => {
+//   return { type: "SET_AUTH", status };
+// };
 
 export const setModule = (
   module: string
