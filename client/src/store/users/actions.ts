@@ -25,7 +25,8 @@ export const setToken = (token: string): Action => {
  * @param {boolean} loading
  * @return {Object} - Returns object of action type and token
  */
-export const setLoading = (loading: boolean = false): Action => {
+export const setLoading = (loading: boolean): Action => {
+  // console.log(loading)
   return { type: "SET_LOADING", loading };
 };
 
@@ -148,10 +149,10 @@ export const login = (
           type: "LOGIN",
           payload: { ...response.data, code: response.status }
         });
-        dispatch({
-          type: "SET_LOADING",
-          loading: false
-        });
+        // dispatch({
+        //   type: "SET_LOADING",
+        //   loading: false
+        // });
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();

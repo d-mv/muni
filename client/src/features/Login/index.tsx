@@ -21,6 +21,7 @@ import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
 import { type } from "os";
 import styleFactory from "../../modules/style_factory";
+import { clearScreenDown } from "readline";
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -46,12 +47,19 @@ const Login = (props: {
   const [email, setEmail] = useState(props.typed ? props.typed.email : "");
   const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
   // set message
-  const [errorMessage, setErrorMessage] = useState(props.message);
+  const [errorMessage, setErrorMessage] = useState('');
+  // const [loading, setLoading] = useState(props.loading);
   // console.log(props.typed);
+
+  // React.useEffect(() => {setLoading(props.loading) },[props.loading])
+
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage('')
+    // setErrorMessage("");
+    // props.setMessage('')
+    // setLoading(true);
+    // props.setLoading(true);
     const login: TYPE.login = {
       email,
       pass
@@ -80,11 +88,14 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setModule("register");
-    setErrorMessage('')
+    // setErrorMessage("");
     props.setMessage("");
+    // setLoading(false);
+    props.setLoading(false);
   };
 
   // set the form elements
+  console.log("loading is " + props.loading);
   const showElement = props.loading ? (
     <div className='formLoading'>
       <Loading />
@@ -136,9 +147,11 @@ const Login = (props: {
             id='submit_button'
           />
         </Button>
-        {props.desktop?null:<Button mode='secondaryFlat' action={handleSecondaryButton}>
-          {text["login.button.register"]}
-        </Button>}
+        {props.desktop ? null : (
+          <Button mode='secondaryFlat' action={handleSecondaryButton}>
+            {text["login.button.register"]}
+          </Button>
+        )}
       </ButtonsWrapper>
     </form>
   );
@@ -156,5 +169,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { login, setModule, setMessage, setLoading, typingData,muniLogin }
+  { login, setModule, setMessage, setLoading, typingData, muniLogin }
 )(Login);
