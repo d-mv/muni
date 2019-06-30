@@ -101,7 +101,7 @@ const App = (props: {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
 
-      if (!token && cookie.length > 0) {
+      if (!token && cookie && cookie.length > 0) {
         logger({ text: "cookie is", emph: "true", type: "positive" });
         setMessage("checking cookie...");
         props.checkToken(cookie);
