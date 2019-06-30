@@ -52,7 +52,6 @@ const Register = (props: {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-<<<<<<< HEAD
   useEffect(() => {
     if (props.message !== message) {
       setMessage(props.message);
@@ -62,9 +61,6 @@ const Register = (props: {
     }
   }, [props.message, props.loading]);
 
-=======
-  const [errorMessage, setErrorMessage] = useState(props.message);
->>>>>>> master
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
