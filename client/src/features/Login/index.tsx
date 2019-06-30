@@ -77,7 +77,9 @@ const Login = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { value, name } = event.target;
-    props.setMessage("");
+    if (message) {
+      props.setMessage("");
+    }
     if (name === "email") {
       setEmail(value);
     } else {

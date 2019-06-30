@@ -83,7 +83,9 @@ const Register = (props: {
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    props.setMessage("");
+    if (message) {
+      props.setMessage("");
+    }
     const { value, name } = event.target;
     switch (name) {
       case "fName":

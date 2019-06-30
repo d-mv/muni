@@ -1,5 +1,4 @@
-import { apiResponse } from "./../client/src/store/types";
-import { LoginProps } from "./../src/types";
+import { apiResponse, LoginProps } from "../src/types";
 import * as assert from "assert";
 import * as dotenv from "dotenv";
 
@@ -33,37 +32,49 @@ export const getLocationId = (
         .findOne({ "admins._id": new MDB.ObjectId(_id) })
         .then((admins: any) => {
           if (admins) {
-            callback(
-              Message.positive({
-                subj: "Muni user found",
-                payload: {
-                  _id: _id,
-                  location: admins._id,
-                  name: admins.name,
-                  lang: admins.language,
-                  type: "muni",
-                  pinned: admins.pinned
-                }
-              })
-            );
+            findMuniUserByID(_id, (response: apiResponse) => {
+              if (response.status) {
+                callback(
+                  Message.positive({
+                    subj: "Muni user found",
+                    payload: {
+                      _id: _id,
+                      location: admins._id,
+                      name: admins.name,
+                      type: "muni",
+                      pinned: admins.pinned,
+                      language: response.payload.language
+                    }
+                  })
+                );
+              } else {
+                callback(response);
+              }
+            });
           } else {
             database
               .findOne({ "users._id": new MDB.ObjectId(_id) })
               .then((users: any) => {
                 if (users) {
-                  callback(
-                    Message.positive({
-                      subj: "User found",
-                      payload: {
-                        _id: _id,
-                        location: users._id,
-                        name: users.name,
-                        lang: users.language,
-                        type: "user",
-                        pinned: users.pinned
-                      }
-                    })
-                  );
+                  findUserByID(_id, (response: apiResponse) => {
+                    if (response.status) {
+                      callback(
+                        Message.positive({
+                          subj: "User found",
+                          payload: {
+                            _id: _id,
+                            location: users._id,
+                            name: users.name,
+                            type: "user",
+                            pinned: users.pinned,
+                            language: response.payload.language
+                          }
+                        })
+                      );
+                    } else {
+                      callback(response);
+                    }
+                  });
                 } else {
                   callback(Message.notFound("user"));
                 }
@@ -102,8 +113,8 @@ export const loginUser = (
         request.password,
         res.payload.pass,
         (compareResult: apiResponse) => {
-          console.log("compareResult")
-          console.log(compareResult)
+          console.log("compareResult");
+          console.log(compareResult);
           if (compareResult.status) {
             const { _id, location, type, language, name, pinned } = res.payload;
             callback(
@@ -129,8 +140,8 @@ export const loginUser = (
         // type: 'muni',
         // posts: [],
         // location: 5ce589a00a61b5a9ca9d9caf
-        console.log(request.password)
-        console.log(muniResult.payload.pass)
+        console.log(request.password);
+        console.log(muniResult.payload.pass);
         if (muniResult.status) {
           compareToHash(
             request.password,
@@ -157,7 +168,7 @@ export const loginUser = (
             }
           );
         } else {
-          callback(Message.notFound('User'))
+          callback(Message.notFound("User"));
         }
       });
     }
@@ -296,43 +307,160 @@ const findMuniByEmail = (
   });
 };
 
-
-export const getCategories = (callback: (arg0: apiResponse)=>void) => {
-
-const database: any = MDB.client.db(dbName).collection(dbcApp);
-database
-  .aggregate([
-    {
-      $project: {
-        _id: 0,
-        categories: 1
+export const getCategories = (callback: (arg0: apiResponse) => void) => {
+  const database: any = MDB.client.db(dbName).collection(dbcApp);
+  database
+    .aggregate([
+      {
+        $project: {
+          _id: 0,
+          categories: 1
+        }
       }
-    }
-  ])
-  .toArray((err: any, result: any) => {
-    if (err) {
-      // if error
-      callback(
-        Message.errorMessage({
-          action: "get categories",
-          e: err
-        })
-      );
-    } else if (result.length === 0) {
-      // if no - response
-      callback(Message.notFound("categories not found"));
-    } else if (result.length > 1) {
-      // if too many results
-      callback(Message.tooManyResultsMessage("get categories"));
-    } else {
-      callback(
-        Message.positive({
-          subj: "Categories found",
-          payload: result[0].categories
-        })
-      );
-    }
-  });
+    ])
+    .toArray((err: any, result: any) => {
+      if (err) {
+        // if error
+        callback(
+          Message.errorMessage({
+            action: "get categories",
+            e: err
+          })
+        );
+      } else if (result.length === 0) {
+        // if no - response
+        callback(Message.notFound("categories not found"));
+      } else if (result.length > 1) {
+        // if too many results
+        callback(Message.tooManyResultsMessage("get categories"));
+      } else {
+        callback(
+          Message.positive({
+            subj: "Categories found",
+            payload: result[0].categories
+          })
+        );
+      }
+    });
+};
 
-
-}
+export const findUserByID = (
+  _id: string,
+  callback: (arg0: apiResponse) => void
+) => {
+  const database: any = MDB.client.db(dbName).collection(dbcMain);
+  database
+    .aggregate([
+      {
+        $match: {
+          "users._id": new MDB.ObjectId(_id)
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          users: 1
+        }
+      },
+      {
+        $unwind: {
+          path: "$users",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$users"
+        }
+      },
+      {
+        $match: {
+          _id: new MDB.ObjectId(_id)
+        }
+      }
+    ])
+    .toArray((err: any, result: any) => {
+      if (err) {
+        // if error
+        callback(
+          Message.errorMessage({
+            action: "get userById",
+            e: err
+          })
+        );
+      } else if (result.length === 0) {
+        // if no - response
+        callback(Message.notFound("users by Id"));
+      } else if (result.length > 1) {
+        // if too many results
+        callback(Message.tooManyResultsMessage("get usersById"));
+      } else {
+        callback(
+          Message.positive({
+            subj: "User found",
+            payload: result[0]
+          })
+        );
+      }
+    });
+};
+export const findMuniUserByID = (
+  _id: string,
+  callback: (arg0: apiResponse) => void
+) => {
+  const database: any = MDB.client.db(dbName).collection(dbcMain);
+  database
+    .aggregate([
+      {
+        $match: {
+          "admins._id": new MDB.ObjectId(_id)
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          admins: 1
+        }
+      },
+      {
+        $unwind: {
+          path: "$users",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$users"
+        }
+      },
+      {
+        $match: {
+          _id: new MDB.ObjectId(_id)
+        }
+      }
+    ])
+    .toArray((err: any, result: any) => {
+      if (err) {
+        // if error
+        callback(
+          Message.errorMessage({
+            action: "get muniUserById",
+            e: err
+          })
+        );
+      } else if (result.length === 0) {
+        // if no - response
+        callback(Message.notFound("muniUsers by Id"));
+      } else if (result.length > 1) {
+        // if too many results
+        callback(Message.tooManyResultsMessage("get muniUsersById"));
+      } else {
+        callback(
+          Message.positive({
+            subj: "Muni user found",
+            payload: result[0]
+          })
+        );
+      }
+    });
+};

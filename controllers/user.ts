@@ -27,7 +27,7 @@ export const checkUserById = (
             }
           });
         } else {
-          callback(result)
+          callback(result);
         }
       });
     } else {
@@ -39,27 +39,27 @@ export const login = (
   request: LoginProps,
   callback: (arg0: apiResponse) => void
 ) => {
-    loginUser(request, (result: apiResponse) => {
-      // console.log(result);
-      if (result.status) {
-        // make token
-        getCategories((catResult: apiResponse) => {
-          if (catResult.status) {
-            const token = createToken(result.payload._id);
-            const payload = {
-              ...result.payload,
-              token,
-              categories: catResult.payload
-            };
-            // attach token
-            callback({ ...result, payload });
-          } else {
-            callback(catResult);
-          }
-        });
-        // return
-      } else {
-        callback(result);
-      }
-    });
+  loginUser(request, (result: apiResponse) => {
+    // console.log(result);
+    if (result.status) {
+      // make token
+      getCategories((catResult: apiResponse) => {
+        if (catResult.status) {
+          const token = createToken(result.payload._id);
+          const payload = {
+            ...result.payload,
+            token,
+            categories: catResult.payload
+          };
+          // attach token
+          callback({ ...result, payload });
+        } else {
+          callback(catResult);
+        }
+      });
+      // return
+    } else {
+      callback(result);
+    }
+  });
 };

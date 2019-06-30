@@ -18,8 +18,38 @@ export const checkToken = (
   get({ url: "/v2/check", headers: { token } })
     .then(response => {
       // set auth true
-      dispatch({ type: "SET_AUTH", payload: response.data.payload });
-      dispatch({ type: "SET", token: token });
+      const {
+        _id,
+        location,
+        type,
+        language,
+        token,
+        name,
+        pinned,
+        categories
+      } = response.data.payload;
+      console.log(response.data.payload);
+      dispatch({ type: "SET_AUTH", payload: { _id, location } });
+      dispatch({
+        type: "USER_TYPE",
+        user: type
+      });
+      dispatch({
+        type: "SET_LANGUAGE",
+        data: data.language[language]
+      });
+      dispatch({ type: "SET", token });
+      dispatch({
+        type: "SET_LOCATION_DATA",
+        data: { name, pinned, categories }
+      });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+
+      // dispatch({ type: "SET_AUTH", payload: response.data.payload });
+      // dispatch({ type: "SET", token: token });
     })
     .catch(e => {});
 };
@@ -67,6 +97,10 @@ export const login = (login: LoginProps) => async (
         type: "SET_LOCATION_DATA",
         data: { name, pinned, categories }
       });
+       dispatch({
+         type: "SET_MESSAGE",
+         message: "Loading data..."
+       });
       dispatch({
         type: "SET_LOADING",
         loading: false

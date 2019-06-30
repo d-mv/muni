@@ -115,7 +115,7 @@ export default function configureStore() {
     token: "",
     checkTokenResult: "",
     login: apiState,
-    module: "",
+    module: "welcome",
     // module: "welcome",
     prevModule: "welcome",
     locations: [],
