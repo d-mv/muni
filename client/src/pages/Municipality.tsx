@@ -33,7 +33,7 @@ const Municipality = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    posts: state.locationData.municipality,
+    posts: state.news,
     language: state.language,
     location: state.locationData
   };
