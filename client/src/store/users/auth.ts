@@ -1,13 +1,19 @@
+import { LoginProps } from "./types";
 import axios from "axios";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { get } from "../services";
+import { indexedObjAny } from "../types";
+
+import fromJson from "../../data/translation.json";
+const data: indexedObjAny = fromJson;
 
 export const checkToken = (
   token: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> =>
+): Promise<void> => {
+  console.log(token);
   get({ url: "/v2/check", headers: { token } })
     .then(response => {
       // set auth true
@@ -15,3 +21,69 @@ export const checkToken = (
       dispatch({ type: "SET", token: token });
     })
     .catch(e => {});
+};
+
+export const login = (login: LoginProps) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
+  dispatch({
+    type: "SET_LOADING",
+    loading: true
+  });
+  dispatch({
+    type: "SET_MESSAGE"
+  });
+  dispatch({
+    type: "LOGIN"
+  });
+  dispatch({ type: "TYPING_DATA", payload: { ...login } });
+
+  get({ url: `/v2/user/login?password=${login.password}&email=${login.email}` })
+    .then(response => {
+      const {
+        _id,
+        location,
+        type,
+        language,
+        token,
+        name,
+        pinned,
+        categories
+      } = response.data.payload;
+      dispatch({ type: "SET_AUTH", payload: { _id, location } });
+      dispatch({
+        type: "USER_TYPE",
+        user: type
+      });
+      dispatch({
+        type: "SET_LANGUAGE",
+        data: data.language[language]
+      });
+      dispatch({ type: "SET", token });
+      dispatch({
+        type: "SET_LOCATION_DATA",
+        data: { name, pinned, categories }
+      });
+    })
+    .catch(error => {
+      // const payload = error.response ? error.response.data : error.toString();
+      // if (payload.code === 404) {
+      //   dispatch({
+      //     type: "SET_LOADING",
+      //     loading: false
+      //   });
+      //   // dispatch({
+      //   //   type: "SET_MODULE",
+      //   //   mode: "register"
+      //   // });
+      // }
+      // dispatch({
+      //   type: "SET_MESSAGE",
+      //   message: payload.message || payload || ""
+      // });
+      // dispatch({
+      //   type: "LOGIN",
+      //   payload
+      // });
+    });
+};

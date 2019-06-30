@@ -10,7 +10,8 @@ import {
   login,
   fetchData,
   getPosts,
-  getMuniPosts
+  getMuniPosts,
+  setLoading
 } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
 import { showPost } from "../store/post/actions";
@@ -43,7 +44,7 @@ const App = (props: {
   vote: data;
   check: data;
   post: boolean;
-  setModule: (arg0: string, arg1: string) => void;
+  setModule: (previous: string, next: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   data: data;
@@ -61,9 +62,10 @@ const App = (props: {
   type: any;
   userMuni: boolean;
   auth: indexedObj;
-  news:indexedObjAny
+  news: indexedObjAny;
+  setLoading: (arg0: boolean) => void;
 }) => {
-  const { token, userMuni, cookies, location, auth,posts,news } = props;
+  const { token, userMuni, cookies, location, auth, posts, news } = props;
 
   const [loading, setLoading] = useState(true);
   const [localToken, setLocalToken] = useState(token);
@@ -96,24 +98,29 @@ const App = (props: {
       logger({ text: "auth is", emph: "true", type: "positive" });
       // set auth settings for axios
       axios.defaults.headers = { token };
-      
+      cookies.set("token");
+
       if (posts.length > 0) {
         logger({ text: "posts are", emph: "true", type: "positive" });
       } else {
         logger({ text: "posts are", emph: "false", type: "attention" });
-        fetchPostsNews()
+        fetchPostsNews();
       }
     } else {
       logger({ text: "auth is", emph: "false", type: "attention" });
-      const cookie = cookies.get('token')
+      const cookie = cookies.get("token");
 
-      if (cookie) {
+      if (token) {
+        logger({ text: "token is", emph: "true", type: "positive" });
+        props.checkToken(token);
+      } else if (cookie === true) {
         logger({ text: "cookie is", emph: "true", type: "positive" });
-        props.checkToken(cookie);
+        // props.checkToken(cookie);
       } else {
-        // TODO:
+        logger({ text: "cookie is", emph: "false", type: "attention" });
+        props.setModule("welcome", "welcome");
+        // props.setLoading(false);
       }
-
     }
   }, [token, auth, cookies]);
 
@@ -161,39 +168,38 @@ const App = (props: {
     console.log("2. triggered module");
     if (props.module != "post") {
       console.log("- module is not post, clear it");
-
       props.showPost({ show: false });
     }
     if (props.module === "home") {
       console.log("- module is home");
       setLoading(false);
     }
-    if (props.module === "welcome" && !cookies.get("token") && !token) {
+    if (props.module === "welcome") {
       console.log("- module is welcome, no token whatsoever");
       setLoading(false);
     }
   }, [props.module]);
 
-  useEffect(() => {
-    console.log("3. triggered location");
-    if (Object.keys(props.data).length > 0 && props.posts.length > 0) {
-      console.log("- location data & posts present, go home");
-      toggleModule("home");
-    } else if (
-      Object.keys(props.data).length > 0 &&
-      props.posts.length === 0 &&
-      localToken != ""
-    ) {
-      console.log("- location data present, get posts");
-      fetchPostsNews();
-    }
-  }, [props.data]);
+  // useEffect(() => {
+  //   console.log("3. triggered location");
+  //   if (Object.keys(props.data).length > 0 && props.posts.length > 0) {
+  //     console.log("- location data & posts present, go home");
+  //     toggleModule("home");
+  //   } else if (
+  //     Object.keys(props.data).length > 0 &&
+  //     props.posts.length === 0 &&
+  //     localToken != ""
+  //   ) {
+  //     console.log("- location data present, get posts");
+  //     fetchPostsNews();
+  //   }
+  // }, [props.data]);
 
   useEffect(() => {
     console.log("6. triggered posts");
     if (props.posts.length > 0 && props.module !== "post") {
       console.log("- posts are there, show post");
-      toggleModule("home");
+     props.setModule("welcome","home");
     }
   }, [props.posts]);
 
@@ -205,13 +211,13 @@ const App = (props: {
     }
   }, [props.post]);
 
-  useEffect(() => {
-    console.log("4. check token status");
-    if (props.check.status) {
-      console.log("- token check is positive, set to local");
-      setLocalToken(token);
-    }
-  }, [props.check.status]);
+  // useEffect(() => {
+  //   console.log("4. check token status");
+  //   if (props.check.status) {
+  //     console.log("- token check is positive, set to local");
+  //     setLocalToken(token);
+  //   }
+  // }, [props.check.status]);
 
   useEffect(() => {
     if (props.locations.length === 0) {
@@ -283,7 +289,7 @@ const mapStateToProps = (state: AppState) => {
     type: state.type,
     userMuni: state.type === "muni",
     auth: state.auth,
-    news:state.news
+    news: state.news
   };
 };
 
@@ -298,6 +304,7 @@ export default connect(
     fetchData,
     showPost,
     getPosts,
-    getMuniPosts
+    getMuniPosts,
+    setLoading
   }
 )(withCookies(App));

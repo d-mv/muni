@@ -1,6 +1,11 @@
 import * as TYPE from "../types";
 import { data, indexedObjAny } from "../types";
 
+export interface LoginProps {
+  email: string;
+  password: string;
+}
+
 export interface checkTokenAction {
   type: "CHECK";
   payload: TYPE.apiResponse;

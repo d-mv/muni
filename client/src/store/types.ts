@@ -17,16 +17,6 @@ export interface apiResponse {
 
 /**
  * Login type
- * @typedef {Object} login
- * @property {string} email - User's email
- * @property {string} pass - User's password
- */
-export interface login {
-  email: string;
-  pass: string;
-}
-/**
- * Login type
  * @typedef {Object} register
  * @property {string} location - Location ID
  * @property {string} fName - User's first name

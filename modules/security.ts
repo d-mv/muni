@@ -8,6 +8,8 @@ import * as TYPE from "../src/types";
 
 const dotEnv = dotenv.config();
 const passPhrase: any = process.env.SECRET;
+// defaults
+const expiresInValue = 2592000;
 
 /**
  * Encode a string
@@ -257,4 +259,25 @@ export const verifyToken = async (id: string) =>
         );
       }
     }
+  });
+
+// v2 method
+export const compareToHash = (
+  text: string,
+  hash: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  bcrypt.compare(text, hash, (err: Error, res: boolean) => {
+    if (err) {
+      callback(Message.errorMessage({ action: "hash compare", e: err }));
+    } else {
+      callback(Message.positive({ subj: "Deciphered:OK" }));
+    }
+  });
+};
+
+// v2 method
+export const createToken = (id: string) =>
+  jwt.sign({ id }, passPhrase, {
+    expiresIn: expiresInValue // expires in 30 days in seconds
   });

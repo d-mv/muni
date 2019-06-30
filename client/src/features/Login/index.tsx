@@ -21,6 +21,7 @@ import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
 import { type } from "os";
 import styleFactory from "../../modules/style_factory";
+import { LoginProps } from "../../store/users/types";
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -32,8 +33,8 @@ const Login = (props: {
   message: string;
   loading: boolean;
   typed: TYPE.indexedObj;
-  login: (arg0: TYPE.login) => void;
-  muniLogin: (arg0: TYPE.login) => void;
+  login: (arg0: LoginProps) => void;
+  muniLogin: (arg0: LoginProps) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   setLoading: (arg0: boolean) => void;
@@ -51,10 +52,10 @@ const Login = (props: {
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage('')
-    const login: TYPE.login = {
+    setErrorMessage("");
+    const login: LoginProps = {
       email,
-      pass
+      password: pass
     };
     if (props.desktop) {
       props.muniLogin(login);
@@ -80,7 +81,7 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setModule("register");
-    setErrorMessage('')
+    setErrorMessage("");
     props.setMessage("");
   };
 
@@ -156,5 +157,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { login, setModule, setMessage, setLoading, typingData,muniLogin }
+  { login, setModule, setMessage, setLoading, typingData, muniLogin }
 )(Login);
