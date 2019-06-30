@@ -34,6 +34,7 @@ export const locationsList = (
     result.push({ value: unsortedResult[el], label: el });
     return null;
   });
+  console.log(result)
   return result;
 };
 

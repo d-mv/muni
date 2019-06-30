@@ -44,13 +44,15 @@ const Register = (props: {
   // if there are locations - use the first one
   const defaultLocation = locations.length > 0 ? locations[0].value : "";
   const [location, setLocation] = useState(
-    props.typed ? props.typed.location : defaultLocation
+    props.typed.location ? props.typed.location : defaultLocation
   );
+
   const [fName, setFname] = useState(props.typed ? props.typed.fName : "");
   const [lName, setLname] = useState(props.typed ? props.typed.lName : "");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+<<<<<<< HEAD
   useEffect(() => {
     if (props.message !== message) {
       setMessage(props.message);
@@ -60,6 +62,9 @@ const Register = (props: {
     }
   }, [props.message, props.loading]);
 
+=======
+  const [errorMessage, setErrorMessage] = useState(props.message);
+>>>>>>> master
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

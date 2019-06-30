@@ -20,7 +20,11 @@ import Button from "../../components/Button";
 
 import button from "../../components/style/Button.module.scss";
 import styleFactory from "../../modules/style_factory";
+<<<<<<< HEAD
 import { LoginProps } from "../../store/users/types";
+=======
+import { clearScreenDown } from "readline";
+>>>>>>> master
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -44,6 +48,7 @@ const Login = (props: {
   // set local hooks
   const [email, setEmail] = useState(props.typed ? props.typed.email : "");
   const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
+<<<<<<< HEAD
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -55,12 +60,28 @@ const Login = (props: {
       setLoading(props.loading);
     }
   }, [props.message, props.loading]);
+=======
+  // set message
+  const [errorMessage, setErrorMessage] = useState('');
+  // const [loading, setLoading] = useState(props.loading);
+  // console.log(props.typed);
+
+  // React.useEffect(() => {setLoading(props.loading) },[props.loading])
+>>>>>>> master
 
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+<<<<<<< HEAD
     props.setLoading(true);
     const login: LoginProps = {
+=======
+    // setErrorMessage("");
+    // props.setMessage('')
+    // setLoading(true);
+    // props.setLoading(true);
+    const login: TYPE.login = {
+>>>>>>> master
       email,
       password: pass
     };
@@ -88,12 +109,25 @@ const Login = (props: {
   };
 
   const handleSecondaryButton = () => {
+<<<<<<< HEAD
     props.setMessage("");
     props.setModule("register");
   };
 
   // set the form elements
   const showElement = loading ? (
+=======
+    props.setModule("register");
+    // setErrorMessage("");
+    props.setMessage("");
+    // setLoading(false);
+    props.setLoading(false);
+  };
+
+  // set the form elements
+  console.log("loading is " + props.loading);
+  const showElement = props.loading ? (
+>>>>>>> master
     <div className='formLoading'>
       <Loading />
     </div>
@@ -144,9 +178,11 @@ const Login = (props: {
             id='submit_button'
           />
         </Button>
-        <Button mode='secondaryFlat' action={handleSecondaryButton}>
-          {text["login.button.register"]}
-        </Button>
+        {props.desktop ? null : (
+          <Button mode='secondaryFlat' action={handleSecondaryButton}>
+            {text["login.button.register"]}
+          </Button>
+        )}
       </ButtonsWrapper>
     </form>
   );

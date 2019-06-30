@@ -26,7 +26,8 @@ export const setToken = (token: string): Action => {
  * @param {boolean} loading
  * @return {Object} - Returns object of action type and token
  */
-export const setLoading = (loading: boolean = false): Action => {
+export const setLoading = (loading: boolean): Action => {
+  // console.log(loading)
   return { type: "SET_LOADING", loading };
 };
 
@@ -105,7 +106,82 @@ export const setModule = (
  * @param {string} pass - Password
  * @return {Promise} - Returns promise resolved with the help of Thunk
  */
+<<<<<<< HEAD
 
+=======
+export const login = (
+  props: TYPE.login
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  const url = `/user/login?pass=${props.pass}&email=${props.email}`;
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({
+      type: "SET_LOADING",
+      loading: true
+    });
+    // clear state
+    dispatch({
+      type: "LOGIN",
+      payload: apiState
+    });
+    dispatch({
+      type: "SET_MESSAGE",
+      message: ""
+    });
+    dispatch({ type: "TYPING_DATA", payload: { ...props } });
+    // proceed with request
+    axios({
+      method: "get",
+      url
+    })
+      .then(response => {
+        // if successful change page
+        const module = "home";
+        dispatch({ type: "SET_AUTH", status: true });
+        dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+        if (response.data.payload.type) {
+          dispatch({
+            type: "USER_TYPE",
+            user: response.data.payload.type
+          });
+        }
+        dispatch({
+          type: "SET_LANGUAGE",
+          data: importedData.language[response.data.payload.lang]
+        });
+        dispatch({ type: "SET", token: response.data.token });
+        dispatch({
+          type: "LOGIN",
+          payload: { ...response.data, code: response.status }
+        });
+        // dispatch({
+        //   type: "SET_LOADING",
+        //   loading: false
+        // });
+      })
+      .catch(error => {
+        const payload = error.response ? error.response.data : error.toString();
+        if (payload.code === 404) {
+          dispatch({
+            type: "SET_LOADING",
+            loading: false
+          });
+          dispatch({
+            type: "SET_MODULE",
+            mode: "register"
+          });
+        }
+        dispatch({
+          type: "SET_MESSAGE",
+          message: payload.message || payload || ""
+        });
+        dispatch({
+          type: "LOGIN",
+          payload
+        });
+      });
+  };
+};
+>>>>>>> master
 
 export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
