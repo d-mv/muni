@@ -299,8 +299,8 @@ export const update = (
   const post: TYPE.indexedObj = request;
   delete post._id;
 
-console.log(Object.keys(request))
-console.log(post.title)
+// console.log(Object.keys(request))
+// console.log(post.title)
 
   const setRequest: any = {};
   // prepare the request
@@ -434,8 +434,8 @@ export const vote = (
   console.log("id");
   console.log("user");
 
-  console.log(id);
-  console.log(user);
+  // console.log(id);
+  // console.log(user);
 
   MDB.client.connect(err => {
     assert.equal(null, err);
@@ -466,7 +466,7 @@ export const vote = (
         )
         .then((document: any) => {
           // process response
-          console.log(document);
+          // console.log(document);
           callback(
             Message.updateMessage({
               subj: "Post",
@@ -495,7 +495,7 @@ export const replyVote = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   console.log("requets to update reply votes:");
-  console.log(request);
+  // console.log(request);
   MDB.client.connect(err => {
     assert.equal(null, err);
     if (err) {
@@ -526,7 +526,7 @@ export const replyVote = (
         )
         .then((document: any) => {
           // process response
-          console.log(document);
+          // console.log(document);
           callback(
             Message.updateMessage({
               subj: "Post reply vote",
@@ -552,9 +552,9 @@ export const updateMuni = (
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
   console.log("updateMuni");
-   console.log(request);
-  console.log(Object.keys(request.post));
-  console.log(request.post.text);
+  //  console.log(request);
+  // console.log(Object.keys(request.post));
+  // console.log(request.post.text);
   // console.log(request);
 
   const {location, post} = request;
@@ -587,7 +587,7 @@ export const updateMuni = (
         )
         .then((document: any) => {
           // process response
-          console.log(document);
+          // console.log(document);
           callback(
             Message.updateMessage({
               subj: "Post",

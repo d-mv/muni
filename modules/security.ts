@@ -113,7 +113,7 @@ export const checkToken = (
                 decoded.id,
                 (modelReply: TYPE.apiResponse) => {
                   console.log("getUserByIdResponse");
-                  console.log(getUserByIdResponse);
+                  // console.log(getUserByIdResponse);
                   const replyPayload = {
                     ...modelReply.payload,
                     lang: getUserByIdResponse.language,
@@ -157,7 +157,7 @@ export const cookieFactory = (
   createId?: boolean
 ) => {
   console.log("message");
-  console.log(message);
+  // console.log(message);
   const code = message.code;
   let token = "";
   let expire = "";
@@ -270,8 +270,10 @@ export const compareToHash = (
   bcrypt.compare(text, hash, (err: Error, res: boolean) => {
     if (err) {
       callback(Message.errorMessage({ action: "hash compare", e: err }));
-    } else {
+    } else if (res) {
       callback(Message.positive({ subj: "Deciphered:OK" }));
+    } else {
+      callback(Message.negative({ subj: "Wrong password" }));
     }
   });
 };

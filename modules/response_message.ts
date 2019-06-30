@@ -17,9 +17,7 @@ export const updateMessage = (props: {
     response.code = 200;
     // if not updated
     if (props.document.nModified === 0) {
-      response.message = `${
-        props.subj
-      } data is the same, no modifications done`;
+      response.message = `${props.subj} data is the same, no modifications done`;
     }
   }
   return response;
@@ -28,9 +26,7 @@ export const updateMessage = (props: {
 export const errorMessage = (props: { action: string; e: any }) => {
   return {
     status: false,
-    message: `Error in ${props.action}. Contact administrator. Details: (${
-      props.e
-    })`,
+    message: `Error in ${props.action}. Contact administrator. Details: (${props.e})`,
     code: 500
   };
 };
@@ -120,16 +116,26 @@ export const positiveMessage = (props: {
 export const positive = (props: {
   subj: string;
   code?: number;
-  payload?: [] | any;
+  payload?: any;
 }) => {
   let message = {
     status: true,
     message: props.subj,
     code: props.code || 200
   };
-  // if (Array.isArray(props.payload)) {
-    return { ...message, payload: props.payload };
-  // } else {
-    // return { ...message, ...props.payload };
-  // }
+  return { ...message, payload: props.payload };
 };
+
+// v2
+export const negative = (props: {
+  subj: string,
+  code?: number,
+  payload?:any
+}) => {
+  let message = {
+    status: false,
+    message: props.subj,
+    code: props.code || 406
+  };
+  return { ...message, payload: props.payload };
+}

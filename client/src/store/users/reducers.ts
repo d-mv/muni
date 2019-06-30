@@ -15,7 +15,7 @@ export const setLoading = (state = false, action: Action): boolean => {
     case "SET_LOADING":
       return action.loading;
   }
-  return false;
+  return state;
 };
 
 export const checkToken = (state = { token: "" }, action: Action) => {
@@ -45,7 +45,7 @@ export const login = (state = apiState, action: Action) => {
 export const setMessage = (state = "", action: Action) => {
   switch (action.type) {
     case "SET_MESSAGE":
-      return action.message || state;
+      return action.message;
   }
   return state;
 };

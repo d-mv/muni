@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection } from "../../components/formSection";
@@ -19,7 +19,6 @@ import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 
 import button from "../../components/style/Button.module.scss";
-import { type } from "os";
 import styleFactory from "../../modules/style_factory";
 import { LoginProps } from "../../store/users/types";
 
@@ -28,7 +27,6 @@ import { LoginProps } from "../../store/users/types";
  * @returns {JSX.Element} - Login content
  */
 const Login = (props: {
-  registerResult: TYPE.apiResponse;
   language: TYPE.indexedObjAny;
   message: string;
   loading: boolean;
@@ -46,18 +44,28 @@ const Login = (props: {
   // set local hooks
   const [email, setEmail] = useState(props.typed ? props.typed.email : "");
   const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
-  // set message
-  const [errorMessage, setErrorMessage] = useState(props.message);
-  // console.log(props.typed);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (props.message !== message) {
+      setMessage(props.message);
+    }
+    if (props.loading !== loading) {
+      setLoading(props.loading);
+    }
+  }, [props.message, props.loading]);
+
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage("");
+    props.setLoading(true);
     const login: LoginProps = {
       email,
       password: pass
     };
     if (props.desktop) {
+      // TODO: refactor
       props.muniLogin(login);
     } else {
       props.login(login);
@@ -69,29 +77,26 @@ const Login = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { value, name } = event.target;
-    setErrorMessage("");
+    props.setMessage("");
     if (name === "email") {
       setEmail(value);
-      // props.typingData({ email: value });
     } else {
       setPass(value);
-      // props.typingData({ pass: value });
     }
   };
 
   const handleSecondaryButton = () => {
-    props.setModule("register");
-    setErrorMessage("");
     props.setMessage("");
+    props.setModule("register");
   };
 
   // set the form elements
-  const showElement = props.loading ? (
+  const showElement = loading ? (
     <div className='formLoading'>
       <Loading />
     </div>
   ) : (
-    <div className='formMessage'>{errorMessage}</div>
+    <div className='formMessage'>{message}</div>
   );
 
   let emailElement = formSection({
@@ -147,7 +152,6 @@ const Login = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    registerResult: state.register,
     language: state.language,
     message: state.message,
     loading: state.loading,

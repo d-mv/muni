@@ -87,7 +87,7 @@ export const loginUser = (
 ) => {
   // try as user
   findUserByEmail(request.email, (res: apiResponse) => {
-    console.log(res);
+    // console.log(res);
     // payload:
     //  _id: 5d14cd9d6d3a9dc80c10af2e,
     // fName: 'Dwight',
@@ -102,6 +102,8 @@ export const loginUser = (
         request.password,
         res.payload.pass,
         (compareResult: apiResponse) => {
+          console.log("compareResult")
+          console.log(compareResult)
           if (compareResult.status) {
             const { _id, location, type, language, name, pinned } = res.payload;
             callback(
@@ -111,7 +113,7 @@ export const loginUser = (
               })
             );
           } else {
-            callback(Message.notAuthMessage("Wrong password"));
+            callback(compareResult);
           }
         }
       );
@@ -127,6 +129,8 @@ export const loginUser = (
         // type: 'muni',
         // posts: [],
         // location: 5ce589a00a61b5a9ca9d9caf
+        console.log(request.password)
+        console.log(muniResult.payload.pass)
         if (muniResult.status) {
           compareToHash(
             request.password,
@@ -148,10 +152,12 @@ export const loginUser = (
                   })
                 );
               } else {
-                callback(Message.notAuthMessage("Wrong password"));
+                callback(compareResult);
               }
             }
           );
+        } else {
+          callback(Message.notFound('User'))
         }
       });
     }

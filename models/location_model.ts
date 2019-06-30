@@ -65,7 +65,7 @@ export const create = (
     // check the names availability
     const search = { name: query.name };
     database.find(search).toArray((e: any, documents: any) => {
-      console.log(documents);
+      // console.log(documents);
       if (e) {
         callback(
           Message.errorMessage({ action: "location (similar) search", e })
@@ -132,7 +132,7 @@ export const update = (
     database
       .find({ _id: new MDB.ObjectId(location) })
       .toArray((e: any, documents: any) => {
-        console.log(documents);
+        // console.log(documents);
         if (e) {
           callback(
             Message.errorMessage({ action: "location (by ID) search", e })
@@ -200,7 +200,7 @@ export const deleteLocation = (
             database
               .deleteOne({ _id: new MDB.ObjectId(location) })
               .then((document: any) => {
-                console.log(document);
+                // console.log(document);
                 // process response
                 callback(
                   Message.updateMessage({

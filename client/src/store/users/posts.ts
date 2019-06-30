@@ -35,7 +35,7 @@ export const getMuniPosts = (
       url
     })
       .then(response => {
-        console.log(response)
+        // console.log(response)
         dispatch({
           type: "SET_MUNIPOSTS",
           posts: response.data.payload

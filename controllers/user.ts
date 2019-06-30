@@ -39,11 +39,8 @@ export const login = (
   request: LoginProps,
   callback: (arg0: apiResponse) => void
 ) => {
-  const check: boolean =
-    request.email.length > 0 && request.password.length > 0;
-  if (check) {
     loginUser(request, (result: apiResponse) => {
-      console.log(result);
+      // console.log(result);
       if (result.status) {
         // make token
         getCategories((catResult: apiResponse) => {
@@ -65,7 +62,4 @@ export const login = (
         callback(result);
       }
     });
-  } else {
-    callback(Message.requestError("login is empty"));
-  }
 };

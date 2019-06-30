@@ -96,6 +96,12 @@ const App = (props: {
 
     if (auth._id && auth.location && token) {
       logger({ text: "auth is", emph: "true", type: "positive" });
+
+      if (token === 'clear') {
+        cookies.set('token', '')
+
+        props.setToken('')
+      } else {
       // set auth settings for axios
       axios.defaults.headers = { token };
       cookies.set("token");
@@ -105,7 +111,7 @@ const App = (props: {
       } else {
         logger({ text: "posts are", emph: "false", type: "attention" });
         fetchPostsNews();
-      }
+      }}
     } else {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -118,6 +124,7 @@ const App = (props: {
         // props.checkToken(cookie);
       } else {
         logger({ text: "cookie is", emph: "false", type: "attention" });
+        props.fetchLocations()
         props.setModule("welcome", "welcome");
         // props.setLoading(false);
       }

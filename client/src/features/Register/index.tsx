@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection, formSelection } from "../../components/formSection";
 
 import { AppState } from "../../store";
 import * as TYPE from "../../store/types";
-import { register, setModule, setMessage } from "../../store/users/actions";
+import {
+  register,
+  setModule,
+  setMessage,
+  setLoading
+} from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
+import Label from "../../layout/Label";
 
 /** Functional component to render Register page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -26,6 +32,7 @@ const Register = (props: {
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   typed: TYPE.indexedObj;
+  setLoading: (arg0: boolean) => void;
 }) => {
   // get the language
   const { text, direction } = props.language;
@@ -41,8 +48,17 @@ const Register = (props: {
   );
   const [fName, setFname] = useState(props.typed ? props.typed.fName : "");
   const [lName, setLname] = useState(props.typed ? props.typed.lName : "");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState(props.message);
+  useEffect(() => {
+    if (props.message !== message) {
+      setMessage(props.message);
+    }
+    if (props.loading !== loading) {
+      setLoading(props.loading);
+    }
+  }, [props.message, props.loading]);
 
   // * form methods
   // handle data submit
@@ -51,6 +67,7 @@ const Register = (props: {
     if (pass !== secondPass) {
       setMessage(text["register.passwords.dont-match"]);
     } else {
+      props.setLoading(true);
       props.register({
         email,
         pass,
@@ -61,11 +78,12 @@ const Register = (props: {
       });
     }
   };
+
   // handle fields input changes
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setErrorMessage("");
+    props.setMessage("");
     const { value, name } = event.target;
     switch (name) {
       case "fName":
@@ -91,12 +109,12 @@ const Register = (props: {
   };
 
   // set the form elements
-  const showElement = props.loading ? (
+  const showElement = loading ? (
     <div className='formLoading'>
       <Loading />
     </div>
   ) : (
-    <div className='formMessage'>{errorMessage}</div>
+    <div className='formMessage'>{message}</div>
   );
 
   let emailElement = formSection({
@@ -117,15 +135,13 @@ const Register = (props: {
     action: handleInputChange,
     length: 7
   });
-  let passwordSecondElement = formSection({
-    label: text["login.label.password.repeat"],
-    type: "password",
-    name: "secondPass",
-    value: secondPass,
-    placeholder: text["login.prompt.password.repeat"],
-    action: handleInputChange,
-    length: 7
-  });
+
+  const styles = {
+    regular: {},
+    notMatching: {
+      border: ".1rem solid var(--colorAttention)"
+    }
+  };
 
   const locationsElement = formSelection({
     list: locations,
@@ -164,7 +180,24 @@ const Register = (props: {
       {lNameElement}
       {emailElement}
       {passwordElement}
-      {passwordSecondElement}
+      <section className='section'>
+      <Label
+        direction={direction}
+        value={text["login.label.password.repeat"]}
+      />
+      <input
+        type='password'
+        name='secondPass'
+        value={secondPass}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          handleInputChange(event)
+        }
+        placeholder={text["login.prompt.password.repeat"]}
+        minLength={7}
+        required
+        style={pass === secondPass ? styles.regular : styles.notMatching}
+      />
+    </section>
       {/* message & loading */}
       {showElement}
       {/* buttons */}
@@ -195,5 +228,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { register, setModule, setMessage }
+  { register, setModule, setMessage, setLoading }
 )(Register);

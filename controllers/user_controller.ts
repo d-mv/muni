@@ -23,10 +23,10 @@ export const create = (
   // request User model
   User.create(request, (modelResponse: TYPE.apiResponse) => {
     if (modelResponse.status) {
-      console.log(modelResponse);
+      // console.log(modelResponse);
       // send confirmation email
       const encrypt: any = cookieFactory(modelResponse, true);
-      console.log(encrypt);
+      // console.log(encrypt);
       const url = `https://muni-dev.herokuapp.com/api/user/verify?id=${encrypt.token}`;
       sendMail(request.email, url, request.lang);
       callback({

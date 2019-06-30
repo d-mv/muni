@@ -6,6 +6,7 @@ import { get } from "../services";
 import { indexedObjAny } from "../types";
 
 import fromJson from "../../data/translation.json";
+import { string } from "prop-types";
 const data: indexedObjAny = fromJson;
 
 export const checkToken = (
@@ -13,7 +14,7 @@ export const checkToken = (
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): Promise<void> => {
-  console.log(token);
+  // console.log(token);
   get({ url: "/v2/check", headers: { token } })
     .then(response => {
       // set auth true
@@ -26,15 +27,17 @@ export const checkToken = (
 export const login = (login: LoginProps) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
+  // dispatch({
+  //   type: "SET_LOADING",
+  //   loading: true
+  // });
   dispatch({
-    type: "SET_LOADING",
-    loading: true
+    type: "SET_MESSAGE",
+    message: ""
   });
   dispatch({
-    type: "SET_MESSAGE"
-  });
-  dispatch({
-    type: "LOGIN"
+    type: "LOGIN",
+    payload: {}
   });
   dispatch({ type: "TYPING_DATA", payload: { ...login } });
 
@@ -64,26 +67,28 @@ export const login = (login: LoginProps) => async (
         type: "SET_LOCATION_DATA",
         data: { name, pinned, categories }
       });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
     })
-    .catch(error => {
-      // const payload = error.response ? error.response.data : error.toString();
-      // if (payload.code === 404) {
-      //   dispatch({
-      //     type: "SET_LOADING",
-      //     loading: false
-      //   });
-      //   // dispatch({
-      //   //   type: "SET_MODULE",
-      //   //   mode: "register"
-      //   // });
-      // }
-      // dispatch({
-      //   type: "SET_MESSAGE",
-      //   message: payload.message || payload || ""
-      // });
-      // dispatch({
-      //   type: "LOGIN",
-      //   payload
-      // });
+    .catch((error: any) => {
+      const payload = {
+        status: false,
+        code: 401,
+        message: error.response.data.message
+      };
+      dispatch({
+        type: "SET_MESSAGE",
+        message: payload.message
+      });
+      dispatch({
+        type: "LOGIN",
+        payload
+      });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
     });
 };
