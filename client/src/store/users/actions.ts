@@ -1,6 +1,6 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios, { AxiosResponse } from "axios";
-import { Action } from "./types";
+import { Action, LoginProps } from "./types";
 import * as TYPE from "../types";
 
 import { AnyAction } from "redux";
@@ -8,6 +8,7 @@ import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
 export * from "./posts";
+export * from './auth'
 const importedData: TYPE.indexedObjAny = data;
 
 /**
@@ -40,55 +41,55 @@ export const changeMode = (mode: string): Action => {
  * @param {string} token
  * @return {Promise} - Returns promise resolved with the help of Thunk
  */
-export const checkToken = (
-  token: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = "/user/check";
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    axios({
-      method: "get",
-      url,
-      headers: { token }
-    })
-      .then(response => {
+// export const checkToken = (
+//   token: string
+// ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+//   const url = "/user/check";
+//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+//     axios({
+//       method: "get",
+//       url,
+//       headers: { token }
+//     })
+//       .then(response => {
 
-        const payload = response.data;
-        console.log(payload);
-        if (payload.status) {
-          dispatch({ type: "SET", token });
-          dispatch({ type: "SET_AUTH", status: true });
-          dispatch({
-            type: "LOGIN",
-            payload: { ...response.data, code: response.status }
-          });
-        } else {
-          dispatch({ type: "SET", token: "clear" });
-          dispatch({
-            type: "SET_LOCATION_DATA",
-            data: ""
-          });
-          dispatch({ type: "SET_AUTH", status: false });
-          dispatch({ type: "SET_MODULE", module: "login" });
-        }
-        // if negative - return the data
-        dispatch({
-          type: "CHECK",
-          payload: { ...response.data, code: response.status }
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: "SET_LOCATION_DATA",
-          data: error.data
-        });
-      });
-  };
-};
+//         const payload = response.data;
+//         console.log(payload);
+//         if (payload.status) {
+//           dispatch({ type: "SET", token });
+//           dispatch({ type: "SET_AUTH", status: true });
+//           dispatch({
+//             type: "LOGIN",
+//             payload: { ...response.data, code: response.status }
+//           });
+//         } else {
+//           dispatch({ type: "SET", token: "clear" });
+//           dispatch({
+//             type: "SET_LOCATION_DATA",
+//             data: ""
+//           });
+//           dispatch({ type: "SET_AUTH", status: false });
+//           // dispatch({ type: "SET_MODULE", module: "login" });
+//         }
+//         // if negative - return the data
+//         dispatch({
+//           type: "CHECK",
+//           payload: { ...response.data, code: response.status }
+//         });
+//       })
+//       .catch(error => {
+//         console.log(error);
+//         dispatch({
+//           type: "SET_LOCATION_DATA",
+//           data: error.data
+//         });
+//       });
+//   };
+// };
 
-export const setAuth = (status: boolean): Action => {
-  return { type: "SET_AUTH", status };
-};
+// export const setAuth = (status: boolean): Action => {
+//   return { type: "SET_AUTH", status };
+// };
 
 export const setModule = (
   module: string
@@ -105,6 +106,9 @@ export const setModule = (
  * @param {string} pass - Password
  * @return {Promise} - Returns promise resolved with the help of Thunk
  */
+<<<<<<< HEAD
+
+=======
 export const login = (
   props: TYPE.login
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
@@ -177,11 +181,12 @@ export const login = (
       });
   };
 };
+>>>>>>> master
 
 export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch({ type: "SET_AUTH", status: false });
-    dispatch({ type: "SET_MODULE", module: "welcome" });
+    // dispatch({ type: "SET_MODULE", module: "welcome" });
     dispatch({ type: "SET", token: "clear" });
     dispatch({
       type: "TYPING_DATA",
@@ -253,7 +258,7 @@ export const register = (
             type: "SET_MESSAGE",
             message: response.data.payload.message
           });
-          dispatch({ type: "SET_MODULE", module: "confirmation" });
+          // dispatch({ type: "SET_MODULE", module: "confirmation" });
         }
         dispatch({
           type: "SET_LOADING",
@@ -266,7 +271,7 @@ export const register = (
       })
       .catch(error => {
         const payload = error.response ? error.response.data : error.toString();
-        console.log(payload);
+        // console.log(payload);
         dispatch({
           type: "SET_MESSAGE",
           message: payload.message.toString()
@@ -424,9 +429,9 @@ export const cachePost = (post: TYPE.post): Action => {
 };
 
 export const muniLogin = (
-  props: TYPE.login
+  props:LoginProps
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/muni/login?pass=${props.pass}&email=${props.email}`;
+  const url = `/muni/login?pass=${props.password}&email=${props.email}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch({
       type: "SET_LOADING",

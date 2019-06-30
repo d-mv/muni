@@ -17,6 +17,8 @@ import muniRouter from "../routes/muni_router";
 import locationRouter from "../routes/location_router";
 import postRouter from "../routes/post_router";
 
+import user from "../routes/user";
+
 const dotEnv = dotenv.config();
 const app = express();
 
@@ -50,6 +52,7 @@ app.use("/api/muni", muniRouter);
 app.use("/api/location", locationRouter);
 app.use("/api/post", postRouter);
 app.use("/api", apiRouter);
+app.use("/api/v2", user);
 // app.use('/', router);
 
 // * React

@@ -6,8 +6,8 @@ import { AppState } from "../store";
 import style from "./style/Loading.module.scss";
 import { VectorLogo } from "../icons/Welcome";
 
-const Loading = (props: { type: any }) => (
-  <div className={props.type==='muni'?style.wrapperMuni: style.wrapper}>
+const Loading = (props: { type: any; message?: string }) => (
+  <div className={props.type === "muni" ? style.wrapperMuni : style.wrapper}>
     <div className={style.logo}>
       <VectorLogo />
     </div>
@@ -16,6 +16,7 @@ const Loading = (props: { type: any }) => (
       <div className={style.middle} />
       <div className={style.inner} />
     </div>
+    <div className={style.message}>{props.message}</div>
   </div>
 );
 

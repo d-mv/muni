@@ -1,7 +1,5 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import axios, { AxiosResponse } from "axios";
-import { Action } from "./types";
-import * as TYPE from "../types";
+import axios from "axios";
 import { AnyAction } from "redux";
 
 export const getPosts = (
@@ -14,7 +12,6 @@ export const getPosts = (
       url
     })
       .then(response => {
-        // console.log(response)
         dispatch({
           type: "SET_POSTS",
           posts: response.data.payload
@@ -35,7 +32,6 @@ export const getMuniPosts = (
       url
     })
       .then(response => {
-        console.log(response)
         dispatch({
           type: "SET_MUNIPOSTS",
           posts: response.data.payload

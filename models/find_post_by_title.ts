@@ -71,7 +71,7 @@ const findPostByTitle = (
           }
         ])
         .toArray((e: any, documents: any) => {
-          console.log(documents);
+          // console.log(documents);
           if (e) {
             callback(
               Message.errorMessage({ action: "post search by title", e })

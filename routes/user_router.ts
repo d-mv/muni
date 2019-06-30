@@ -234,7 +234,7 @@ router.post("/create", (req: any, res: any, next: any) => {
   UserController.create(req.query, (controllerResponse: apiResponse) => {
     if (controllerResponse.status) {
       // created, need to issue token
-      console.log(controllerResponse);
+      // console.log(controllerResponse);
       const { cookie } = controllerResponse.payload;
       delete controllerResponse.payload.cookie;
       res
@@ -298,7 +298,7 @@ router.get("/login", (req: any, res: any, next: any) => {
 });
 // get user
 router.get("/:id", (req: any, res: any, next: any) => {
-  console.log("id");
+  // console.log("id");
   showRequest("usr.id", req.headers, [req.body, req.headers.token]);
 
   const ng = (code: number, packageToSend?: any, message?: string) => {
@@ -319,7 +319,7 @@ router.get("/:id", (req: any, res: any, next: any) => {
     // token is present
     // check if token valid
     checkToken(req.headers.token, (checkTokenResponse: any, id?: any) => {
-      console.log(id);
+      // console.log(id);
       // reassign code
       const code = checkTokenResponse.code;
       delete checkTokenResponse.code;

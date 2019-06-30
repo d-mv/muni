@@ -25,7 +25,6 @@ import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
-import Header from "../../components/Header";
 import { categoryIdToName } from "../../modules/category_processor";
 
 const NewPost = (props: {

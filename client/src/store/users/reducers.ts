@@ -1,6 +1,6 @@
 import { emptyPost } from "./../defaults";
 import { Action } from "./types";
-import { data, indexedObjAny } from "../types";
+import { data, indexedObjAny, indexedObj } from "../types";
 import { apiState } from "../defaults";
 
 export const setToken = (state = "", action: Action) => {
@@ -15,7 +15,7 @@ export const setLoading = (state = false, action: Action): boolean => {
     case "SET_LOADING":
       return action.loading;
   }
-  return false;
+  return state;
 };
 
 export const checkToken = (state = { token: "" }, action: Action) => {
@@ -45,7 +45,7 @@ export const login = (state = apiState, action: Action) => {
 export const setMessage = (state = "", action: Action) => {
   switch (action.type) {
     case "SET_MESSAGE":
-      return action.message || state;
+      return action.message;
   }
   return state;
 };
@@ -66,10 +66,10 @@ export const setModule = (state = "", action: Action): string => {
   return state;
 };
 
-export const setAuth = (state = false, action: Action): boolean => {
+export const setAuth = (state = {}, action: Action): indexedObj => {
   switch (action.type) {
     case "SET_AUTH":
-      return action ? true : false;
+      return { ...state, ...action.payload };
   }
   return state;
 };

@@ -8,6 +8,8 @@ import * as TYPE from "../src/types";
 
 const dotEnv = dotenv.config();
 const passPhrase: any = process.env.SECRET;
+// defaults
+const expiresInValue = 2592000;
 
 /**
  * Encode a string
@@ -111,7 +113,7 @@ export const checkToken = (
                 decoded.id,
                 (modelReply: TYPE.apiResponse) => {
                   console.log("getUserByIdResponse");
-                  console.log(getUserByIdResponse);
+                  // console.log(getUserByIdResponse);
                   const replyPayload = {
                     ...modelReply.payload,
                     lang: getUserByIdResponse.language,
@@ -155,7 +157,7 @@ export const cookieFactory = (
   createId?: boolean
 ) => {
   console.log("message");
-  console.log(message);
+  // console.log(message);
   const code = message.code;
   let token = "";
   let expire = "";
@@ -229,3 +231,55 @@ export const verifyId = (
     }
   });
 };
+
+// v2 method
+export const verifyToken = async (id: string) =>
+  jwt.verify(id, passPhrase, (err: any, decoded: any) => {
+    if (err) {
+      return Message.errorMessage({ action: "reading ID", e: err });
+    } else {
+      const now: any = new Date();
+      const expiry: any = new Date(decoded.exp * 1000);
+      const authedHours = Math.round((expiry - now) / 3600000);
+      // check time validity
+      if (authedHours <= 720 && authedHours >= 0) {
+        // good
+        return Message.positive({
+          subj: "ID is valid",
+          code: 200,
+          payload: { _id: decoded.id }
+        });
+      } else if (authedHours > 720) {
+        // unauth
+        return Message.notAuthMessage("id is expired");
+      } else {
+        // smth wrong
+        return Message.wrongDbMessage(
+          "The difference between 'issued' and 'expired' is wrong"
+        );
+      }
+    }
+  });
+
+// v2 method
+export const compareToHash = (
+  text: string,
+  hash: string,
+  callback: (arg0: TYPE.apiResponse) => void
+) => {
+  bcrypt.compare(text, hash, (err: Error, res: boolean) => {
+    if (err) {
+      callback(Message.errorMessage({ action: "hash compare", e: err }));
+    } else if (res) {
+      callback(Message.positive({ subj: "Deciphered:OK" }));
+    } else {
+      callback(Message.negative({ subj: "Wrong password" }));
+    }
+  });
+};
+
+// v2 method
+export const createToken = (id: string) =>
+  jwt.sign({ id }, passPhrase, {
+    expiresIn: expiresInValue // expires in 30 days in seconds
+  });

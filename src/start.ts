@@ -30,7 +30,7 @@ const normalizePort = (value: string) => {
 };
 
 const onError = (error: any) => {
-  console.log(new Date());
+  // console.log(new Date());
   console.log(error);
 
   if (error.syscall !== "listen") {

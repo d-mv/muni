@@ -59,8 +59,8 @@ export const getUserById = (
             callback(Message.notFound("user"));
           } else {
             console.log('get user by id - muni result')
-            console.log(res)
-            console.log(res);
+            // console.log(res)
+            // console.log(res);
             if (res.length === 0) {
               database
                 .aggregate([
@@ -192,7 +192,7 @@ const checkIfEmailNew = (
       .toArray((e: any, res: any) => {
         console.log("email is new?");
         console.log(e);
-        console.log(res);
+        // console.log(res);
         if (e || res.length > 0) {
           callback(false);
         } else {
@@ -297,7 +297,7 @@ export const get = (
   props: { id: string; userRequested: string },
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  console.log(props);
+  // console.log(props);
   // check if userRequested is a SU
   isUserSuper(props.userRequested, (isSuper: boolean) => {
     // get requested user
@@ -418,8 +418,8 @@ export const isUserNew = (
         // no result
         console.log(err);
         console.log("isUserNew?");
-        console.log(result);
-        console.log(user);
+        // console.log(result);
+        // console.log(user);
         let response: TYPE.apiResponse = {
           status: false,
           message: "User not found (email is not registered)",
@@ -487,7 +487,7 @@ export const create = (
     request.email,
     (emailIsNew: boolean) => {
       console.log("emailIsNew");
-      console.log(emailIsNew);
+      // console.log(emailIsNew);
       if (emailIsNew) {
         encodeString(
           dropQuotes(request.pass),
@@ -584,13 +584,13 @@ export const login = (
 ) => {
   IsUserMuni(user, (muniUserResponse: TYPE.apiResponse) => {
     console.log("muniUserResponse");
-    console.log(muniUserResponse);
+    // console.log(muniUserResponse);
     if (muniUserResponse.status) {
       compareStringToHash(
         user.pass,
         muniUserResponse.payload.pass,
         (response: boolean | TYPE.apiResponse) => {
-          console.log(response);
+          // console.log(response);
           if (typeof response === "boolean") {
             // if it's true/false
             if (response) {
@@ -688,7 +688,7 @@ export const IsUserMuni = (
       ])
       .toArray((errL: any, resultL: any) => {
         console.log("resultL");
-        console.log(resultL);
+        // console.log(resultL);
         if (err)
           callback(Message.errorMessage({ action: "isUserNew", e: errL }));
         let response: TYPE.apiResponse = {
@@ -870,7 +870,7 @@ export const loginAttempt = (
       callback(Message.errorMessage({ action: "connection to DB", e: err }));
     } else {
       const database: any = MDB.client.db(dbName).collection(dbcMain);
-      console.log(user);
+      // console.log(user);
       database
         .aggregate([
           {
@@ -1103,7 +1103,7 @@ export const confirmedEmail = (
           } else {
             // if found
             const user = result[0];
-            console.log(user);
+            // console.log(user);
             const { location } = user;
             delete user.location;
             database
@@ -1322,13 +1322,13 @@ export const muniLogin = (
 ) => {
   IsUserMuni(user, (muniUserResponse: TYPE.apiResponse) => {
     console.log("muniUserResponse");
-    console.log(muniUserResponse);
+    // console.log(muniUserResponse);
     if (muniUserResponse.status) {
       compareStringToHash(
         user.pass,
         muniUserResponse.payload.pass,
         (response: boolean | TYPE.apiResponse) => {
-          console.log(response);
+          // console.log(response);
           if (typeof response === "boolean") {
             // if it's true/false
             if (response) {

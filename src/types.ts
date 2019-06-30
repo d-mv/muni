@@ -1,5 +1,13 @@
 import { ObjectId } from "bson";
 
+
+export interface LoginProps {
+  email: string,
+  password:string
+}
+
+
+
 /**
  * API response type
  * @typedef {Object} apiResponse

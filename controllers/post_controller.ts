@@ -42,9 +42,9 @@ export const createPost = (
   query: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  console.log(Object.keys(query));
+  // console.log(Object.keys(query));
   checkToken(query.token, (checkTokenResponse: TYPE.apiResponse) => {
-    console.log(Object.keys(checkTokenResponse.payload));
+    // console.log(Object.keys(checkTokenResponse.payload));
     const { _id } = checkTokenResponse.payload;
     const { location } = checkTokenResponse.payload;
     const check = query.user === _id && query.location === location.toString();
@@ -66,11 +66,11 @@ export const createMuni = (
   query: any,
   callback: (arg0: TYPE.apiResponse) => void
 ) => {
-  console.log(Object.keys(query));
+  // console.log(Object.keys(query));
   checkToken(
     query.token,
     (checkTokenResponse: TYPE.apiResponse) => {
-      console.log(Object.keys(checkTokenResponse.payload));
+      // console.log(Object.keys(checkTokenResponse.payload));
       const request = {
         location: query.location,
         post: query.post
@@ -124,7 +124,7 @@ export const updateMuniPost = (
         callback(checkTokenResponse);
       } else {
         // positive code = 200
-          console.log(Object.keys(request.post));
+          // console.log(Object.keys(request.post));
         Post.updateMuni(
           { post, location },
           (modelResponse: TYPE.apiResponse) => {
@@ -161,7 +161,7 @@ export const deletePost = (
           // negative code
           callback(checkTokenResponse);
         } else {
-          console.log(checkTokenResponse);
+          // console.log(checkTokenResponse);
 
           Post.deletePost(
             {
@@ -196,7 +196,7 @@ export const deleteMuniPost = (
           // negative code
           callback(checkTokenResponse);
         } else {
-          console.log(checkTokenResponse);
+          // console.log(checkTokenResponse);
 
           Post.deleteMuniPost(
             {

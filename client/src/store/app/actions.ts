@@ -6,7 +6,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import locationsList from "../../modules/locations_list";
 import * as request from "../services";
-import axios from 'axios'
+import axios from "axios";
 
 const importedData: TYPE.indexedObjAny = data;
 
@@ -102,6 +102,12 @@ export const fetchLocations = (): ThunkAction<
   };
 };
 
-export const prevModule = (module: string): Action => {
-  return { type: "PREV_MODULE", module };
+export const setModule = (
+  previous: string,
+  next: string
+): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch({ type: "PREV_MODULE", module:previous });
+    dispatch({ type: "SET_MODULE", module: next });
+  };
 };

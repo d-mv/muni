@@ -33,7 +33,12 @@ export interface prevModuleAction {
   type: "PREV_MODULE";
   module:string
 }
+export interface setModuleAction {
+  type: "SET_MODULE";
+  module:string
+}
 export type Action =
+  | setModuleAction
   | prevModuleAction
   | fetchLocationsAction
   | loadDataAction
