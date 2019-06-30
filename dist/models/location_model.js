@@ -70,7 +70,7 @@ exports.create = function (query, callback) {
         // check the names availability
         var search = { name: query.name };
         database.find(search).toArray(function (e, documents) {
-            console.log(documents);
+            // console.log(documents);
             if (e) {
                 callback(Message.errorMessage({ action: "location (similar) search", e: e }));
             }
@@ -126,7 +126,7 @@ exports.update = function (location, fields, callback) {
         database
             .find({ _id: new MDB.ObjectId(location) })
             .toArray(function (e, documents) {
-            console.log(documents);
+            // console.log(documents);
             if (e) {
                 callback(Message.errorMessage({ action: "location (by ID) search", e: e }));
             }
@@ -191,7 +191,7 @@ exports.deleteLocation = function (location, callback) {
                     database_1
                         .deleteOne({ _id: new MDB.ObjectId(location) })
                         .then(function (document) {
-                        console.log(document);
+                        // console.log(document);
                         // process response
                         callback(Message.updateMessage({
                             subj: "Location",

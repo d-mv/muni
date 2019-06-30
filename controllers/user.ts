@@ -1,8 +1,7 @@
 import { LoginProps } from "./../src/types";
 import { verifyToken, createToken } from "../modules/security";
 import { getLocationId, loginUser, getCategories } from "../models";
-import { apiResponse } from "src/types";
-import * as Message from "../modules/response_message";
+import { apiResponse } from "../src/types";
 
 export const checkUserById = (
   token: string,

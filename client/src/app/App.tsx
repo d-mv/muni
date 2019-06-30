@@ -1,20 +1,23 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 import axios from "axios";
+
 import { AppState } from "../store";
+import { data, indexedObj } from "../store/types";
+import { showPostPayload } from "../store/post/types";
 
 import {
   setToken,
   checkToken,
-  login,
   fetchData,
   getPosts,
-  getMuniPosts,
-  setLoading
+  getMuniPosts
 } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
 import { showPost } from "../store/post/actions";
+
+import logger from "../modules/logger";
 
 import Loading from "../pages/Loading";
 
@@ -30,42 +33,29 @@ import {
   Mine,
   Post
 } from "./components/Factory";
-import { data, indexedObj, indexedObjAny } from "../store/types";
+
 import "../style/App.scss";
-import { showPostPayload } from "../store/post/types";
-import { IndexOptions } from "mongodb";
-import logger from "../modules/logger";
 
 const App = (props: {
   token: string;
   module: string;
-  loginResult: data;
-  help: boolean;
-  vote: data;
-  check: data;
   post: boolean;
+  locations: data;
+  cookies: any;
+  posts: data;
+  userMuni: boolean;
+  auth: indexedObj;
+
   setModule: (previous: string, next: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
-  data: data;
-  locations: data;
-  location: string;
-  posttmp: data;
   fetchLocations: (props?: any) => any;
   fetchData: (arg0: string) => void;
-  cookies: any;
-  posts: data;
   showPost: (arg0: showPostPayload) => void;
-  // prevModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
   getMuniPosts: (arg0: string) => void;
-  type: any;
-  userMuni: boolean;
-  auth: indexedObj;
-  news: indexedObjAny;
-  setLoading: (arg0: boolean) => void;
 }) => {
-  const { token, userMuni, cookies, location, auth, posts, news } = props;
+  const { token, userMuni, cookies, auth, posts } = props;
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -93,29 +83,25 @@ const App = (props: {
         cookies.set("token", "");
         props.setToken("");
         toggleModule("welcome");
-      } else {
+      } else if (cookies.get("token") !== token) {
         logger({ text: "set token in", emph: "cookies" });
         setMessage("saving auth...");
         // set auth settings for axios
-        axios.defaults.headers = { token };
         cookies.set("token", token);
-        if (posts.length > 0) {
-          logger({ text: "posts are", emph: "true", type: "positive" });
-        } else {
-          logger({ text: "posts are", emph: "false", type: "attention" });
-          setMessage("fetching data...");
-          fetchPostsNews();
-        }
       }
+      axios.defaults.headers = { token };
+
+      if (posts.length < 1) {
+        logger({ text: "posts are", emph: "false", type: "attention" });
+        setMessage("fetching data...");
+        fetchPostsNews();
+      }
+
     } else {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
 
-      if (token) {
-        logger({ text: "token is", emph: "true", type: "positive" });
-        setMessage("checking auth...");
-        props.checkToken(token);
-      } else if (cookie.length > 0) {
+      if (!token && cookie.length > 0) {
         logger({ text: "cookie is", emph: "true", type: "positive" });
         setMessage("checking cookie...");
         props.checkToken(cookie);
@@ -126,7 +112,7 @@ const App = (props: {
         setLoading(false);
       }
     }
-  }, [token, auth, cookies]);
+  }, [auth]);
 
   useEffect(() => {
     console.log("2. triggered module");
@@ -149,7 +135,9 @@ const App = (props: {
     if (
       props.posts.length > 0 &&
       props.module !== "post" &&
-      token !== "clear"
+      token !== "clear" &&
+      props.module !== "home" &&
+      loading
     ) {
       console.log("- posts are there, show post");
       toggleModule("home");
@@ -215,20 +203,11 @@ const mapStateToProps = (state: AppState) => {
   return {
     token: state.token,
     module: state.module,
-    loginResult: state.login,
-    data: state.locationData,
     locations: state.locations,
-    location: state.locationData.location,
-    help: state.help,
-    vote: state.vote,
-    check: state.checkTokenResult,
     post: state.post.show,
-    posttmp: state.post,
     posts: state.posts,
-    type: state.type,
     userMuni: state.type === "muni",
-    auth: state.auth,
-    news: state.news
+    auth: state.auth
   };
 };
 
@@ -238,12 +217,10 @@ export default connect(
     setModule,
     setToken,
     checkToken,
-    login,
     fetchLocations,
     fetchData,
     showPost,
     getPosts,
-    getMuniPosts,
-    setLoading
+    getMuniPosts
   }
 )(withCookies(App));

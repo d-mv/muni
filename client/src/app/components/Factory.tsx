@@ -23,8 +23,6 @@ const LazyComponent = (props: { children: any }) => (
   <Suspense fallback={<Loading />}>{props.children}</Suspense>
 );
 
-const defaultConfig = { action: () => {}, user: false };
-
 const componentFactory = (props: {
   children: any;
   lazy?: boolean;

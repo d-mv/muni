@@ -100,8 +100,8 @@ exports.getUserById = function (id, callback) {
                 }
                 else {
                     console.log('get user by id - muni result');
-                    console.log(res);
-                    console.log(res);
+                    // console.log(res)
+                    // console.log(res);
                     if (res.length === 0) {
                         database_1
                             .aggregate([
@@ -215,7 +215,7 @@ var checkIfEmailNew = function (email, callback, app) {
             .toArray(function (e, res) {
             console.log("email is new?");
             console.log(e);
-            console.log(res);
+            // console.log(res);
             if (e || res.length > 0) {
                 callback(false);
             }
@@ -313,7 +313,7 @@ exports.verifyUser = function (_id, callback) {
  * @returns {} - Uses callback function to send TYPE.apiResponse
  */
 exports.get = function (props, callback) {
-    console.log(props);
+    // console.log(props);
     // check if userRequested is a SU
     exports.isUserSuper(props.userRequested, function (isSuper) {
         // get requested user
@@ -434,8 +434,8 @@ exports.isUserNew = function (user, callback) {
             // no result
             console.log(err);
             console.log("isUserNew?");
-            console.log(result);
-            console.log(user);
+            // console.log(result);
+            // console.log(user);
             var response = {
                 status: false,
                 message: "User not found (email is not registered)",
@@ -498,7 +498,7 @@ exports.create = function (request, callback) {
     var id = new MDB.ObjectId();
     checkIfEmailNew(request.email, function (emailIsNew) {
         console.log("emailIsNew");
-        console.log(emailIsNew);
+        // console.log(emailIsNew);
         if (emailIsNew) {
             security_1.encodeString(check_strings_1.dropQuotes(request.pass), function (encoded) {
                 if (!encoded.status) {
@@ -580,10 +580,10 @@ exports.create = function (request, callback) {
 exports.login = function (user, callback) {
     exports.IsUserMuni(user, function (muniUserResponse) {
         console.log("muniUserResponse");
-        console.log(muniUserResponse);
+        // console.log(muniUserResponse);
         if (muniUserResponse.status) {
             security_1.compareStringToHash(user.pass, muniUserResponse.payload.pass, function (response) {
-                console.log(response);
+                // console.log(response);
                 if (typeof response === "boolean") {
                     // if it's true/false
                     if (response) {
@@ -667,7 +667,7 @@ exports.IsUserMuni = function (user, callback) {
         ])
             .toArray(function (errL, resultL) {
             console.log("resultL");
-            console.log(resultL);
+            // console.log(resultL);
             if (err)
                 callback(Message.errorMessage({ action: "isUserNew", e: errL }));
             var response = {
@@ -841,7 +841,7 @@ exports.loginAttempt = function (user, id, callback) {
         }
         else {
             var database = MDB.client.db(dbName).collection(dbcMain);
-            console.log(user);
+            // console.log(user);
             database
                 .aggregate([
                 {
@@ -1069,7 +1069,7 @@ exports.confirmedEmail = function (_id, callback) {
                 else {
                     // if found
                     var user_2 = result[0];
-                    console.log(user_2);
+                    // console.log(user);
                     var location_3 = user_2.location;
                     delete user_2.location;
                     database_3
@@ -1252,10 +1252,10 @@ exports.getLocationInfoQ = function (location, callback) {
 exports.muniLogin = function (user, callback) {
     exports.IsUserMuni(user, function (muniUserResponse) {
         console.log("muniUserResponse");
-        console.log(muniUserResponse);
+        // console.log(muniUserResponse);
         if (muniUserResponse.status) {
             security_1.compareStringToHash(user.pass, muniUserResponse.payload.pass, function (response) {
-                console.log(response);
+                // console.log(response);
                 if (typeof response === "boolean") {
                     // if it's true/false
                     if (response) {

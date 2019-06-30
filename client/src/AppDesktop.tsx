@@ -5,7 +5,6 @@ import axios from "axios";
 import { AppState } from "./store";
 
 import {
-  // setModule,
   setToken,
   checkToken,
   login,
@@ -45,7 +44,6 @@ const App = (props: {
   cookies: any;
   posts: data;
   showPost: (arg0: showPostPayload) => void;
-  // prevModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
   getMuniPosts: (arg0: string) => void;
   type: any;
@@ -55,20 +53,9 @@ const App = (props: {
   const [loading, setLoading] = useState(true);
   const [localToken, setLocalToken] = useState(token);
 
-
-
-
   const toggleModule = (module: string) => {
-    // props.prevModule(props.module);
     props.setModule(props.module,module);
   };
-
-  // useEffect(() => {
-  //   if (props.type && props.type === "muni") {
-  //     const app: any = document.getElementById("app");
-  //     app.style.backgroundColor = "var(--colorSecondary)";
-  //   }
-  // }, [props.type]);
 
   // set cookies if token changes
   useEffect(() => {
@@ -101,21 +88,10 @@ const App = (props: {
       console.log("- token is in cookies");
       props.checkToken(cookies.get("token"));
     }
-    // else if (props.token !== "" && props.token !== "clear") {
-    //   console.log("- data is missing");
-    //   props.fetchData(token);
-    // }
     else {
       console.log("- no state, to cookie");
       toggleModule("welcome");
     }
-    // check locations
-    // if (props.locations.length > 0) {
-    //   toggleModule("home");
-    // } else {
-    //   console.log("- locations are not present");
-    //   props.fetchLocations();
-    // }
   }, [token, cookies]);
 
   useEffect(() => {
@@ -178,12 +154,6 @@ const App = (props: {
     }
   }, [props.check.status]);
 
-  // fetch locations
-  // useEffect(() => {
-  //   console.log('5. fetch locations once');
-  //   props.fetchLocations();
-  // }, []);
-
   useEffect(() => {
     if (props.locations.length === 0) {
       console.log("5. locations not available, get them");
@@ -211,12 +181,6 @@ const App = (props: {
     nav?: boolean;
     new?: boolean;
   }) => {
-    // const Help = React.lazy(() => import("./features/Help"));
-    // const help = props.help ? (
-    //   <LazyComponent>
-    //     <Help />
-    //   </LazyComponent>
-    // ) : null;
     const nav = CFProps.nav ? <Navigation /> : null;
     const newButton = CFProps.new ? (
       <NewButton config={config} />
@@ -243,40 +207,6 @@ const App = (props: {
     case "welcome":
       show = componentFactory({ children: <Welcome />, nav: true });
       break;
-    case "confirmation":
-      const Confirmation = React.lazy(() => import("./pages/Confirmation"));
-      show = componentFactory({
-        children: <Confirmation />,
-        nav: true,
-        lazy: true
-      });
-      break;
-    case "municipality":
-      const Municipality = React.lazy(() => import("./pages/Municipality"));
-      show = componentFactory({
-        children: <Municipality />,
-        nav: true,
-        lazy: true,
-        new: true
-      });
-      break;
-    case "new":
-      const New = React.lazy(() => import("./pages/New"));
-      show = componentFactory({
-        children: <New />,
-        nav: true,
-        lazy: true
-      });
-      break;
-    case "profile":
-      const Profile = React.lazy(() => import("./pages/Profile"));
-      show = componentFactory({
-        children: <Profile />,
-        nav: true,
-        lazy: true,
-        new: true
-      });
-      break;
     case "home":
       const Home = React.lazy(() => import("./pages/HomeDesktop"));
       show = componentFactory({
@@ -286,35 +216,10 @@ const App = (props: {
         new: true
       });
       break;
-    case "mine":
-      const Mine = React.lazy(() => import("./pages/Mine"));
-      show = componentFactory({
-        children: <Mine />,
-        nav: true,
-        lazy: true,
-        new: true
-      });
-      break;
     case "login":
       const Login = React.lazy(() => import("./pages/Enter"));
       show = componentFactory({
         children: <Login desktop />,
-        nav: true,
-        lazy: true
-      });
-      break;
-    case "register":
-      const Register = React.lazy(() => import("./pages/Enter"));
-      show = componentFactory({
-        children: <Register register locations={props.locations} />,
-        nav: true,
-        lazy: true
-      });
-      break;
-    case "post":
-      const Post = React.lazy(() => import("./pages/Post"));
-      show = componentFactory({
-        children: <Post />,
         nav: true,
         lazy: true
       });

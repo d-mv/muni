@@ -23,7 +23,7 @@ var normalizePort = function (value) {
     return false;
 };
 var onError = function (error) {
-    console.log(new Date());
+    // console.log(new Date());
     console.log(error);
     if (error.syscall !== "listen") {
         throw error;

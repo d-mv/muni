@@ -109,3 +109,21 @@ exports.positiveMessage = function (props) {
         return __assign({}, message, props.payload);
     }
 };
+// v2
+exports.positive = function (props) {
+    var message = {
+        status: true,
+        message: props.subj,
+        code: props.code || 200
+    };
+    return __assign({}, message, { payload: props.payload });
+};
+// v2
+exports.negative = function (props) {
+    var message = {
+        status: false,
+        message: props.subj,
+        code: props.code || 406
+    };
+    return __assign({}, message, { payload: props.payload });
+};

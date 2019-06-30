@@ -25,10 +25,10 @@ exports.create = function (query, callback) {
     // request User model
     User.create(request, function (modelResponse) {
         if (modelResponse.status) {
-            console.log(modelResponse);
+            // console.log(modelResponse);
             // send confirmation email
             var encrypt = security_1.cookieFactory(modelResponse, true);
-            console.log(encrypt);
+            // console.log(encrypt);
             var url = "https://muni-dev.herokuapp.com/api/user/verify?id=" + encrypt.token;
             send_mail_1["default"](request.email, url, request.lang);
             callback(__assign({}, modelResponse, { payload: { cookie: encrypt } }));

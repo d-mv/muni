@@ -17,6 +17,7 @@ var user_router_1 = require("../routes/user_router");
 var muni_router_1 = require("../routes/muni_router");
 var location_router_1 = require("../routes/location_router");
 var post_router_1 = require("../routes/post_router");
+var user_1 = require("../routes/user");
 var dotEnv = dotenv.config();
 var app = express();
 process.on("uncaughtException", function (err) {
@@ -46,6 +47,7 @@ app.use("/api/muni", muni_router_1["default"]);
 app.use("/api/location", location_router_1["default"]);
 app.use("/api/post", post_router_1["default"]);
 app.use("/api", api_router_1["default"]);
+app.use("/api/v2", user_1["default"]);
 // app.use('/', router);
 // * React
 //Static file declaration

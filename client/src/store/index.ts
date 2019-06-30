@@ -1,4 +1,3 @@
-import { getMuniPosts } from "./users/posts";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
@@ -17,7 +16,6 @@ import {
   setToken,
   checkToken,
   login,
-  // setModule,
   register,
   setLoading,
   setAuth,
@@ -116,7 +114,6 @@ export default function configureStore() {
     checkTokenResult: "",
     login: apiState,
     module: "welcome",
-    // module: "welcome",
     prevModule: "welcome",
     locations: [],
     loading: false,

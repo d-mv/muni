@@ -34,9 +34,9 @@ var response_message_1 = require("../modules/response_message");
  *
  */
 exports.createPost = function (query, callback) {
-    console.log(Object.keys(query));
+    // console.log(Object.keys(query));
     security_1.checkToken(query.token, function (checkTokenResponse) {
-        console.log(Object.keys(checkTokenResponse.payload));
+        // console.log(Object.keys(checkTokenResponse.payload));
         var _id = checkTokenResponse.payload._id;
         var location = checkTokenResponse.payload.location;
         var check = query.user === _id && query.location === location.toString();
@@ -56,9 +56,9 @@ exports.createPost = function (query, callback) {
     });
 };
 exports.createMuni = function (query, callback) {
-    console.log(Object.keys(query));
+    // console.log(Object.keys(query));
     security_1.checkToken(query.token, function (checkTokenResponse) {
-        console.log(Object.keys(checkTokenResponse.payload));
+        // console.log(Object.keys(checkTokenResponse.payload));
         var request = {
             location: query.location,
             post: query.post
@@ -99,7 +99,7 @@ exports.updateMuniPost = function (request, callback) {
         }
         else {
             // positive code = 200
-            console.log(Object.keys(request.post));
+            // console.log(Object.keys(request.post));
             Post.updateMuni({ post: post, location: location }, function (modelResponse) {
                 // callback with response
                 callback(modelResponse);
@@ -127,7 +127,7 @@ exports.deletePost = function (props, callback) {
                 callback(checkTokenResponse);
             }
             else {
-                console.log(checkTokenResponse);
+                // console.log(checkTokenResponse);
                 Post.deletePost({
                     postId: props.post,
                     user: checkTokenResponse.payload.id
@@ -153,7 +153,7 @@ exports.deleteMuniPost = function (props, callback) {
                 callback(checkTokenResponse);
             }
             else {
-                console.log(checkTokenResponse);
+                // console.log(checkTokenResponse);
                 Post.deleteMuniPost({
                     postId: props.post,
                     location: props.location

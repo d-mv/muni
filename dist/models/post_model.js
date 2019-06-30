@@ -247,8 +247,8 @@ exports.update = function (request, callback) {
     var id = request._id;
     var post = request;
     delete post._id;
-    console.log(Object.keys(request));
-    console.log(post.title);
+    // console.log(Object.keys(request))
+    // console.log(post.title)
     var setRequest = {};
     // prepare the request
     Object.keys(post).forEach(function (key) {
@@ -351,8 +351,8 @@ exports.vote = function (request, callback) {
     var id = request.id, user = request.user;
     console.log("id");
     console.log("user");
-    console.log(id);
-    console.log(user);
+    // console.log(id);
+    // console.log(user);
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         if (err) {
@@ -377,7 +377,7 @@ exports.vote = function (request, callback) {
             })
                 .then(function (document) {
                 // process response
-                console.log(document);
+                // console.log(document);
                 callback(Message.updateMessage({
                     subj: "Post",
                     document: {
@@ -394,7 +394,7 @@ exports.vote = function (request, callback) {
 };
 exports.replyVote = function (request, callback) {
     console.log("requets to update reply votes:");
-    console.log(request);
+    // console.log(request);
     MDB.client.connect(function (err) {
         assert.equal(null, err);
         if (err) {
@@ -420,7 +420,7 @@ exports.replyVote = function (request, callback) {
             })
                 .then(function (document) {
                 // process response
-                console.log(document);
+                // console.log(document);
                 callback(Message.updateMessage({
                     subj: "Post reply vote",
                     document: {
@@ -437,9 +437,9 @@ exports.replyVote = function (request, callback) {
 };
 exports.updateMuni = function (request, callback) {
     console.log("updateMuni");
-    console.log(request);
-    console.log(Object.keys(request.post));
-    console.log(request.post.text);
+    //  console.log(request);
+    // console.log(Object.keys(request.post));
+    // console.log(request.post.text);
     // console.log(request);
     var location = request.location, post = request.post;
     // const post: TYPE.indexedObj = request.post;
@@ -464,7 +464,7 @@ exports.updateMuni = function (request, callback) {
             })
                 .then(function (document) {
                 // process response
-                console.log(document);
+                // console.log(document);
                 callback(Message.updateMessage({
                     subj: "Post",
                     document: {

@@ -118,7 +118,7 @@ router.get("/login", function (req, res, next) {
             query: req.query
         }, function (controllerResponse) {
             console.log("controllerResponse");
-            console.log(controllerResponse);
+            // console.log(controllerResponse);
             if (controllerResponse.status) {
                 // process token/cookie
                 var cookieIngredients = {

@@ -1,12 +1,10 @@
 import { LoginProps } from "./types";
-import axios from "axios";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { get } from "../services";
 import { indexedObjAny } from "../types";
 
 import fromJson from "../../data/translation.json";
-import { string } from "prop-types";
 const data: indexedObjAny = fromJson;
 
 export const checkToken = (
@@ -14,10 +12,8 @@ export const checkToken = (
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): Promise<void> => {
-  // console.log(token);
   get({ url: "/v2/check", headers: { token } })
     .then(response => {
-      // set auth true
       const {
         _id,
         location,
@@ -28,7 +24,6 @@ export const checkToken = (
         pinned,
         categories
       } = response.data.payload;
-      console.log(response.data.payload);
       dispatch({ type: "SET_AUTH", payload: { _id, location } });
       dispatch({
         type: "USER_TYPE",
@@ -47,9 +42,6 @@ export const checkToken = (
         type: "SET_LOADING",
         loading: false
       });
-
-      // dispatch({ type: "SET_AUTH", payload: response.data.payload });
-      // dispatch({ type: "SET", token: token });
     })
     .catch(e => {});
 };
@@ -57,10 +49,6 @@ export const checkToken = (
 export const login = (login: LoginProps) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
-  // dispatch({
-  //   type: "SET_LOADING",
-  //   loading: true
-  // });
   dispatch({
     type: "SET_MESSAGE",
     message: ""
