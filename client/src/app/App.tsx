@@ -97,22 +97,22 @@ const App = (props: {
         fetchPostsNews();
       }
 
-    } else {
+    } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
 
-      if (!token && cookie && cookie.length > 0) {
+      if (cookie && cookie.length > 0) {
         logger({ text: "cookie is", emph: "true", type: "positive" });
         setMessage("checking cookie...");
         props.checkToken(cookie);
-      } else {
+      } else if (!cookie && props.module==='welcome') {
         logger({ text: "cookie is", emph: "false", type: "attention" });
         setMessage("fetching locations...");
         props.fetchLocations();
         setLoading(false);
       }
     }
-  }, [auth]);
+  }, [auth,token]);
 
   useEffect(() => {
     console.log("2. triggered module");
@@ -124,10 +124,6 @@ const App = (props: {
       console.log("- module is home");
       setLoading(false);
     }
-    // if (props.module === "welcome") {
-    //   console.log("- module is welcome, no token whatsoever");
-    //   // setLoading(false);
-    // }
   }, [props.module]);
 
   useEffect(() => {
@@ -136,8 +132,7 @@ const App = (props: {
       props.posts.length > 0 &&
       props.module !== "post" &&
       token !== "clear" &&
-      props.module !== "home" &&
-      loading
+      props.module !== "home"
     ) {
       console.log("- posts are there, show post");
       toggleModule("home");
