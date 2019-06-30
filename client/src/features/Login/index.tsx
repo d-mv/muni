@@ -136,9 +136,9 @@ const Login = (props: {
             id='submit_button'
           />
         </Button>
-        <Button mode='secondaryFlat' action={handleSecondaryButton}>
+        {props.desktop?null:<Button mode='secondaryFlat' action={handleSecondaryButton}>
           {text["login.button.register"]}
-        </Button>
+        </Button>}
       </ButtonsWrapper>
     </form>
   );

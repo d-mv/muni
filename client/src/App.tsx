@@ -195,7 +195,7 @@ const App = (props: {
       console.log("5. locations not available, get them");
       props.fetchLocations();
     }
-  });
+  },[]);
 
   const handleNewButtonClick = () => {
     toggleModule("new");

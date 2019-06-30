@@ -23,7 +23,7 @@ const Enter = (props: { register?: boolean; locations?: data,desktop?:boolean })
   const show = props.register ? register : <Login />;
   const content = props.desktop ? (
     <div className={pageStyle.desktop}>
-      <Login />
+      <Login desktop />
     </div>
   ) : (
     <Page opposite>{show}</Page>

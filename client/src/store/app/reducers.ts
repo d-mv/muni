@@ -64,6 +64,7 @@ export const showHelp = (state = false, action: Action): boolean => {
 };
 
 export const fetchLocations = (state: [] = [], action: Action): [] => {
+
   switch (action.type) {
     case "FETCH_LOCATIONS":
       const { payload } = action.payload;
