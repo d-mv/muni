@@ -131,14 +131,14 @@ export const fetchData = (state = apiState, action: Action) => {
 export const setPosts = (state = [], action: Action) => {
   switch (action.type) {
     case "SET_POSTS":
-      return action.posts;
+      return action.posts === [] ? state : action.posts;
   }
   return state;
 };
 export const setMuniPosts = (state = [], action: Action) => {
   switch (action.type) {
     case "SET_MUNIPOSTS":
-      return action.posts;
+      return action.posts === [] ? state : action.posts;
   }
   return state;
 };

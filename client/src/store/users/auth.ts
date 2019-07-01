@@ -61,7 +61,6 @@ export const login = (login: LoginProps) => async (
 
   get({ url: `/v2/user/login?password=${login.password}&email=${login.email}` })
     .then(response => {
-      console.log(response)
       const {
         _id,
         location,
@@ -96,9 +95,6 @@ export const login = (login: LoginProps) => async (
       });
     })
     .catch((error: any) => {
-      console.log(error)
-      console.log(Object.keys(error))
-      // console.log(error.response)
       const payload = {
         status: false,
         code: 401,

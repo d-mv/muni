@@ -76,14 +76,16 @@ const App = (props: {
   useEffect(() => {
     logger({ text: "main process is", emph: "launched", type: "positive" });
 
+    if (token === "clear") {
+      cookies.set("token", "");
+      props.setToken("");
+      toggleModule("welcome");
+    }
+
     if (auth._id && auth.location && token) {
       logger({ text: "auth is", emph: "true", type: "positive" });
 
-      if (token === "clear") {
-        cookies.set("token", "");
-        props.setToken("");
-        toggleModule("welcome");
-      } else if (cookies.get("token") !== token) {
+      if (cookies.get("token") !== token) {
         logger({ text: "set token in", emph: "cookies" });
         setMessage("saving auth...");
         // set auth settings for axios
@@ -96,7 +98,6 @@ const App = (props: {
         setMessage("fetching data...");
         fetchPostsNews();
       }
-
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -105,14 +106,14 @@ const App = (props: {
         logger({ text: "cookie is", emph: "true", type: "positive" });
         setMessage("checking cookie...");
         props.checkToken(cookie);
-      } else if (!cookie && props.module==='welcome') {
+      } else if (!cookie && props.module === "welcome") {
         logger({ text: "cookie is", emph: "false", type: "attention" });
         setMessage("fetching locations...");
         props.fetchLocations();
         setLoading(false);
       }
     }
-  }, [auth,token]);
+  }, [auth, token]);
 
   useEffect(() => {
     console.log("2. triggered module");
@@ -132,6 +133,7 @@ const App = (props: {
       props.posts.length > 0 &&
       props.module !== "post" &&
       token !== "clear" &&
+      auth._id.length > 0 &&
       props.module !== "home"
     ) {
       console.log("- posts are there, show post");

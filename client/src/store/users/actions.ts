@@ -8,7 +8,7 @@ import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
 export * from "./posts";
-export * from './auth'
+export * from "./auth";
 const importedData: TYPE.indexedObjAny = data;
 
 /**
@@ -124,6 +124,15 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
       type: "LOGIN",
       payload: { ...apiState }
     });
+    dispatch({
+      type: "SET_POSTS",
+      posts: []
+    });
+    dispatch({
+      type: "SET_MUNIPOSTS",
+      posts: []
+    });
+    dispatch({ type: "SET_AUTH", payload: { location: "", _id: "" } });
   };
 };
 
@@ -353,7 +362,7 @@ export const cachePost = (post: TYPE.post): Action => {
 };
 
 export const muniLogin = (
-  props:LoginProps
+  props: LoginProps
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   const url = `/muni/login?pass=${props.password}&email=${props.email}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -392,10 +401,12 @@ export const muniLogin = (
             data: importedData.language[response.data.payload.lang]
           });
           dispatch({ type: "SET", token: response.data.token });
-        } else { dispatch({
-                   type: "SET_MESSAGE",
-                   message: response.data.message
-                 });}
+        } else {
+          dispatch({
+            type: "SET_MESSAGE",
+            message: response.data.message
+          });
+        }
         dispatch({
           type: "LOGIN",
           payload: { ...response.data, code: response.status }
