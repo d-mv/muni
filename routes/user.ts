@@ -62,6 +62,7 @@ router.get("/check", (req: any, res: any, next: any) => {
 
 router.get("/user/login", (req: any, res: any, next: any) => {
   console.log(">> loggin in: ");
+  console.log(req.query);
   if (
     typeof req.query.email === "undefined" ||
     typeof req.query.password === "undefined"

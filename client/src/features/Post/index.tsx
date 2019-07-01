@@ -489,7 +489,7 @@ const Post = (props: {
   };
 
   return (
-    <Content header>
+    <div className={style.container}>
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={_id} className={style.post}>
@@ -551,7 +551,7 @@ const Post = (props: {
         {deleteConfirmationComponent}
         {updateConfirmComponent}
       </div>
-    </Content>
+    </div>
   );
 };
 

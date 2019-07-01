@@ -79,7 +79,7 @@ export const notFound = (subj: string) => {
   return {
     status: false,
     message: `No ${subj} found.`,
-    code: 203
+    code: 404
   };
 };
 export const requestError = (subj: string) => {

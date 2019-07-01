@@ -39,7 +39,7 @@ export const login = (
   callback: (arg0: apiResponse) => void
 ) => {
   loginUser(request, (result: apiResponse) => {
-    // console.log(result);
+    console.log(result);
     if (result.status) {
       // make token
       getCategories((catResult: apiResponse) => {

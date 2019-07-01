@@ -24,13 +24,13 @@ const Home = (props: {
     name: props.location.name[props.language],
     right: { icon: <div />, action: () => {} }
   };
-
+  // TODO: move to back
   const sortPostList = (posts: post[]) => {
     return posts.sort((a: post, b: post) =>
       a.votes.length < b.votes.length ? 1 : -1
     );
   };
-  
+
   return (
     <Page>
       <Header {...headerObject} />

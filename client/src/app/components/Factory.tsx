@@ -142,5 +142,6 @@ export const Post = (props: {
     children: <PostPage />,
     nav: true,
     lazy: true,
+    new:true,
     config: props.config
   });

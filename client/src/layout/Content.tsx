@@ -2,11 +2,8 @@ import React from "react";
 
 /**
  * React JSX component to wrap content
- *
  * @param {object} props - Children to display
- *
  * @returns {JSX.Element}
- *
  */
 const Content = (props: {
   children: any;

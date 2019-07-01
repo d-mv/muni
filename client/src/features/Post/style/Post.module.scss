@@ -1,5 +1,9 @@
+.container {
+  width: 100%;
+}
+
 .post {
-  border: var(--border);
+  border: var(--border) !important;
   margin-bottom: .5rem;
   width: 95%;
   margin: 0 auto;

@@ -69,6 +69,7 @@ const NavButton = (props: {
       const icon = props.icon || "";
       component = buttonFactory(
         style.navButton,
+        // TODO: should till show active
         iconFactory({ icon, module: props.module }),
         icon
       );

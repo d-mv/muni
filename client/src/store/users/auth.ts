@@ -95,6 +95,9 @@ export const login = (login: LoginProps) => async (
       });
     })
     .catch((error: any) => {
+      console.log(error)
+      console.log(Object.keys(error))
+      // console.log(error.response)
       const payload = {
         status: false,
         code: 401,

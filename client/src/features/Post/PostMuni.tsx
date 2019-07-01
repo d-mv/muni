@@ -5,7 +5,7 @@ import { AppState } from "../../store";
 import { setModule, getMuniPosts } from "../../store/users/actions";
 import { indexedObjAny } from "../../store/types";
 
-import { Photo, Link, Confirm, TopBlock } from "./components";
+import { Photo, Link, Confirm, TopBlock, NumbersLine } from "./components";
 import Text from "./components/Text";
 
 import Block from "../../layout/Block";
@@ -139,6 +139,16 @@ const PostMuni = (props: {
       direction={direction}
     />
   ) : null;
+  const ageText: { [index: string]: string } = text["post.age"];
+
+const numbersLine = (
+  <NumbersLine
+    date={date}
+    daysText={ageText}
+    direction={direction}
+  />
+);
+
 
   // header
   let editIcon = muniUser
@@ -170,7 +180,7 @@ const PostMuni = (props: {
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={post._id} className={style.post}>
-          <TopBlock muni title={title} />
+          <TopBlock muni title={title} numbersLine={numbersLine} />
           <Photo
             src={post.photo}
             edit={muniEdit}

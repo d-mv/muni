@@ -15,6 +15,6 @@ export const TopBlock = (props: {
   <Section narrow>
     {props.muni ? null : <Category category={props.category || ""} />}
     <h3 className={styles.title}>{props.title}</h3>
-    {props.muni ? null : props.numbersLine}
+    {props.numbersLine}
   </Section>
 );
