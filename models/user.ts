@@ -117,10 +117,15 @@ export const loginUser = (
           console.log(compareResult);
           if (compareResult.status) {
             const { _id, location, type, language, name, pinned } = res.payload;
+            console.log(_id);
+            console.log(location);
+            console.log(type);
+            console.log(language);
+            console.log(name);
             callback(
               Message.positive({
                 subj: "User authed",
-                payload: { _id, location, type, language, name, pinned }
+                payload: { _id, location, type: "user", language, name, pinned }
               })
             );
           } else {

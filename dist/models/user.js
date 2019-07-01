@@ -102,9 +102,14 @@ exports.loginUser = function (request, callback) {
                 console.log(compareResult);
                 if (compareResult.status) {
                     var _a = res.payload, _id = _a._id, location_1 = _a.location, type = _a.type, language = _a.language, name_1 = _a.name, pinned = _a.pinned;
+                    console.log(_id);
+                    console.log(location_1);
+                    console.log(type);
+                    console.log(language);
+                    console.log(name_1);
                     callback(Message.positive({
                         subj: "User authed",
-                        payload: { _id: _id, location: location_1, type: type, language: language, name: name_1, pinned: pinned }
+                        payload: { _id: _id, location: location_1, type: "user", language: language, name: name_1, pinned: pinned }
                     }));
                 }
                 else {

@@ -42,7 +42,7 @@ exports.checkUserById = function (token, callback) {
 };
 exports.login = function (request, callback) {
     models_1.loginUser(request, function (result) {
-        console.log(result);
+        // console.log(result);
         if (result.status) {
             // make token
             models_1.getCategories(function (catResult) {

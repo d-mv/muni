@@ -61,6 +61,7 @@ export const login = (login: LoginProps) => async (
 
   get({ url: `/v2/user/login?password=${login.password}&email=${login.email}` })
     .then(response => {
+      console.log(response)
       const {
         _id,
         location,
