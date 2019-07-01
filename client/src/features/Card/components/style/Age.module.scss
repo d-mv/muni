@@ -2,10 +2,10 @@
   display: flex;
   font: var(--textVotersNumber);
   justify-content: center;
-  width: fit-content;
+  align-items: center;
 
   .text {
-    margin: 0 0.4rem;
+    margin: 0 .4rem;
     color: var(--colorDarkGrey);
     font: var(--textVotersText);
     padding: 0;

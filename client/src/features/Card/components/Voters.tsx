@@ -2,7 +2,7 @@ import React from 'react'
 
 import { votersSecondary } from '../../../icons'
 
-import style from './styles/Voters.module.scss'
+import style from './style/Voters.module.scss'
 
 const Voters = (props:{number:number,text:string,direction:string}) => {
   return (
