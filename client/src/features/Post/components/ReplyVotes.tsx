@@ -10,7 +10,7 @@ export const ReplyVotes = (props: { replies: { up: string[]; down: string[] } })
     <div className={styles.container}>
       <p>{upLength}</p>
       <Thumb frame='secondary' fill='secondary' />
-      <p>{}</p>
+      <p>{downLength}</p>
       <Thumb frame='attention' fill='attention' />
     </div>
   );

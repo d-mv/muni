@@ -53,7 +53,7 @@ const Navigation = (props: any) => {
           <NavButton mode='return-welcome' action={action} />
           <h1>Our Change</h1>
           <div className="langSwitchButton">
-            <LangSwitch />
+            <LangSwitch white/>
           </div>
         </nav>
       );
@@ -64,7 +64,7 @@ const Navigation = (props: any) => {
           <NavButton mode='return-login' action={action} />
           <h1>Our Change</h1>
           <div className='langSwitchButton'>
-            <LangSwitch />
+            <LangSwitch white/>
           </div>
         </nav>
       );

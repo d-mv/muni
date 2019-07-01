@@ -54,7 +54,6 @@
 
     &:nth-child(1) {
       font: var(--textButtonEnterLtr);
-      // height: 95%;
 
       @media (min-aspect-ratio: 50/100) {}
 
@@ -205,7 +204,6 @@
   left: 0;
   right: 0;
   height: 6rem;
-  // min-height: 6rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -214,7 +212,6 @@
 .header {
   @extend .nav-template;
   top: 0;
-  // height: 10%;
   margin: 0 auto;
   width: 95%;
   justify-content: space-between;
@@ -229,7 +226,6 @@
 
 .headerRTL {
   @extend .header;
-  // direction: rtl;
   direction: rtl;
 
   svg {
@@ -240,7 +236,6 @@
 .footer-template {
   @extend .nav-template;
   bottom: 0;
-  // height: 10%;
 }
 
 .footer {
@@ -275,7 +270,7 @@
 }
 
 .langSwitch {
-  border: var(--border);
+  border: var(--border) !important;
   border-radius: var(--borderRadius);
   background: none;
   font: var(--textFormField);
@@ -284,9 +279,19 @@
   user-select: none;
 
   &:focus {
-    border: none;
-    border: var(--borderPrimaryThin);
+    border: var(--borderPrimaryThin) !important;
   }
+}
+
+.langSwitchWhite {
+  @extend .langSwitch;
+  border: var(--borderWhite) !important;
+  color: var(--colorWhite);
+
+  &:focus {
+    border: var(--borderWhite) !important;
+  }
+
 }
 
 .content {
@@ -310,7 +315,6 @@
 
 .content-header {
   @extend .content;
-  // width: 95%;
   margin: 0 auto;
   margin-bottom: 1rem;
   padding-top: 5rem;

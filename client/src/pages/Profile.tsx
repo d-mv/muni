@@ -41,8 +41,9 @@ const Profile = (props: any) => {
         </Section>
         <Section>
           <Paragraph direction={direction}>
-            <Line direction={direction}>{props.location.type}</Line>
-            <Line direction={direction}>{props.location._id}</Line>
+            <Line direction={direction}>{props.type}</Line>
+            <Line direction={direction}>{props.auth._id}</Line>
+            <Line direction={direction}>{props.auth.location}</Line>
           </Paragraph>
         </Section>
         <Section>
@@ -64,7 +65,9 @@ const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
     location: state.locationData,
-    help: state.help
+    help: state.help,
+    auth: state.auth,
+    type: state.type
   };
 };
 

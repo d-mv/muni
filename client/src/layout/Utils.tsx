@@ -12,7 +12,8 @@ const styleSeparator = {
   height: "1rem",
   width: ".3rem",
   marginRight: ".7rem",
-  marginLeft: '.7rem'
+  marginLeft: ".7rem",
+  marginBottom: ".1rem"
 };
 
 const spacerFactory = (size: number, units: string) => {
