@@ -140,8 +140,7 @@ export const loginUser = (
         // type: 'muni',
         // posts: [],
         // location: 5ce589a00a61b5a9ca9d9caf
-        console.log(request.password);
-        console.log(muniResult.payload.pass);
+        console.log(muniResult);
         if (muniResult.status) {
           compareToHash(
             request.password,
@@ -168,7 +167,7 @@ export const loginUser = (
             }
           );
         } else {
-          callback(Message.notFound("User"));
+          callback(muniResult);
         }
       });
     }

@@ -13,12 +13,18 @@ export  const NumbersLine = (props: {
   date: string;
   daysText: {[index:string]:string};
   direction: string;
-  votes: number;
-  voterText: string;
+  votes?: number;
+  voterText?: string;
 }) => {
   const date = (
     <div className={style.date}>{dateBeautify(props.date, "עב", true)}</div>
   );
+  const voters = props.votes?(<Voters
+        number={props.votes || 0}
+        text={props.voterText || ''}
+        direction={props.direction}
+  />) : null
+
   return (
     <div className={style.numbers}>
       {date}
@@ -28,12 +34,8 @@ export  const NumbersLine = (props: {
         text={props.daysText}
         direction={props.direction}
       />
-      <Separator />
-      <Voters
-        number={props.votes}
-        text={props.voterText}
-        direction={props.direction}
-      />
+      {props.votes? <Separator />:null}
+      {voters}
     </div>
   );
 };

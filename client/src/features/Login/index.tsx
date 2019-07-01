@@ -99,7 +99,12 @@ const Login = (props: {
       <Loading />
     </div>
   ) : (
-    <div className='formMessage'>{message}</div>
+    <div
+      className={
+        message === "Loading data..." ? "formMessagePos" : "formMessage"
+      }>
+      {message}
+    </div>
   );
 
   let emailElement = formSection({

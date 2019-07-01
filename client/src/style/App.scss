@@ -275,8 +275,8 @@
 }
 
 .langSwitch {
-  border: 1px solid var(--colorGrey) !important;
-  border-radius: 4px;
+  border: var(--border);
+  border-radius: var(--borderRadius);
   background: none;
   font: var(--textFormField);
   padding: 5px 8px;
@@ -285,13 +285,12 @@
 
   &:focus {
     border: none;
-    border: 1px solid var(--colorPrimary);
+    border: var(--borderPrimaryThin);
   }
 }
 
 .content {
   width: 100%;
-  // height: auto;
   overflow: scroll;
   margin-top: 5rem;
 }
@@ -311,7 +310,7 @@
 
 .content-header {
   @extend .content;
-  width: 95%;
+  // width: 95%;
   margin: 0 auto;
   margin-bottom: 1rem;
   padding-top: 5rem;

@@ -3,7 +3,7 @@
 @import './_typography';
 @import './_ui';
 @import './_form';
-@import './Navigation.scss';
+@import './_elements.scss';
 
 /* m-plus-rounded-1c-regular - latin-ext_latin_hebrew */
 @font-face {
@@ -219,7 +219,6 @@
   box-shadow: var(--pageShadow);
   border-radius: 0 0 2.5rem 2.5rem;
   border-bottom: 0.3rem solid var(--colorWhite) !important;
-
 }
 
 .pageOpposite {
