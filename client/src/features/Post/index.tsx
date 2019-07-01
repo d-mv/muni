@@ -13,7 +13,7 @@ import {
   getPosts
 } from "../../store/users/actions";
 import { updatePost, deletePost, showPost } from "../../store/post/actions";
-import { indexedObjAny, post, data } from "../../store/types";
+import { indexedObjAny, post, data, indexedObj } from "../../store/types";
 
 import VoteButton from "../../components/VoteButton";
 import Header from "../../components/Header";
@@ -55,6 +55,7 @@ const Post = (props: {
   token: string;
   deletePost: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
+  auth: indexedObj
 }) => {
   // destructuring props
   const { categories } = props.location;
@@ -97,8 +98,8 @@ const Post = (props: {
     more: text["post.show-more"],
     less: text["post.show-less"]
   };
-  const includes = votes.includes(props.location._id);
-  const author = createdBy === props.location._id;
+  const includes = votes.includes(props.auth._id);
+  const author = createdBy === props.auth._id;
   const muniUser = props.location.type === "muni";
 
   let allowToReply = false;
@@ -106,13 +107,14 @@ const Post = (props: {
     allowToReply = true;
   } else if (post.reply.up.length > 0 && post.reply.down.length > 0) {
     allowToReply = [...post.reply.up, ...post.reply.down].includes(
-      props.location._id
+      props.auth._id
     );
   } else if (post.reply.up.length > 0) {
-    allowToReply = post.reply.up.includes(props.location._id);
+    allowToReply = post.reply.up.includes(props.auth._id);
   } else if (post.reply.down.length > 0) {
-    allowToReply = post.reply.down.includes(props.location._id);
+    allowToReply = post.reply.down.includes(props.auth._id);
   }
+
 
   // toggles
   const toggleShowNewReplyButton = () => {
@@ -146,7 +148,7 @@ const Post = (props: {
   const handleDelete = (mode: string) => {
     if (mode === "secondary") {
       props.deletePost(_id);
-      props.getPosts(props.location.location);
+      props.getPosts(props.auth.location);
       props.setModule("home");
     }
   };
@@ -164,7 +166,7 @@ const Post = (props: {
         .then((response: AxiosResponse<any>) => {
           toggleDeleteConfirmation()
           // toggleMuniEditModal();
-          props.getPosts(props.location.location);
+          props.getPosts(props.auth.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -183,7 +185,7 @@ const Post = (props: {
         .patch(url, { ...newPost })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEditModal();
-          props.getPosts(props.location.location);
+          props.getPosts(props.auth.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -211,7 +213,7 @@ const Post = (props: {
         reply: { text: newReply, date: new Date() }
       });
       setShowNewReply(false);
-      props.getPosts(props.location.location);
+      props.getPosts(props.auth.location);
     }
   };
   const handleUpdate = (answer: string) => {
@@ -226,7 +228,7 @@ const Post = (props: {
         .patch(url, { ...post })
         .then((response: AxiosResponse<any>) => {
           toggleEdit();
-          props.getPosts(props.location.location);
+          props.getPosts(props.auth.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -252,14 +254,14 @@ const Post = (props: {
   // async handlers
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    const url = `/post/${_id}/vote?user=${props.location._id}`;
+    const url = `/post/${_id}/vote?user=${props.auth._id}`;
     axios({
       method: "patch",
       url
     })
       .then((response: AxiosResponse<any>) => {
-        setPost({ ...post, votes: [...post.votes, props.location._id] });
-        props.getPosts(props.location.location);
+        setPost({ ...post, votes: [...post.votes, props.auth._id] });
+        props.getPosts(props.auth.location);
       })
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
@@ -270,12 +272,12 @@ const Post = (props: {
     let newVotesDown = reply.down;
 
     if (updown) {
-      newVotesUp.push(props.location._id);
+      newVotesUp.push(props.auth._id);
     } else {
-      newVotesDown.push(props.location._id);
+      newVotesDown.push(props.auth._id);
     }
 
-    const url = `/post/${_id}/reply/vote?user=${props.location._id}&vote=${updown}`;
+    const url = `/post/${_id}/reply/vote?user=${props.auth._id}&vote=${updown}`;
     axios({
       method: "get",
       url
@@ -285,7 +287,7 @@ const Post = (props: {
           ...post,
           reply: { ...post.reply, up: newVotesUp, down: newVotesDown }
         });
-        props.getPosts(props.location.location);
+        props.getPosts(props.auth.location);
       })
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
@@ -314,7 +316,7 @@ const Post = (props: {
       </div>
     );
 
-  if (votes.includes(props.location._id))
+  if (votes.includes(props.auth._id))
     voteButton = <Voted text={text["post.voted"]} direction={direction} />;
 
   let newReplyComponent: any = "";
@@ -340,6 +342,7 @@ const Post = (props: {
     } else if (allowToReply) {
       setOfThumbs = <Voted text={text["post.voted"]} direction={direction} />;
     }
+
     const replyVotes = (
       <ReplyVotes replies={{ up: reply.up, down: reply.down }} />
     );
@@ -563,7 +566,8 @@ const mapStateToProps = (state: AppState) => {
     post: state.posts.filter((post: any) => post._id === state.post._id)[0],
     mode: state.mode,
     prevModule: state.prevModule,
-    token: state.token
+    token: state.token,
+    auth: state.auth
   };
 };
 
