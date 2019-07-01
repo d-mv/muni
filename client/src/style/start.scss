@@ -3,7 +3,6 @@
 @import './_typography';
 @import './_ui';
 @import './_form';
-@import './_elements.scss';
 
 /* m-plus-rounded-1c-regular - latin-ext_latin_hebrew */
 @font-face {
@@ -187,7 +186,6 @@
   * {
     outline: none;
     border: none;
-    // box-shadow: none;
     appearance: none;
 
     &:active {
