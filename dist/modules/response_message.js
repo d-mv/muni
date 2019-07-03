@@ -55,7 +55,7 @@ exports.alreadyExistsMessage = function (subj) {
     return {
         status: false,
         message: subj + " already exists.",
-        code: 200
+        code: 400
     };
 };
 exports.foundMessage = function (subj, payload) {

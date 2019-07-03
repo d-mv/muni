@@ -22,42 +22,6 @@ var dbName = process.env.MONGO_DB || "muni";
 // collections
 var dbcMain = process.env.MONGO_COL_MAIN || "dev";
 /**
- * Function to list all locations (without users/posts). Need for login.
- * @function list
- * @callback callback - Callback function to return the response
- */
-exports.list = function (callback) {
-    MDB.client.connect(function (err) {
-        assert.equal(null, err);
-        var database = MDB.client.db(dbName).collection(dbcMain);
-        database
-            .aggregate([
-            {
-                $project: {
-                    name: 1,
-                    photo: 1
-                }
-            }
-        ])
-            .toArray(function (e, result) {
-            if (e) {
-                callback(Message.errorMessage({ action: "locations fetch", e: e }));
-            }
-            else if (result.length > 0) {
-                callback(Message.positiveMessage({
-                    subj: "Locations found",
-                    code: 200,
-                    payload: result
-                }));
-            }
-            else {
-                callback(Message.notFound("locations"));
-            }
-            // MDB.client.close();
-        });
-    });
-};
-/**
  * Function to create a location
  * @function create
  * @param {object} query - A set of fields for the new location
@@ -207,5 +171,34 @@ exports.deleteLocation = function (location, callback) {
                 }
             });
         }
+    });
+};
+// v2
+exports.list = function (callback) {
+    MDB.client.connect(function (err) {
+        assert.equal(null, err);
+        var database = MDB.client.db(dbName).collection(dbcMain);
+        database
+            .aggregate([
+            {
+                $project: {
+                    name: 1
+                }
+            }
+        ])
+            .toArray(function (e, result) {
+            if (e) {
+                callback(Message.errorMessage({ action: "locations fetch", e: e }));
+            }
+            else if (result.length > 0) {
+                callback(Message.positiveMessage({
+                    subj: "Locations found",
+                    payload: result
+                }));
+            }
+            else {
+                callback(Message.notFound("locations"));
+            }
+        });
     });
 };

@@ -86,6 +86,8 @@ exports.getLocationId = function (_id, callback) {
 exports.loginUser = function (request, callback) {
     // try as user
     findUserByEmail(request.email, function (res) {
+        console.log('findUserByEmail');
+        console.log(res);
         // console.log(res);
         // payload:
         //  _id: 5d14cd9d6d3a9dc80c10af2e,
@@ -197,6 +199,8 @@ var findUserByEmail = function (email, callback) {
                 }
             ])
                 .toArray(function (err, result) {
+                console.log('search result');
+                console.log(result);
                 if (err)
                     callback(Message.errorMessage({ action: "findUserByEmail", e: err }));
                 if (result.length > 1) {

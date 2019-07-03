@@ -10,6 +10,7 @@ var response_message_1 = require("../modules/response_message");
  */
 exports.list = function (callback) {
     Location.list(function (modelResponse) {
+        console.log(modelResponse);
         callback(modelResponse);
     });
 };

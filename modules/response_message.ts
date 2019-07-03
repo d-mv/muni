@@ -49,7 +49,7 @@ export const alreadyExistsMessage = (subj: string) => {
   return {
     status: false,
     message: `${subj} already exists.`,
-    code: 200
+    code: 400
   };
 };
 export const foundMessage = (subj: string, payload?: any) => {
