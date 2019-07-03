@@ -136,90 +136,70 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   };
 };
 
-/**
- * Action function to register with API
- * @function register
- * @param {string} location - Location ID
- * @param {string} fName - User's first name
- * @param {string} lName - User's last name
- * @param {string} email - User's email
- * @param {string} pass - User's password
- * @param {string} avatar - Avatar's URL
- * @return {Promise} - Returns promise resolved with the help of Thunk
- */
-export const register = (
-  props: TYPE.register
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log(props);
-  const url = `/user/create?email=${props.email}&location=${props.location}&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&lang=${props.lang}`;
-  console.log(url);
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    // clear state
-    dispatch({
-      type: "REGISTER",
-      payload: apiState
-    });
-    dispatch({
-      type: "SET_MESSAGE",
-      message: ""
-    });
-    dispatch({
-      type: "SET_LOADING",
-      loading: true
-    });
-    dispatch({ type: "TYPING_DATA", payload: { ...props } });
+// export const register = (
+//   props: TYPE.register
+// ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+//   console.log(props);
+//   const url = `/user/create?email=${props.email}&location=${props.location}&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&lang=${props.lang}`;
+//   console.log(url);
+//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+//     // clear state
+//     dispatch({
+//       type: "REGISTER",
+//       payload: apiState
+//     });
+//     dispatch({
+//       type: "SET_MESSAGE",
+//       message: ""
+//     });
+//     dispatch({ type: "TYPING_DATA", payload: { ...props } });
 
-    // proceed with request
-    axios({
-      method: "post",
-      url
-      // withCredentials: true
-    })
-      .then(response => {
-        console.log(response.data);
-        if (!response.data.status) {
-          dispatch({
-            type: "SET_MESSAGE",
-            message: response.data.message
-          });
-          dispatch({
-            type: "SET_LOADING",
-            loading: false
-          });
-        } else {
-          dispatch({
-            type: "SET_MESSAGE",
-            message: response.data.payload.message
-          });
-          // dispatch({ type: "SET_MODULE", module: "confirmation" });
-        }
-        dispatch({
-          type: "SET_LOADING",
-          loading: false
-        });
-        dispatch({
-          type: "REGISTER",
-          payload: { ...response.data, code: response.status }
-        });
-      })
-      .catch(error => {
-        const payload = error.response ? error.response.data : error.toString();
-        // console.log(payload);
-        dispatch({
-          type: "SET_MESSAGE",
-          message: payload.message.toString()
-        });
-        dispatch({
-          type: "REGISTER",
-          payload
-        });
-        dispatch({
-          type: "SET_LOADING",
-          loading: false
-        });
-      });
-  };
-};
+//     // proceed with request
+//     axios({
+//       method: "post",
+//       url
+//     })
+//       .then((response: AxiosResponse) => {
+//         console.log(response.data);
+//         if (!response.data.status) {
+//           dispatch({
+//             type: "SET_MESSAGE",
+//             message: response.data.message
+//           });
+//         } else {
+//           // dispatch({
+//           //   type: "SET_MESSAGE",
+//           //   message: response.data.payload.message
+//           // });
+//           dispatch({ type: "SET_MODULE", module: "confirmation" });
+//         }
+//         dispatch({
+//           type: "REGISTER",
+//           payload: { ...response.data, code: response.status }
+//         });
+//         dispatch({
+//           type: "SET_LOADING",
+//           loading: false
+//         });
+//       })
+//       .catch(error => {
+//         const payload = error.response ? error.response.data : error.toString();
+//         // console.log(payload);
+//         dispatch({
+//           type: "SET_MESSAGE",
+//           message: payload.message
+//         });
+//         // dispatch({
+//         //   type: "REGISTER",
+//         //   payload
+//         // });
+//         dispatch({
+//           type: "SET_LOADING",
+//           loading: false
+//         });
+//       });
+//   };
+// };
 
 export const setMessage = (message: string) => {
   return {
@@ -238,15 +218,6 @@ export const loadData = (): Action => {
   return { type: "LOAD_DATA", data };
 };
 
-/**
- * Action function to set preferred language
- * @function setLanguage
- * @param {string} lang - Language to choose
- * @returns {object}
- */
-// export const setLanguage = (lang: string): Action => {
-//   return { type: "SET_LANGUAGE", data: importedData.language[lang] };
-// };
 
 /** Action function to store location data
  * @function setLocationData
@@ -277,7 +248,6 @@ export const setLanguage = (
       axios({
         method: "post",
         url
-        // withCredentials: true
       })
         .then(response => {})
         .catch(error => {
@@ -300,7 +270,6 @@ export const vote = (
     axios({
       method: "patch",
       url
-      // withCredentials: true
     })
       .then((response: AxiosResponse<any>) => {
         const payload = response.data;
@@ -324,7 +293,6 @@ export const fetchData = (
   const url = "/user/data";
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // proceed with request
-
     axios({
       method: "get",
       url,
@@ -333,16 +301,10 @@ export const fetchData = (
       .then((response: AxiosResponse<any>) => {
         const payload = response.data;
         dispatch({ type: "SET_LOCATION_DATA", data: payload.payload });
-        // dispatch({ type: "SET_POSTS", posts: payload.payload.posts });
         dispatch({
           type: "SET_LANGUAGE",
           data: importedData.language[payload.payload.lang]
         });
-        // dispatch({
-        //   type: "SET_LOCATION_DATA",
-        //   // type: "FETCH_DATA",
-        //   payload: payload
-        // });
       })
       .catch(error => {
         console.log(error);
@@ -428,5 +390,15 @@ export const muniLogin = (
           payload
         });
       });
+  };
+};
+
+// TODO: move to utils
+export const clearState = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    // dispatch({
+    //   type: "TYPING_DATA",
+    //   payload: { email: "", pass: "", fName: "", lName: "", location: "" }
+    // });
   };
 };

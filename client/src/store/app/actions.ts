@@ -92,7 +92,6 @@ export const fetchLocations = (): ThunkAction<
         });
       }
     } catch (error) {
-      console.log(error);
       // const payload = error ? error.response.data : error.toString();
       dispatch({
         type: "FETCH_LOCATIONS",

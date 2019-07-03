@@ -25,7 +25,7 @@ export interface apiResponse {
  * @property {string} pass - User's password
  * @property {string} lang - Avatar's URL
  */
-export interface register {
+export interface registerType {
   location: string;
   fName: string;
   lName: string;

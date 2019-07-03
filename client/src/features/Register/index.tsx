@@ -28,7 +28,7 @@ const Register = (props: {
   language: TYPE.indexedObjAny;
   message: string;
   loading: boolean;
-  register: (arg0: TYPE.register) => void;
+  register: (arg0: TYPE.registerType) => void;
   setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   typed: TYPE.indexedObj;
@@ -52,6 +52,17 @@ const Register = (props: {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [disabled, setDisabled] = useState(true);
+  useEffect(() => {
+    console.log(disabled);
+
+    if (!fName && !lName && !location && !email && !pass && !secondPass) {
+      setDisabled(true);
+    } else if (fName && lName && location && email && pass && secondPass) {
+      setDisabled(false);
+    }
+  }, [fName, lName, location, email, pass, secondPass]);
+
   useEffect(() => {
     if (props.message !== message) {
       setMessage(props.message);
@@ -65,18 +76,21 @@ const Register = (props: {
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (pass !== secondPass) {
-      setMessage(text["register.passwords.dont-match"]);
-    } else {
-      props.setLoading(true);
-      props.register({
-        email,
-        pass,
-        location,
-        fName,
-        lName,
-        lang: props.language.short
-      });
+    // only if not loading
+    if (!loading && !disabled) {
+      if (pass !== secondPass) {
+        setMessage(text["register.passwords.dont-match"]);
+      } else {
+        props.setLoading(true);
+        props.register({
+          email,
+          pass,
+          location,
+          fName,
+          lName,
+          lang: props.language.short
+        });
+      }
     }
   };
 
@@ -85,7 +99,10 @@ const Register = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (message) {
+      console.log('object')
+      setMessage("");
       props.setMessage("");
+
     }
     const { value, name } = event.target;
     switch (name) {
@@ -173,6 +190,8 @@ const Register = (props: {
     length: 3
   });
 
+  console.log(disabled);
+
   return (
     <form
       className={direction === "rtl" ? "formRight" : "formLeft"}
@@ -184,30 +203,34 @@ const Register = (props: {
       {emailElement}
       {passwordElement}
       <section className='section'>
-      <Label
-        direction={direction}
-        value={text["login.label.password.repeat"]}
-      />
-      <input
-        type='password'
-        name='secondPass'
-        value={secondPass}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          handleInputChange(event)
-        }
-        placeholder={text["login.prompt.password.repeat"]}
-        minLength={7}
-        required
-        style={pass === secondPass ? styles.regular : styles.notMatching}
-      />
-    </section>
+        <Label
+          direction={direction}
+          value={text["login.label.password.repeat"]}
+        />
+        <input
+          type='password'
+          name='secondPass'
+          value={secondPass}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            handleInputChange(event)
+          }
+          placeholder={text["login.prompt.password.repeat"]}
+          minLength={7}
+          required
+          style={pass === secondPass ? styles.regular : styles.notMatching}
+        />
+      </section>
       {/* message & loading */}
       {showElement}
       {/* buttons */}
       <ButtonsWrapper column direction={direction}>
-        <Button mode='form' submit disabled={props.loading} aria-label='Submit'>
+        <Button
+          mode='form'
+          submit
+          disabled={disabled || loading}
+          aria-label='Submit'>
           <input
-            className={button.primary}
+            className={disabled ? button.disabled : button.primary}
             type='button'
             value={text["login.button.register"]}
             id='submit_button'

@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 import * as MDB from "../modules/db_connect";
 import * as Message from "../modules/response_message";
-import * as TYPE from "../src/types";
+import { apiResponse, IncNewLocationTYPE, LocationTYPE } from "../src/types";
 
 // constant variables
 const dotEnv = dotenv.config();
@@ -13,51 +13,14 @@ const dbName = process.env.MONGO_DB || "muni";
 const dbcMain = process.env.MONGO_COL_MAIN || "dev";
 
 /**
- * Function to list all locations (without users/posts). Need for login.
- * @function list
- * @callback callback - Callback function to return the response
- */
-export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
-  MDB.client.connect(err => {
-    assert.equal(null, err);
-    const database: any = MDB.client.db(dbName).collection(dbcMain);
-    database
-      .aggregate([
-        {
-          $project: {
-            name: 1,
-            photo: 1
-          }
-        }
-      ])
-      .toArray((e: any, result: any) => {
-        if (e) {
-          callback(Message.errorMessage({ action: "locations fetch", e }));
-        } else if (result.length > 0) {
-          callback(
-            Message.positiveMessage({
-              subj: "Locations found",
-              code: 200,
-              payload: result
-            })
-          );
-        } else {
-          callback(Message.notFound("locations"));
-        }
-        // MDB.client.close();
-      })
-  });
-};
-
-/**
  * Function to create a location
  * @function create
  * @param {object} query - A set of fields for the new location
  * @callback callback - Callback function to return the response
  */
 export const create = (
-  query: TYPE.IncNewLocationTYPE,
-  callback: (arg0: TYPE.apiResponse) => void
+  query: IncNewLocationTYPE,
+  callback: (arg0: apiResponse) => void
 ) => {
   MDB.client.connect(err => {
     assert.equal(null, err);
@@ -80,7 +43,7 @@ export const create = (
         // no result
 
         // set the object for creation
-        const createLocation: TYPE.LocationTYPE = {
+        const createLocation: LocationTYPE = {
           _id: new MDB.ObjectId(),
           ...query
         };
@@ -122,7 +85,7 @@ export const create = (
 export const update = (
   location: string,
   fields: { [index: string]: string },
-  callback: (arg0: TYPE.apiResponse) => void
+  callback: (arg0: apiResponse) => void
 ) => {
   // check is location available
   MDB.client.connect(err => {
@@ -174,7 +137,7 @@ export const update = (
  */
 export const deleteLocation = (
   location: string,
-  callback: (arg0: TYPE.apiResponse) => void
+  callback: (arg0: apiResponse) => void
 ) => {
   // check is location available
   MDB.client.connect(err => {
@@ -221,5 +184,35 @@ export const deleteLocation = (
           }
         });
     }
+  });
+};
+
+// v2
+export const list = (callback: (arg0: apiResponse) => void) => {
+  MDB.client.connect(err => {
+    assert.equal(null, err);
+    const database: any = MDB.client.db(dbName).collection(dbcMain);
+    database
+      .aggregate([
+        {
+          $project: {
+            name: 1
+          }
+        }
+      ])
+      .toArray((e: any, result: any) => {
+        if (e) {
+          callback(Message.errorMessage({ action: "locations fetch", e }));
+        } else if (result.length > 0) {
+          callback(
+            Message.positiveMessage({
+              subj: "Locations found",
+              payload: result
+            })
+          );
+        } else {
+          callback(Message.notFound("locations"));
+        }
+      });
   });
 };

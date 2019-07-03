@@ -13,6 +13,7 @@ import { checkTokenLength, dropQuotes } from "../modules/check_strings";
  */
 export const list = (callback: (arg0: TYPE.apiResponse) => void) => {
   Location.list((modelResponse: TYPE.apiResponse) => {
+    console.log(modelResponse);
     callback(modelResponse);
   });
 };

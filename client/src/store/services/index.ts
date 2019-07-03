@@ -9,3 +9,10 @@ export const get = (props: { url: string; headers?: indexedObj }) =>
     url: props.url,
     headers: props.headers ? props.headers : null
   });
+
+export const post = (props: { url: string; headers?: indexedObj }) =>
+  axios({
+    method: "post",
+    url: props.url,
+    headers: props.headers ? props.headers : null
+  });

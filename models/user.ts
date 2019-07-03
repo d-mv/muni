@@ -98,6 +98,8 @@ export const loginUser = (
 ) => {
   // try as user
   findUserByEmail(request.email, (res: apiResponse) => {
+    console.log('findUserByEmail');
+    console.log(res);
     // console.log(res);
     // payload:
     //  _id: 5d14cd9d6d3a9dc80c10af2e,
@@ -227,6 +229,8 @@ const findUserByEmail = (
           }
         ])
         .toArray((err: any, result: any) => {
+          console.log('search result')
+          console.log(result)
           if (err)
             callback(
               Message.errorMessage({ action: "findUserByEmail", e: err })

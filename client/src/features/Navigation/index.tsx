@@ -29,6 +29,7 @@ const Navigation = (props: any) => {
   // toggle module to show
   const action = (module: string) => {
     switch (module) {
+      // TODO: check if below is needed
       case "confirmation":
         props.setModule("confirmation");
         break;
