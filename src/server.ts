@@ -13,6 +13,8 @@ const userRouter = require("./routes/api/user");
 const locationRouter = require("./routes/api/location");
 const postRouter = require("./routes/api/post");
 const newsRouter = require("./routes/api/news");
+const catRouter = require("./routes/api/category");
+const router = require('./routes/api')
 
 const dotEnv = dotenv.config();
 const app = express();
@@ -34,6 +36,8 @@ app.use("/api/users", userRouter);
 app.use("/api/locations", locationRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/news", newsRouter);
+app.use("/api/categories", catRouter);
+app.use('/api',router)
 
 // * React
 //Static file declaration

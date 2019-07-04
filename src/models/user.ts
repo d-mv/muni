@@ -1,28 +1,35 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import * as dotenv from 'dotenv'
+import * as dotenv from "dotenv";
 import { ObjectID } from "bson";
 
 const dotEnv = dotenv.config();
-const secret:any = process.env.SECRET;
+const secret: any = process.env.SECRET;
 
 const Post = require("./post");
 
-export enum UserType {
+export enum UserKind {
   "user",
   "muni"
 }
 
-export interface User {
+export interface UserSettings {
+  language: string;
+  help: boolean;
+}
+
+export interface UserType {
   location: ObjectID;
   fName: string;
   lName: string;
   email: string;
   pass: string;
   language: string;
-  type: UserType;
+  type: UserKind;
   tokens: string[];
+  settings: UserSettings;
+  status: boolean;
   createdAt: Date;
 }
 
@@ -62,7 +69,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: "עב"
   },
-  type: { type: UserType, trim: true, required: true, default: "user" },
+  type: { type: UserKind, trim: true, required: true, default: "user" },
   tokens: [
     {
       token: {
@@ -71,22 +78,34 @@ const UserSchema = new mongoose.Schema({
       }
     }
   ],
+  settings: {
+    language: { type: String, required: true, default: "עב" },
+    help: { type: Boolean, required: true, default: true }
+  },
+  status: { type: Boolean, required: true, default: false },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
 
-UserSchema.statics.checkValidCredentials = async (email:string, pass:string) => {
-  const user:any = await User.findOne({ email });
+UserSchema.statics.checkValidCredentials = async (
+  email: string,
+  pass: string
+) => {
+  const user: any = await User.findOne({ email });
 
   if (!user) {
-    throw new Error("Unable to login 2");
+    throw new Error("User not found");
   }
   const isMatch = await bcrypt.compare(pass, user.pass);
 
   if (!isMatch) {
-    throw new Error("Unable to login 2");
+    throw new Error("Wrong password");
+  }
+
+  if (!user.status) {
+    throw new Error("Not active");
   }
 
   return user;
@@ -112,7 +131,7 @@ UserSchema.methods.toJSON = function() {
 
 //hash the plain text password before saving
 UserSchema.pre("save", async function(next) {
-  const user:any = this;
+  const user: any = this;
   if (user.isModified("pass")) {
     user.pass = await bcrypt.hash(user.pass, 8);
   }

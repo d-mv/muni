@@ -5,7 +5,8 @@ const News = require("./news");
 export interface LocationNameType {
   [index: string]: string;
 }
-export interface Location {
+export interface LocationType {
+  _id: mongoose.Schema.Types.ObjectId;
   name: LocationNameType[];
   createdAt: Date;
 }
@@ -27,6 +28,22 @@ LocationSchema.pre("remove", async function(next) {
   await User.deleteMany({ location: location._id });
   await News.deleteMany({ location: location._id });
   next();
+});
+
+LocationSchema.virtual("users", {
+  ref: "User",
+  localField: "_id",
+  foreignField: "location"
+});
+LocationSchema.virtual("posts", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "location"
+});
+LocationSchema.virtual("news", {
+  ref: "News",
+  localField: "_id",
+  foreignField: "location"
 });
 
 const Location = mongoose.model("Location", LocationSchema);

@@ -8,12 +8,13 @@ export interface ReplyType {
   down: ObjectID[];
 }
 
-export interface User {
+export interface PostType {
+  location: ObjectID;
   title: string;
   problem: string;
   solution: string;
-  photo: string;
-  link: string;
+  photo?: string;
+  link?: string;
   newsId?: ObjectID;
   createdBy: ObjectID;
   category: ObjectID;
@@ -24,6 +25,12 @@ export interface User {
 }
 
 const PostSchema = new mongoose.Schema({
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Location"
+  },
   title: {
     type: String,
     required: true,
@@ -34,14 +41,18 @@ const PostSchema = new mongoose.Schema({
   problem: { type: String, required: true, trim: true, minLength: 20 },
   solution: { type: String, required: true, trim: true, minLength: 20 },
   photo: { type: String, trim: true },
-  link: { type: String, required: true, trim: true, minLength: 20 },
+  link: { type: String,  trim: true, minLength: 20 },
   newsId: { type: mongoose.Schema.Types.ObjectId },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User"
   },
-  category: { type: mongoose.Schema.Types.ObjectId, required: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Category"
+  },
   active: { type: Boolean, required: true, default: true },
   votes: [
     {
@@ -66,6 +77,13 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+});
+
+
+PostSchema.virtual("users", {
+  ref: "User",
+  localField: "createdBy",
+  foreignField: "_id"
 });
 
 const Post = mongoose.model("Post", PostSchema);

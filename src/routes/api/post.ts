@@ -1,11 +1,12 @@
 const expPost = require("express");
 const routerPost = new expPost.Router();
+const { ObjectID } = require("mongodb");
 
 const Post = require("../../models/post");
 
 const authPost = require("../../middleware/auth");
 
-routerPost.post("/posts", authPost, async (req: any, res: any) => {
+routerPost.post("/", authPost, async (req: any, res: any) => {
   const post = new Post({
     ...req.body,
     createdBy: req.user._id
@@ -17,5 +18,48 @@ routerPost.post("/posts", authPost, async (req: any, res: any) => {
     res.status(400).send(error);
   }
 });
+routerPost.patch("/:id", authPost, async (req: any, res: any) => {
+  const _id = req.params.id;
+  const updates = Object.keys(req.body);
 
+  if (!ObjectID.isValid(_id)) {
+    res.status(404).send();
+  }
+  try {
+    const post = await Post.findOne({
+      _id: req.params.id,
+      author: req.user._id
+    });
+
+    if (!post) {
+      res.status(404).send();
+    }
+
+    updates.forEach(update => (post[update] = req.body[update]));
+    await post.save();
+
+    res.send(post);
+  } catch (error) {
+    res.status(400).send();
+  }
+});
+
+routerPost.delete("/:id", authPost, async (req: any, res: any) => {
+  const _id = req.params.id;
+  if (!ObjectID.isValid(_id)) {
+    return res.status(404).send();
+  }
+  try {
+    const deletepost = await Post.findOneAndDelete({
+      _id: _id,
+      author: req.user._id
+    });
+    if (!deletepost) {
+      return res.status(404).send();
+    }
+    res.send(deletepost);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
 module.exports = routerPost;
