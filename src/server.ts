@@ -9,11 +9,10 @@ const compression = require("compression");
 require("./db/mongoose");
 
 // routes
-const userRouter =require("./routes/api/user");
-// const userRoutes = require("./router/user");
-// import locationRouter from "../routes/api/location";
-// import postRouter from "../routes/api/post";
-// import newsRouter from "../routes/api/news";
+const userRouter = require("./routes/api/user");
+const locationRouter = require("./routes/api/location");
+const postRouter = require("./routes/api/post");
+const newsRouter = require("./routes/api/news");
 
 const dotEnv = dotenv.config();
 const app = express();
@@ -32,9 +31,9 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
 app.use("/api/users", userRouter);
-// app.use("/api/location", locationRouter);
-// app.use("/api/post", postRouter);
-// app.use("/api/news", newsRouter);
+app.use("/api/locations", locationRouter);
+app.use("/api/posts", postRouter);
+app.use("/api/news", newsRouter);
 
 // * React
 //Static file declaration

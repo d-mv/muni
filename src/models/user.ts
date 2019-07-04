@@ -15,7 +15,7 @@ export enum UserType {
 }
 
 export interface User {
-  location: string;
+  location: ObjectID;
   fName: string;
   lName: string;
   email: string;
@@ -27,7 +27,12 @@ export interface User {
 }
 
 const UserSchema = new mongoose.Schema({
-  location: { type: ObjectID, required: true, trim: true },
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Location"
+  },
   fName: {
     type: String,
     required: true,

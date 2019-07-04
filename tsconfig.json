@@ -21,7 +21,8 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2015", "dom", "dom.iterable", "esnext"],
+    // "lib": ["es2015", "dom", "dom.iterable", "esnext"],
+    "lib": ["es6"],
     "jsx": "preserve",
     "types": ["jest", "node"]
   },
