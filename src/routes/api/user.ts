@@ -2,7 +2,7 @@ const express = require("express");
 const router = new express.Router();
 
 const User = require("../../models/user");
-const PostU = require("../../models/post");
+const Post = require("../../models/post");
 
 const authenticate = require("../../middleware/auth");
 
@@ -53,10 +53,11 @@ router.post("/logoutall", authenticate, async (req: any, res: any) => {
 
 router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   try {
-    const userPosts = await PostU.find({ createdBy: req.params.id });
+    const userPosts = await Post.find({ createdBy: req.params.id });
     res.send(userPosts);
   } catch (error) {
     res.status(500).send();
   }
 });
-module.exports = router;
+
+export default router;

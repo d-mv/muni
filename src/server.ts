@@ -9,12 +9,12 @@ const compression = require("compression");
 require("./db/mongoose");
 
 // routes
-const userRouter = require("./routes/api/user");
-const locationRouter = require("./routes/api/location");
-const postRouter = require("./routes/api/post");
-const newsRouter = require("./routes/api/news");
-const catRouter = require("./routes/api/category");
-const router = require('./routes/api')
+import userRouter from "./routes/api/user"
+import  locationRouter from "./routes/api/location"
+import  postRouter from "./routes/api/post"
+import  newsRouter from "./routes/api/news"
+import  catRouter from "./routes/api/category"
+import  router from './routes/api'
 
 const dotEnv = dotenv.config();
 const app = express();

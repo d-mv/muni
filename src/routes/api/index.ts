@@ -1,9 +1,9 @@
 import dbSeed from "../../db/db_seed";
 
-const expSeed = require("express");
-const routeSeed = new expSeed.Router();
+const express = require("express");
+const router = new express.Router();
 
-routeSeed.get("/seed", async (req: any, res: any) => {
+router.get("/seed", async (req: any, res: any) => {
   try {
     dbSeed();
     res.status(201).send({ message: "Seed is done OK" });
@@ -12,4 +12,4 @@ routeSeed.get("/seed", async (req: any, res: any) => {
   }
 });
 
-module.exports = routeSeed;
+export default router

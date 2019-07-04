@@ -1,12 +1,12 @@
-const expPost = require("express");
-const routerPost = new expPost.Router();
+const express = require("express");
+const router = new express.Router();
 const { ObjectID } = require("mongodb");
 
 const Post = require("../../models/post");
 
 const authPost = require("../../middleware/auth");
 
-routerPost.post("/", authPost, async (req: any, res: any) => {
+router.post("/", authPost, async (req: any, res: any) => {
   const post = new Post({
     ...req.body,
     createdBy: req.user._id
@@ -18,7 +18,7 @@ routerPost.post("/", authPost, async (req: any, res: any) => {
     res.status(400).send(error);
   }
 });
-routerPost.patch("/:id", authPost, async (req: any, res: any) => {
+router.patch("/:id", authPost, async (req: any, res: any) => {
   const _id = req.params.id;
   const updates = Object.keys(req.body);
 
@@ -44,7 +44,7 @@ routerPost.patch("/:id", authPost, async (req: any, res: any) => {
   }
 });
 
-routerPost.delete("/:id", authPost, async (req: any, res: any) => {
+router.delete("/:id", authPost, async (req: any, res: any) => {
   const _id = req.params.id;
   if (!ObjectID.isValid(_id)) {
     return res.status(404).send();
@@ -62,4 +62,4 @@ routerPost.delete("/:id", authPost, async (req: any, res: any) => {
     res.status(500).send();
   }
 });
-module.exports = routerPost;
+export default router;

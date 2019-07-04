@@ -1,12 +1,12 @@
-const expCategory = require("express");
-const routerCategory = new expCategory.Router();
+const express = require("express");
+const router = new express.Router();
 
 const Category = require("../../models/category");
-const PostC = require("../../models/post");
+const Post = require("../../models/post");
 
-const authCategory = require("../../middleware/auth");
+const authenticate = require("../../middleware/auth");
 
-routerCategory.post("/", authCategory, async (req: any, res: any) => {
+router.post("/", authenticate, async (req: any, res: any) => {
   const post = new Category({
     ...req.body
   });
@@ -18,7 +18,7 @@ routerCategory.post("/", authCategory, async (req: any, res: any) => {
   }
 });
 
-routerCategory.get("/", async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
   try {
     const Categories = await Category.find({});
     res.send(Categories);
@@ -26,13 +26,13 @@ routerCategory.get("/", async (req: any, res: any) => {
     res.status(500).send();
   }
 });
-routerCategory.get("/:id/posts", authCategory, async (req: any, res: any) => {
+router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   try {
-    const Posts = await PostC.find({ category: req.params.id });
+    const Posts = await Post.find({ category: req.params.id });
     res.send(Posts);
   } catch (error) {
     res.status(500).send();
   }
 });
 
-module.exports = routerCategory;
+export default Category;

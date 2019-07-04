@@ -1,11 +1,11 @@
-const expNews = require("express");
-const routerNews = new expNews.Router();
+const express = require("express");
+const router = new express.Router();
 
 const News = require("../../models/news");
 
-const authNews = require("../../middleware/auth");
+const authenticate = require("../../middleware/auth");
 
-routerNews.post("/", authNews, async (req: any, res: any) => {
+router.post("/", authenticate, async (req: any, res: any) => {
   const post = new News({
     ...req.body
   });
@@ -17,4 +17,4 @@ routerNews.post("/", authNews, async (req: any, res: any) => {
   }
 });
 
-module.exports = routerNews;
+export default router;

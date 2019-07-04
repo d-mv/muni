@@ -1,14 +1,14 @@
-const expLocation = require("express");
-const routerLocation = new expLocation.Router();
+const express = require("express");
+const router = new express.Router();
 
-const Place = require("../../models/location");
-const PostL = require('../../models/post')
-const NewsL = require('../../models/news')
+const Location = require("../../models/location");
+const Post = require('../../models/post')
+const News = require('../../models/news')
 
-const authLocation = require("../../middleware/auth");
+const authenticate = require("../../middleware/auth");
 
-routerLocation.post("/", authLocation, async (req: any, res: any) => {
-  const post = new Place({
+router.post("/", authenticate, async (req: any, res: any) => {
+  const post = new Location({
     ...req.body
   });
   try {
@@ -19,30 +19,30 @@ routerLocation.post("/", authLocation, async (req: any, res: any) => {
   }
 });
 
-routerLocation.get("/", async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
   try {
-    const locations = await Place.find({});
+    const locations = await Location.find({});
     res.send(locations);
   } catch (error) {
     res.status(500).send();
   }
 });
-routerLocation.get("/:id/posts", authLocation, async (req: any, res: any) => {
+router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   try {
-    const posts = await PostL.find({ location: req.params.id });
+    const posts = await Post.find({ location: req.params.id });
     res.send(posts);
   } catch (error) {
     res.status(500).send();
   }
 });
 
-routerLocation.get("/:id/news", authLocation, async (req: any, res: any) => {
+router.get("/:id/news", authenticate, async (req: any, res: any) => {
   try {
-    const news = await NewsL.find({ location: req.params.id });
+    const news = await News.find({ location: req.params.id });
     res.send(news);
   } catch (error) {
     res.status(500).send();
   }
 });
 
-module.exports = routerLocation;
+export default router;
