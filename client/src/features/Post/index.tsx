@@ -43,9 +43,10 @@ import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
 import { showPostPayload } from "../../store/post/types";
 import { AuthState, CategoryType } from "../../models";
+import { PostType } from "../../models/post";
 
 const Post = (props: {
-  post: post;
+  post: any;
   language: indexedObjAny;
   // location: data;
   vote: (arg0: string, arg1: string) => void;
@@ -57,12 +58,12 @@ const Post = (props: {
   deletePost: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
   auth: AuthState;
-  categories: any
-  locations:data
+  categories: any;
+  locations: data;
 }) => {
   // destructuring props
-  const { categories, auth,locations } = props;
-  const {user} = auth
+  const { categories, auth, locations } = props;
+  const { user } = auth;
   const { direction, text, short } = props.language;
   // state
   const [textOpened, setTextOpened] = useState(false);
@@ -77,7 +78,7 @@ const Post = (props: {
   const [muniEdit, setMuniEdit] = useState(false);
   const [muniDeleteConfirmation, setMuniDeleteConfirmation] = useState(false);
   const [showMuniEditModal, setMuniEditModal] = useState(false);
-  // const [text]
+
   const location = locations.filter((el: any) => el._id === user.location)[0];
 
   // destructuring state
@@ -90,7 +91,7 @@ const Post = (props: {
     solution,
     votes,
     createdBy,
-    date,
+    createdAt,
     reply
   } = post;
 
@@ -300,7 +301,7 @@ const Post = (props: {
   const ageText: { [index: string]: string } = text["post.age"];
   const numbersLine = (
     <NumbersLine
-      date={date}
+      date={createdAt}
       daysText={ageText}
       direction={direction}
       votes={votes.length}
@@ -490,7 +491,7 @@ const Post = (props: {
     };
 
   const headerObject = {
-    name: location,
+    name: location.name[user.settings.language],
     ...editIcon,
     left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };

@@ -20,9 +20,11 @@ import { Zero } from "../../layout/Utils";
 
 import style from "./styles/PostCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
+import { PostType } from "../../models/post";
+import styleFactory from "../../modules/style_factory";
 
 const PostCard = (props: {
-  post: post;
+  post: PostType;
   language: indexedObjAny;
   categories: any;
   auth: data;
@@ -32,7 +34,15 @@ const PostCard = (props: {
   const { categories } = props;
   const { user } = props.auth;
   const { text, direction, short } = props.language;
-  const { _id, title, date, photo, category, createdBy, reply } = props.post;
+  const {
+    _id,
+    title,
+    createdAt,
+    photo,
+    category,
+    createdBy,
+    reply
+  } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {
@@ -68,10 +78,9 @@ const PostCard = (props: {
       <div className={style.button} />
     );
 
-  const replyTag =
-    reply.text !== "" ? (
-      <RepliedTag text={text["post.replied"]} direction={direction} />
-    ) : null;
+  const replyTag = reply.text ? (
+    <RepliedTag text={text["post.replied"]} direction={direction} />
+  ) : null;
   const ageText: { [index: string]: string } = text["post.age"];
   return (
     <Card id={_id} direction={direction} action={handleClick}>
@@ -86,8 +95,8 @@ const PostCard = (props: {
         <Title title={shortText(title, 50)} direction={direction} />
         <section
           id='age'
-          className={direction === "rtl" ? style.dataRTL : style.data}>
-          <Age date={date} text={ageText} direction={direction} />
+          className={style[styleFactory('data',direction)]}>
+          <Age date={createdAt} text={ageText} direction={direction} />
           {voterElement}
           {voteButtonElement}
         </section>
