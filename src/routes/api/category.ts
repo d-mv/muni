@@ -26,6 +26,7 @@ router.get("/", async (req: any, res: any) => {
     res.status(500).send();
   }
 });
+
 router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   try {
     const Posts = await Post.find({ category: req.params.id });

@@ -4,9 +4,9 @@ const { ObjectID } = require("mongodb");
 
 const Post = require("../../models/post");
 
-const authPost = require("../../middleware/auth");
+const authenticate = require("../../middleware/auth");
 
-router.post("/", authPost, async (req: any, res: any) => {
+router.post("/", authenticate, async (req: any, res: any) => {
   const post = new Post({
     ...req.body,
     createdBy: req.user._id
@@ -18,7 +18,15 @@ router.post("/", authPost, async (req: any, res: any) => {
     res.status(400).send(error);
   }
 });
-router.patch("/:id", authPost, async (req: any, res: any) => {
+router.get("/:id", authenticate, async (req: any, res: any) => {
+  try {
+    const post = await Post.find({_id:req.params.id})
+    res.status(201).send(post);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+router.patch("/:id", authenticate, async (req: any, res: any) => {
   const _id = req.params.id;
   const updates = Object.keys(req.body);
 
@@ -44,7 +52,7 @@ router.patch("/:id", authPost, async (req: any, res: any) => {
   }
 });
 
-router.delete("/:id", authPost, async (req: any, res: any) => {
+router.delete("/:id", authenticate, async (req: any, res: any) => {
   const _id = req.params.id;
   if (!ObjectID.isValid(_id)) {
     return res.status(404).send();
