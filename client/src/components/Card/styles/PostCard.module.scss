@@ -26,23 +26,24 @@
       width: 80%;
     }
 
-    p:last-of-type{
+    p:last-of-type {
       margin: 0 1rem;
     }
+
     .voters {
       margin: 0 1rem;
       padding: 0;
 
     }
-
-    .button {
-      height: 6.5rem;
-      width: 6.5rem;
-      position: relative;
-      left: .5rem;
-      bottom: 2rem;
-    }
   }
+}
+
+.button {
+  position: absolute;
+  height: 6.5rem;
+  width: 6.5rem;
+  left: 1rem;
+  margin-top: 3rem;
 }
 
 .informationRTL {

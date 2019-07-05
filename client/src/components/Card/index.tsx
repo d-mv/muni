@@ -93,13 +93,11 @@ const PostCard = (props: {
         }>
         {categoryElement}
         <Title title={shortText(title, 50)} direction={direction} />
-        <section
-          id='age'
-          className={style[styleFactory('data',direction)]}>
+        <section id='age' className={style[styleFactory("data", direction)]}>
           <Age date={createdAt} text={ageText} direction={direction} />
           {voterElement}
-          {voteButtonElement}
         </section>
+        {voteButtonElement}
       </section>
     </Card>
   );

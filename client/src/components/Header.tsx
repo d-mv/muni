@@ -23,9 +23,9 @@ const Header = (props: {
     action: () => void;
     noRtl?: boolean;
   };
-  type: any;
+  user: any;
 }) => {
-  const [showHelp, setShowHelp] = React.useState(false);
+  const [showHelp, setShowHelp] = React.useState(props.user.settings.help);
   const { direction } = props.language;
   const { name } = props;
 
@@ -49,7 +49,10 @@ const Header = (props: {
 
   const left = props.left
     ? makeIcon(props.left.icon, props.left.noRtl)
-    : makeIcon(iconHelp(props.type === "muni" ? "secondary" : "primary"), true);
+    : makeIcon(
+        iconHelp(props.user.type === "muni" ? "secondary" : "primary"),
+        true
+      );
 
   const right = props.right ? (
     makeIcon(props.right.icon, props.right.noRtl)
@@ -74,7 +77,7 @@ const Header = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    type: state.type
+    user: state.auth.user
   };
 };
 
