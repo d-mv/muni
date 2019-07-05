@@ -9,84 +9,22 @@ import { apiState } from "../defaults";
 import { AxiosResponse } from "axios";
 const data: indexedObjAny = fromJson;
 
-export const checkToken = (
-  token: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> => {
-  get({ url: "/v2/check", headers: { token } })
-    .then(response => {
-      const {
-        _id,
-        location,
-        type,
-        language,
-        token,
-        name,
-        pinned,
-        categories
-      } = response.data.payload;
-      dispatch({ type: "SET_AUTH", payload: { _id, location } });
-      dispatch({
-        type: "USER_TYPE",
-        user: type
-      });
-      dispatch({
-        type: "SET_LANGUAGE",
-        data: data.language[language]
-      });
-      dispatch({ type: "SET", token });
-      dispatch({
-        type: "SET_LOCATION_DATA",
-        data: { name, pinned, categories }
-      });
-      dispatch({
-        type: "SET_LOADING",
-        loading: false
-      });
-    })
-    .catch(e => {});
-};
-
-export const login = (login: LoginProps) => async (
+export const checkToken = (token: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
-  dispatch({
-    type: "SET_MESSAGE",
-    message: ""
-  });
-  dispatch({
-    type: "LOGIN",
-    payload: {}
-  });
-  dispatch({ type: "TYPING_DATA", payload: { ...login } });
-
-  get({ url: `/v2/user/login?password=${login.password}&email=${login.email}` })
+  get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
     .then(response => {
-      const {
-        _id,
-        location,
-        type,
-        language,
-        token,
-        name,
-        pinned,
-        categories
-      } = response.data.payload;
-      dispatch({ type: "SET_AUTH", payload: { _id, location } });
+      console.log(response);
+      const { _id, location, type, settings } = response.data.user;
       dispatch({
-        type: "USER_TYPE",
-        user: type
+        type: "SET_AUTH",
+        payload: { status: true, user: { _id, location, type, settings } }
       });
       dispatch({
         type: "SET_LANGUAGE",
-        data: data.language[language]
+        data: data.language[settings.language]
       });
       dispatch({ type: "SET", token });
-      dispatch({
-        type: "SET_LOCATION_DATA",
-        data: { name, pinned, categories }
-      });
       dispatch({
         type: "SET_MESSAGE",
         message: "Loading data..."
@@ -97,18 +35,53 @@ export const login = (login: LoginProps) => async (
       });
     })
     .catch((error: any) => {
-      const payload = {
-        status: false,
-        code: 401,
-        message: error.response.data.message
-      };
+      const  message  = error.response? error.response.data.message.split("Error: ")[1]: error.toString()
       dispatch({
         type: "SET_MESSAGE",
-        message: payload.message
+        message: message
       });
       dispatch({
-        type: "LOGIN",
-        payload
+        type: "SET_LOADING",
+        loading: false
+      });
+    });
+};
+
+export const login = (login: LoginProps) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
+  dispatch({
+    type: "SET_MESSAGE",
+    message: ""
+  });
+  dispatch({ type: "TYPING_DATA", payload: { ...login } });
+  post({ url: "/users/login", body: login })
+    .then(response => {
+      const { token } = response.data;
+      const { _id, location, type, settings } = response.data.user;
+      dispatch({
+        type: "SET_AUTH",
+        payload: { status: true, user: { _id, location, type, settings } }
+      });
+      dispatch({
+        type: "SET_LANGUAGE",
+        data: data.language[settings.language]
+      });
+      dispatch({ type: "SET", token });
+      dispatch({
+        type: "SET_MESSAGE",
+        message: "Loading data..."
+      });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    })
+    .catch((error: any) => {
+      const { message } = error.response.data;
+      dispatch({
+        type: "SET_MESSAGE",
+        message: message.split("Error: ")[1]
       });
       dispatch({
         type: "SET_LOADING",

@@ -1,6 +1,7 @@
 import * as TYPE from "../types";
 
 import { data, indexedObjAny } from "../types";
+import { LocationType, LocationState } from "../models";
 
 export interface loadDataAction {
   type: "LOAD_DATA";
@@ -26,7 +27,7 @@ export interface showHelpAction {
 }
 export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
-  payload: TYPE.apiResponse;
+  payload: LocationState;
 }
 
 export interface prevModuleAction {

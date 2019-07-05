@@ -42,6 +42,7 @@ import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
 import { showPostPayload } from "../../store/post/types";
+import { AuthState } from "../../store/models";
 
 const Post = (props: {
   post: post;
@@ -55,7 +56,7 @@ const Post = (props: {
   token: string;
   deletePost: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
-  auth: indexedObj
+  auth: AuthState;
 }) => {
   // destructuring props
   const { categories } = props.location;
@@ -98,8 +99,8 @@ const Post = (props: {
     more: text["post.show-more"],
     less: text["post.show-less"]
   };
-  const includes = votes.includes(props.auth._id);
-  const author = createdBy === props.auth._id;
+  const includes = votes.includes(props.auth.user._id);
+  const author = createdBy === props.auth.user._id;
   const muniUser = props.location.type === "muni";
 
   let allowToReply = false;
@@ -107,14 +108,13 @@ const Post = (props: {
     allowToReply = true;
   } else if (post.reply.up.length > 0 && post.reply.down.length > 0) {
     allowToReply = [...post.reply.up, ...post.reply.down].includes(
-      props.auth._id
+      props.auth.user._id
     );
   } else if (post.reply.up.length > 0) {
-    allowToReply = post.reply.up.includes(props.auth._id);
+    allowToReply = post.reply.up.includes(props.auth.user._id);
   } else if (post.reply.down.length > 0) {
-    allowToReply = post.reply.down.includes(props.auth._id);
+    allowToReply = post.reply.down.includes(props.auth.user._id);
   }
-
 
   // toggles
   const toggleShowNewReplyButton = () => {
@@ -148,13 +148,13 @@ const Post = (props: {
   const handleDelete = (mode: string) => {
     if (mode === "secondary") {
       props.deletePost(_id);
-      props.getPosts(props.auth.location);
+      props.getPosts(props.auth.user.location);
       props.setModule("home");
     }
   };
   // TODO:
   const handleDeleteMuniReply = (mode: string) => {
- console.log("handleDeleteMuniReply");
+    console.log("handleDeleteMuniReply");
     if (mode === "primary") {
       const newPost = {
         ...post,
@@ -164,9 +164,9 @@ const Post = (props: {
       axios
         .patch(url, { ...newPost })
         .then((response: AxiosResponse<any>) => {
-          toggleDeleteConfirmation()
+          toggleDeleteConfirmation();
           // toggleMuniEditModal();
-          props.getPosts(props.auth.location);
+          props.getPosts(props.auth.user.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -185,7 +185,7 @@ const Post = (props: {
         .patch(url, { ...newPost })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEditModal();
-          props.getPosts(props.auth.location);
+          props.getPosts(props.auth.user.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -213,7 +213,7 @@ const Post = (props: {
         reply: { text: newReply, date: new Date() }
       });
       setShowNewReply(false);
-      props.getPosts(props.auth.location);
+      props.getPosts(props.auth.user.location);
     }
   };
   const handleUpdate = (answer: string) => {
@@ -228,7 +228,7 @@ const Post = (props: {
         .patch(url, { ...post })
         .then((response: AxiosResponse<any>) => {
           toggleEdit();
-          props.getPosts(props.auth.location);
+          props.getPosts(props.auth.user.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -254,14 +254,14 @@ const Post = (props: {
   // async handlers
   const handleVoteClick = () => {
     setShowConfirm(!showConfirm);
-    const url = `/post/${_id}/vote?user=${props.auth._id}`;
+    const url = `/post/${_id}/vote?user=${props.auth.user._id}`;
     axios({
       method: "patch",
       url
     })
       .then((response: AxiosResponse<any>) => {
-        setPost({ ...post, votes: [...post.votes, props.auth._id] });
-        props.getPosts(props.auth.location);
+        setPost({ ...post, votes: [...post.votes, props.auth.user._id] });
+        props.getPosts(props.auth.user.location);
       })
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
@@ -272,12 +272,12 @@ const Post = (props: {
     let newVotesDown = reply.down;
 
     if (updown) {
-      newVotesUp.push(props.auth._id);
+      newVotesUp.push(props.auth.user._id);
     } else {
-      newVotesDown.push(props.auth._id);
+      newVotesDown.push(props.auth.user._id);
     }
 
-    const url = `/post/${_id}/reply/vote?user=${props.auth._id}&vote=${updown}`;
+    const url = `/post/${_id}/reply/vote?user=${props.auth.user._id}&vote=${updown}`;
     axios({
       method: "get",
       url
@@ -287,7 +287,7 @@ const Post = (props: {
           ...post,
           reply: { ...post.reply, up: newVotesUp, down: newVotesDown }
         });
-        props.getPosts(props.auth.location);
+        props.getPosts(props.auth.user.location);
       })
       .catch((error: AxiosResponse<any>) => console.log(error));
   };
@@ -316,7 +316,7 @@ const Post = (props: {
       </div>
     );
 
-  if (votes.includes(props.auth._id))
+  if (votes.includes(props.auth.user._id))
     voteButton = <Voted text={text["post.voted"]} direction={direction} />;
 
   let newReplyComponent: any = "";

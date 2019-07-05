@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import axios, { AxiosResponse } from "axios";
 import { AppState } from "../../store";
-import { setModule, getMuniPosts } from "../../store/users/actions";
+import { setModule, getNews } from "../../store/users/actions";
 import { indexedObjAny } from "../../store/types";
 
 import { Photo, Link, Confirm, TopBlock, NumbersLine } from "./components";
@@ -21,7 +21,7 @@ const PostMuni = (props: {
   language: indexedObjAny;
   location: indexedObjAny;
   setModule: (arg0: string) => void;
-  getMuniPosts: (arg0: string) => void;
+  getNews: (arg0: string) => void;
   prevModule: string;
   type: any;
 }) => {
@@ -74,7 +74,7 @@ const PostMuni = (props: {
         .patch(url, { ...post })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEdit();
-          props.getMuniPosts(props.location.location);
+          props.getNews(props.location.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -89,7 +89,7 @@ const PostMuni = (props: {
         .put(url, { post: _id })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEdit();
-          props.getMuniPosts(props.location.location);
+          props.getNews(props.location.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -234,5 +234,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setModule, getMuniPosts }
+  { setModule, getNews }
 )(PostMuni);

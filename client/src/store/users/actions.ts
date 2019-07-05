@@ -7,8 +7,11 @@ import { AnyAction } from "redux";
 import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
+
 export * from "./posts";
 export * from "./auth";
+export * from './categories'
+
 const importedData: TYPE.indexedObjAny = data;
 
 /**
@@ -129,7 +132,7 @@ export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
       posts: []
     });
     dispatch({
-      type: "SET_MUNIPOSTS",
+      type: "SET_NEWS",
       posts: []
     });
     dispatch({ type: "SET_AUTH", payload: { location: "", _id: "" } });
@@ -326,7 +329,7 @@ export const cachePost = (post: TYPE.post): Action => {
 export const muniLogin = (
   props: LoginProps
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/muni/login?pass=${props.password}&email=${props.email}`;
+  const url = `/muni/login?pass=${props.pass}&email=${props.email}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch({
       type: "SET_LOADING",

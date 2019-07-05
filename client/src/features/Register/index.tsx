@@ -17,13 +17,15 @@ import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
 import Label from "../../layout/Label";
+import locationsList from "../../modules/locations_list";
+import { LocationType, LocationState } from "../../store/models";
 
 /** Functional component to render Register page content
  * @param {object} props - Object, containing functions & state from Redux
  * @returns {JSX.Element} - Register content
  */
 const Register = (props: {
-  locations: { value: string; label: string }[];
+  locations: LocationState;
   storedLocations?: TYPE.data;
   language: TYPE.indexedObjAny;
   message: string;
@@ -35,17 +37,15 @@ const Register = (props: {
   setLoading: (arg0: boolean) => void;
 }) => {
   // get the language
-  const { text, direction } = props.language;
-  const { locations } = props;
+  const { text, direction, short, locations } = props.language;
 
   const [email, setEmail] = useState(props.typed ? props.typed.email : "");
   const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
   const [secondPass, setSecondPass] = useState("");
   // if there are locations - use the first one
-  const defaultLocation = locations.length > 0 ? locations[0].value : "";
-  const [location, setLocation] = useState(
-    props.typed.location ? props.typed.location : defaultLocation
-  );
+  // const listOfLocations = locationsList(locations);
+  // const defaultLocation = locations.length > 0 ? locations[0].value : "";
+  const [location, setLocation] = useState(locations[0]._id);
 
   const [fName, setFname] = useState(props.typed ? props.typed.fName : "");
   const [lName, setLname] = useState(props.typed ? props.typed.lName : "");
@@ -99,10 +99,9 @@ const Register = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (message) {
-      console.log('object')
+      console.log("object");
       setMessage("");
       props.setMessage("");
-
     }
     const { value, name } = event.target;
     switch (name) {
@@ -164,7 +163,7 @@ const Register = (props: {
   };
 
   const locationsElement = formSelection({
-    list: locations,
+    list: locationsList(locations, short),
     direction,
     label: text["login.label.location"],
     action: handleSelectChange

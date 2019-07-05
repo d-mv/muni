@@ -10,7 +10,7 @@ import {
   login,
   fetchData,
   getPosts,
-  getMuniPosts
+  getNews
 } from "./store/users/actions";
 import { fetchLocations, setModule } from "./store/app/actions";
 import { showPost } from "./store/post/actions";
@@ -28,7 +28,7 @@ import { showPostPayload } from "./store/post/types";
 const App = (props: {
   token: string;
   module: string;
-  loginResult: data;
+  // loginResult: data;
   help: boolean;
   vote: data;
   check: data;
@@ -45,7 +45,7 @@ const App = (props: {
   posts: data;
   showPost: (arg0: showPostPayload) => void;
   getPosts: (arg0: string) => void;
-  getMuniPosts: (arg0: string) => void;
+  getNews: (arg0: string) => void;
   type: any;
 }) => {
   const { token } = props;
@@ -82,7 +82,7 @@ const App = (props: {
     ) {
       console.log("- token is in state, data is present");
       props.getPosts(props.location.location);
-      props.getMuniPosts(props.location.location);
+      props.getNews(props.location.location);
       cookies.set("token", props.token);
     } else if (cookies.get("token") && cookies.get("token").length > 0) {
       console.log("- token is in cookies");
@@ -125,7 +125,7 @@ const App = (props: {
       console.log("- location data present, get posts");
 
       props.getPosts(props.location.location);
-      props.getMuniPosts(props.location.location);
+      props.getNews(props.location.location);
     }
   }, [props.location]);
 
@@ -235,7 +235,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     token: state.token,
     module: state.module,
-    loginResult: state.login,
+    auth: state.auth,
     location: state.locationData,
     locations: state.locations,
     help: state.help,
@@ -260,6 +260,6 @@ export default connect(
     showPost,
     // prevModule,
     getPosts,
-    getMuniPosts
+    getNews
   }
 )(withCookies(App));

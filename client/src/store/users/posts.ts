@@ -1,44 +1,32 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { AnyAction } from "redux";
+import { get } from "../services";
 
-export const getPosts = (
-  location: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/location/${location}/posts`;
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    axios({
-      method: "get",
-      url
-    })
-      .then(response => {
-        dispatch({
-          type: "SET_POSTS",
-          posts: response.data.payload
-        });
-      })
-      .catch((e: any) => {
-        console.log(e);
+export const getPosts = (location: string) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) =>
+  get({ url: `/locations/${location}/posts` })
+    .then(response => {
+      dispatch({
+        type: "SET_POSTS",
+        posts: response.data
       });
-  };
-};
-export const getMuniPosts = (
-  location: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/location/${location}/muniposts`;
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    axios({
-      method: "get",
-      url
     })
-      .then(response => {
-        dispatch({
-          type: "SET_MUNIPOSTS",
-          posts: response.data.payload
-        });
-      })
-      .catch((e: any) => {
-        console.log(e);
+    .catch((e: any) => {
+      console.log(e);
+    });
+
+export const getNews = (location: string) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) =>
+  get({ url: `/locations/${location}/news` })
+    .then(response => {
+      dispatch({
+        type: "SET_NEWS",
+        posts: response.data
       });
-  };
-};
+    })
+    .catch((e: any) => {
+      console.log(e);
+    });

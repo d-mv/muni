@@ -24,9 +24,11 @@ import { showPostPayload } from "../../store/post/types";
 const PostCard = (props: {
   post: post;
   language: indexedObjAny;
-  locationData: data;
+  categories: any
   showPost: (arg0: showPostPayload) => void;
+  locationData: data;
 }) => {
+  const {categories} = props
   const { text, direction, short } = props.language;
   const { _id, title, date, photo, category, createdBy, reply } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
@@ -40,7 +42,7 @@ const PostCard = (props: {
   let voterElement: React.ClassicElement<any> = <Zero />;
   // let voteButtonElement: React.ClassicElement<any> = <div className={style.button}/>;
 
-  const { categories } = props.locationData;
+  // const { categories } = props.locationData;
   const categoryTranslated = categoryIdToName(
     categories,
     short,
@@ -95,6 +97,7 @@ const PostCard = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
+    categories:state.categories,
     locationData: state.locationData
   };
 };

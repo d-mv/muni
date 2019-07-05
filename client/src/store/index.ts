@@ -15,7 +15,7 @@ import {
   vote,
   setToken,
   checkToken,
-  login,
+  // login,
   register,
   setLoading,
   setAuth,
@@ -28,6 +28,7 @@ import {
   typingData,
   cachePost,
   userType,
+  getCategories,
   setMuniPosts
 } from "./users/reducers";
 import * as TYPE from "./types";
@@ -35,6 +36,7 @@ import { apiState, showPostState, emptyPost } from "./defaults";
 
 import data from "../data/translation.json";
 import { showPostPayload } from "./post/types";
+import { LocationState, AuthState, AUTH_EMPTY_STATE } from "./models";
 
 const self =
   window.location.hostname === "localhost"
@@ -46,13 +48,13 @@ const self =
 axios.defaults.baseURL = self;
 
 const rootReducer = combineReducers({
+  locations: fetchLocations,
   vote: vote,
   token: setToken,
   checkTokenResult: checkToken,
-  login: login,
+  // login: login,
   module: setModule,
   prevModule: prevModule,
-  locations: fetchLocations,
   loading: setLoading,
   register: register,
   data: loadData,
@@ -71,7 +73,8 @@ const rootReducer = combineReducers({
   cached: cachePost,
   deleted: deletePost,
   type: userType,
-  news: setMuniPosts
+  news: setMuniPosts,
+  categories: getCategories
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -81,18 +84,19 @@ export default function configureStore() {
   const middleWareEnhancer = applyMiddleware(...middlewares);
 
   interface state {
+    locations: LocationState;
     token: string;
     checkTokenResult: any;
-    login: TYPE.apiResponse;
+    pinned: any;
+    // login: TYPE.apiResponse;
     module: string;
     prevModule: string;
-    locations: [];
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
     language: TYPE.indexedObjAny;
     locationData: TYPE.data;
-    auth: TYPE.indexedObj;
+    auth: AuthState | {};
     step: number;
     submitPost: TYPE.apiResponse;
     help: boolean;
@@ -107,21 +111,23 @@ export default function configureStore() {
     deleted: any;
     type: string;
     news: any;
+    categories: TYPE.indexedObjAny;
   }
 
   const initialState: state = {
+    locations: {},
     token: "",
     checkTokenResult: "",
-    login: apiState,
+    pinned: [],
+    // login: apiState,
     module: "welcome",
     prevModule: "welcome",
-    locations: [],
     loading: false,
     register: apiState,
     data: data,
     language: data.language["עב"],
     locationData: {},
-    auth: {},
+    auth: AUTH_EMPTY_STATE,
     step: 1,
     submitPost: apiState,
     help: false,
@@ -135,7 +141,8 @@ export default function configureStore() {
     cached: emptyPost,
     deleted: apiState,
     type: "",
-    news: []
+    news: [],
+    categories: {}
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

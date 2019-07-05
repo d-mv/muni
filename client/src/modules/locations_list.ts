@@ -1,4 +1,5 @@
-import { indexedObj } from "../store/types";
+import { indexedObjAny } from "../store/types";
+import { LocationType } from "../store/models";
 
 /**
  * Function to process locations object to provide array of location names
@@ -8,7 +9,7 @@ import { indexedObj } from "../store/types";
  * @returns {Object} - in the form of {location:id}
  */
 export const locationsList = (
-  locations: Array<any> = [],
+  locations: LocationType[],
   language: string = ""
 ): Array<any> => {
   // return empty array if empty params supplied
@@ -18,7 +19,7 @@ export const locationsList = (
   // return empty array if not
   if (check.length !== locations.length) return [];
   // process the names as per language request
-  const unsortedResult: indexedObj = {};
+  const unsortedResult: indexedObjAny = {};
   const locationsList: Array<string> = [];
   locations.map(el => {
     // add to unsorted list
@@ -28,13 +29,12 @@ export const locationsList = (
     return null;
   });
   // sort locations and push appropriate pair to the result
-  const result: Array<indexedObj> = [];
+  const result: Array<indexedObjAny> = [];
   locationsList.sort().map((el: any) => {
     // add a pair to the resulting array
     result.push({ value: unsortedResult[el], label: el });
     return null;
   });
-  console.log(result)
   return result;
 };
 

@@ -7,7 +7,7 @@ export interface LocationNameType {
 }
 export interface LocationType {
   _id: mongoose.Schema.Types.ObjectId;
-  name: LocationNameType[];
+  name: LocationNameType;
   createdAt: Date;
 }
 

@@ -20,12 +20,12 @@ export interface UserSettings {
 }
 
 export interface UserType {
+  _id: ObjectID;
   location: ObjectID;
   fName: string;
   lName: string;
   email: string;
   pass: string;
-  language: string;
   type: UserKind;
   tokens: string[];
   settings: UserSettings;
@@ -61,13 +61,6 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     minlength: 7,
     required: true
-  },
-  language: {
-    type: String,
-    trim: true,
-    maxLength: 2,
-    required: true,
-    default: "עב"
   },
   type: { type: UserKind, trim: true, required: true, default: "user" },
   tokens: [

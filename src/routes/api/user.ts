@@ -28,6 +28,16 @@ router.post("/login", async (req: any, res: any) => {
     res.status(400).send({ message: error.toString() });
   }
 });
+router.get("/check", authenticate, async (req: any, res: any) => {
+  try {
+    const { type, location, _id, settings} = req.user
+    res.send({
+      user: { type, location, _id, settings }
+    });
+  } catch (error) {
+    res.status(400).send({ message: error.toString() });
+  }
+});
 
 router.post("/logout", authenticate, async (req: any, res: any) => {
   try {
