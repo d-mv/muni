@@ -36,7 +36,7 @@ import { apiState, showPostState, emptyPost } from "./defaults";
 
 import data from "../data/translation.json";
 import { showPostPayload } from "./post/types";
-import { LocationState, AuthState, AUTH_EMPTY_STATE } from "./models";
+import { LocationState, AuthState, AUTH_EMPTY_STATE } from "../models";
 
 const self =
   window.location.hostname === "localhost"

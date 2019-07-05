@@ -9,7 +9,7 @@ import { post, indexedObjAny, data } from "../../store/types";
 import { cachePost } from "../../store/users/actions";
 import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
-import VoteButton from "../../components/VoteButton";
+import VoteButton from "../VoteButton";
 import Photo from "./components/Photo";
 import Category from "./components/Category";
 import Title from "./components/Title";

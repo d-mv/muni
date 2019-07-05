@@ -42,7 +42,7 @@ import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
 import { showPostPayload } from "../../store/post/types";
-import { AuthState, CategoryType } from "../../store/models";
+import { AuthState, CategoryType } from "../../models";
 
 const Post = (props: {
   post: post;

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { indexedObjAny, postMuni } from "../../store/types";
+import { indexedObjAny } from "../../store/types";
 import { showPost } from "../../store/post/actions";
 
 import dateBeautify from "../../modules/date_beautify";
@@ -17,15 +17,17 @@ import IconMunicipality from "../../icons/Municipality";
 
 import style from "./styles/PinnedCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
+import { NewsType } from "../../models";
 
 const PinnedCard = (props: {
-  post: postMuni;
+  post: NewsType;
   language: indexedObjAny;
   showPost: (arg0: showPostPayload) => void;
   type: any;
 }) => {
+
   const handleClick = () => {
-    props.showPost({ show: true, type: "muni", _id: props.post._id });
+    props.showPost({ show: true, type: "news", _id: props.post._id });
   };
 
   const { direction } = props.language;
@@ -48,7 +50,7 @@ const PinnedCard = (props: {
         </Line>
         <Line thin direction={direction}>
           <span className={style.date}>
-            {dateBeautify(props.post.date, direction)}
+            {dateBeautify(props.post.createdAt, direction)}
           </span>
         </Line>
         <Paragraph direction={direction}>
@@ -62,7 +64,7 @@ const PinnedCard = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    type: state.type
+    type: state.auth.user.type
   };
 };
 

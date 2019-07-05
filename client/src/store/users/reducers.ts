@@ -2,7 +2,7 @@ import { emptyPost } from "./../defaults";
 import { Action } from "./types";
 import { data, indexedObjAny, indexedObj } from "../types";
 import { apiState } from "../defaults";
-import { AUTH_EMPTY_STATE } from "../models";
+import { AUTH_EMPTY_STATE } from "../../models";
 
 export const setToken = (state = "", action: Action) => {
   switch (action.type) {

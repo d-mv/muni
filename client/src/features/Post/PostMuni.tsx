@@ -15,7 +15,7 @@ import Content from "../../layout/Content";
 import Header from "../../components/Header";
 import { goBack, iconEdit, iconClose } from "../../icons";
 import Button from "../../components/Button";
-import { AuthState } from "../../store/models";
+import { AuthState } from "../../models";
 
 const PostMuni = (props: {
   auth:AuthState

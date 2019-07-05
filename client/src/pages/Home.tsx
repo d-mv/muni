@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "../store";
 
-import PinnedCard from "../features/Card/PinnedCard";
+import PinnedCard from "../components/Card/PinnedCard";
 
 import Header from "../components/Header";
 import PostList from "../components/PostList";
@@ -32,7 +32,7 @@ const Home = (props: {
       a.votes.length < b.votes.length ? 1 : -1
     );
   };
-
+console.log(pinned)
   return (
     <Page>
       <Header {...headerObject} />
@@ -49,7 +49,7 @@ const mapStateToProps = (state: AppState) => {
     locations: state.locations,
     user: state.auth.user,
     posts: state.posts,
-    pinned: state.news.filter((el: any) => el.active && el.pinned)
+    pinned: state.news.filter((el: any) => el.active && el.pinned)[0]
   };
 };
 

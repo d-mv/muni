@@ -1,7 +1,7 @@
 import React from "react";
 
-import Card from "../features/Card";
-import CardMuni from '../features/Card/CardMuni'
+import Card from "./Card";
+import CardMuni from './Card/CardMuni'
 import { post } from "../store/types";
 
 const PostList = (props: { posts: any; muni?: boolean }) =>

@@ -10,7 +10,7 @@ import PostList from "../components/PostList";
 import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
 import Content from "../layout/Content";
-import { AuthState } from "../store/models";
+import { AuthState } from "../models";
 
 const Mine = (props: {
   language: data;

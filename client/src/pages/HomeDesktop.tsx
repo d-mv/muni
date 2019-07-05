@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { AppState } from "../store";
 
 import {logOff }from '../store/users/actions'
-import PinnedCard from "../features/Card/PinnedCard";
+import PinnedCard from "../components/Card/PinnedCard";
 
 import Header from "../components/Header";
 import PostList from "../components/PostList";
@@ -13,10 +13,10 @@ import Page from "../layout/Page";
 import Content from "../layout/Content";
 import { data, post, indexedObjAny } from "../store/types";
 import style from "./style/HomeDesktop.module.scss";
-import Card from "../features/Card";
+import Card from "../components/Card";
 import Button from "../components/Button";
 import chartsData from '../data/charts.json'
-import { AuthState } from "../store/models";
+import { AuthState } from "../models";
 
 const Home = (props: {
   posts: post[];

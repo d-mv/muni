@@ -1,7 +1,7 @@
 import * as TYPE from "../types";
 
 import { data, indexedObjAny } from "../types";
-import { LocationType, LocationState } from "../models";
+import { LocationType, LocationState } from "../../models";
 
 export interface loadDataAction {
   type: "LOAD_DATA";

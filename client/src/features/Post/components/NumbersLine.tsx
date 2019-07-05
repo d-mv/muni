@@ -2,8 +2,8 @@ import React from "react";
 
 import dateBeautify from "../../../modules/date_beautify";
 
-import Age from "../../Card/components/Age";
-import Voters from "../../Card/components/Voters";
+import Age from "../../../components/Card/components/Age";
+import Voters from "../../../components/Card/components/Voters";
 
 import { Separator } from "../../../layout/Utils";
 

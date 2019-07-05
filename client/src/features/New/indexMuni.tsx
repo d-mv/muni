@@ -27,7 +27,7 @@ import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
 import Header from "../../components/Header";
 import { categoryIdToName } from "../../modules/category_processor";
-import { AuthState } from "../../store/models";
+import { AuthState } from "../../models";
 
 const NewPost = (props: {
   language: data;

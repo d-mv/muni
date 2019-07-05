@@ -1,6 +1,6 @@
 import * as TYPE from "../types";
 import { data, indexedObjAny } from "../types";
-import { CategoryType } from "../models";
+import { CategoryType } from "../../models";
 
 export interface LoginProps {
   email: string;

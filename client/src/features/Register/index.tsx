@@ -18,7 +18,7 @@ import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
 import Label from "../../layout/Label";
 import locationsList from "../../modules/locations_list";
-import { LocationType, LocationState } from "../../store/models";
+import { LocationType, LocationState } from "../../models";
 
 /** Functional component to render Register page content
  * @param {object} props - Object, containing functions & state from Redux

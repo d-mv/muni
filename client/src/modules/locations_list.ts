@@ -1,5 +1,5 @@
 import { indexedObjAny } from "../store/types";
-import { LocationType } from "../store/models";
+import { LocationType } from "../models";
 
 /**
  * Function to process locations object to provide array of location names

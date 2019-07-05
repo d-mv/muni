@@ -36,7 +36,7 @@ import {
 } from "./components/Factory";
 
 import "../style/App.scss";
-import { AuthState } from "../store/models";
+import { AuthState } from "../models";
 
 const App = (props: {
   token: string;

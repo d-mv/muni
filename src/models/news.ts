@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import { ObjectID } from "bson";
 
-export interface News {
-  location: ObjectID;
+export interface NewsType {
+  _id:string
+  location: string;
   title: string;
   text: string;
   photo: string;

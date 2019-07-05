@@ -1,6 +1,6 @@
 import React from "react";
 
-import Category from "../../Card/components/Category";
+import Category from "../../../components/Card/components/Category";
 
 import Section from "../../../layout/Section";
 

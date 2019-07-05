@@ -1,6 +1,6 @@
 import { Action } from "./types";
 import { data } from "../types";
-import { LocationState } from "../models";
+import { LocationState } from "../../models";
 
 /**
  * Reducer function to process the loadData action
