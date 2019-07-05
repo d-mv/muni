@@ -4,16 +4,16 @@ import { connect } from "react-redux";
 import { AppState } from "../store";
 
 import PostUser from "../features/Post/";
-import PostMuni from "../features/Post/PostMuni";
+import News from "../features/Post/News";
 
 import Page from "../layout/Page";
 
 /** Functional component to render Post page
  * @returns {JSX.Element} - Post page
  */
-const Post = (props: { muni?: boolean }) => {
+const Post = (props: { news?: boolean }) => {
   // TODO: change
-  const component = props.muni ? <PostMuni /> : <PostUser />;
+  const component = props.news ? <News /> : <PostUser />;
 // console.log(props.muni)
   return <Page>{component}</Page>;
 };

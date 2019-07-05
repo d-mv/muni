@@ -15,41 +15,32 @@ import Content from "../../layout/Content";
 import Header from "../../components/Header";
 import { goBack, iconEdit, iconClose } from "../../icons";
 import Button from "../../components/Button";
-import { AuthState } from "../../models";
+import { AuthState, NewsType } from "../../models";
 
 const PostMuni = (props: {
-  auth:AuthState
-  post: any;
+  auth: AuthState;
+  post: NewsType;
   language: indexedObjAny;
   locations: indexedObjAny;
   setModule: (arg0: string) => void;
   getNews: (arg0: string) => void;
   prevModule: string;
-  type: any;
 }) => {
   const { direction, text } = props.language;
-  const { user } = props.auth
-    const location = props.locations.filter((el: any) => el._id === user.location)[0];
+  const { user } = props.auth;
+  const location = props.locations.filter(
+    (el: any) => el._id === user.location
+  )[0];
 
   const [post, setPost] = useState(props.post);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [updateConfirmation, showUpdateConfirmation] = useState(false);
 
   const [muniEdit, setMuniEdit] = useState(false);
-  const {
-    _id,
-    title,
-    photo,
-    link,
-    problem,
-    votes,
-    createdBy,
-    date,
-    reply
-  } = post;
-  // !
-  const muniUser = props.type === "muni";
 
+  // !
+  const muniUser = user.type === "muni";
+  console.log(post.title);
   const toggleMuniEdit = () => {
     setMuniEdit(!muniEdit);
   };
@@ -91,7 +82,7 @@ const PostMuni = (props: {
     if (mode === "secondary") {
       const url = `/muni/${user.location}`;
       axios
-        .put(url, { post: _id })
+        .put(url, { post: post._id })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEdit();
           props.getNews(user.location);
@@ -146,14 +137,13 @@ const PostMuni = (props: {
   ) : null;
   const ageText: { [index: string]: string } = text["post.age"];
 
-const numbersLine = (
-  <NumbersLine
-    date={date}
-    daysText={ageText}
-    direction={direction}
-  />
-);
-
+  const numbersLine = (
+    <NumbersLine
+      date={post.createdAt}
+      daysText={ageText}
+      direction={direction}
+    />
+  );
 
   // header
   let editIcon = muniUser
@@ -176,16 +166,17 @@ const numbersLine = (
     };
 
   const headerObject = {
-    name: location,
+    name: location.name[user.settings.language],
     ...editIcon,
     left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };
+  console.log(location);
   return (
     <Content header>
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={post._id} className={style.post}>
-          <TopBlock muni title={title} numbersLine={numbersLine} />
+          <TopBlock muni title={post.title} numbersLine={numbersLine} />
           <Photo
             src={post.photo}
             edit={muniEdit}
@@ -226,15 +217,14 @@ const numbersLine = (
 
 const mapStateToProps = (state: AppState) => {
   return {
-    auth:state.auth,
+    auth: state.auth,
     language: state.language,
     locations: state.locations,
     prevModule: state.prevModule,
     post: state.news.filter(
       // @ts-ignore
-      (post: any) => post._id === state.post._id
-    )[0],
-    type: state.type
+      (post: NewsType) => post._id === state.post._id
+    )[0]
   };
 };
 

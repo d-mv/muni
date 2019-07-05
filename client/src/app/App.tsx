@@ -41,7 +41,7 @@ import { AuthState } from "../models";
 const App = (props: {
   token: string;
   module: string;
-  post: boolean;
+  post: data;
   locations: data;
   cookies: any;
   posts: data;
@@ -122,7 +122,7 @@ const App = (props: {
 
   useEffect(() => {
     console.log("2. triggered module");
-    if (props.module != "post" && props.post) {
+    if (props.module != "post" && props.post.show) {
       console.log("- module is not post, clear it");
       props.showPost({ show: false });
     }
@@ -149,7 +149,7 @@ const App = (props: {
 
   useEffect(() => {
     console.log("4. triggered post");
-    if (props.post) {
+    if (props.post.show) {
       console.log("- post is there, show post");
       toggleModule("post");
     }
@@ -192,7 +192,7 @@ const App = (props: {
       show = <Mine config={config} />;
       break;
     case "post":
-      show = <Post config={config} />;
+      show = <Post news={props.post.type} config={config} />;
       break;
   }
 
@@ -206,7 +206,7 @@ const mapStateToProps = (state: AppState) => {
     token: state.token,
     module: state.module,
     locations: state.locations,
-    post: state.post.show,
+    post: state.post,
     posts: state.posts,
     userMuni: state.type === "muni",
     auth: state.auth

@@ -141,10 +141,10 @@ export const Mine = (props: {
     config: props.config
   });
 export const Post = (props: {
-  config: { action: () => void; user: boolean };
+  config: { action: () => void; user: boolean },news?:boolean;
 }) =>
   componentFactory({
-    children: <PostPage />,
+    children: <PostPage news={props.news} />,
     nav: true,
     lazy: true,
     new: true,
