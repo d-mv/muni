@@ -12,13 +12,15 @@ import Content from "../layout/Content";
 
 const Municipality = (props: {
   posts: post[];
-  location: data;
+  locations: data;
   language: data;
+  auth:data
 }) => {
-  const { posts } = props;
+  const { posts,locations,auth } = props;
+  const location = locations.filter((el: any) => el._id === auth.user.location)[0];
 
   const headerObject = {
-    name: props.location.name[props.language.short]
+    name: location
   };
 
   return (
@@ -35,7 +37,8 @@ const mapStateToProps = (state: AppState) => {
   return {
     posts: state.news,
     language: state.language,
-    location: state.locationData
+    locations: state.locations,
+    auth: state.auth
   };
 };
 

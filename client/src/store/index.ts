@@ -59,7 +59,7 @@ const rootReducer = combineReducers({
   register: register,
   data: loadData,
   language: setLanguage,
-  locationData: setLocationData,
+  // locationData: setLocationData,
   auth: setAuth,
   submitPost: submitPost,
   help: showHelp,
@@ -95,7 +95,7 @@ export default function configureStore() {
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
     language: TYPE.indexedObjAny;
-    locationData: TYPE.data;
+    // locationData: TYPE.data;
     auth: AuthState | {};
     step: number;
     submitPost: TYPE.apiResponse;
@@ -125,7 +125,7 @@ export default function configureStore() {
     register: apiState,
     data: data,
     language: data.language["עב"],
-    locationData: {},
+    // locationData: {},
     auth: AUTH_EMPTY_STATE,
     step: 1,
     submitPost: apiState,

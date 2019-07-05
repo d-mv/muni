@@ -14,7 +14,6 @@ export const checkToken = (token: string) => async (
 ) => {
   get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
     .then(response => {
-      console.log(response);
       const { _id, location, type, settings } = response.data.user;
       dispatch({
         type: "SET_AUTH",

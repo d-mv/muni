@@ -29,7 +29,9 @@ import { categoryIdToName } from "../../modules/category_processor";
 
 const NewPost = (props: {
   language: data;
-  location: data;
+  auth:data
+  categories:any
+  // locations: data;
   token: string;
   step: number;
   submitResult: data;
@@ -38,8 +40,9 @@ const NewPost = (props: {
   setModule: (arg0: string) => void;
   prevModule: string;
 }) => {
+  const { language,categories,auth} = props
   const { direction, text } = props.language;
-  const { categories, _id, location } = props.location;
+  // const { categories, _id, location } = props.location;
   const [step, setStep] = React.useState(props.step);
   const [review, setReview] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -147,8 +150,9 @@ const NewPost = (props: {
 
   const handleSubmit = () => {
     const objectToSubmit: indexedObjAny = {
-      user: _id,
-      location,
+      user: auth.user._id,
+      location: auth.user.location,
+      // TODO: refactor below
       token: props.token,
       post: {
         title,
@@ -344,7 +348,7 @@ const NewPost = (props: {
     name: "New Post",
     left: { icon: <div>back</div>, action: goHome }
   };
-console.log(message)
+// console.log(message)
   return (
     <Content padded>
       {/* <Header {...headerObject} /> */}
@@ -376,8 +380,10 @@ console.log(message)
 
 const mapStateToProps = (state: AppState) => {
   return {
+    auth:state.auth,
     language: state.language,
-    location: state.locationData,
+    categories:state.categories,
+    locations: state.locations,
     token: state.token,
     submitResult: state.submitPost,
     step: state.step,

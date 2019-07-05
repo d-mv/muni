@@ -36,8 +36,6 @@ export const changeMode = (state = "login", action: Action) => {
 };
 
 export const getCategories = (state = {}, action: Action) => {
-  console.log(action)
-  console.log(state)
   switch (action.type) {
     case "SET_CATEGORIES":
       return {...state,...action.payload};

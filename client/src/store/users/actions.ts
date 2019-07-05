@@ -266,7 +266,7 @@ export const vote = (
   id: string,
   user: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log("voting");
+  // console.log("voting");
   const url = `/post/${id}/vote?user=${user}`;
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     // proceed with request

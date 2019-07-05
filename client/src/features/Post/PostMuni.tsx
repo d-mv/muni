@@ -15,17 +15,22 @@ import Content from "../../layout/Content";
 import Header from "../../components/Header";
 import { goBack, iconEdit, iconClose } from "../../icons";
 import Button from "../../components/Button";
+import { AuthState } from "../../store/models";
 
 const PostMuni = (props: {
+  auth:AuthState
   post: any;
   language: indexedObjAny;
-  location: indexedObjAny;
+  locations: indexedObjAny;
   setModule: (arg0: string) => void;
   getNews: (arg0: string) => void;
   prevModule: string;
   type: any;
 }) => {
   const { direction, text } = props.language;
+  const { user } = props.auth
+    const location = props.locations.filter((el: any) => el._id === user.location)[0];
+
   const [post, setPost] = useState(props.post);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [updateConfirmation, showUpdateConfirmation] = useState(false);
@@ -63,18 +68,18 @@ const PostMuni = (props: {
   };
 
   const handleUpdate = (answer: string) => {
-    console.log(answer);
+    // console.log(answer);
     if (answer === "attention") {
       toggleMuniEdit();
       setPost(props.post);
       toggleCloseSave();
     } else {
-      const url = `/muni/${props.location.location}`;
+      const url = `/muni/${user.location}`;
       axios
         .patch(url, { ...post })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEdit();
-          props.getNews(props.location.location);
+          props.getNews(user.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -84,12 +89,12 @@ const PostMuni = (props: {
 
   const handleDelete = (mode: string) => {
     if (mode === "secondary") {
-      const url = `/muni/${props.location.location}`;
+      const url = `/muni/${user.location}`;
       axios
         .put(url, { post: _id })
         .then((response: AxiosResponse<any>) => {
           toggleMuniEdit();
-          props.getNews(props.location.location);
+          props.getNews(user.location);
         })
         .catch((reason: any) => {
           console.log(reason);
@@ -171,7 +176,7 @@ const numbersLine = (
     };
 
   const headerObject = {
-    name: props.location.name[props.language.short],
+    name: location,
     ...editIcon,
     left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };
@@ -221,8 +226,9 @@ const numbersLine = (
 
 const mapStateToProps = (state: AppState) => {
   return {
+    auth:state.auth,
     language: state.language,
-    location: state.locationData,
+    locations: state.locations,
     prevModule: state.prevModule,
     post: state.news.filter(
       // @ts-ignore

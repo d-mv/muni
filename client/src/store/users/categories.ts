@@ -7,7 +7,6 @@ export const getCategories = () => async (
 ) =>
   get({ url: "/categories" })
     .then(response => {
-      console.log(response);
       dispatch({
         type: "SET_CATEGORIES",
         payload: response.data

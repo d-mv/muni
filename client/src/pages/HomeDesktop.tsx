@@ -16,16 +16,21 @@ import style from "./style/HomeDesktop.module.scss";
 import Card from "../features/Card";
 import Button from "../components/Button";
 import chartsData from '../data/charts.json'
+import { AuthState } from "../store/models";
 
 const Home = (props: {
   posts: post[];
   pinned: any;
   language: data;
-  location: data;
+  locations: data;
+  auth:AuthState
   logOff: () => {}
 }) => {
+  const { locations, auth } = props
+  const {user} = auth
   const { text } = props.language;
 const charts:indexedObjAny=chartsData
+  const location = locations.filter((el: any) => el._id === user.location)[0];
 
 
 
@@ -39,8 +44,7 @@ const charts:indexedObjAny=chartsData
     <div className={style.desktop}>
       <div className={style.header}>
         <p>
-          {props.location.name[props.language.short] ||
-            props.location.name["en"]}
+          {location}
         </p>
         <div>
           <Button mode='primarySmall' action={props.logOff}>
@@ -49,7 +53,7 @@ const charts:indexedObjAny=chartsData
         </div>
       </div>
       <div className={style.content}>
-        <div className={style.graphs}>{charts[props.location.location].map((chart: any) =>
+        <div className={style.graphs}>{charts[user.location].map((chart: any) =>
           <div>
             <div className={style.chartTitle}>{chart.name}</div>
             <iframe title="static_html" className={style.chart} src={chart.url}/>
@@ -69,10 +73,11 @@ const charts:indexedObjAny=chartsData
 
 const mapStateToProps = (state: AppState) => {
   return {
-    location: state.locationData,
+    locations: state.locations,
+    auth: state.auth,
     language: state.language,
     posts: state.posts,
-    pinned: state.locationData.pinned
+    pinned: state.news.filter((el: any) => el.active && el.pinned)
   };
 };
 

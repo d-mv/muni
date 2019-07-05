@@ -6,7 +6,7 @@ import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
 import { post, indexedObjAny, data } from "../../store/types";
-import {cachePost} from '../../store/users/actions'
+import { cachePost } from "../../store/users/actions";
 import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
 import VoteButton from "../../components/VoteButton";
@@ -24,11 +24,13 @@ import { showPostPayload } from "../../store/post/types";
 const PostCard = (props: {
   post: post;
   language: indexedObjAny;
-  categories: any
+  categories: any;
+  auth: data;
   showPost: (arg0: showPostPayload) => void;
-  locationData: data;
+  // locationData: data;
 }) => {
-  const {categories} = props
+  const { categories } = props;
+  const { user } = props.auth;
   const { text, direction, short } = props.language;
   const { _id, title, date, photo, category, createdBy, reply } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
@@ -53,9 +55,9 @@ const PostCard = (props: {
   voterElement = (
     <Voters number={votes.length} text={voterText} direction={direction} />
   );
-  const author = createdBy === props.locationData._id;
-  const voted = votes.includes(props.locationData._id);
-  const muniUser = props.locationData.type === "muni";
+  const author = createdBy === user._id;
+  const voted = votes.includes(user._id);
+  const muniUser = user.type === "muni";
 
   const voteButtonElement =
     !author && !voted && !muniUser ? (
@@ -97,8 +99,9 @@ const PostCard = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    categories:state.categories,
-    locationData: state.locationData
+    categories: state.categories,
+    auth: state.auth
+    // locationData: state.locationData
   };
 };
 

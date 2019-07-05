@@ -54,7 +54,7 @@ const Register = (props: {
 
   const [disabled, setDisabled] = useState(true);
   useEffect(() => {
-    console.log(disabled);
+    // console.log(disabled);
 
     if (!fName && !lName && !location && !email && !pass && !secondPass) {
       setDisabled(true);
@@ -99,7 +99,7 @@ const Register = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (message) {
-      console.log("object");
+      // console.log("object");
       setMessage("");
       props.setMessage("");
     }
@@ -189,7 +189,7 @@ const Register = (props: {
     length: 3
   });
 
-  console.log(disabled);
+  // console.log(disabled);
 
   return (
     <form

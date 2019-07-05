@@ -19,7 +19,6 @@ import style from "./style/Profile.module.scss";
 
 const Profile = (props: any) => {
   const { text, direction } = props.language;
-
   const headerObject = {
     name: props.location.name[props.language.short]
   };
@@ -64,10 +63,9 @@ const Profile = (props: any) => {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    location: state.locationData,
+    locations: state.locations,
     help: state.help,
-    auth: state.auth,
-    type: state.type
+    auth: state.auth
   };
 };
 

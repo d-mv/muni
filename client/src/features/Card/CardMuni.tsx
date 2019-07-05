@@ -20,7 +20,6 @@ const PostCard = (props: {
   muni?: boolean;
   post: postMuni;
   language: indexedObjAny;
-  locationData: data;
   showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction } = props.language;
@@ -54,7 +53,6 @@ const PostCard = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    locationData: state.locationData
   };
 };
 

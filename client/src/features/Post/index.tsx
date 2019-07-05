@@ -42,12 +42,12 @@ import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
 import { showPostPayload } from "../../store/post/types";
-import { AuthState } from "../../store/models";
+import { AuthState, CategoryType } from "../../store/models";
 
 const Post = (props: {
   post: post;
   language: indexedObjAny;
-  location: data;
+  // location: data;
   vote: (arg0: string, arg1: string) => void;
   updatePost: (arg0: any) => void;
   setModule: (arg0: string) => void;
@@ -57,9 +57,12 @@ const Post = (props: {
   deletePost: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
   auth: AuthState;
+  categories: any
+  locations:data
 }) => {
   // destructuring props
-  const { categories } = props.location;
+  const { categories, auth,locations } = props;
+  const {user} = auth
   const { direction, text, short } = props.language;
   // state
   const [textOpened, setTextOpened] = useState(false);
@@ -75,6 +78,7 @@ const Post = (props: {
   const [muniDeleteConfirmation, setMuniDeleteConfirmation] = useState(false);
   const [showMuniEditModal, setMuniEditModal] = useState(false);
   // const [text]
+  const location = locations.filter((el: any) => el._id === user.location)[0];
 
   // destructuring state
   const {
@@ -101,7 +105,7 @@ const Post = (props: {
   };
   const includes = votes.includes(props.auth.user._id);
   const author = createdBy === props.auth.user._id;
-  const muniUser = props.location.type === "muni";
+  const muniUser = auth.user.type === "muni";
 
   let allowToReply = false;
   if (!post.reply.up && !post.reply.down) {
@@ -154,7 +158,7 @@ const Post = (props: {
   };
   // TODO:
   const handleDeleteMuniReply = (mode: string) => {
-    console.log("handleDeleteMuniReply");
+    // console.log("handleDeleteMuniReply");
     if (mode === "primary") {
       const newPost = {
         ...post,
@@ -174,7 +178,7 @@ const Post = (props: {
     }
   };
   const handleEditMuniReply = (mode: string) => {
-    console.log("handleEditMuniReply");
+    // console.log("handleEditMuniReply");
     if (mode === "primary") {
       const newPost = {
         ...post,
@@ -217,7 +221,7 @@ const Post = (props: {
     }
   };
   const handleUpdate = (answer: string) => {
-    console.log(answer);
+    // console.log(answer);
     if (answer === "attention") {
       toggleEdit();
       setPost(props.post);
@@ -267,7 +271,7 @@ const Post = (props: {
   };
 
   const handleReplyVoting = (updown: boolean) => {
-    console.log(updown);
+    // console.log(updown);
     let newVotesUp = reply.up;
     let newVotesDown = reply.down;
 
@@ -486,7 +490,7 @@ const Post = (props: {
     };
 
   const headerObject = {
-    name: props.location.name[props.language.short],
+    name: location,
     ...editIcon,
     left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };
@@ -561,13 +565,14 @@ const Post = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    location: state.locationData,
+    locations: state.locations,
     // @ts-ignore
     post: state.posts.filter((post: any) => post._id === state.post._id)[0],
     mode: state.mode,
     prevModule: state.prevModule,
     token: state.token,
-    auth: state.auth
+    auth: state.auth,
+    categories:state.categories
   };
 };
 
