@@ -7,261 +7,202 @@ import { UserType } from "./../models/user";
 const Location = require("../models/location");
 const User = require("../models/user");
 const Post = require("../models/post");
+const Category = require("./../models/category");
+const News = require("./../models/news");
 
-const getImage = () => {
-  const index = faker.random.number({
-    min: 0,
-    max: imagesArray.length - 1
-  });
-  return imagesArray[index];
-};
-
-const locations = () => {
-  const Haifa = new Location({
+const locationArray = [
+  {
     name: {
       עב: "חיפה",
       ع: "حيفا‎",
       en: "Haifa"
     }
-  }); Haifa.save;
-};
-
-const users = () => {
-  const listOfLocations = Location.find({});
-  listOfLocations.map((loc: LocationType) => {
-    for (let i = 0; i++; i === 5) {
-      const user = new User({
-        pass: "1234567",
-        fName: faker.name.firstName(),
-        lName: faker.name.lastName(),
-        email: faker.internet.email(),
-        location: loc._id
-      });
-      user.save;
+  },
+  {
+    name: {
+      עב: "תל־אביב–יפו",
+      ع: "تل أبيب - يافا",
+      en: "Tel Aviv-Jaffa"
     }
-  });
-};
-
-const posts = () => {
-  const listOfUsers = User.find({});
-  listOfUsers.map((usr: UserType) => {
-    for (let i = 0; i++; i === 5) {
-      const post = new Post({
-        title: faker.lorem.sentence(),
-        problem: faker.lorem.paragraphs(5),
-        solution: faker.lorem.paragraphs(2),
-        photo: getImage(),
-        link: faker.internet.url(),
-        location: usr.location,
-        category: "5d1e28fd0572676eca82290b"
-      })
-        post.save;
+  },
+  {
+    name: {
+      עב: "ירושלים",
+      ع: "القُدس ",
+      en: "Jerusalem"
     }
+  }
+];
+const categoryArray = [
+  {
+    name: { en: "Infrastructure", עב: "תשתיות", ع: "بنية تحتية" },
+    description: {
+      עב:
+        "Includes Streets situation, electricity, water and sewage, transportation."
+    }
+  },
+  {
+    name: { en: "Education", עב: "חינוך", ع: "التربية والتعليم" },
+    description: {
+      עב:
+        "Schools, colleges, teachers, informal education/classes from Muni to children."
+    }
+  },
+  {
+    name: {
+      en: "Financials/finance/budgets",
+      עב: "דוחות כספיים/תקציבים",
+      ع: "الموارد المالية/ميزانيات"
+    },
+    description: {
+      עב: "Including municipalities budgets and how they're spent."
+    }
+  },
+  {
+    name: { en: "Safety", עב: "בטיחות", ع: "امن وامان" },
+    description: {
+      עב: "Including incidents in neighborhoods, violent incidents, hazards."
+    }
+  },
+  {
+    name: {
+      en: "Health and Welfare",
+      עב: "בריאות ורווחה",
+      ع: "الصحة والشؤون الاجتماعية"
+    },
+    description: {
+      עב:
+        "Including hospitals situations, public clinics, infants clinics, welfare institutions and services"
+    }
+  }
+];
+
+const randomNumber = (max: number) =>
+  faker.random.number({
+    min: 0,
+    max
   });
+
+const getImage = () => imagesArray[randomNumber(imagesArray.length - 1)];
+
+const categories = async () => {
+  try {
+    categoryArray.forEach(async (el: any) => {
+      const category = new Category(el);
+      await category.save();
+    });
+    return "Categories creation - done";
+  } catch (error) {
+    return "Categories creation - error";
+  }
+};
+const locations = async () => {
+  try {
+    locationArray.forEach(async (el: any) => {
+      const location = new Location(el);
+      await location.save();
+    });
+    return "Locations creation - done";
+  } catch (error) {
+    return "Locations creation - error";
+  }
 };
 
-const dbSeed = () => {
-  locations();
-  users();
-  posts();
+const users = async () => {
+  try {
+    const listOfLocations = await Location.find({});
+    listOfLocations.forEach(async (loc: LocationType) => {
+      for (let i = 0; i < randomNumber(3); i++) {
+        const user = new User({
+          pass: "1234567",
+          fName: faker.name.firstName(),
+          lName: faker.name.lastName(),
+          email: faker.internet.email(),
+          location: loc._id,
+          status: true
+        });
+        await user.save();
+      }
+    });
+    return "Users creation - done";
+  } catch (error) {
+    return "Users creation - error";
+  }
 };
 
-// const update = (props: {
-//   id: string;
-//   users: any;
-//   municipality: any;
-//   pinned: any;
-//   admins: any[];
-// }) => {};
+const posts = async () => {
+  try {
+    const listOfLocations = await Location.find({});
+    const listOfUsers = await User.find({});
+    const louLength = listOfUsers.length - 1;
+    const listOfCategories = await Category.find({});
+    listOfLocations.forEach(async (loc: UserType) => {
+      for (let i = 0; i < randomNumber(10); i++) {
+        const usr = listOfUsers[randomNumber(louLength)];
+        const post = new Post({
+          title: faker.lorem.sentence(),
+          problem: faker.lorem.paragraphs(5),
+          solution: faker.lorem.paragraphs(2),
+          photo: getImage(),
+          link: faker.internet.url(),
+          location: loc._id,
+          category: listOfCategories[randomNumber(listOfCategories.length - 1)],
+          createdBy: usr._id,
+          votes: [
+            listOfUsers[randomNumber(louLength)],
+            listOfUsers[randomNumber(louLength)],
+            listOfUsers[randomNumber(louLength)]
+          ]
+        });
+        await post.save();
+      }
+    });
+    return "Posts creation - done";
+  } catch (error) {
+    return "Posts creation - error";
+  }
+};
 
-// let userIds: any[] = [];
+const news = async () => {
+  try {
+    const listOfLocations = await Location.find({});
+    listOfLocations.forEach(async (loc: UserType) => {
+      for (let i = 0; i < randomNumber(10); i++) {
+        const post = new News({
+          title: faker.lorem.sentence(),
+          text: faker.lorem.paragraphs(5),
+          photo: getImage(),
+          link: faker.internet.url(),
+          location: loc._id,
+          pinned: i === 0 ? true : false
+        });
+        await post.save();
+      }
+    });
+    return "News creation - done";
+  } catch (error) {
+    return "News creation - error";
+  }
+};
 
-// const replyOrNotReply = () => {
-//   const yesNo = faker.random.number({
-//     min: 0,
-//     max: 1
-//   });
-//   const paragraphs = faker.random.number({
-//     min: 1,
-//     max: 2
-//   });
-//   const reply = yesNo ? faker.lorem.paragraphs(paragraphs) : null;
-//   return reply;
-// };
-
-// /**
-//  * Function to create posts, both petitions and municipality news
-//  *
-//  * @param {boolean} user - If this is a petition
-//  * @param {ObjectId} createdBy - Creator's ID
-//  * @param {ObjectId} category - Category's ID
-//  *
-//  * @returns {Array} - Array of generated posts
-//  */
-// const buildPost = (
-//   user?: boolean,
-//   createdBy?: ObjectId,
-//   category?: ObjectId
-// ) => {
-//   let post = {};
-//   const replyOr = replyOrNotReply();
-//   if (user) {
-//     post = {
-//       _id: new MDB.ObjectId(),
-//       title: faker.lorem.sentence(),
-//       problem: faker.lorem.paragraphs(5),
-//       solution: faker.lorem.paragraphs(2),
-//       photo: getImage(),
-//       link: faker.internet.url(),
-//       newsId: new MDB.ObjectId(),
-//       createdBy,
-//       category,
-//       date: faker.date.between("2019-01-01", "2019-05-15"),
-//       status: "active",
-//       votes: idsArray(
-//         faker.random.number({
-//           min: 0,
-//           max: 4
-//         })
-//       ),
-//       reply: {
-//         text: replyOr ? replyOr : "",
-//         date: new Date(),
-//         up: replyOr
-//           ? idsArray(
-//               faker.random.number({
-//                 min: 0,
-//                 max: 4
-//               })
-//             )
-//           : [],
-//         down: replyOr
-//           ? idsArray(
-//               faker.random.number({
-//                 min: 0,
-//                 max: 4
-//               })
-//             )
-//           : []
-//       }
-//     };
-//   } else {
-//     post = {
-//       _id: new MDB.ObjectId(),
-//       title: faker.lorem.sentence(),
-//       text: faker.lorem.paragraphs(5),
-//       photo: getImage(),
-//       link: faker.internet.url(),
-//       date: faker.date.between("2019-01-01", "2019-05-15"),
-//       status: "active"
-//     };
-//   }
-//   return post;
-// };
-
-// /**
-//  * Function to generate values
-//  *
-//  * @param {function} - If enabled at the end of the function, returns generated data through callback
-//  */
-// const dbSeed = (callback: any) => {
-//   // qty of users
-//   const users = 5;
-//   // categories
-//   const categories = [
-//     "5d0515f6765ce120e4bdf6a8",
-//     "5d051619765ce120e4bdf6ab",
-//     "5d051627765ce120e4bdf6ac",
-//     "5d05160d765ce120e4bdf6aa",
-//     "5d051602765ce120e4bdf6a9"
-//   ];
-//   const languages = ["en", "עב", "ع"];
-
-//   // generate hash for password
-//   encodeString("1234567", (encoded: TYPE.intApiResponseTYPE) => {
-//     if (!encoded.status) {
-//       callback({ status: false, message: "Something went wrong", code: 500 });
-//     } else {
-//       // set the block of data
-//       let block = [];
-//       // generate user ids
-//       for (let i = 0; i < users; i++) {
-//         userIds.push(new MDB.ObjectId());
-//       }
-
-//       for (let i = 0; i < users; i++) {
-//         // new user
-//         const user: any = {
-//           _id: userIds[i],
-//           fName: faker.name.firstName(),
-//           lName: faker.name.lastName(),
-//           email: faker.internet.email(),
-//           language: languages[Math.floor(Math.random() * languages.length)],
-//           pass: encoded.payload,
-//           type: "user",
-//           posts: []
-//         };
-//         // qty of post per this user
-//         const posts = faker.random.number({
-//           min: 1,
-//           max: 3
-//         });
-
-//         for (let n = 0; n < posts; n++) {
-//           const createdBy = userIds[Math.floor(Math.random() * userIds.length)];
-//           const category = new MDB.ObjectId(
-//             categories[Math.floor(Math.random() * categories.length)]
-//           );
-//           // new post
-//           const post = buildPost(true, createdBy, category);
-//           user.posts.push(post);
-//         }
-//         // push the user to data
-//         block.push(user);
-//       }
-//       // create muni user
-//       const muniUser: any = {
-//         _id: new MDB.ObjectId(),
-//         fName: faker.name.firstName(),
-//         lName: faker.name.lastName(),
-//         email: "user@muni.com",
-//         language: languages[Math.floor(Math.random() * languages.length)],
-//         pass: encoded.payload,
-//         type: "muni",
-//         posts: []
-//       };
-
-//       // create municipality records
-//       let blockMuni = [];
-//       const municipalityPosts = faker.random.number({
-//         min: 3,
-//         max: 10
-//       });
-
-//       for (let n = 0; n < municipalityPosts; n++) {
-//         const post = buildPost();
-//         blockMuni.push(post);
-//       }
-
-//       const pinned = blockMuni[2];
-
-//       // ! call to update the DB
-//       update({
-//         id: "5ce2a3c945e5451171394b35",
-//         users: block,
-//         municipality: blockMuni,
-//         pinned,
-//         admins: [muniUser]
-//       });
-
-//       // report
-//       callback({
-//         status: true,
-//         message: "Seeding data is sent to DB.",
-//         code: 200
-//       });
-//     }
-//   });
-// };
+// ! activate the below
+const dbSeed = async () => {
+  try {
+    // const category = await categories();
+    // const location = await locations();
+    // const user = await users();
+    // const post = await posts();
+    // const newsPosts = await news();
+    return [
+      // category
+      // location,
+      // user
+      // post
+      // newsPosts
+    ];
+  } catch (error) {
+    return error;
+  }
+};
 
 export default dbSeed;

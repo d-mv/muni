@@ -87,7 +87,7 @@ export default function configureStore() {
     locations: LocationState;
     token: string;
     checkTokenResult: any;
-    pinned: any;
+
     // login: TYPE.apiResponse;
     module: string;
     prevModule: string;
@@ -118,7 +118,6 @@ export default function configureStore() {
     locations: {},
     token: "",
     checkTokenResult: "",
-    pinned: [],
     // login: apiState,
     module: "welcome",
     prevModule: "welcome",

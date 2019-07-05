@@ -81,11 +81,11 @@ const App = (props: {
   useEffect(() => {
     logger({ text: "main process is", emph: "launched", type: "positive" });
 
-    // if (token === "clear") {
-    //   cookies.set("token", "");
-    //   props.setToken("");
-    //   toggleModule("welcome");
-    // }
+    if (token === "clear") {
+      cookies.set("token", "");
+      props.setToken("");
+      toggleModule("welcome");
+    }
 
     if (auth.user._id && auth.user.location && token) {
       logger({ text: "auth is", emph: "true", type: "positive" });

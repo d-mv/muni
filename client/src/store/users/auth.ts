@@ -35,11 +35,7 @@ export const checkToken = (token: string) => async (
       });
     })
     .catch((error: any) => {
-      const  message  = error.response? error.response.data.message.split("Error: ")[1]: error.toString()
-      dispatch({
-        type: "SET_MESSAGE",
-        message: message
-      });
+      dispatch({ type: "SET", token:'clear' });
       dispatch({
         type: "SET_LOADING",
         loading: false

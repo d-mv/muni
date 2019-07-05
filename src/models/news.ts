@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { ObjectID } from "bson";
 
 export interface News {
-  location: ObjectID
+  location: ObjectID;
   title: string;
   text: string;
   photo: string;
