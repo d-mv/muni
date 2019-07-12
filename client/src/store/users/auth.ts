@@ -1,5 +1,5 @@
 import { LoginProps } from "./types";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { get, post } from "../services";
 import { indexedObjAny, registerType } from "../types";
@@ -11,8 +11,7 @@ const data: indexedObjAny = fromJson;
 
 export const checkToken = (token: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-) => {
-  get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
+) => get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
     .then(response => {
       const { _id, location, type, settings } = response.data.user;
       dispatch({
@@ -40,7 +39,6 @@ export const checkToken = (token: string) => async (
         loading: false
       });
     });
-};
 
 export const login = (login: LoginProps) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
@@ -87,7 +85,7 @@ export const login = (login: LoginProps) => async (
 
 export const register = (props: registerType) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> => {
+) => {
   dispatch({
     type: "SET_LOADING",
     loading: true
@@ -104,7 +102,6 @@ export const register = (props: registerType) => async (
         loading: false
       });
       dispatch({ type: "SET_MODULE", module: "confirmation" });
-      console.log(response);
     })
     .catch(e => {
       dispatch({

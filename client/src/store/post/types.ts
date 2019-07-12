@@ -23,8 +23,13 @@ export interface deletePostAction {
   type: "DELETE_POST";
   payload: TYPE.apiResponse;
 }
+export interface typingPostAction {
+  type: "TYPING_POST_DATA";
+  payload: any;
+}
 
 export type Action =
+  | typingPostAction
   | deletePostAction
   | showPostAction
   | submitPostAction

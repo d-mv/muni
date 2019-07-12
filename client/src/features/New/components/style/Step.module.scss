@@ -6,7 +6,7 @@
   align-items: center;
   text-align: center;
   justify-content: center;
-  border: 1px solid var(--colorSecondary);
+  border: var(--borderSecondaryThin) !important;
   color: var(--colorSecondary);
   font: var(--textIconStep);
 }

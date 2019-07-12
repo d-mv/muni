@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./styles/Step.module.scss";
+import style from "./style/Step.module.scss";
 
 const Step = (props: {
   step: number;

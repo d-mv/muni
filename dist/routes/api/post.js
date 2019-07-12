@@ -15,6 +15,7 @@ const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const post = new Post(Object.assign({}, req.body, { createdBy: req.user._id }));
+    console.log(post);
     try {
         yield post.save();
         res.status(201).send(post);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
@@ -6,8 +6,8 @@ import { formSection, formSelection } from "../../components/formSection";
 import { Preview } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
-import { submitPost } from "../../store/post/actions";
-import { setModule } from "../../store/users/actions";
+import { submitPost, typingPost, createPost } from "../../store/post/actions";
+import { setModule, setLoading } from "../../store/users/actions";
 import { indexedObjAny, data } from "../../store/types";
 
 import Button from "../../components/Button";
@@ -29,8 +29,8 @@ import { categoryIdToName } from "../../modules/category_processor";
 
 const NewPost = (props: {
   language: data;
-  auth:data
-  categories:any
+  auth: data;
+  categories: any;
   // locations: data;
   token: string;
   step: number;
@@ -39,69 +39,83 @@ const NewPost = (props: {
   submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
+  //
+  loading: boolean;
+  setLoading: (arg0: boolean) => void;
+  typingPost: (arg0: { [index: string]: any }) => void;
+  newPost: {
+    title: "";
+    category: "";
+    problem: "";
+    solution: "";
+    photo: "";
+    link: "";
+  };
+  createPost: (arg0: any) => void;
 }) => {
-  const { language,categories,auth} = props
-  const { direction, text } = props.language;
-  // const { categories, _id, location } = props.location;
-  const [step, setStep] = React.useState(props.step);
+  const { language, categories, newPost, typingPost, step, setStep } = props;
+  const { direction, text, short } = language;
+  // const [step, setStep] = React.useState(props.step);
   const [review, setReview] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   // form fields
-  const [title, setTitle] = React.useState("");
-  const [category, setCategory] = React.useState(categories[0]._id);
-  const [problem, setProblem] = React.useState("");
-  const [solution, setSolution] = React.useState("");
-  const [photo, setPhoto] = React.useState("");
-  const [link, setLink] = React.useState("");
+  const { title, category, problem, solution, photo, link } = newPost;
   // message
   const [message, setMessage] = React.useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (step === 6 && review === false) {
       setReview(true);
     }
   }, [step]);
 
+  useEffect(() => {
+    typingPost({ category: categories[0]._id });
+  }, []);
+
   const getCategories = () => {
-    let result: { value: string; label: string }[] = [];
-    categories.map((cat: any) => {
-      const language = !Object.keys(cat).includes(props.language.short)
-        ? "עב"
-        : props.language.short;
-      result.push({ value: cat._id, label: cat[language] });
+    let result: { value: string; label: string; desc: string }[] = [];
+    Object.values(categories).map((value: any) => {
+      result.push({
+        value: value._id,
+        label: value.name[short],
+        desc: value.description[short]
+      });
     });
     return result;
   };
 
   const handleNextStep = () => {
+    let check = "";
     if (step + 1 <= 6) {
-      let check: boolean = true;
       let response: string = text["new.message.fieldEmpty"];
       switch (step) {
         case 1:
-          check = title !== "";
+          check = title;
           break;
         case 2:
-          check = category !== "";
+          check = category;
           break;
         case 3:
-          check = problem !== "";
+          check = problem;
           break;
         case 4:
-          check = solution !== "";
+          check = solution;
           break;
         case 5:
           if (link) {
             const regex = new RegExp(
               "^([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
             );
-            check = regex.test(link);
+            check = regex.test(link) ? "true" : "";
             if (!check) {
               response = text["new.message.urlMalformed"];
             }
+          } else {
+            check = " ";
           }
           break;
       }
+      console.log(check);
       if (check) {
         setMessage("");
         setStep(step + 1);
@@ -110,7 +124,7 @@ const NewPost = (props: {
       }
     }
   };
-  // console.log(step);
+
   const handleBackStep = () => {
     if (step - 1 > 0) {
       setStep(step - 1);
@@ -124,94 +138,20 @@ const NewPost = (props: {
   };
 
   const handleInputChange = (event: any) => {
+    const { name, value } = event.target;
     setMessage("");
-    switch (event.target.name) {
-      case "title":
-        setTitle(event.target.value);
-        break;
-      case "problem":
-        setProblem(event.target.value);
-        break;
-      case "solution":
-        setSolution(event.target.value);
-        break;
-      case "link":
-        setLink(event.target.value);
-        break;
-    }
+    typingPost({ [name]: value });
   };
   const handleDropDown = (event: any) => {
-    setCategory(event.target.value);
+    typingPost({ category: event.target.value });
   };
 
   const handleSetPhoto = (props: any) => {
-    setPhoto(props);
+    typingPost({ photo: props });
   };
 
   const handleSubmit = () => {
-    const objectToSubmit: indexedObjAny = {
-      user: auth.user._id,
-      location: auth.user.location,
-      // TODO: refactor below
-      token: props.token,
-      post: {
-        title,
-        category,
-        problem,
-        solution,
-        photo,
-        link
-      }
-    };
-
-    let check = 0;
-    let counter = 0;
-
-    // Object.keys(objectToSubmit).map((el: any) => {
-    //   if (typeof objectToSubmit[el] === "object") {
-    //     Object.keys(objectToSubmit[el]).map((ele: any) => {
-    //       const empty = objectToSubmit[el][ele] === "";
-    //       if (!empty) {
-    //         check += 1;
-    //       }
-    //       counter += 1;
-    //     });
-    //   } else if (
-    //     objectToSubmit[el] === "photo" ||
-    //     objectToSubmit[el] === "link"
-    //   ) {
-    //     check += 1;
-    //     counter += 1;
-    //   } else {
-    //     const empty = objectToSubmit[el] === "";
-    //     if (!empty) {
-    //       check += 1;
-    //     }
-    //     counter += 1;
-    //   }
-    // });
-
-    const url = "/post/create";
-    axios
-      .post(url, objectToSubmit)
-      .then((response: any) => {
-        setLoading(false);
-        setMessage(response.data.message);
-        if (response.status) {
-          props.setModule("home");
-        }
-      })
-      .catch(error => {
-        const payload = error.response ? error.response.data : error.toString();
-      });
-
-    if (check === counter) {
-      setLoading(true);
-      props.setStep(6);
-      props.submitPost(objectToSubmit);
-    } else {
-      setMessage(text["new.error.incomplete"]);
-    }
+    props.createPost(newPost);
   };
 
   let pageSubTitle = text["new.steps.title"];
@@ -248,20 +188,23 @@ const NewPost = (props: {
         })
       : null;
 
+  const preparedCategories = getCategories();
+
   const stepTwo =
     step === 2 ? (
       <div className='none'>
         {formSelection({
-          list: getCategories(),
+          list: preparedCategories,
           direction,
           label: text["new.field.category.label"],
           action: handleDropDown,
-          focus: true
+          focus: true,
+          value: category
         })}
         <CatDescription
           direction={direction}
           category={category}
-          categories={categories}
+          categories={preparedCategories}
         />
       </div>
     ) : null;
@@ -316,8 +259,11 @@ const NewPost = (props: {
 
   const mockFn = (props: any) => {};
 
-  const categoryName = categoryIdToName(categories, props.language.short, category);
-
+  const categoryName = categoryIdToName(
+    categories,
+    props.language.short,
+    category
+  );
 
   const post = {
     title,
@@ -339,7 +285,7 @@ const NewPost = (props: {
         }}
       />
     ) : null;
-  const loadingElement = loading ? <Loading /> : null;
+  const loadingElement = props.loading ? <Loading /> : null;
 
   const goHome = () => {
     props.setModule(props.prevModule);
@@ -348,7 +294,7 @@ const NewPost = (props: {
     name: "New Post",
     left: { icon: <div>back</div>, action: goHome }
   };
-// console.log(message)
+  // console.log(message)
   return (
     <Content padded>
       {/* <Header {...headerObject} /> */}
@@ -356,7 +302,9 @@ const NewPost = (props: {
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
       </Center>
-      <Paragraph direction={direction}>{text[`new.steps.step.${step}`]}</Paragraph>
+      <Paragraph direction={direction}>
+        {text[`new.steps.step.${step}`]}
+      </Paragraph>
       <ContentBlock
         stepOne={stepOne}
         stepTwo={stepTwo}
@@ -380,18 +328,20 @@ const NewPost = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    auth:state.auth,
+    auth: state.auth,
     language: state.language,
-    categories:state.categories,
+    categories: state.categories,
     locations: state.locations,
     token: state.token,
     submitResult: state.submitPost,
     step: state.step,
-    prevModule: state.prevModule
+    prevModule: state.prevModule,
+    newPost: state.newPost,
+    loading: state.loading
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setStep, submitPost, setModule }
+  { setStep, submitPost, setModule, typingPost, setLoading, createPost }
 )(NewPost);

@@ -5,6 +5,8 @@ import axios from "axios";
 import { Action, showPostPayload } from "./types";
 import * as TYPE from "../types";
 
+export * from './create'
+
 export const submitPost = (
   props: any
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {

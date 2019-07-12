@@ -9,18 +9,20 @@ const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, async (req: any, res: any) => {
   const post = new Post({
     ...req.body,
-    createdBy: req.user._id
+    createdBy: req.user._id,
+    location: req.user.location
   });
   try {
-    await post.save();
+    const result = await post.save();
     res.status(201).send(post);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 });
 router.get("/:id", authenticate, async (req: any, res: any) => {
   try {
-    const post = await Post.find({_id:req.params.id})
+    const post = await Post.find({ _id: req.params.id });
     res.status(201).send(post);
   } catch (error) {
     res.status(400).send(error);

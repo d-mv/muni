@@ -26,3 +26,16 @@ export const categoryIdToName = (
   );
   return result;
 };
+
+// export const categoryNameToId = (
+//   categories: Array<any>,
+//   language: string,
+//   id: string
+// ) => {
+//   let catArray = getCategories(categories, language);
+//   let result = "";
+//   catArray.forEach((el: indexedObj) =>
+//     el.value === id ? (result = el.label) : null
+//   );
+//   return result;
+// };

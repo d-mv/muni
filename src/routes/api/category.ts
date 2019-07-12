@@ -19,7 +19,6 @@ router.post("/", authenticate, async (req: any, res: any) => {
 });
 
 router.get("/", authenticate, async (req: any, res: any) => {
-  console.log('object')
   try {
     const Categories = await Category.find({});
     res.send(Categories);

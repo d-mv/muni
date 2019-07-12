@@ -2,7 +2,7 @@ import React from "react";
 import { iconCreateNew } from "../../../icons";
 import { add } from "../../../icons/add";
 
-import style from "./styles/NewButton.module.scss";
+import style from "./style/NewButton.module.scss";
 
 const NewButton = (props: { config: { action: () => void; user: any } }) => {
   const icon = props.config.user ? add("white") : iconCreateNew;

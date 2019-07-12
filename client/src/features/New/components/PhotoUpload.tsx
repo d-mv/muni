@@ -2,7 +2,7 @@ import React from "react";
 import { imageDecoder, imageEncoder } from "../../../modules/image_coder";
 
 import button from "../../../components/style/Button.module.scss";
-import style from "./styles/PhotoUpload.module.scss";
+import style from "./style/PhotoUpload.module.scss";
 
 const PhotoUpload = (props: {
   label: string;

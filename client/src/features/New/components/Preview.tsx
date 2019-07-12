@@ -1,6 +1,6 @@
 import React from "react";
 import { TopBlock, Photo, Link } from "../../Post/components";
-import Text from '../../Post/components/Text'
+import Text from "../../Post/components/Text";
 import style from "../../Post/style/Post.module.scss";
 
 export const Preview = (props: {
@@ -15,32 +15,33 @@ export const Preview = (props: {
   direction: string;
   text: { problem: string; solution: string };
   muni?: boolean;
-}) => {
-  const { title, category, problem, solution, photo, link } = props.post;
-  const numbersLine = <span />;
-  return (
-    <div className={style.wrapper}>
-      <div data-testid='post__preview' className={style.post}>
-        <TopBlock muni title={title} />
-        {photo ? <Photo src={photo} edit={false} /> : null}
-        <Link primary text={link} direction={props.direction} edit={false} />
-        <div className={style.text}>
+}) => (
+  <div className={style.wrapper}>
+    <div data-testid='post__preview' className={style.post}>
+      <TopBlock title={props.post.title} category={props.post.category} />
+      {props.post.photo ? <Photo src={props.post.photo} edit={false} /> : null}
+      <Link
+        primary
+        text={props.post.link}
+        direction={props.direction}
+        edit={false}
+      />
+      <div className={style.text}>
+        <Text
+          step
+          title={props.text.problem}
+          text={props.post.problem}
+          direction={props.direction}
+        />
+        {props.muni ? null : (
           <Text
-            step
-            title={props.text.problem}
-            text={problem}
+            back
+            title={props.text.solution}
+            text={props.post.solution || ""}
             direction={props.direction}
           />
-          {props.muni ? (
-            <Text
-              back
-              title={props.text.solution}
-              text={solution||''}
-              direction={props.direction}
-            />
-          ) : null}
-        </div>
+        )}
       </div>
     </div>
-  );
-};
+  </div>
+);

@@ -31,3 +31,10 @@ export const deletePost = (state = {}, action: Action) => {
   }
   return state;
 };
+export const typingPost = (state = {}, action: Action) => {
+  switch (action.type) {
+    case "TYPING_POST_DATA":
+      return { ...state, ...action.payload };
+  }
+  return state;
+};
