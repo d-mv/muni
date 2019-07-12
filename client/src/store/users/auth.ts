@@ -97,7 +97,6 @@ export const register = (props: registerType) => async (
     message: ""
   });
   dispatch({ type: "TYPING_DATA", payload: { ...props } });
-  console.log(props)
   post({ url: "/users", body: props })
     .then((response: any) => {
       dispatch({

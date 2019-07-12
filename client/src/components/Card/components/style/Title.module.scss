@@ -1,0 +1,22 @@
+.title {
+  margin: 0.3rem 0;
+  width: 90%;
+  color: var(--colorDark);
+  font: var(--textPostCardTitle);
+}
+
+.titleRTL {
+  @extend .title;
+  direction: rtl;
+}
+.titleNews {
+  margin: 0.3rem 0;
+  width: 100%;
+  color: var(--colorDark);
+  font: var(--textPostCardTitle);
+}
+
+.titleNewsRTL {
+  @extend .titleNews;
+  direction: rtl;
+}

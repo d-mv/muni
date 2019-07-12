@@ -11,23 +11,23 @@ import PostList from "../components/PostList";
 import Content from "../layout/Content";
 
 const Municipality = (props: {
-  posts: post[];
+  news: data;
   locations: data;
   language: data;
   auth:data
 }) => {
-  const { posts,locations,auth } = props;
+  const { news,locations,auth } = props;
   const location = locations.filter((el: any) => el._id === auth.user.location)[0];
 
   const headerObject = {
-    name: location
+    name: location.name[auth.user.settings.language],
+    right: { icon: <div />, action: () => { } }
   };
-
   return (
     <Page>
+      <Header {...headerObject} />;
       <Content header>
-        <Header {...headerObject} />;
-        <PostList muni posts={posts} />;
+        <PostList muni posts={news} />;
       </Content>
     </Page>
   );
@@ -35,7 +35,7 @@ const Municipality = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    posts: state.news,
+    news: state.news,
     language: state.language,
     locations: state.locations,
     auth: state.auth

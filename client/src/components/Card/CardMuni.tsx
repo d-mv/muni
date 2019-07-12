@@ -16,17 +16,17 @@ import Card from "../../layout/Card";
 import style from "./styles/PostCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
 
-const PostCard = (props: {
+const CardMuni = (props: {
   muni?: boolean;
-  post: postMuni;
+  post: data;
   language: indexedObjAny;
   showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction } = props.language;
-  const { _id, title, date, photo } = props.post;
+  const { _id, title, date, photo,createdAt } = props.post;
 
   const handleClick = () => {
-    props.showPost({ show: true, type: "muni", _id: _id });
+    props.showPost({ show: true, type: "news", _id: _id });
   };
   const ageText: { [index: string]: string } = text["post.age"];
 
@@ -39,11 +39,11 @@ const PostCard = (props: {
         className={
           direction === "rtl" ? style.informationRTL : style.information
         }>
-        <Title title={shortText(title, 50)} direction={direction} />
+        <Title news title={title} direction={direction} />
         <section
           id='age'
           className={direction === "rtl" ? style.dataRTL : style.data}>
-          <Age date={date} text={ageText} direction={direction} />
+          <Age date={createdAt} text={ageText} direction={direction} />
         </section>
       </section>
     </Card>
@@ -59,4 +59,4 @@ const mapStateToProps = (state: AppState) => {
 export default connect(
   mapStateToProps,
   {showPost}
-)(PostCard);
+)(CardMuni);
