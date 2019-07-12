@@ -9,25 +9,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongodb_1 = require("mongodb");
-const data = require("../../data/data.json");
+const send_mail_1 = require("../../modules/send_mail");
 const express = require("express");
 const router = new express.Router();
 const User = require("../../models/user");
 const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
+const data = require("../../data/data.json");
 const translation = data;
 router.post("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
     const user = new User(req.body);
     try {
         const token = yield user.newAuthToken();
         // send confirmation mail
+        const url = `http://localhost:8080/user/verify?id=${token}`;
+        // const send =  sendEmail(email, url, language);
+        const send = yield send_mail_1.default(user.email, url, user.settings.language);
         const messages = user.lang ? translation[user.lang] : translation["עב"];
         //.assign message
         const message = messages.user.verificationMessageSent;
         res.status(201).send({ message });
     }
     catch (e) {
-        res.status(400).send(e);
+        res.status(400).send(e.errmsg ? e.errmsg : e);
     }
 }));
 router.post("/login", (req, res) => __awaiter(this, void 0, void 0, function* () {

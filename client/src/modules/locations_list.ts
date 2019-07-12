@@ -1,5 +1,5 @@
-import { indexedObjAny } from "../store/types";
-import { LocationType } from "../models";
+import { indexedObjAny, data } from "../store/types";
+import { LocationType, LocationState } from "../models";
 
 /**
  * Function to process locations object to provide array of location names
@@ -9,19 +9,21 @@ import { LocationType } from "../models";
  * @returns {Object} - in the form of {location:id}
  */
 export const locationsList = (
-  locations: LocationType[],
+  locations: any,
   language: string = ""
 ): Array<any> => {
   // return empty array if empty params supplied
   if (locations.length === 0 || language === "") return [];
   // check if names contain language requested
-  const check = locations.filter(el => Object.keys(el.name).includes(language));
+  const check = locations.filter((el: any) =>
+    Object.keys(el.name).includes(language)
+  );
   // return empty array if not
   if (check.length !== locations.length) return [];
   // process the names as per language request
   const unsortedResult: indexedObjAny = {};
   const locationsList: Array<string> = [];
-  locations.map(el => {
+  locations.map((el: any) => {
     // add to unsorted list
     unsortedResult[el.name[language]] = el._id;
     // add to array of locations to be sorted

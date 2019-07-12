@@ -20,6 +20,12 @@ router.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
         const messages = result.lang ? translation[result.lang] : translation["עב"];
         //.assign message
         const message = messages.user[result.message];
+        // TODO: refactor
+        if (result.message
+            .toString()
+            .split(" ")
+            .includes("malformed"))
+            res.status(400).render("malformed", { message: result.message });
         res.status(201).render(result.message, { message });
     }
     catch (error) {

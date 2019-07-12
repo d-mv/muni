@@ -9,7 +9,8 @@ import {
   register,
   setModule,
   setMessage,
-  setLoading
+  setLoading,
+  typingData
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
@@ -19,15 +20,12 @@ import button from "../../components/style/Button.module.scss";
 import Label from "../../layout/Label";
 import locationsList from "../../modules/locations_list";
 import { LocationType, LocationState } from "../../models";
+import { data, indexedObjAny } from "../../store/types";
 
-/** Functional component to render Register page content
- * @param {object} props - Object, containing functions & state from Redux
- * @returns {JSX.Element} - Register content
- */
 const Register = (props: {
   locations: LocationState;
-  storedLocations?: TYPE.data;
-  language: TYPE.indexedObjAny;
+  // storedLocations?: TYPE.data;
+  language: indexedObjAny;
   message: string;
   loading: boolean;
   register: (arg0: TYPE.registerType) => void;
@@ -35,96 +33,82 @@ const Register = (props: {
   setMessage: (arg0: string) => void;
   typed: TYPE.indexedObj;
   setLoading: (arg0: boolean) => void;
+  typingData: (arg0: { [index: string]: any }) => void;
 }) => {
   // get the language
-  const { text, direction, short, locations } = props.language;
-
-  const [email, setEmail] = useState(props.typed ? props.typed.email : "");
-  const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
-  const [secondPass, setSecondPass] = useState("");
-  // if there are locations - use the first one
-  // const listOfLocations = locationsList(locations);
-  // const defaultLocation = locations.length > 0 ? locations[0].value : "";
-  const [location, setLocation] = useState(locations[0]._id);
-
-  const [fName, setFname] = useState(props.typed ? props.typed.fName : "");
-  const [lName, setLname] = useState(props.typed ? props.typed.lName : "");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { locations, language, message, loading, typed } = props;
+  const { text, direction, short } = language;
+  const { location, fName, lName, pass, secondPass, email } = typed;
 
   const [disabled, setDisabled] = useState(true);
-  useEffect(() => {
-    // console.log(disabled);
 
+  useEffect(() => {
+    props.typingData({ location: locations[0]._id });
+  }, []);
+
+  useEffect(() => {
     if (!fName && !lName && !location && !email && !pass && !secondPass) {
       setDisabled(true);
-    } else if (fName && lName && location && email && pass && secondPass) {
+    } else if (
+      fName &&
+      lName &&
+      location &&
+      email &&
+      pass &&
+      secondPass &&
+      pass === secondPass
+    ) {
       setDisabled(false);
     }
   }, [fName, lName, location, email, pass, secondPass]);
-
-  useEffect(() => {
-    if (props.message !== message) {
-      setMessage(props.message);
-    }
-    if (props.loading !== loading) {
-      setLoading(props.loading);
-    }
-  }, [props.message, props.loading]);
 
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // only if not loading
+    // only if not loading & not disabled
     if (!loading && !disabled) {
       if (pass !== secondPass) {
         setMessage(text["register.passwords.dont-match"]);
       } else {
-        props.setLoading(true);
+        // export interface UserType {
+        //   _id: ObjectID;
+        //   location: ObjectID;
+        //   fName: string;
+        //   lName: string;
+        //   email: string;
+        //   pass: string;
+        //   type: UserKind;
+        //   tokens: string[];
+        //   settings: UserSettings;
+        //   status: boolean;
+        //   createdAt: Date;
+        // }
+
+        // props.setLoading(true);
         props.register({
           email,
           pass,
           location,
           fName,
           lName,
-          lang: props.language.short
+          settings: {
+            language: props.language.short
+          }
         });
       }
     }
   };
 
   // handle fields input changes
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (event: any) => {
     if (message) {
-      // console.log("object");
-      setMessage("");
       props.setMessage("");
     }
-    const { value, name } = event.target;
-    switch (name) {
-      case "fName":
-        setFname(value);
-        break;
-      case "lName":
-        setLname(value);
-        break;
-      case "pass":
-        setPass(value);
-        break;
-      case "secondPass":
-        setSecondPass(value);
-        break;
-      default:
-        setEmail(value);
-        break;
-    }
-  };
-  // handle location choice
-  const handleSelectChange = (event: any) => {
-    setLocation(event.target.value);
+    const { value } = event.target;
+    let name = event.target.name;
+    if (!name) name = "location";
+    props.typingData({ [name]: value });
   };
 
   // set the form elements
@@ -140,7 +124,7 @@ const Register = (props: {
     label: text["login.label.email"],
     type: "email",
     name: "email",
-    value: email,
+    value: typed[email],
     placeholder: text["login.prompt.email"],
     action: handleInputChange
   });
@@ -149,7 +133,7 @@ const Register = (props: {
     label: text["login.label.password"],
     type: "password",
     name: "pass",
-    value: pass,
+    value: typed[pass],
     placeholder: text["login.prompt.password"],
     action: handleInputChange,
     length: 7
@@ -164,16 +148,17 @@ const Register = (props: {
 
   const locationsElement = formSelection({
     list: locationsList(locations, short),
+    value: typed[location],
     direction,
     label: text["login.label.location"],
-    action: handleSelectChange
+    action: handleInputChange
   });
 
   const fNameElement = formSection({
     label: text["login.label.fname"],
     type: "text",
     name: "fName",
-    value: fName,
+    value: typed[fName],
     placeholder: text["login.prompt.fname"],
     action: handleInputChange,
     length: 2,
@@ -183,14 +168,11 @@ const Register = (props: {
     label: text["login.label.lname"],
     type: "text",
     name: "lName",
-    value: lName,
+    value: typed[lName],
     placeholder: text["login.prompt.lname"],
     action: handleInputChange,
     length: 3
   });
-
-  // console.log(disabled);
-
   return (
     <form
       className={direction === "rtl" ? "formRight" : "formLeft"}
@@ -209,7 +191,7 @@ const Register = (props: {
         <input
           type='password'
           name='secondPass'
-          value={secondPass}
+          value={typed[secondPass]}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleInputChange(event)
           }
@@ -243,7 +225,6 @@ const Register = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     locations: state.locations,
-    registerResult: state.register,
     language: state.language,
     message: state.message,
     loading: state.loading,
@@ -253,5 +234,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { register, setModule, setMessage, setLoading }
+  { register, setModule, setMessage, setLoading, typingData }
 )(Register);

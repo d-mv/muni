@@ -56,11 +56,12 @@ export const formSection = (props: {
 export const formSelection = (props: {
   list: { value: string; label: string }[];
   direction: string;
+  value?: string;
   label: string;
   action: (arg0: React.FormEvent<Element>) => void;
   focus?: boolean;
 }) => {
-
+  console.log(props.list);
   return (
     <section
       className={styleFactory("section", props.direction)}
@@ -70,7 +71,10 @@ export const formSelection = (props: {
         <select autoFocus={props.focus}>
           {props.list.map((location: { value: string; label: string }) => {
             return (
-              <option key={Math.random()*100} value={location.value}>
+              <option
+                selected={props.value === location.value}
+                key={Math.random() * 100}
+                value={location.value}>
                 {location.label}
               </option>
             );

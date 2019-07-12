@@ -257,9 +257,9 @@ export const fetchData = (
       });
   };
 };
-export const typingData = (data: { [index: string]: string }) => {
-  return { type: "TYPING_DATA", payload: { ...data } };
-};
+// export const typingData = (data: { [index: string]: string }) => {
+//   return { type: "TYPING_DATA", payload: { ...data } };
+// };
 
 export const cachePost = (post: TYPE.post): Action => {
   return { type: "CACHE_POST", post };
