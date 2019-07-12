@@ -4,13 +4,15 @@ import { AppState } from "../store";
 import styleFactory from "../modules/style_factory";
 import Button from "./Button";
 import { iconHelp } from "../icons/";
-import React from "react";
+import React, { useEffect } from "react";
 import Title from "./Title";
 import { connect } from "react-redux";
 import styles from "./style/Header.module.scss";
 import Help from "../features/Help";
+import { showHelp } from "../store/users/actions";
 
 const Header = (props: {
+  help: boolean;
   language: indexedObj;
   name: string;
   right?: {
@@ -23,11 +25,12 @@ const Header = (props: {
     action: () => void;
     noRtl?: boolean;
   };
-  type: any;
+  user: any;
+  showHelp: (arg0: boolean) => void;
 }) => {
-  const [showHelp, setShowHelp] = React.useState(false);
+  // const [showHelp, setShowHelp] = React.useState(props.help);
   const { direction } = props.language;
-  const { name } = props;
+  const { name, user } = props;
 
   const makeIcon = (icon: any, noRtl?: boolean) => {
     const style = noRtl
@@ -36,8 +39,14 @@ const Header = (props: {
     return <div className={style}>{icon}</div>;
   };
 
+  useEffect(() => {
+    if (user.settings.help) {
+      props.showHelp(true)
+    }
+  }, []);
+
   const toggleHelp = () => {
-    setShowHelp(!showHelp);
+    props.showHelp(!props.help);
   };
 
   const handleLeftAction = () => {
@@ -49,7 +58,10 @@ const Header = (props: {
 
   const left = props.left
     ? makeIcon(props.left.icon, props.left.noRtl)
-    : makeIcon(iconHelp(props.type === "muni" ? "secondary" : "primary"), true);
+    : makeIcon(
+        iconHelp(props.user.type === "muni" ? "secondary" : "primary"),
+        true
+      );
 
   const right = props.right ? (
     makeIcon(props.right.icon, props.right.noRtl)
@@ -66,7 +78,7 @@ const Header = (props: {
       <Button mode='minimal' action={handleRightAction}>
         {right}
       </Button>
-      {showHelp ? <Help showHelp={toggleHelp} /> : null}
+      {props.help ? <Help /> : null}
     </header>
   );
 };
@@ -74,11 +86,12 @@ const Header = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    type: state.type
+    user: state.auth.user,
+    help: state.help
   };
 };
 
 export default connect(
   mapStateToProps,
-  {}
+  { showHelp }
 )(Header);

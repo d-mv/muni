@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "../store";
 
-import PinnedCard from "../features/Card/PinnedCard";
+import PinnedCard from "../components/Card/PinnedCard";
 
 import Header from "../components/Header";
 import PostList from "../components/PostList";
@@ -11,17 +11,19 @@ import PostList from "../components/PostList";
 import Page from "../layout/Page";
 import Content from "../layout/Content";
 import { data, post } from "../store/types";
+import { userInfo } from "os";
 
 const Home = (props: {
   posts: post[];
   pinned: any;
-  language: string;
-  location: data;
+  locations: data;
+  user: data;
 }) => {
-  const { posts, pinned } = props;
+  const { posts, pinned, locations, user } = props;
+  const location = locations.filter((el: any) => el._id === user.location)[0];
 
   const headerObject = {
-    name: props.location.name[props.language],
+    name: location.name[user.settings.language],
     right: { icon: <div />, action: () => {} }
   };
   // TODO: move to back
@@ -30,7 +32,7 @@ const Home = (props: {
       a.votes.length < b.votes.length ? 1 : -1
     );
   };
-
+console.log(pinned)
   return (
     <Page>
       <Header {...headerObject} />
@@ -44,10 +46,10 @@ const Home = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    location: state.locationData,
-    language: state.language.short,
+    locations: state.locations,
+    user: state.auth.user,
     posts: state.posts,
-    pinned: state.locationData.pinned
+    pinned: state.news.filter((el: any) => el.active && el.pinned)[0]
   };
 };
 

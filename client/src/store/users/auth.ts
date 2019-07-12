@@ -1,49 +1,45 @@
 import { LoginProps } from "./types";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { get } from "../services";
-import { indexedObjAny } from "../types";
+import { get, post } from "../services";
+import { indexedObjAny, registerType } from "../types";
 
 import fromJson from "../../data/translation.json";
+import { apiState } from "../defaults";
+import { AxiosResponse } from "axios";
 const data: indexedObjAny = fromJson;
 
-export const checkToken = (
-  token: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
+export const checkToken = (token: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> => {
-  get({ url: "/v2/check", headers: { token } })
+) => {
+  get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
     .then(response => {
-      const {
-        _id,
-        location,
-        type,
-        language,
-        token,
-        name,
-        pinned,
-        categories
-      } = response.data.payload;
-      dispatch({ type: "SET_AUTH", payload: { _id, location } });
+      const { _id, location, type, settings } = response.data.user;
       dispatch({
-        type: "USER_TYPE",
-        user: type
+        type: "SET_AUTH",
+        payload: { status: true, user: { _id, location, type, settings } }
       });
       dispatch({
         type: "SET_LANGUAGE",
-        data: data.language[language]
+        data: data.language[settings.language]
       });
       dispatch({ type: "SET", token });
       dispatch({
-        type: "SET_LOCATION_DATA",
-        data: { name, pinned, categories }
+        type: "SET_MESSAGE",
+        message: "Loading data..."
       });
       dispatch({
         type: "SET_LOADING",
         loading: false
       });
     })
-    .catch(e => {});
+    .catch((error: any) => {
+      dispatch({ type: "SET", token: "clear" });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    });
 };
 
 export const login = (login: LoginProps) => async (
@@ -53,63 +49,34 @@ export const login = (login: LoginProps) => async (
     type: "SET_MESSAGE",
     message: ""
   });
-  dispatch({
-    type: "LOGIN",
-    payload: {}
-  });
   dispatch({ type: "TYPING_DATA", payload: { ...login } });
-
-  get({ url: `/v2/user/login?password=${login.password}&email=${login.email}` })
+  post({ url: "/users/login", body: login })
     .then(response => {
-      const {
-        _id,
-        location,
-        type,
-        language,
-        token,
-        name,
-        pinned,
-        categories
-      } = response.data.payload;
-      dispatch({ type: "SET_AUTH", payload: { _id, location } });
+      const { token } = response.data;
+      const { _id, location, type, settings } = response.data.user;
       dispatch({
-        type: "USER_TYPE",
-        user: type
+        type: "SET_AUTH",
+        payload: { status: true, user: { _id, location, type, settings } }
       });
       dispatch({
         type: "SET_LANGUAGE",
-        data: data.language[language]
+        data: data.language[settings.language]
       });
       dispatch({ type: "SET", token });
       dispatch({
-        type: "SET_LOCATION_DATA",
-        data: { name, pinned, categories }
+        type: "SET_MESSAGE",
+        message: "Loading data..."
       });
-       dispatch({
-         type: "SET_MESSAGE",
-         message: "Loading data..."
-       });
       dispatch({
         type: "SET_LOADING",
         loading: false
       });
     })
     .catch((error: any) => {
-      console.log(error)
-      console.log(Object.keys(error))
-      // console.log(error.response)
-      const payload = {
-        status: false,
-        code: 401,
-        message: error.response.data.message
-      };
+      const { message } = error.response.data;
       dispatch({
         type: "SET_MESSAGE",
-        message: payload.message
-      });
-      dispatch({
-        type: "LOGIN",
-        payload
+        message: message.split("Error: ")[1]
       });
       dispatch({
         type: "SET_LOADING",
@@ -117,3 +84,89 @@ export const login = (login: LoginProps) => async (
       });
     });
 };
+
+export const register = (props: registerType) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+): Promise<void> => {
+  // clear state
+  dispatch({
+    type: "REGISTER",
+    payload: apiState
+  });
+  dispatch({
+    type: "SET_MESSAGE",
+    message: ""
+  });
+  dispatch({ type: "TYPING_DATA", payload: { ...props } });
+  // proceed with request
+  post({
+    url: `/user/create?email=${props.email}&location=${props.location}&pass=${props.pass}&fName=${props.fName}&lName=${props.lName}&lang=${props.lang}`
+  })
+    .then((response: AxiosResponse) => {
+      dispatch({ type: "SET_MODULE", module: "confirmation" });
+      dispatch({
+        type: "REGISTER",
+        payload: { ...response.data, code: response.status }
+      });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    })
+    .catch((error: any) => {
+      dispatch({
+        type: "SET_MESSAGE",
+        message: error.response.data.message || error.toString()
+      });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    });
+};
+
+export const logOff = () => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) =>
+  post({ url: "http://localhost:8080/api/users/logout" })
+    .then((response: any) => {
+      dispatch({ type: "SET", token: "clear" });
+      dispatch({
+        type: "TYPING_DATA",
+        payload: { email: "", pass: "", fName: "", lName: "", location: "" }
+      });
+      dispatch({
+        type: "LOGIN",
+        payload: { ...apiState }
+      });
+      dispatch({
+        type: "SET_POSTS",
+        posts: []
+      });
+      dispatch({
+        type: "SET_NEWS",
+        posts: []
+      });
+      dispatch({
+        type: "SET_MESSAGE",
+        message: ''
+      });
+      dispatch({
+        type: "SET_AUTH",
+        payload: {
+          status: false,
+          user: {
+            location: "",
+            settings: { language: "עב", help: false },
+            type: "user",
+            _id: ","
+          }
+        }
+      });    })
+    .catch((e: any) => {
+      console.log(e);
+    });
+
+// export const clearAuth = () => {
+//   type;
+// };

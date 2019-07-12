@@ -1,6 +1,7 @@
 import * as TYPE from "../types";
 
 import { data, indexedObjAny } from "../types";
+import { LocationType, LocationState } from "../../models";
 
 export interface loadDataAction {
   type: "LOAD_DATA";
@@ -20,13 +21,10 @@ export interface setStepAction {
   type: "SET_STEP";
   step: number;
 }
-export interface showHelpAction {
-  type: "SHOW_HELP";
-  show: boolean;
-}
+
 export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
-  payload: TYPE.apiResponse;
+  payload: LocationState;
 }
 
 export interface prevModuleAction {
@@ -45,4 +43,4 @@ export type Action =
   | setLanguageAction
   | setLocationDataAction
   | setStepAction
-  | showHelpAction;
+

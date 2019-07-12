@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import { AppState } from "../store";
-import { data, indexedObj } from "../store/types";
+import { data, indexedObj, indexedObjAny } from "../store/types";
 import { showPostPayload } from "../store/post/types";
 
 import {
@@ -12,7 +12,8 @@ import {
   checkToken,
   fetchData,
   getPosts,
-  getMuniPosts
+  getNews,
+  getCategories
 } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
 import { showPost } from "../store/post/actions";
@@ -35,17 +36,18 @@ import {
 } from "./components/Factory";
 
 import "../style/App.scss";
+import { AuthState } from "../models";
 
 const App = (props: {
   token: string;
   module: string;
-  post: boolean;
+  post: data;
   locations: data;
   cookies: any;
   posts: data;
   userMuni: boolean;
-  auth: indexedObj;
-
+  auth: AuthState;
+  getCategories: () => void;
   setModule: (previous: string, next: string) => void;
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
@@ -53,7 +55,7 @@ const App = (props: {
   fetchData: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
   getPosts: (arg0: string) => void;
-  getMuniPosts: (arg0: string) => void;
+  getNews: (arg0: string) => void;
 }) => {
   const { token, userMuni, cookies, auth, posts } = props;
 
@@ -61,12 +63,15 @@ const App = (props: {
   const [message, setMessage] = useState("");
 
   const fetchPostsNews = () => {
-    console.log("fetching petitions...");
+    logger({ text: "fetching", emph: "categories", type: "positive" });
+    setMessage("fetching categories...");
+    props.getCategories();
+    logger({ text: "fetching", emph: "petitions", type: "positive" });
     setMessage("fetching petitions...");
-    props.getPosts(auth.location);
-    console.log("fetching news...");
+    props.getPosts(auth.user.location);
+    logger({ text: "fetching", emph: "news", type: "positive" });
     setMessage("fetching news...");
-    props.getMuniPosts(auth.location);
+    props.getNews(auth.user.location);
   };
 
   const toggleModule = (module: string) => {
@@ -76,27 +81,28 @@ const App = (props: {
   useEffect(() => {
     logger({ text: "main process is", emph: "launched", type: "positive" });
 
-    if (auth._id && auth.location && token) {
+    if (token === "clear") {
+      logger({ text: "token is", emph: "clear", type: "attention" });
+      cookies.set("token", "");
+      toggleModule("welcome");
+    }
+
+    if (auth.user._id && auth.user.location && token) {
       logger({ text: "auth is", emph: "true", type: "positive" });
 
-      if (token === "clear") {
-        cookies.set("token", "");
-        props.setToken("");
-        toggleModule("welcome");
-      } else if (cookies.get("token") !== token) {
+      if (cookies.get("token") !== token) {
         logger({ text: "set token in", emph: "cookies" });
         setMessage("saving auth...");
         // set auth settings for axios
         cookies.set("token", token);
       }
-      axios.defaults.headers = { token };
+      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
       if (posts.length < 1) {
         logger({ text: "posts are", emph: "false", type: "attention" });
         setMessage("fetching data...");
         fetchPostsNews();
       }
-
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -105,18 +111,19 @@ const App = (props: {
         logger({ text: "cookie is", emph: "true", type: "positive" });
         setMessage("checking cookie...");
         props.checkToken(cookie);
-      } else if (!cookie && props.module==='welcome') {
+      } else if (!cookie && props.module === "welcome") {
         logger({ text: "cookie is", emph: "false", type: "attention" });
-        setMessage("fetching locations...");
-        props.fetchLocations();
+
         setLoading(false);
       }
+      setMessage("fetching locations...");
+      props.fetchLocations();
     }
-  }, [auth,token]);
+  }, [auth, token]);
 
   useEffect(() => {
     console.log("2. triggered module");
-    if (props.module != "post" && props.post) {
+    if (props.module != "post" && props.post.show) {
       console.log("- module is not post, clear it");
       props.showPost({ show: false });
     }
@@ -129,9 +136,10 @@ const App = (props: {
   useEffect(() => {
     console.log("6. triggered posts");
     if (
-      props.posts.length > 0 &&
+      // props.posts.length > 0 &&
       props.module !== "post" &&
       token !== "clear" &&
+      auth.user._id.length > 0 &&
       props.module !== "home"
     ) {
       console.log("- posts are there, show post");
@@ -142,7 +150,7 @@ const App = (props: {
 
   useEffect(() => {
     console.log("4. triggered post");
-    if (props.post) {
+    if (props.post.show) {
       console.log("- post is there, show post");
       toggleModule("post");
     }
@@ -185,7 +193,8 @@ const App = (props: {
       show = <Mine config={config} />;
       break;
     case "post":
-      show = <Post config={config} />;
+      console.log(props.post.type);
+      show = <Post news={props.post.type === "news"} config={config} />;
       break;
   }
 
@@ -199,7 +208,7 @@ const mapStateToProps = (state: AppState) => {
     token: state.token,
     module: state.module,
     locations: state.locations,
-    post: state.post.show,
+    post: state.post,
     posts: state.posts,
     userMuni: state.type === "muni",
     auth: state.auth
@@ -216,6 +225,7 @@ export default connect(
     fetchData,
     showPost,
     getPosts,
-    getMuniPosts
+    getNews,
+    getCategories
   }
 )(withCookies(App));

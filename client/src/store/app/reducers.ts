@@ -1,5 +1,6 @@
 import { Action } from "./types";
 import { data } from "../types";
+import { LocationState } from "../../models";
 
 /**
  * Reducer function to process the loadData action
@@ -47,29 +48,15 @@ export const setStep = (state = 1, action: Action): number => {
   return state;
 };
 
-/**
- * Reducer function to process the showHelp action
- *
- * @param state
- * @param action
- *
- * @returns {string}
- */
-export const showHelp = (state = false, action: Action): boolean => {
-  switch (action.type) {
-    case "SHOW_HELP":
-      return action.show;
-  }
-  return state;
-};
 
-export const fetchLocations = (state: [] = [], action: Action): [] => {
 
+export const fetchLocations = (
+  state: LocationState = {},
+  action: Action
+): LocationState => {
   switch (action.type) {
     case "FETCH_LOCATIONS":
-      const { payload } = action.payload;
-      const result: [] = payload ? payload : state;
-      return result;
+      return action.payload;
   }
   return state;
 };
@@ -79,12 +66,12 @@ export const prevModule = (state = "welcome", action: Action) => {
     case "PREV_MODULE":
       return action.module;
   }
-  return state
+  return state;
 };
 export const setModule = (state = "welcome", action: Action) => {
   switch (action.type) {
     case "SET_MODULE":
       return action.module;
   }
-  return state
+  return state;
 };

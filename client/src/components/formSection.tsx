@@ -70,7 +70,7 @@ export const formSelection = (props: {
         <select autoFocus={props.focus}>
           {props.list.map((location: { value: string; label: string }) => {
             return (
-              <option key={location.value} value={location.value}>
+              <option key={Math.random()*100} value={location.value}>
                 {location.label}
               </option>
             );

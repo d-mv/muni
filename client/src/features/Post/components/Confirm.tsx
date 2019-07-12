@@ -10,7 +10,8 @@ export const Confirm = (props: {
   close: () => void;
   action: (arg0: string) => void;
   direction: string;
-}) => {console.log(props.text);
+}) => {
+  // console.log(props.text);
   return (
   <Modal close={props.close}>
     <div className={styles.container}>

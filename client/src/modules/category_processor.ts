@@ -1,11 +1,16 @@
 import { indexedObj } from "../store/types";
 
 export const getCategories = (
-  catArray: Array<any>,
+  catArray: any,
   language: string
 ): Array<indexedObj> => {
   let categories: Array<indexedObj> = [];
-  catArray.map((cat: any) => categories.push({ value: cat._id, label: cat[language] }));
+  Object.keys(catArray).map((key: string | number) =>
+    categories.push({
+      value: catArray[key]._id,
+      label: catArray[key].name[language]
+    })
+  );
   return categories;
 };
 

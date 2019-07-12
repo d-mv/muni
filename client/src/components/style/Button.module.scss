@@ -29,7 +29,6 @@
   letter-spacing: .1rem;
 
   &:active {
-    // box-shadow: var(--boxShadowHover);
     transform: scale(0.95);
   }
 }
@@ -54,12 +53,31 @@
   }
 }
 
+.disabled {
+  @extend .button-template;
+  color: var(--colorGrey);
+  background-color: var(--colorWhite);
+  border: var(--borderDisabled) !important;
+
+  &:active {
+    transform: scale(1);
+  }
+}
+
+
 /// Primary button
 /// @group Buttons
 .primary {
   @extend .button-template;
   background-color: var(--colorPrimary);
   border: var(--borderPrimary);
+
+  // &:disabled,
+  // &[disabled] {
+  //   color: var(--colorGrey);
+  //   background-color: var(--colorWhite);
+  //   border: var(--borderDisabled);
+  // }
 }
 
 ///  Secondary button

@@ -13,7 +13,7 @@ const Button = (props: {
   actionMessage?: (arg0: string) => void;
 }) => {
   let undefined;
-  const buttonStyle = style[props.mode] || style.trans;
+  let buttonStyle = style[props.mode] || style.trans;
 
   const handleClick = () => {
     if (props.action) props.action();

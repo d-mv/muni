@@ -27,10 +27,12 @@ import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
 import Header from "../../components/Header";
 import { categoryIdToName } from "../../modules/category_processor";
+import { AuthState } from "../../models";
 
 const NewPost = (props: {
   language: data;
-  location: data;
+  // location: data;
+  auth: AuthState
   token: string;
   step: number;
   submitResult: data;
@@ -40,7 +42,7 @@ const NewPost = (props: {
   prevModule: string;
 }) => {
   const { direction, text } = props.language;
-  const { _id, location } = props.location;
+  const { _id, location } = props.auth.user;
   const [step, setStep] = React.useState(props.step);
   const [review, setReview] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -285,7 +287,7 @@ const NewPost = (props: {
     left: { icon: <div>back</div>, action: goHome }
   };
 
-  console.log(message);
+  // console.log(message);
   return (
     <Content padded>
       {/* <Header {...headerObject} /> */}
@@ -318,11 +320,12 @@ const NewPost = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    location: state.locationData,
+    // location: state.locationData,
     token: state.token,
     submitResult: state.submitPost,
     step: state.step,
-    prevModule: state.prevModule
+    prevModule: state.prevModule,
+    auth:state.auth
   };
 };
 

@@ -1,0 +1,25 @@
+{
+  "en": {
+    "user": {
+      "confirmed": "Your account has been confirmed. Please, proceed with login.",
+      "expired": "The link has expired. Please, request a new one from Login page.",
+      "malformed": "The link is malformed."
+    }
+  },
+  "עב": {
+    "user": {
+      "confirmed": "Your account has been confirmed. Please, proceed with login.",
+      "expired": "The link has expired. Please, request a new one from Login page.",
+      "malformed": "The link is malformed.",
+      "notVerified": "Your account has not been verified. A new link has been sent",
+      "verificationMessageSent": "A verification message has been sent to your email. Please, check your email and click on the button 'Verify' or the link below it. After successful confirmation you can proceed with login on your mobile. Thank you."
+    }
+  },
+  "ع": {
+    "user": {
+      "confirmed": "Your account has been confirmed. Please, proceed with login.",
+      "expired": "The link has expired. Please, request a new one from Login page.",
+      "malformed": "The link is malformed."
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { emptyPost } from "./../defaults";
 import { Action } from "./types";
 import { data, indexedObjAny, indexedObj } from "../types";
 import { apiState } from "../defaults";
+import { AUTH_EMPTY_STATE } from "../../models";
 
 export const setToken = (state = "", action: Action) => {
   switch (action.type) {
@@ -34,12 +35,12 @@ export const changeMode = (state = "login", action: Action) => {
   return state;
 };
 
-export const login = (state = apiState, action: Action) => {
+export const getCategories = (state = {}, action: Action) => {
   switch (action.type) {
-    case "LOGIN":
-      return { ...state, ...action.payload };
+    case "SET_CATEGORIES":
+      return {...state,...action.payload};
   }
-  return { ...state };
+  return state;
 };
 
 export const setMessage = (state = "", action: Action) => {
@@ -66,7 +67,7 @@ export const setModule = (state = "", action: Action): string => {
   return state;
 };
 
-export const setAuth = (state = {}, action: Action): indexedObj => {
+export const setAuth = (state = AUTH_EMPTY_STATE, action: Action) => {
   switch (action.type) {
     case "SET_AUTH":
       return { ...state, ...action.payload };
@@ -131,14 +132,14 @@ export const fetchData = (state = apiState, action: Action) => {
 export const setPosts = (state = [], action: Action) => {
   switch (action.type) {
     case "SET_POSTS":
-      return action.posts;
+      return action.posts === [] ? state : action.posts;
   }
   return state;
 };
 export const setMuniPosts = (state = [], action: Action) => {
   switch (action.type) {
-    case "SET_MUNIPOSTS":
-      return action.posts;
+    case "SET_NEWS":
+      return action.posts === [] ? state : action.posts;
   }
   return state;
 };
@@ -162,6 +163,14 @@ export const userType = (state = {}, action: Action) => {
   switch (action.type) {
     case "USER_TYPE":
       return action.user;
+  }
+  return state;
+};
+
+export const showHelp = (state = false, action: Action): boolean => {
+  switch (action.type) {
+    case "SHOW_HELP":
+      return action.show;
   }
   return state;
 };

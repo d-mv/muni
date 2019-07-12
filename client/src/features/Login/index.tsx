@@ -63,7 +63,7 @@ const Login = (props: {
     props.setLoading(true);
     const login: LoginProps = {
       email,
-      password: pass
+      pass
     };
     if (props.desktop) {
       // TODO: refactor

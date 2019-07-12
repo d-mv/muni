@@ -1,9 +1,10 @@
 import * as TYPE from "../types";
 import { data, indexedObjAny } from "../types";
+import { CategoryType } from "../../models";
 
 export interface LoginProps {
   email: string;
-  password: string;
+  pass: string;
 }
 
 export interface checkTokenAction {
@@ -87,7 +88,7 @@ export interface setPostsAction {
   posts: any;
 }
 export interface setMuniPostsAction {
-  type: "SET_MUNIPOSTS";
+  type: "SET_NEWS";
   posts: any;
 }
 
@@ -108,7 +109,18 @@ export interface cachePost {
   post: TYPE.post;
 }
 
+export interface getCategoriesAction {
+  type: "SET_CATEGORIES";
+  payload: CategoryType;
+}
+
+export interface showHelpAction {
+  type: "SHOW_HELP";
+  show: boolean;
+}
+
 export type Action =
+  | getCategoriesAction
   | setMuniPostsAction
   | userTypeAction
   | cachePost
@@ -129,4 +141,5 @@ export type Action =
   | setLocationDataAction
   | setAuthAction
   | setMessageAction
+  | showHelpAction
   | changeModeAction;

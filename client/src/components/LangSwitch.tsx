@@ -7,15 +7,15 @@ import { data, indexedObjAny } from "../store/types";
 const LangSwitch = (props: {
   language: indexedObjAny;
   data: indexedObjAny;
-  user: string;
+  user: data;
   setLanguage: (arg0: string, arg1: string) => void;
-  white?:boolean
+  white?: boolean;
 }) => {
   return (
     <select
-      className={props.white?'langSwitchWhite':'langSwitch'}
+      className={props.white ? "langSwitchWhite" : "langSwitch"}
       value={props.language.short}
-      onChange={e => props.setLanguage(e.target.value, props.user)}>
+      onChange={e => props.setLanguage('user', e.target.value)}>
       {Object.keys(props.data.language).map((lang: string) => (
         <option key={lang}>{lang}</option>
       ))}
@@ -27,7 +27,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
     data: state.data,
-    user: state.locationData._id
+    user: state.auth
   };
 };
 

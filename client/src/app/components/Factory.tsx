@@ -4,6 +4,7 @@ import Loading from "../../pages/Loading";
 import WelcomePage from "../../pages/Welcome";
 import LoginPage from "../../pages/Enter";
 import RegisterPage from "../../pages/Enter";
+import ConfirmationPage from "../../pages/Confirmation";
 import MunicipalityPage from "../../pages/Municipality";
 import NewPage from "../../pages/New";
 import PostPage from "../../pages/Post";
@@ -55,7 +56,7 @@ export const Confirmation = (props: {
   config: { action: () => void; user: boolean };
 }) =>
   componentFactory({
-    children: React.lazy(() => import("../../pages/Confirmation")),
+    children: <ConfirmationPage />,
     nav: true,
     lazy: true,
     config: props.config
@@ -100,7 +101,8 @@ export const Municipality = (props: {
   });
 
 export const New = (props: {
-  config: { action: () => void; user: boolean },muni:boolean;
+  config: { action: () => void; user: boolean };
+  muni: boolean;
 }) =>
   componentFactory({
     children: props.muni ? <NewPage muni /> : <NewPage />,
@@ -109,39 +111,43 @@ export const New = (props: {
     config: props.config
   });
 export const Profile = (props: {
-  config: { action: () => void; user: boolean }
+  config: { action: () => void; user: boolean };
 }) =>
   componentFactory({
     children: <ProfilePage />,
     nav: true,
-    lazy: true,new: true,
+    lazy: true,
+    new: true,
     config: props.config
   });
 export const Home = (props: {
-  config: { action: () => void; user: boolean }
+  config: { action: () => void; user: boolean };
 }) =>
   componentFactory({
     children: <HomePage />,
     nav: true,
-    lazy: true,new: true,
+    lazy: true,
+    new: true,
     config: props.config
   });
 export const Mine = (props: {
-  config: { action: () => void; user: boolean }
+  config: { action: () => void; user: boolean };
 }) =>
   componentFactory({
     children: <MinePage />,
     nav: true,
-    lazy: true,new: true,
+    lazy: true,
+    new: true,
     config: props.config
   });
 export const Post = (props: {
-  config: { action: () => void; user: boolean }
+  config: { action: () => void; user: boolean };
+  news?: boolean;
 }) =>
   componentFactory({
-    children: <PostPage />,
+    children: <PostPage news={props.news} />,
     nav: true,
     lazy: true,
-    new:true,
+    new: true,
     config: props.config
   });

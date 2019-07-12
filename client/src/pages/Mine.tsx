@@ -10,21 +10,24 @@ import PostList from "../components/PostList";
 import Page from "../layout/Page";
 import SubTitle from "../layout/SubTitle";
 import Content from "../layout/Content";
+import { AuthState } from "../models";
 
 const Mine = (props: {
   language: data;
-  _id: string;
+  auth: AuthState;
   allPosts: post[];
-  location: data;
+  locations: data;
 }) => {
   const { direction, text } = props.language;
-  const { allPosts, _id } = props;
+  const { allPosts, auth, locations } = props;
+  const {user} = auth
+  const location = locations.filter((el: any) => el._id === user.location)[0];
 
-  const posts = allPosts.filter((post: post) => post.createdBy === _id);
+  const posts = allPosts.filter((post: post) => post.createdBy === user._id);
   const headerObject = {
-    name: props.location.name[props.language.short]
+    name: location
   };
-console.log(posts)
+// console.log(posts)
   return (
     <Page data-testid='page__mine'>
       <Header {...headerObject} />
@@ -39,8 +42,8 @@ console.log(posts)
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    location: state.locationData,
-    _id: state.locationData._id,
+    locations: state.locations,
+   auth:state.auth,
     allPosts: state.posts
   };
 };
