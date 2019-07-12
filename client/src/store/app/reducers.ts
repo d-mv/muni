@@ -48,21 +48,7 @@ export const setStep = (state = 1, action: Action): number => {
   return state;
 };
 
-/**
- * Reducer function to process the showHelp action
- *
- * @param state
- * @param action
- *
- * @returns {string}
- */
-export const showHelp = (state = false, action: Action): boolean => {
-  switch (action.type) {
-    case "SHOW_HELP":
-      return action.show;
-  }
-  return state;
-};
+
 
 export const fetchLocations = (
   state: LocationState = {},

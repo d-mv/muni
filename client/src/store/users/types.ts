@@ -114,6 +114,11 @@ export interface getCategoriesAction {
   payload: CategoryType;
 }
 
+export interface showHelpAction {
+  type: "SHOW_HELP";
+  show: boolean;
+}
+
 export type Action =
   | getCategoriesAction
   | setMuniPostsAction
@@ -136,4 +141,5 @@ export type Action =
   | setLocationDataAction
   | setAuthAction
   | setMessageAction
+  | showHelpAction
   | changeModeAction;

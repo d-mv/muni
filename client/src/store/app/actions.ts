@@ -19,12 +19,6 @@ export const loadData = (): Action => {
   return { type: "LOAD_DATA", data };
 };
 
-/**
- * Action function to set preferred language
- * @function setLanguage
- * @param {string} lang - Language to choose
- * @returns {object}
- */
 export const setLanguage = (lang: string): Action => {
   return { type: "SET_LANGUAGE", data: importedData.language[lang] };
 };
@@ -49,9 +43,7 @@ export const setStep = (step: number): Action => {
  * @param {number} step - Step number
  * @returns {object}
  */
-export const showHelp = (show: boolean): Action => {
-  return { type: "SHOW_HELP", show };
-};
+
 
 
 

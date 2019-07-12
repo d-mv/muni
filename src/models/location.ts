@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
-
+// const mongoose = ;
+import * as mongoose from "mongoose";
 const User = require("./user");
 const News = require("./news");
 export interface LocationNameType {
   [index: string]: string;
 }
+
 export interface LocationType {
   _id: mongoose.Schema.Types.ObjectId;
   name: LocationNameType;
@@ -23,7 +24,7 @@ const LocationSchema = new mongoose.Schema({
   }
 });
 
-LocationSchema.pre("remove", async function(next) {
+LocationSchema.pre("remove", async function(next: any) {
   const location = this;
   await User.deleteMany({ location: location._id });
   await News.deleteMany({ location: location._id });

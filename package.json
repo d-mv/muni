@@ -7,9 +7,9 @@
   "private": true,
   "repository": "",
   "scripts": {
-    "start": "node ./dist/src/start.js",
     "dev": "set NODE_ENV=development && npm run build:live",
-    "build": "tsc ./src/*.ts --outDir ./dist",
+    "start": "node dist/start.js",
+    "build": "rm -rf dist && tsc -p . --outDir ./dist && cp -rf ./src/data ./dist",
     "build:live": "nodemon --watch '**/**/*.ts' --exec 'ts-node' src/start.ts",
     "full": "npm start & npm run client",
     "full:dev": "npm run dev & npm run client",
@@ -31,8 +31,8 @@
     "@types/jest": "^24.0.15",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/mongodb": "^3.1.28",
-    "@types/mongoose": "^5.5.7",
-    "@types/node": "^12.0.12",
+    "@types/mongoose": "^5.5.8",
+    "@types/node": "^12.6.2",
     "@types/nodemailer": "^6.2.0",
     "@types/validator": "^10.11.1",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
@@ -52,13 +52,13 @@
     "ts-node": "^8.3.0",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
     "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-env": "^7.5.4",
     "axios": "^0.18.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -67,15 +67,16 @@
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
+    "ejs": "^2.6.2",
     "express": "^4.17.1",
     "filereader": "^0.10.3",
     "heroku-ssl-redirect": "0.0.4",
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.6.3",
+    "mongoose": "^5.6.4",
     "nodemailer": "^6.2.1",
-    "validator": "^11.0.0"
+    "validator": "^11.1.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [

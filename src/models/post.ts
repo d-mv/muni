@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+// const mongoose = require("mongoose");
+import * as mongoose from "mongoose";
+
 import { ObjectID } from "bson";
 
 export interface ReplyType {
@@ -41,7 +43,7 @@ const PostSchema = new mongoose.Schema({
   problem: { type: String, required: true, trim: true, minLength: 20 },
   solution: { type: String, required: true, trim: true, minLength: 20 },
   photo: { type: String, trim: true },
-  link: { type: String,  trim: true, minLength: 20 },
+  link: { type: String, trim: true, minLength: 20 },
   newsId: { type: mongoose.Schema.Types.ObjectId },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -78,7 +80,6 @@ const PostSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
 
 PostSchema.virtual("users", {
   ref: "User",

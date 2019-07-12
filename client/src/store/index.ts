@@ -5,7 +5,6 @@ import { logger } from "redux-logger";
 
 import {
   setStep,
-  showHelp,
   fetchLocations,
   prevModule,
   setModule
@@ -19,7 +18,8 @@ import {
   register,
   setLoading,
   setAuth,
-  setLocationData,
+  // setLocationData,
+  showHelp,
   setMessage,
   changeMode,
   loadData,

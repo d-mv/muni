@@ -34,7 +34,7 @@ export const checkToken = (token: string) => async (
       });
     })
     .catch((error: any) => {
-      dispatch({ type: "SET", token:'clear' });
+      dispatch({ type: "SET", token: "clear" });
       dispatch({
         type: "SET_LOADING",
         loading: false
@@ -124,3 +124,49 @@ export const register = (props: registerType) => async (
       });
     });
 };
+
+export const logOff = () => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) =>
+  post({ url: "http://localhost:8080/api/users/logout" })
+    .then((response: any) => {
+      dispatch({ type: "SET", token: "clear" });
+      dispatch({
+        type: "TYPING_DATA",
+        payload: { email: "", pass: "", fName: "", lName: "", location: "" }
+      });
+      dispatch({
+        type: "LOGIN",
+        payload: { ...apiState }
+      });
+      dispatch({
+        type: "SET_POSTS",
+        posts: []
+      });
+      dispatch({
+        type: "SET_NEWS",
+        posts: []
+      });
+      dispatch({
+        type: "SET_MESSAGE",
+        message: ''
+      });
+      dispatch({
+        type: "SET_AUTH",
+        payload: {
+          status: false,
+          user: {
+            location: "",
+            settings: { language: "עב", help: false },
+            type: "user",
+            _id: ","
+          }
+        }
+      });    })
+    .catch((e: any) => {
+      console.log(e);
+    });
+
+// export const clearAuth = () => {
+//   type;
+// };

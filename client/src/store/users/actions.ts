@@ -11,6 +11,7 @@ import data from "../../data/translation.json";
 export * from "./posts";
 export * from "./auth";
 export * from './categories'
+export * from './settings'
 
 const importedData: TYPE.indexedObjAny = data;
 
@@ -102,42 +103,7 @@ export const setModule = (
   };
 };
 
-/**
- * Action function to login with API
- * @function login
- * @param {string} email - Email
- * @param {string} pass - Password
- * @return {Promise} - Returns promise resolved with the help of Thunk
- */
 
-export const logOff = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch({ type: "SET_AUTH", status: false });
-    // dispatch({ type: "SET_MODULE", module: "welcome" });
-    dispatch({ type: "SET", token: "clear" });
-    dispatch({
-      type: "TYPING_DATA",
-      payload: { email: "", pass: "", fName: "", lName: "", location: "" }
-    });
-    dispatch({
-      type: "SET_MESSAGE",
-      message: ""
-    });
-    dispatch({
-      type: "LOGIN",
-      payload: { ...apiState }
-    });
-    dispatch({
-      type: "SET_POSTS",
-      posts: []
-    });
-    dispatch({
-      type: "SET_NEWS",
-      posts: []
-    });
-    dispatch({ type: "SET_AUTH", payload: { location: "", _id: "" } });
-  };
-};
 
 // export const register = (
 //   props: TYPE.register
@@ -233,33 +199,6 @@ export const setLocationData = (data: TYPE.data): Action => {
 
 export const setPosts = (posts: any): Action => {
   return { type: "SET_POSTS", posts };
-};
-
-export const setLanguage = (
-  lang: string,
-  user: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    // clear state
-    dispatch({
-      type: "SET_LANGUAGE",
-      data: importedData.language[lang]
-    });
-    if (user) {
-      // proceed with request
-      const url = `/user/${user}/update?language=${lang}`;
-      axios({
-        method: "post",
-        url
-      })
-        .then(response => {})
-        .catch(error => {
-          const payload = error.response
-            ? error.response.data
-            : error.toString();
-        });
-    }
-  };
 };
 
 export const vote = (

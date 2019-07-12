@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../../store";
-import { showHelp } from "../../store/app/actions";
+import { showHelp } from "../../store/users/actions";
 import styleFactory from "../../modules/style_factory";
 
 import { data } from "../../store/types";
@@ -10,23 +10,28 @@ import Home from "./components/Home";
 
 const Help = (props: {
   language: data;
-  // help: boolean;
   module: string;
-  showHelp: () => void;
+  help: boolean;
+  showHelp: (arg0: boolean) => void;
 }) => {
   const { direction } = props.language;
   const contentStyle = styleFactory("help-content", direction);
+
+  const handleShowHelp = () => {
+    props.showHelp(!props.help);
+  };
 
   let content = <div className={contentStyle} />;
   switch (props.module) {
     case "post":
       break;
     case "home":
-      content = <Home cancel={props.showHelp} />;
+      content = <Home cancel={handleShowHelp} />;
       break;
   }
+
   const component = (
-    <div onClick={() => props.showHelp()} className='help'>
+    <div onClick={() => handleShowHelp()} className='help'>
       {content}
     </div>
   );
@@ -36,14 +41,14 @@ const Help = (props: {
 const mapStateToProps = (state: AppState) => {
   return {
     module: state.module,
-    language: state.language
-    // help: state.help
+    language: state.language,
+    help: state.help
   };
 };
 
 export default connect(
   mapStateToProps,
   {
-    // showHelp
+    showHelp
   }
 )(Help);

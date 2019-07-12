@@ -82,8 +82,8 @@ const App = (props: {
     logger({ text: "main process is", emph: "launched", type: "positive" });
 
     if (token === "clear") {
+      logger({ text: "token is", emph: "clear", type: "attention" });
       cookies.set("token", "");
-      props.setToken("");
       toggleModule("welcome");
     }
 
@@ -115,8 +115,9 @@ const App = (props: {
         logger({ text: "cookie is", emph: "false", type: "attention" });
 
         setLoading(false);
-      }        setMessage("fetching locations...");
-               props.fetchLocations();
+      }
+      setMessage("fetching locations...");
+      props.fetchLocations();
     }
   }, [auth, token]);
 
@@ -192,8 +193,8 @@ const App = (props: {
       show = <Mine config={config} />;
       break;
     case "post":
-      console.log(props.post.type)
-      show = <Post news={props.post.type==='news'} config={config} />;
+      console.log(props.post.type);
+      show = <Post news={props.post.type === "news"} config={config} />;
       break;
   }
 

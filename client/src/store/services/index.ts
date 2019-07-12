@@ -21,3 +21,14 @@ export const post = (props: {
     headers: props.headers ? props.headers : null,
     data: props.body ? props.body : null
   });
+export const patch = (props: {
+  url: string;
+  headers?: indexedObj;
+  body?: indexedObjAny;
+}) =>
+  axios({
+    method: "patch",
+    url: props.url,
+    headers: props.headers ? props.headers : null,
+    data: props.body ? props.body : null
+  });

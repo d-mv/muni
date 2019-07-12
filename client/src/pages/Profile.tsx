@@ -2,8 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import { showHelp } from "../store/app/actions";
-import { logOff } from "../store/users/actions";
+import { logOff, showHelp } from "../store/users/actions";
 
 import Header from "../components/Header";
 import LangSwitch from "../components/LangSwitch";
@@ -16,11 +15,21 @@ import Line from "../layout/Line";
 import Content from "../layout/Content";
 
 import style from "./style/Profile.module.scss";
+import { data } from "../store/types";
 
-const Profile = (props: any) => {
-  const { text, direction } = props.language;
+const Profile = (props: {
+  locations: data;
+  user: data;
+  language: data;
+  logOff: () => void;
+  showHelp: (arg0: boolean) => void;
+}) => {
+  const { locations, user, language } = props;
+  const { text, direction } = language;
+  const location = locations.filter((el: any) => el._id === user.location)[0];
+
   const headerObject = {
-    name: props.location.name[props.language.short]
+    name: location.name[user.settings.language]
   };
 
   return (
@@ -34,15 +43,15 @@ const Profile = (props: any) => {
           <Paragraph direction={direction}>
             <Line direction={direction}>
               <LangSwitch />
-              <span className={style.language}>{props.language.name}</span>
+              <span className={style.language}>{language.name}</span>
             </Line>
           </Paragraph>
         </Section>
         <Section>
           <Paragraph direction={direction}>
-            <Line direction={direction}>{props.type}</Line>
-            <Line direction={direction}>{props.auth._id}</Line>
-            <Line direction={direction}>{props.auth.location}</Line>
+            <Line direction={direction}>{user.type}</Line>
+            <Line direction={direction}>{user._id}</Line>
+            <Line direction={direction}>{user.location}</Line>
           </Paragraph>
         </Section>
         <Section>
@@ -64,8 +73,8 @@ const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
     locations: state.locations,
-    help: state.help,
-    auth: state.auth
+    user: state.auth.user,
+    help: state.help
   };
 };
 

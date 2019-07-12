@@ -9,12 +9,13 @@ const compression = require("compression");
 require("./db/mongoose");
 
 // routes
-import userRouter from "./routes/api/user"
-import  locationRouter from "./routes/api/location"
-import  postRouter from "./routes/api/post"
-import  newsRouter from "./routes/api/news"
-import  catRouter from "./routes/api/category"
-import  router from './routes/api'
+import userRouter from "./routes/api/user";
+import locationRouter from "./routes/api/location";
+import postRouter from "./routes/api/post";
+import newsRouter from "./routes/api/news";
+import catRouter from "./routes/api/category";
+import verifyRouter from "./routes/api/verify";
+import router from "./routes/api";
 
 const dotEnv = dotenv.config();
 const app = express();
@@ -31,13 +32,15 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
+app.set("view engine", "ejs");
 
 app.use("/api/users", userRouter);
 app.use("/api/locations", locationRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/categories", catRouter);
-app.use('/api',router)
+app.use("/api", router);
+app.use("/user/verify", verifyRouter);
 
 // * React
 //Static file declaration

@@ -1,50 +1,19 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
+    "target": "es6",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "out",
     "sourceMap": true,
-    "strict": true,
-    "baseUrl": "./",
-    "outDir": "./dist",
-    "removeComments": true,
     "experimentalDecorators": true,
-    "target": "es5",
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "noEmit": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2015",
-      "esnext"
-    ],
-    "jsx": "preserve",
-    "types": [
-      "jest",
-      "node"
-    ]
+    "strict": false
   },
-  "include": [
-    "./src/*.ts",
-    "./routes/*.ts",
-    "./models/*.ts",
-    "./modules/*.ts",
-    "./modules/*.json",
-    "./controllers/*.ts"
-  ],
   "exclude": [
-    "./src/public/",
+    "src/tests",
     "node_modules",
-    "jest.config.js",
+    "out",
     "client"
-  ]
+  ],
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true
 }

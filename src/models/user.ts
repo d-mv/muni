@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+// const mongoose = require("mongoose");
+import * as mongoose from "mongoose";
+
+import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { ObjectID } from "bson";
 
@@ -123,7 +125,7 @@ UserSchema.methods.toJSON = function() {
 };
 
 //hash the plain text password before saving
-UserSchema.pre("save", async function(next) {
+UserSchema.pre("save", async function(next:any) {
   const user: any = this;
   if (user.isModified("pass")) {
     user.pass = await bcrypt.hash(user.pass, 8);
@@ -131,7 +133,7 @@ UserSchema.pre("save", async function(next) {
   next();
 });
 
-UserSchema.pre("remove", async function(next) {
+UserSchema.pre("remove", async function(next:any) {
   const user = this;
   await Post.deleteMany({ createdBy: user._id });
   next();

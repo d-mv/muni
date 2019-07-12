@@ -1,5 +1,7 @@
-import mongoose from "mongoose";
 import * as dotenv from "dotenv";
+// import * as mongoose from "mongoose";
+
+const mongoose = require("mongoose");
 
 const dotEnv = dotenv.config();
 const dbUrl: any = process.env.MONGO_LINK;

@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
 const User = require("../models/user");
 
@@ -31,4 +31,24 @@ const auth = async (req: any, res: any, next: any) => {
   }
 };
 
-module.exports = auth;
+// const authDirect = async (token: string) => {
+//   console.log(token)
+//   try {
+//     const decoded: any = jwt.verify(token, secret);
+//     console.log(decoded)
+//     const user = await User.findOne({
+//       _id: decoded._id,
+//       "tokens.token": token
+//     });
+
+//     if (!user) {
+//       throw new Error();
+//     }
+
+//     return { status: true, _id: decoded._id };
+//   } catch (error) {
+//     return { status: false };
+//   }
+// };
+
+module.exports = auth

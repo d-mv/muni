@@ -9,13 +9,13 @@ const LangSwitch = (props: {
   data: indexedObjAny;
   user: data;
   setLanguage: (arg0: string, arg1: string) => void;
-  white?:boolean
+  white?: boolean;
 }) => {
   return (
     <select
-      className={props.white?'langSwitchWhite':'langSwitch'}
+      className={props.white ? "langSwitchWhite" : "langSwitch"}
       value={props.language.short}
-      onChange={e => props.setLanguage(e.target.value, props.user._id)}>
+      onChange={e => props.setLanguage('user', e.target.value)}>
       {Object.keys(props.data.language).map((lang: string) => (
         <option key={lang}>{lang}</option>
       ))}

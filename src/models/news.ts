@@ -1,8 +1,10 @@
-import mongoose from "mongoose";
+// const mongoose = require("mongoose");
+import * as mongoose from "mongoose";
+
 import { ObjectID } from "bson";
 
 export interface NewsType {
-  _id:string
+  _id: string;
   location: string;
   title: string;
   text: string;

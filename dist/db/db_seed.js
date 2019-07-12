@@ -7,43 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var _this = this;
-exports.__esModule = true;
-var faker = require("faker");
-var images_1 = require("./images");
-var Location = require("../models/location");
-var User = require("../models/user");
-var Post = require("../models/post");
-var Category = require("./../models/category");
-var News = require("./../models/news");
-var locationArray = [
+Object.defineProperty(exports, "__esModule", { value: true });
+const faker = require("faker");
+const images_1 = require("./images");
+const Location = require("../models/location");
+const User = require("../models/user");
+const Post = require("../models/post");
+const Category = require("./../models/category");
+const News = require("./../models/news");
+const locationArray = [
     {
         name: {
             עב: "חיפה",
@@ -66,7 +38,7 @@ var locationArray = [
         }
     }
 ];
-var categoryArray = [
+const categoryArray = [
     {
         name: { en: "Infrastructure", עב: "תשתיות", ع: "بنية تحتية" },
         description: {
@@ -106,237 +78,131 @@ var categoryArray = [
         }
     }
 ];
-var randomNumber = function (max) {
-    return faker.random.number({
-        min: 0,
-        max: max
-    });
-};
-var getImage = function () { return images_1["default"][randomNumber(images_1["default"].length - 1)]; };
-var categories = function () { return __awaiter(_this, void 0, void 0, function () {
-    var _this = this;
-    return __generator(this, function (_a) {
-        try {
-            categoryArray.forEach(function (el) { return __awaiter(_this, void 0, void 0, function () {
-                var category;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            category = new Category(el);
-                            return [4 /*yield*/, category.save()];
-                        case 1:
-                            _a.sent();
-                            return [2 /*return*/];
-                    }
+const randomNumber = (max) => faker.random.number({
+    min: 0,
+    max
+});
+const getImage = () => images_1.default[randomNumber(images_1.default.length - 1)];
+const categories = () => __awaiter(this, void 0, void 0, function* () {
+    try {
+        categoryArray.forEach((el) => __awaiter(this, void 0, void 0, function* () {
+            const category = new Category(el);
+            yield category.save();
+        }));
+        return "Categories creation - done";
+    }
+    catch (error) {
+        return "Categories creation - error";
+    }
+});
+const locations = () => __awaiter(this, void 0, void 0, function* () {
+    try {
+        locationArray.forEach((el) => __awaiter(this, void 0, void 0, function* () {
+            const location = new Location(el);
+            yield location.save();
+        }));
+        return "Locations creation - done";
+    }
+    catch (error) {
+        return "Locations creation - error";
+    }
+});
+const users = () => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const listOfLocations = yield Location.find({});
+        listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < randomNumber(3); i++) {
+                const user = new User({
+                    pass: "1234567",
+                    fName: faker.name.firstName(),
+                    lName: faker.name.lastName(),
+                    email: faker.internet.email(),
+                    location: loc._id,
+                    status: true
                 });
-            }); });
-            return [2 /*return*/, "Categories creation - done"];
-        }
-        catch (error) {
-            return [2 /*return*/, "Categories creation - error"];
-        }
-        return [2 /*return*/];
-    });
-}); };
-var locations = function () { return __awaiter(_this, void 0, void 0, function () {
-    var _this = this;
-    return __generator(this, function (_a) {
-        try {
-            locationArray.forEach(function (el) { return __awaiter(_this, void 0, void 0, function () {
-                var location;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            location = new Location(el);
-                            return [4 /*yield*/, location.save()];
-                        case 1:
-                            _a.sent();
-                            return [2 /*return*/];
-                    }
+                yield user.save();
+            }
+        }));
+        return "Users creation - done";
+    }
+    catch (error) {
+        return "Users creation - error";
+    }
+});
+const posts = () => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const listOfLocations = yield Location.find({});
+        const listOfUsers = yield User.find({});
+        const louLength = listOfUsers.length - 1;
+        const listOfCategories = yield Category.find({});
+        listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < randomNumber(10); i++) {
+                const usr = listOfUsers[randomNumber(louLength)];
+                const post = new Post({
+                    title: faker.lorem.sentence(),
+                    problem: faker.lorem.paragraphs(5),
+                    solution: faker.lorem.paragraphs(2),
+                    photo: getImage(),
+                    link: faker.internet.url(),
+                    location: loc._id,
+                    category: listOfCategories[randomNumber(listOfCategories.length - 1)],
+                    createdBy: usr._id,
+                    votes: [
+                        listOfUsers[randomNumber(louLength)],
+                        listOfUsers[randomNumber(louLength)],
+                        listOfUsers[randomNumber(louLength)]
+                    ]
                 });
-            }); });
-            return [2 /*return*/, "Locations creation - done"];
-        }
-        catch (error) {
-            return [2 /*return*/, "Locations creation - error"];
-        }
-        return [2 /*return*/];
-    });
-}); };
-var users = function () { return __awaiter(_this, void 0, void 0, function () {
-    var listOfLocations, error_1;
-    var _this = this;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Location.find({})];
-            case 1:
-                listOfLocations = _a.sent();
-                listOfLocations.forEach(function (loc) { return __awaiter(_this, void 0, void 0, function () {
-                    var i, user;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                i = 0;
-                                _a.label = 1;
-                            case 1:
-                                if (!(i < randomNumber(3))) return [3 /*break*/, 4];
-                                user = new User({
-                                    pass: "1234567",
-                                    fName: faker.name.firstName(),
-                                    lName: faker.name.lastName(),
-                                    email: faker.internet.email(),
-                                    location: loc._id,
-                                    status: true
-                                });
-                                return [4 /*yield*/, user.save()];
-                            case 2:
-                                _a.sent();
-                                _a.label = 3;
-                            case 3:
-                                i++;
-                                return [3 /*break*/, 1];
-                            case 4: return [2 /*return*/];
-                        }
-                    });
-                }); });
-                return [2 /*return*/, "Users creation - done"];
-            case 2:
-                error_1 = _a.sent();
-                return [2 /*return*/, "Users creation - error"];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-var posts = function () { return __awaiter(_this, void 0, void 0, function () {
-    var listOfLocations, listOfUsers_1, louLength_1, listOfCategories_1, error_2;
-    var _this = this;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 4, , 5]);
-                return [4 /*yield*/, Location.find({})];
-            case 1:
-                listOfLocations = _a.sent();
-                return [4 /*yield*/, User.find({})];
-            case 2:
-                listOfUsers_1 = _a.sent();
-                louLength_1 = listOfUsers_1.length - 1;
-                return [4 /*yield*/, Category.find({})];
-            case 3:
-                listOfCategories_1 = _a.sent();
-                listOfLocations.forEach(function (loc) { return __awaiter(_this, void 0, void 0, function () {
-                    var i, usr, post;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                i = 0;
-                                _a.label = 1;
-                            case 1:
-                                if (!(i < randomNumber(10))) return [3 /*break*/, 4];
-                                usr = listOfUsers_1[randomNumber(louLength_1)];
-                                post = new Post({
-                                    title: faker.lorem.sentence(),
-                                    problem: faker.lorem.paragraphs(5),
-                                    solution: faker.lorem.paragraphs(2),
-                                    photo: getImage(),
-                                    link: faker.internet.url(),
-                                    location: loc._id,
-                                    category: listOfCategories_1[randomNumber(listOfCategories_1.length - 1)],
-                                    createdBy: usr._id,
-                                    votes: [
-                                        listOfUsers_1[randomNumber(louLength_1)],
-                                        listOfUsers_1[randomNumber(louLength_1)],
-                                        listOfUsers_1[randomNumber(louLength_1)]
-                                    ]
-                                });
-                                return [4 /*yield*/, post.save()];
-                            case 2:
-                                _a.sent();
-                                _a.label = 3;
-                            case 3:
-                                i++;
-                                return [3 /*break*/, 1];
-                            case 4: return [2 /*return*/];
-                        }
-                    });
-                }); });
-                return [2 /*return*/, "Posts creation - done"];
-            case 4:
-                error_2 = _a.sent();
-                return [2 /*return*/, "Posts creation - error"];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); };
-var news = function () { return __awaiter(_this, void 0, void 0, function () {
-    var listOfLocations, error_3;
-    var _this = this;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Location.find({})];
-            case 1:
-                listOfLocations = _a.sent();
-                listOfLocations.forEach(function (loc) { return __awaiter(_this, void 0, void 0, function () {
-                    var i, post;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                i = 0;
-                                _a.label = 1;
-                            case 1:
-                                if (!(i < randomNumber(10))) return [3 /*break*/, 4];
-                                post = new News({
-                                    title: faker.lorem.sentence(),
-                                    text: faker.lorem.paragraphs(5),
-                                    photo: getImage(),
-                                    link: faker.internet.url(),
-                                    location: loc._id,
-                                    pinned: i === 0 ? true : false
-                                });
-                                return [4 /*yield*/, post.save()];
-                            case 2:
-                                _a.sent();
-                                _a.label = 3;
-                            case 3:
-                                i++;
-                                return [3 /*break*/, 1];
-                            case 4: return [2 /*return*/];
-                        }
-                    });
-                }); });
-                return [2 /*return*/, "News creation - done"];
-            case 2:
-                error_3 = _a.sent();
-                return [2 /*return*/, "News creation - error"];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
+                yield post.save();
+            }
+        }));
+        return "Posts creation - done";
+    }
+    catch (error) {
+        return "Posts creation - error";
+    }
+});
+const news = () => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const listOfLocations = yield Location.find({});
+        listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < randomNumber(10); i++) {
+                const post = new News({
+                    title: faker.lorem.sentence(),
+                    text: faker.lorem.paragraphs(5),
+                    photo: getImage(),
+                    link: faker.internet.url(),
+                    location: loc._id,
+                    pinned: i === 0 ? true : false
+                });
+                yield post.save();
+            }
+        }));
+        return "News creation - done";
+    }
+    catch (error) {
+        return "News creation - error";
+    }
+});
 // ! activate the below
-var dbSeed = function () { return __awaiter(_this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            // const category = await categories();
-            // const location = await locations();
-            // const user = await users();
-            // const post = await posts();
-            // const newsPosts = await news();
-            return [2 /*return*/, [
-                // category
-                // location,
-                // user
-                // post
-                // newsPosts
-                ]];
-        }
-        catch (error) {
-            return [2 /*return*/, error];
-        }
-        return [2 /*return*/];
-    });
-}); };
-exports["default"] = dbSeed;
+const dbSeed = () => __awaiter(this, void 0, void 0, function* () {
+    try {
+        // const category = await categories();
+        // const location = await locations();
+        // const user = await users();
+        // const post = await posts();
+        // const newsPosts = await news();
+        return [
+        // category
+        // location,
+        // user
+        // post
+        // newsPosts
+        ];
+    }
+    catch (error) {
+        return error;
+    }
+});
+exports.default = dbSeed;
+//# sourceMappingURL=db_seed.js.map

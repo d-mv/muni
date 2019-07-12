@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 
 const Post = require("./post");
 
@@ -28,7 +28,7 @@ const CategorySchema = new mongoose.Schema({
   }
 });
 
-CategorySchema.pre("remove", async function(next) {
+CategorySchema.pre("remove", async function(next:any) {
   const category = this;
   await Post.deleteMany({ category: category._id });
   next();

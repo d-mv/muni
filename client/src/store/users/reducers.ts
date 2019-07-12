@@ -166,3 +166,11 @@ export const userType = (state = {}, action: Action) => {
   }
   return state;
 };
+
+export const showHelp = (state = false, action: Action): boolean => {
+  switch (action.type) {
+    case "SHOW_HELP":
+      return action.show;
+  }
+  return state;
+};

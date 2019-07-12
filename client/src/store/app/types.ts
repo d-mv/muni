@@ -21,10 +21,7 @@ export interface setStepAction {
   type: "SET_STEP";
   step: number;
 }
-export interface showHelpAction {
-  type: "SHOW_HELP";
-  show: boolean;
-}
+
 export interface fetchLocationsAction {
   type: "FETCH_LOCATIONS";
   payload: LocationState;
@@ -46,4 +43,4 @@ export type Action =
   | setLanguageAction
   | setLocationDataAction
   | setStepAction
-  | showHelpAction;
+
