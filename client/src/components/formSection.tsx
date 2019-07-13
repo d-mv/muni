@@ -5,53 +5,57 @@ import { down } from "../icons";
 import styleFactory from "../modules/style_factory";
 
 export const formSection = (props: {
-  label: string;
-  type: string;
-  name: string;
-  value: string;
-  placeholder: string;
-  action: (
-    arg0: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  length?: number;
-  direction?: string;
-  focus?: boolean;
-}) => {
-  const input =
-    props.type === "textarea" ? (
-      <textarea
-        autoFocus={props.focus}
-        name={props.name}
-        value={props.value}
-        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-          props.action(event)
-        }
-        placeholder={props.value ? "" : props.placeholder}
-        minLength={props.length ? props.length : 0}
-        rows={10}
-        required
-      />
-    ) : (
-      <input
-        autoFocus={props.focus}
-        type={props.type}
-        name={props.name}
-        value={props.value}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          props.action(event)
-        }
-        placeholder={props.value ? "" : props.placeholder}
-        minLength={props.length ? props.length : 0}
-        required
-      />
-    );
-  return (
-    <section className='section'>
-      <Label direction={props.direction || "ltr"} value={props.label} />
-      {input}
-    </section>
-  );
-};
+         label: string;
+         type: string;
+         name: string;
+         value: string;
+         placeholder: string;
+         action: (
+           arg0: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+         ) => void;
+         length?: number;
+         direction?: string;
+         focus?: boolean;
+         autoComplete?:string
+       }) => {
+         const input =
+           props.type === "textarea" ? (
+             <textarea
+               autoFocus={props.focus}
+               name={props.name}
+               value={props.value}
+               onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                 props.action(event)
+               }
+               placeholder={props.value ? "" : props.placeholder}
+               minLength={props.length ? props.length : 0}
+               rows={10}
+               required
+             />
+           ) : (
+             <input
+               autoFocus={props.focus}
+               type={props.type}
+               name={props.name}
+               value={props.value}
+               autoComplete={
+                 props.autoComplete ? props.autoComplete : props.name
+               }
+               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                 props.action(event)
+               }
+               placeholder={props.value ? "" : props.placeholder}
+               minLength={props.length ? props.length : 0}
+               required
+             />
+           );
+         return (
+           <section className='section'>
+             <Label direction={props.direction || "ltr"} value={props.label} />
+             {input}
+           </section>
+         );
+       };
 
 export const formSelection = (props: {
   list: { value: string; label: string }[];

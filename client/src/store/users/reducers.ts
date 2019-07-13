@@ -129,20 +129,8 @@ export const fetchData = (state = apiState, action: Action) => {
   return state;
 };
 
-export const setPosts = (state = [], action: Action) => {
-  switch (action.type) {
-    case "SET_POSTS":
-      return action.posts === [] ? state : action.posts;
-  }
-  return state;
-};
-export const setMuniPosts = (state = [], action: Action) => {
-  switch (action.type) {
-    case "SET_NEWS":
-      return action.posts === [] ? state : action.posts;
-  }
-  return state;
-};
+
+
 export const typingData = (state = {}, action: Action) => {
   switch (action.type) {
     case "TYPING_DATA":

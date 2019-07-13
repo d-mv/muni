@@ -10,26 +10,23 @@ export const ModalEdit = (props: {
   text: { message: string; confirm: string; cancel: string };
   action: (arg0: string) => void;
   children?: any;
-}) => {
-  const mockFn = () => {};
-  return (
-    <Modal close={mockFn}>
-      <div className={style.container}>
-        <p>{props.text.message}</p>
-        {props.children}
-        <div>
-          <Button
-            mode='primary'
-            title={props.text.confirm}
-            actionMessage={props.action}
-          />
-          <Button
-            mode='attention'
-            title={props.text.cancel}
-            actionMessage={props.close}
-          />
-        </div>
+}) => (
+  <Modal close={props.close}>
+    <div className={style.container}>
+      <p>{props.text.message}</p>
+      {props.children}
+      <div>
+        <Button
+          mode='primary'
+          title={props.text.confirm}
+          actionMessage={props.action}
+        />
+        <Button
+          mode='attention'
+          title={props.text.cancel}
+          actionMessage={props.action}
+        />
       </div>
-    </Modal>
-  );
-};
+    </div>
+  </Modal>
+);

@@ -1,5 +1,6 @@
 import { Action } from "./types";
-import { apiState } from "../defaults";
+import { apiState, emptyPost } from "../defaults";
+import { post } from "../types";
 
 export const submitPost = (state = apiState, action: Action) => {
   switch (action.type) {
@@ -8,10 +9,13 @@ export const submitPost = (state = apiState, action: Action) => {
   }
   return state;
 };
-export const updatePost = (state = apiState, action: Action) => {
+export const posts = (state: post[] = [emptyPost], action: Action): post[] => {
+
   switch (action.type) {
+    case "SET_POSTS":
+      return action.payload;
     case "UPDATE_POST":
-      return { ...state, ...action.payload };
+      return [...state, action.payload];
   }
   return state;
 };
@@ -35,6 +39,14 @@ export const typingPost = (state = {}, action: Action) => {
   switch (action.type) {
     case "TYPING_POST_DATA":
       return { ...state, ...action.payload };
+  }
+  return state;
+};
+
+export const setNews = (state = [], action: Action) => {
+  switch (action.type) {
+    case "SET_NEWS":
+      return action.payload;
   }
   return state;
 };

@@ -15,7 +15,7 @@ import Line from "../../layout/Line";
 import Paragraph from "../../layout/Paragraph";
 import IconMunicipality from "../../icons/Municipality";
 
-import style from "./styles/PinnedCard.module.scss";
+import style from "./style/PinnedCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
 import { NewsType } from "../../models";
 
@@ -27,7 +27,7 @@ const PinnedCard = (props: {
 }) => {
 
   const handleClick = () => {
-    props.showPost({ show: true, type: "news", _id: props.post._id });
+    props.showPost({ show: true, type: "news", ...props.post });
   };
 
   const { direction } = props.language;

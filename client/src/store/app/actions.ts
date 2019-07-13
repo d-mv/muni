@@ -39,13 +39,6 @@ export const setLocationData = (data: TYPE.data): Action => {
 export const setStep = (step: number): Action => {
   return { type: "SET_STEP", step };
 };
-/** Action function to show/hide help
- * @param {number} step - Step number
- * @returns {object}
- */
-
-
-
 
 export const setModule = (
   previous: string,

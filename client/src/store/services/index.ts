@@ -32,3 +32,15 @@ export const patch = (props: {
     headers: props.headers ? props.headers : null,
     data: props.body ? props.body : null
   });
+
+export const del = (props: {
+  url: string;
+  headers?: indexedObj;
+  body?: indexedObjAny;
+}) =>
+  axios({
+    method: "delete",
+    url: props.url,
+    headers: props.headers ? props.headers : null,
+    data: props.body ? props.body : null
+  });

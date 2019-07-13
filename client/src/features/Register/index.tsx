@@ -19,8 +19,8 @@ import Button from "../../components/Button";
 import button from "../../components/style/Button.module.scss";
 import Label from "../../layout/Label";
 import locationsList from "../../modules/locations_list";
-import { LocationType, LocationState } from "../../models";
-import { data, indexedObjAny } from "../../store/types";
+import { LocationState } from "../../models";
+import { indexedObjAny } from "../../store/types";
 
 const Register = (props: {
   locations: LocationState;

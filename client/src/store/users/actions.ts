@@ -197,9 +197,7 @@ export const setLocationData = (data: TYPE.data): Action => {
   return { type: "SET_LOCATION_DATA", data };
 };
 
-export const setPosts = (posts: any): Action => {
-  return { type: "SET_POSTS", posts };
-};
+
 
 export const vote = (
   id: string,

@@ -7,12 +7,15 @@ const authenticate = require("../../middleware/auth");
 
 router.post("/", authenticate, async (req: any, res: any) => {
   const post = new News({
-    ...req.body
+    ...req.body,
+    location: req.user.location
   });
   try {
     await post.save();
-    res.status(201).send(post);
+    const news = await News.find({});
+    res.status(201).send(news);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 });

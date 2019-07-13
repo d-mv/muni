@@ -9,8 +9,6 @@ import { data } from "../../../store/types";
 import Button from "../../../components/Button";
 import { iconHelp } from "../../../icons";
 import style from "./style/index.module.scss";
-import header from "../../../components/style/Header.module.scss";
-import Title from "../../../components/Title";
 
 const Home = (props: { language: data; cancel: () => void,type:any }) => {
   const { direction, text } = props.language;

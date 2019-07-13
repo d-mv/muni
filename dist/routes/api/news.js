@@ -13,12 +13,14 @@ const router = new express.Router();
 const News = require("../../models/news");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    const post = new News(Object.assign({}, req.body));
+    const post = new News(Object.assign({}, req.body, { location: req.user.location }));
     try {
         yield post.save();
-        res.status(201).send(post);
+        const news = yield News.find({});
+        res.status(201).send(news);
     }
     catch (error) {
+        console.log(error);
         res.status(400).send(error);
     }
 }));

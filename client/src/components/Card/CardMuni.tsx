@@ -13,7 +13,7 @@ import Title from "./components/Title";
 
 import Card from "../../layout/Card";
 
-import style from "./styles/PostCard.module.scss";
+import style from "./style/PostCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
 
 const CardMuni = (props: {
@@ -26,7 +26,7 @@ const CardMuni = (props: {
   const { _id, title, date, photo,createdAt } = props.post;
 
   const handleClick = () => {
-    props.showPost({ show: true, type: "news", _id: _id });
+    props.showPost({ show: true, type: "news", ...props.post });
   };
   const ageText: { [index: string]: string } = text["post.age"];
 

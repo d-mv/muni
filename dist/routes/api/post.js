@@ -14,13 +14,14 @@ const { ObjectID } = require("mongodb");
 const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    const post = new Post(Object.assign({}, req.body, { createdBy: req.user._id }));
-    console.log(post);
+    const post = new Post(Object.assign({}, req.body, { createdBy: req.user._id, location: req.user.location }));
     try {
-        yield post.save();
-        res.status(201).send(post);
+        const result = yield post.save();
+        const posts = yield Post.find({});
+        res.status(201).send(posts);
     }
     catch (error) {
+        console.log(error);
         res.status(400).send(error);
     }
 }));
@@ -33,6 +34,29 @@ router.get("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0, f
         res.status(400).send(error);
     }
 }));
+// vote
+router.get("/:id/vote", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
+    const _id = req.params.id;
+    if (!ObjectID.isValid(_id)) {
+        res.status(404).send();
+    }
+    try {
+        const post = yield Post.findOne({
+            _id: req.params.id
+        });
+        if (!post) {
+            res.status(404).send();
+        }
+        post.votes = [...post.votes, req.user._id];
+        yield post.save();
+        const posts = yield Post.find({});
+        res.send(posts);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).send();
+    }
+}));
 router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const _id = req.params.id;
     const updates = Object.keys(req.body);
@@ -41,17 +65,18 @@ router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0,
     }
     try {
         const post = yield Post.findOne({
-            _id: req.params.id,
-            author: req.user._id
+            _id: req.params.id
         });
         if (!post) {
             res.status(404).send();
         }
         updates.forEach(update => (post[update] = req.body[update]));
         yield post.save();
-        res.send(post);
+        const posts = yield Post.find({});
+        res.send(posts);
     }
     catch (error) {
+        console.log(error);
         res.status(400).send();
     }
 }));
@@ -62,15 +87,16 @@ router.delete("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0
     }
     try {
         const deletepost = yield Post.findOneAndDelete({
-            _id: _id,
-            author: req.user._id
+            _id: _id
         });
         if (!deletepost) {
             return res.status(404).send();
         }
-        res.send(deletepost);
+        const posts = yield Post.find({});
+        res.send(posts);
     }
     catch (error) {
+        console.log(error);
         res.status(500).send();
     }
 }));

@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 
 import { formSection, formSelection } from "../../components/formSection";
 import { Preview } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
-import { submitPost, typingPost, createPost } from "../../store/post/actions";
+import { typingPost, createPost } from "../../store/post/actions";
 import { setModule, setLoading } from "../../store/users/actions";
-import { indexedObjAny, data } from "../../store/types";
+import { data } from "../../store/types";
 
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -36,7 +35,7 @@ const NewPost = (props: {
   step: number;
   submitResult: data;
   setStep: (arg0: number) => void;
-  submitPost: (arg0: indexedObjAny) => void;
+  // submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
   //
@@ -55,7 +54,6 @@ const NewPost = (props: {
 }) => {
   const { language, categories, newPost, typingPost, step, setStep } = props;
   const { direction, text, short } = language;
-  // const [step, setStep] = React.useState(props.step);
   const [review, setReview] = React.useState(false);
   // form fields
   const { title, category, problem, solution, photo, link } = newPost;
@@ -343,5 +341,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setStep, submitPost, setModule, typingPost, setLoading, createPost }
+  { setStep,setModule, typingPost, setLoading, createPost }
 )(NewPost);

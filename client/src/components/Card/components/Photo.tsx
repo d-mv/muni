@@ -1,7 +1,5 @@
 import React from "react";
 
-import { imageDecoder } from "../../../modules/image_coder";
-
 import style from "./style/Photo.module.scss";
 import styleFactory from "../../../modules/style_factory";
 

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import axios, { AxiosResponse } from "axios";
 import { AppState } from "../../store";
-import { setModule, getNews } from "../../store/users/actions";
+import { setModule } from "../../store/users/actions";
+import { getNews } from "../../store/post/actions";
 import { indexedObjAny } from "../../store/types";
 
 import { Photo, Link, Confirm, TopBlock, NumbersLine } from "./components";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
@@ -6,7 +6,7 @@ import { formSection, formSelection } from "../../components/formSection";
 import { Preview } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
-import { submitPost } from "../../store/post/actions";
+import { createNews, typingPost } from "../../store/post/actions";
 import { setModule } from "../../store/users/actions";
 import { indexedObjAny, data } from "../../store/types";
 
@@ -32,57 +32,66 @@ import { AuthState } from "../../models";
 const NewPost = (props: {
   language: data;
   // location: data;
-  auth: AuthState
+  auth: AuthState;
   token: string;
   step: number;
-  submitResult: data;
+  // submitResult: data;
   setStep: (arg0: number) => void;
-  submitPost: (arg0: indexedObjAny) => void;
+  // submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
+  //
+  loading: boolean;
+  // setLoading: (arg0: boolean) => void;
+  typingPost: (arg0: { [index: string]: any }) => void;
+  newPost: {
+    title: "";
+    text: "";
+    photo: "";
+    link: "";
+  };
+  createNews: (arg0: any) => void;
 }) => {
-  const { direction, text } = props.language;
-  const { _id, location } = props.auth.user;
-  const [step, setStep] = React.useState(props.step);
+  const { language, newPost, typingPost, loading, step, setStep } = props;
+  const { direction, text, short } = language;
   const [review, setReview] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   // form fields
-  const [title, setTitle] = React.useState("");
-  const [problem, setProblem] = React.useState("");
-  const [photo, setPhoto] = React.useState("");
-  const [link, setLink] = React.useState("");
+  const { title, photo, link } = newPost;
   // message
   const [message, setMessage] = React.useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (step === 6 && review === false) {
       setReview(true);
     }
   }, [step]);
 
   const handleNextStep = () => {
+    let check = "";
     if (step + 1 <= 4) {
-      let check: boolean = true;
       let response: string = text["new.message.fieldEmpty"];
       switch (step) {
         case 1:
-          check = title !== "";
+          check = title;
           break;
         case 2:
-          check = problem !== "";
+          check = props.newPost.text;
           break;
         case 3:
           if (link) {
             const regex = new RegExp(
               "^([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
             );
-            check = regex.test(link);
+            check = regex.test(link) ? "true" : "";
             if (!check) {
               response = text["new.message.urlMalformed"];
             }
+          } else {
+            check = "";
           }
           break;
       }
+      console.log(check);
       if (check) {
         setMessage("");
         setStep(step + 1);
@@ -105,84 +114,17 @@ const NewPost = (props: {
   };
 
   const handleInputChange = (event: any) => {
+    const { name, value } = event.target;
     setMessage("");
-    switch (event.target.name) {
-      case "title":
-        setTitle(event.target.value);
-        break;
-      case "problem":
-        setProblem(event.target.value);
-        break;
-      case "link":
-        setLink(event.target.value);
-        break;
-    }
+    typingPost({ [name]: value });
   };
 
   const handleSetPhoto = (props: any) => {
-    setPhoto(props);
+    typingPost({ photo: props });
   };
 
   const handleSubmit = () => {
-    const objectToSubmit: indexedObjAny = {
-      location,
-      token: props.token,
-      post: {
-        title,
-        problem,
-        photo,
-        link
-      }
-    };
-
-    let check = 0;
-    let counter = 0;
-
-    // Object.keys(objectToSubmit).map((el: any) => {
-    //   if (typeof objectToSubmit[el] === "object") {
-    //     Object.keys(objectToSubmit[el]).map((ele: any) => {
-    //       const empty = objectToSubmit[el][ele] === "";
-    //       if (!empty) {
-    //         check += 1;
-    //       }
-    //       counter += 1;
-    //     });
-    //   } else if (
-    //     objectToSubmit[el] === "photo" ||
-    //     objectToSubmit[el] === "link"
-    //   ) {
-    //     check += 1;
-    //     counter += 1;
-    //   } else {
-    //     const empty = objectToSubmit[el] === "";
-    //     if (!empty) {
-    //       check += 1;
-    //     }
-    //     counter += 1;
-    //   }
-    // });
-
-    const url = "/muni/create";
-    axios
-      .post(url, objectToSubmit)
-      .then((response: any) => {
-        setLoading(false);
-        setMessage(response.data.message);
-        if (response.status) {
-          props.setModule("municipality");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    // if (check === counter) {
-    //   setLoading(true);
-    //   props.setStep(4);
-    //   props.submitPost(objectToSubmit);
-    // } else {
-    //   setMessage(text["new.error.incomplete"]);
-    // }
+    props.createNews(newPost);
   };
 
   let pageSubTitle = text["new.steps.title"];
@@ -224,8 +166,8 @@ const NewPost = (props: {
       ? formSection({
           label: text["new.field.problem.label"],
           type: "textarea",
-          name: "problem",
-          value: problem,
+          name: "text",
+          value: props.newPost.text,
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
@@ -259,7 +201,7 @@ const NewPost = (props: {
 
   const post = {
     title,
-    problem,
+    problem: props.newPost.text,
     photo,
     link
   };
@@ -319,17 +261,20 @@ const NewPost = (props: {
 
 const mapStateToProps = (state: AppState) => {
   return {
+    auth: state.auth,
     language: state.language,
-    // location: state.locationData,
+    categories: state.categories,
+    locations: state.locations,
     token: state.token,
     submitResult: state.submitPost,
     step: state.step,
     prevModule: state.prevModule,
-    auth:state.auth
+    newPost: state.newPost,
+    loading: state.loading
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setStep, submitPost, setModule }
+  { setStep, setModule, createNews, typingPost }
 )(NewPost);

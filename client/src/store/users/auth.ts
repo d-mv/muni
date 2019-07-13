@@ -11,7 +11,8 @@ const data: indexedObjAny = fromJson;
 
 export const checkToken = (token: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-) => get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
+) =>
+  get({ url: "/users/check", headers: { Authorization: `Bearer ${token}` } })
     .then(response => {
       const { _id, location, type, settings } = response.data.user;
       dispatch({
@@ -44,10 +45,13 @@ export const login = (login: LoginProps) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
   dispatch({
+    type: "SET_LOADING",
+    loading: true
+  });
+  dispatch({
     type: "SET_MESSAGE",
     message: ""
   });
-  dispatch({ type: "TYPING_DATA", payload: { ...login } });
   post({ url: "/users/login", body: login })
     .then(response => {
       const { token } = response.data;
@@ -65,6 +69,7 @@ export const login = (login: LoginProps) => async (
         type: "SET_MESSAGE",
         message: "Loading data..."
       });
+      dispatch({ type: "TYPING_DATA", payload: { email: "", pass: "" } });
       dispatch({
         type: "SET_LOADING",
         loading: false
@@ -128,10 +133,6 @@ export const logOff = () => async (
       dispatch({
         type: "LOGIN",
         payload: { ...apiState }
-      });
-      dispatch({
-        type: "SET_POSTS",
-        posts: []
       });
       dispatch({
         type: "SET_NEWS",

@@ -1,8 +1,14 @@
 import React from "react";
 import { colorsArray } from "../style/_colors";
 
-const Thumb = (props: { frame: string; fill: string }) => (
+const Thumb = (props: {
+  frame: string;
+  fill: string;
+  mode?: string;
+  onClick?: (arg0: string) => void;
+}) => (
   <svg
+    onClick={() => (props.onClick ? props.onClick(props.mode || "") : null)}
     viewBox='0 0 246 218'
     fillRule='evenodd'
     clipRule='evenodd'

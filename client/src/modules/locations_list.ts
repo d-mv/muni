@@ -1,5 +1,4 @@
-import { indexedObjAny, data } from "../store/types";
-import { LocationType, LocationState } from "../models";
+import { indexedObjAny } from "../store/types";
 
 /**
  * Function to process locations object to provide array of location names

@@ -6,10 +6,11 @@ import { logger } from "redux-logger";
 import { setStep, fetchLocations, prevModule, setModule } from "./app/reducers";
 import {
   submitPost,
-  updatePost,
+  posts,
   showPost,
   deletePost,
-  typingPost
+  typingPost,
+  setNews
 } from "./post/reducers";
 import {
   vote,
@@ -25,12 +26,10 @@ import {
   changeMode,
   loadData,
   setLanguage,
-  setPosts,
   typingData,
   cachePost,
   userType,
-  getCategories,
-  setMuniPosts
+  getCategories
 } from "./users/reducers";
 import * as TYPE from "./types";
 import { apiState, showPostState, emptyPost } from "./defaults";
@@ -38,6 +37,7 @@ import { apiState, showPostState, emptyPost } from "./defaults";
 import data from "../data/translation.json";
 import { showPostPayload } from "./post/types";
 import { LocationState, AuthState, AUTH_EMPTY_STATE } from "../models";
+import { post } from "./types";
 
 const self =
   window.location.hostname === "localhost"
@@ -68,14 +68,14 @@ const rootReducer = combineReducers({
   message: setMessage,
   mode: changeMode,
   step: setStep,
-  posts: setPosts,
-  update: updatePost,
+  posts: posts,
+  // update: updatePost,
   post: showPost,
   typed: typingData,
   cached: cachePost,
   deleted: deletePost,
   type: userType,
-  news: setMuniPosts,
+  news: setNews,
   categories: getCategories
 });
 export type AppState = ReturnType<typeof rootReducer>;
@@ -105,8 +105,8 @@ export default function configureStore() {
     message: string;
     mode: string;
     vote: TYPE.apiResponse;
-    posts: any;
-    update: TYPE.apiResponse;
+    posts: post[];
+    // update: TYPE.apiResponse;
     post: showPostPayload;
     typed: TYPE.indexedObj;
     cached: any;
@@ -137,7 +137,7 @@ export default function configureStore() {
     mode: "show",
     vote: apiState,
     posts: [],
-    update: apiState,
+    // update: apiState,
     post: showPostState,
     typed: {},
     cached: emptyPost,

@@ -18,7 +18,7 @@ import { RepliedTag } from "./components";
 import Card from "../../layout/Card";
 import { Zero } from "../../layout/Utils";
 
-import style from "./styles/PostCard.module.scss";
+import style from "./style/PostCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
 import { PostType } from "../../models/post";
 import styleFactory from "../../modules/style_factory";
@@ -46,7 +46,7 @@ const PostCard = (props: {
   const votes = props.post.votes ? props.post.votes : [];
 
   const handleClick = () => {
-    props.showPost({ show: true, type: "user", _id: _id });
+    props.showPost({ show: true, type: "user", ...props.post });
   };
 
   let voterText = "";
@@ -93,11 +93,13 @@ const PostCard = (props: {
         }>
         {categoryElement}
         <Title title={shortText(title, 50)} direction={direction} />
-        <section id='age' className={style[styleFactory("data", direction)]}>
-          <Age date={createdAt} text={ageText} direction={direction} />
-          {voterElement}
+        <section className={style[styleFactory("bottomline", direction)]}>
+          <div className={style[styleFactory("data", direction)]}>
+            <Age date={createdAt} text={ageText} direction={direction} />
+            {voterElement}
+          </div>
+          {voteButtonElement}
         </section>
-        {voteButtonElement}
       </section>
     </Card>
   );
