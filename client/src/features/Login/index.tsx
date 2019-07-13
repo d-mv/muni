@@ -33,7 +33,7 @@ const Login = (props: {
   typed: TYPE.indexedObj;
   login: (arg0: LoginProps) => void;
   muniLogin: (arg0: LoginProps) => void;
-  setModule: (arg0: string, arg1: string) => void;
+  setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   setLoading: (arg0: boolean) => void;
   typingData: (arg0: TYPE.data) => void;
@@ -75,7 +75,7 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setMessage("");
-    props.setModule("login", "register");
+    props.setModule("register");
   };
 
   // set the form elements
