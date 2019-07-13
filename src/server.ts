@@ -44,11 +44,11 @@ app.use("/user/verify", verifyRouter);
 
 // * React
 //Static file declaration
-app.use(express.static(path.join(__dirname, "../../client/build/")));
+app.use(express.static(path.join(__dirname, "../client/build/")));
 
 //build mode
 app.get("/index.html", (req: any, res: any) => {
-  res.sendFile(path.join(__dirname + "../../client/build/index.html"));
+  res.sendFile(path.join(__dirname + "../client/build/index.html"));
 });
 // * end of React
 
