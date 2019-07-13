@@ -25,6 +25,7 @@ const authDirect = async (token: string) => {
     if (!update) {
       throw new Error();
     }
+    
     return { status: true, message:'confirmed',lang: user.settings.language};
   } catch (error) {
     // console.log(error)

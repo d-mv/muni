@@ -15,25 +15,27 @@ import { AuthState } from "../models";
 const Mine = (props: {
   language: data;
   auth: AuthState;
-  allPosts: post[];
+  posts: data;
   locations: data;
 }) => {
   const { direction, text } = props.language;
-  const { allPosts, auth, locations } = props;
-  const {user} = auth
+  const { posts, auth, locations } = props;
+  const { user } = auth;
   const location = locations.filter((el: any) => el._id === user.location)[0];
 
-  const posts = allPosts.filter((post: post) => post.createdBy === user._id);
+  const myPosts = posts.filter((post: post) => post.createdBy === user._id);
+
   const headerObject = {
-    name: location
+    name: location.name[auth.user.settings.language],
+    right: { icon: <div />, action: () => { } }
   };
-// console.log(posts)
+
   return (
     <Page data-testid='page__mine'>
       <Header {...headerObject} />
       <Content padded>
         <SubTitle title={text["mine.subtitle"]} direction={direction} />
-        <PostList posts={posts} />
+        <PostList posts={myPosts} />
       </Content>
     </Page>
   );
@@ -43,8 +45,8 @@ const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
     locations: state.locations,
-   auth:state.auth,
-    allPosts: state.posts
+    auth: state.auth,
+    posts: state.posts
   };
 };
 

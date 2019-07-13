@@ -197,9 +197,7 @@ export const setLocationData = (data: TYPE.data): Action => {
   return { type: "SET_LOCATION_DATA", data };
 };
 
-export const setPosts = (posts: any): Action => {
-  return { type: "SET_POSTS", posts };
-};
+
 
 export const vote = (
   id: string,
@@ -257,9 +255,9 @@ export const fetchData = (
       });
   };
 };
-export const typingData = (data: { [index: string]: string }) => {
-  return { type: "TYPING_DATA", payload: { ...data } };
-};
+// export const typingData = (data: { [index: string]: string }) => {
+//   return { type: "TYPING_DATA", payload: { ...data } };
+// };
 
 export const cachePost = (post: TYPE.post): Action => {
   return { type: "CACHE_POST", post };

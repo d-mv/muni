@@ -11,7 +11,7 @@ import { indexedObjAny } from "../../../store/types";
 import styles from "./style/Text.module.scss";
 import styleFactory from "../../../modules/style_factory";
 import { IconEdit } from "../../../icons";
-import { setPosts } from "../../../store/users/actions";
+// import { setPosts } from "../../../store/users/actions";
 
 const iconWrapper = (
   style: string,

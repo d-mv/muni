@@ -183,3 +183,49 @@
   @extend .replyEditButtons;
   direction: rtl
 }
+
+.thumbsContainer {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+
+  div {
+    padding: 0.5rem;
+    height: 3rem;
+    width: 3rem;
+
+    margin: {
+      top: -1.5rem;
+      left: 2rem;
+      right: 2rem;
+    }
+    border-radius: 50%;
+    font-size: 2rem;
+    text-align: center;
+    color: white;
+    border: var(--borderWhiteThick);
+    box-shadow: var(--boxShadow);
+
+    &:first-of-type {
+      bottom: 1.3rem;
+      background-color: var(--colorSecondary);
+    }
+
+    &:last-of-type {
+      background-color: var(--colorAttention);
+    }
+    &:active {
+        transform: scale(0.9);
+      }
+  }
+}
+
+.thumbsContainerRTL {
+  @extend .thumbsContainer;
+  flex-direction: row-reverse;
+}

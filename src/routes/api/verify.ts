@@ -1,4 +1,4 @@
-const data = require("../../data/data.json")
+const data = require("../../data/data.json");
 
 const express = require("express");
 const router = new express.Router();
@@ -13,6 +13,15 @@ router.get("/", async (req: any, res: any) => {
     const messages = result.lang ? translation[result.lang] : translation["עב"];
     //.assign message
     const message = messages.user[result.message];
+
+    // TODO: refactor
+    if (
+      result.message
+        .toString()
+        .split(" ")
+        .includes("malformed")
+    )
+      res.status(400).render("malformed", { message: result.message });
 
     res.status(201).render(result.message, { message });
   } catch (error) {

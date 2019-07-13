@@ -31,7 +31,9 @@ export interface registerType {
   lName: string;
   email: string;
   pass: string;
-  lang: string;
+  settings: {
+    language: string;
+  };
 }
 
 /**

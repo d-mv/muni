@@ -83,14 +83,7 @@ export interface fetchDataAction {
   payload: TYPE.apiResponse;
 }
 
-export interface setPostsAction {
-  type: "SET_POSTS";
-  posts: any;
-}
-export interface setMuniPostsAction {
-  type: "SET_NEWS";
-  posts: any;
-}
+
 
 export interface typingDataAction {
   type: "TYPING_DATA";
@@ -121,12 +114,10 @@ export interface showHelpAction {
 
 export type Action =
   | getCategoriesAction
-  | setMuniPostsAction
   | userTypeAction
   | cachePost
   | typingDataAction
   | fetchDataAction
-  | setPostsAction
   | voteAction
   | setLocationDataAction
   | setLanguageAction

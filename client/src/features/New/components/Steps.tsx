@@ -2,7 +2,7 @@ import React from "react";
 
 import Step from "./Step";
 
-import style from "./styles/Steps.module.scss";
+import style from "./style/Steps.module.scss";
 import styleFactory from "../../../modules/style_factory";
 
 /**

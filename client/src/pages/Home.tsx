@@ -11,7 +11,6 @@ import PostList from "../components/PostList";
 import Page from "../layout/Page";
 import Content from "../layout/Content";
 import { data, post } from "../store/types";
-import { userInfo } from "os";
 
 const Home = (props: {
   posts: post[];
@@ -27,17 +26,17 @@ const Home = (props: {
     right: { icon: <div />, action: () => {} }
   };
   // TODO: move to back
-  const sortPostList = (posts: post[]) => {
-    return posts.sort((a: post, b: post) =>
+  const sortPostList = (posts: post[]) =>
+    posts.sort((a: post, b: post) =>
       a.votes.length < b.votes.length ? 1 : -1
     );
-  };
-console.log(pinned)
+
+  console.log(pinned);
   return (
     <Page>
       <Header {...headerObject} />
       <Content header>
-        {pinned !== {} ? <PinnedCard post={pinned} /> : null}
+        {pinned ? <PinnedCard post={pinned} /> : null}
         <PostList posts={sortPostList(posts)} />;
       </Content>
     </Page>

@@ -11,12 +11,10 @@ import {
   setToken,
   checkToken,
   fetchData,
-  getPosts,
-  getNews,
   getCategories
 } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
-import { showPost } from "../store/post/actions";
+import { showPost, getPosts, getNews } from "../store/post/actions";
 
 import logger from "../modules/logger";
 
@@ -47,6 +45,7 @@ const App = (props: {
   posts: data;
   userMuni: boolean;
   auth: AuthState;
+  categories: data;
   getCategories: () => void;
   setModule: (previous: string, next: string) => void;
   setToken: (arg0: string) => void;
@@ -65,7 +64,8 @@ const App = (props: {
   const fetchPostsNews = () => {
     logger({ text: "fetching", emph: "categories", type: "positive" });
     setMessage("fetching categories...");
-    props.getCategories();
+    console.log(!Object(props.categories))
+    if (!Object(props.categories).keys) props.getCategories();
     logger({ text: "fetching", emph: "petitions", type: "positive" });
     setMessage("fetching petitions...");
     props.getPosts(auth.user.location);
@@ -117,7 +117,7 @@ const App = (props: {
         setLoading(false);
       }
       setMessage("fetching locations...");
-      props.fetchLocations();
+      if (!Object(props.locations).keys) props.fetchLocations();
     }
   }, [auth, token]);
 
@@ -150,7 +150,7 @@ const App = (props: {
 
   useEffect(() => {
     console.log("4. triggered post");
-    if (props.post.show) {
+    if (props.post.show && props.module !== "post") {
       console.log("- post is there, show post");
       toggleModule("post");
     }
@@ -210,8 +210,9 @@ const mapStateToProps = (state: AppState) => {
     locations: state.locations,
     post: state.post,
     posts: state.posts,
-    userMuni: state.type === "muni",
-    auth: state.auth
+    userMuni: state.auth.user.type === "muni",
+    auth: state.auth,
+    categories: state.categories
   };
 };
 

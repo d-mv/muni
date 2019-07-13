@@ -1,4 +1,4 @@
-import { get, post, patch } from "../services";
+import { patch } from "../services";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import data from "../../data/translation.json";

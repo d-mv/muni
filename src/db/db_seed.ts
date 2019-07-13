@@ -112,7 +112,7 @@ const users = async () => {
   try {
     const listOfLocations = await Location.find({});
     listOfLocations.forEach(async (loc: LocationType) => {
-      for (let i = 0; i < randomNumber(3); i++) {
+      for (let i = 0; i < randomNumber(6); i++) {
         const user = new User({
           pass: "1234567",
           fName: faker.name.firstName(),
@@ -137,7 +137,7 @@ const posts = async () => {
     const louLength = listOfUsers.length - 1;
     const listOfCategories = await Category.find({});
     listOfLocations.forEach(async (loc: UserType) => {
-      for (let i = 0; i < randomNumber(10); i++) {
+      for (let i = 0; i < randomNumber(20); i++) {
         const usr = listOfUsers[randomNumber(louLength)];
         const post = new Post({
           title: faker.lorem.sentence(),
@@ -167,7 +167,7 @@ const news = async () => {
   try {
     const listOfLocations = await Location.find({});
     listOfLocations.forEach(async (loc: UserType) => {
-      for (let i = 0; i < randomNumber(10); i++) {
+      for (let i = 0; i < randomNumber(20); i++) {
         const post = new News({
           title: faker.lorem.sentence(),
           text: faker.lorem.paragraphs(5),
@@ -191,13 +191,13 @@ const dbSeed = async () => {
     // const category = await categories();
     // const location = await locations();
     // const user = await users();
-    // const post = await posts();
+    const post = await posts();
     // const newsPosts = await news();
     return [
-      // category
+      // category,
       // location,
-      // user
-      // post
+      // user,
+      post,
       // newsPosts
     ];
   } catch (error) {

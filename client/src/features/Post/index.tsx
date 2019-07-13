@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import axios, { AxiosResponse } from "axios";
 import { categoryIdToName } from "../../modules/category_processor";
 import { replyCardStyleUtil } from "../../modules/reply_style_generator";
 import { goBack, iconEdit, iconClose } from "../../icons";
 
 import { AppState } from "../../store";
+import { vote, setModule, fetchData } from "../../store/users/actions";
 import {
-  vote,
-  setModule,
-  fetchData,
-  getPosts
-} from "../../store/users/actions";
-import { updatePost, deletePost, showPost } from "../../store/post/actions";
-import { indexedObjAny, post, data, indexedObj } from "../../store/types";
+  updatePost,
+  deletePost,
+  showPost,
+  getPosts,
+  votePost
+} from "../../store/post/actions";
+import { indexedObjAny, data } from "../../store/types";
 
 import VoteButton from "../../components/VoteButton";
 import Header from "../../components/Header";
@@ -36,18 +36,18 @@ import {
 } from "./components";
 import Text from "./components/Text";
 
-import Content from "../../layout/Content";
-
 import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
-import { showPostPayload } from "../../store/post/types";
-import { AuthState, CategoryType } from "../../models";
-import { PostType } from "../../models/post";
+import { AuthState } from "../../models";
+import { emptyPost } from "../../store/defaults";
+import logger from "../../modules/logger";
 
 const Post = (props: {
+  posts: any;
   post: any;
   language: indexedObjAny;
+  votePost: (arg0: string) => void;
   // location: data;
   vote: (arg0: string, arg1: string) => void;
   updatePost: (arg0: any) => void;
@@ -56,22 +56,26 @@ const Post = (props: {
   prevModule: string;
   token: string;
   deletePost: (arg0: string) => void;
-  showPost: (arg0: showPostPayload) => void;
+  showPost: (arg0: any) => void;
   auth: AuthState;
   categories: any;
   locations: data;
 }) => {
   // destructuring props
-  const { categories, auth, locations } = props;
+  const { categories, auth, locations, post } = props;
   const { user } = auth;
   const { direction, text, short } = props.language;
   // state
   const [textOpened, setTextOpened] = useState(false);
   const [replyOpened, setReplyOpened] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [newReply, setNewReply] = useState(props.post.reply.text);
   const [showNewReply, setShowNewReply] = useState(false);
-  const [post, setPost] = useState(props.post);
+  // const [newReply, setNewReply] = useState(post.reply.text);
+
+  const originalPost = props.posts.filter(
+    (post: any) => post._id === props.post._id
+  )[0];
+
   const [edit, setEdit] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [updateConfirmation, showUpdateConfirmation] = useState(false);
@@ -81,32 +85,25 @@ const Post = (props: {
 
   const location = locations.filter((el: any) => el._id === user.location)[0];
 
-  // destructuring state
-  const {
-    _id,
-    title,
-    photo,
-    link,
-    problem,
-    solution,
-    votes,
-    createdBy,
-    createdAt,
-    reply
-  } = post;
-
   // definitions
   const showStyle = textOpened ? style.text : style.textClosed;
   const voterText =
-    votes.length === 1 ? text["post.voter"] : text["post.voters"];
-  const category = categoryIdToName(categories, short, props.post.category);
+    post.votes.length === 1 ? text["post.voter"] : text["post.voters"];
+  const category = categoryIdToName(categories, short, post.category);
   const showMoreLessText = {
     more: text["post.show-more"],
     less: text["post.show-less"]
   };
-  const includes = votes.includes(props.auth.user._id);
-  const author = createdBy === props.auth.user._id;
+  const includes = post.votes.includes(props.auth.user._id);
+  const author = post.createdBy === props.auth.user._id;
   const muniUser = auth.user.type === "muni";
+
+  useEffect(() => {
+    console.log("posts changed");
+    props.showPost(
+      props.posts.filter((post: any) => post._id === props.post._id)[0]
+    );
+  }, [props.posts]);
 
   let allowToReply = false;
   if (!post.reply.up && !post.reply.down) {
@@ -148,180 +145,125 @@ const Post = (props: {
 
   // small functions
   const goHome = () => {
+    props.showPost({ show: false, ...emptyPost });
     props.setModule(props.prevModule);
   };
-  const handleDelete = (mode: string) => {
-    if (mode === "secondary") {
-      props.deletePost(_id);
-      props.getPosts(props.auth.user.location);
-      props.setModule("home");
-    }
-  };
-  // TODO:
-  const handleDeleteMuniReply = (mode: string) => {
-    // console.log("handleDeleteMuniReply");
-    if (mode === "primary") {
-      const newPost = {
-        ...post,
-        reply: { text: "", date: new Date(), up: [], down: [] }
-      };
-      const url = `/post/${_id}`;
-      axios
-        .patch(url, { ...newPost })
-        .then((response: AxiosResponse<any>) => {
-          toggleDeleteConfirmation();
-          // toggleMuniEditModal();
-          props.getPosts(props.auth.user.location);
-        })
-        .catch((reason: any) => {
-          console.log(reason);
-        });
-    }
-  };
-  const handleEditMuniReply = (mode: string) => {
-    // console.log("handleEditMuniReply");
-    if (mode === "primary") {
-      const newPost = {
-        ...post,
-        reply: { text: newReply, date: new Date(), up: [], down: [] }
-      };
-      const url = `/post/${_id}`;
-      axios
-        .patch(url, { ...newPost })
-        .then((response: AxiosResponse<any>) => {
-          toggleMuniEditModal();
-          props.getPosts(props.auth.user.location);
-        })
-        .catch((reason: any) => {
-          console.log(reason);
-        });
-    }
-  };
 
-  const handleReplyChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setNewReply(event.target.value);
-  };
-
-  const handleNewReplyChange = (event: any) => {
-    switch (event.target.name) {
-      case "replyText":
-        setNewReply(event.target.value);
-        break;
-    }
-  };
-  const handleNewReplySubmit = () => {
-    if (newReply) {
-      props.updatePost({
-        ...post,
-        reply: { text: newReply, date: new Date() }
-      });
-      setShowNewReply(false);
-      props.getPosts(props.auth.user.location);
-    }
-  };
-  const handleUpdate = (answer: string) => {
-    // console.log(answer);
-    if (answer === "attention") {
-      toggleEdit();
-      setPost(props.post);
-      toggleCloseSave();
-    } else {
-      const url = `/post/${_id}`;
-      axios
-        .patch(url, { ...post })
-        .then((response: AxiosResponse<any>) => {
-          toggleEdit();
-          props.getPosts(props.auth.user.location);
-        })
-        .catch((reason: any) => {
-          console.log(reason);
-        });
-    }
-  };
-
-  // !
+  // edit
   const handleRemovePhoto = () => {
-    setPost({ ...post, photo: "" });
+    props.showPost({ photo: "" });
   };
   const handleRemoveLink = () => {
-    setPost({ ...post, link: "" });
+    props.showPost({ link: "" });
   };
   const handleSetPhoto = (photo: string) => {
-    setPost({ ...post, photo });
+    props.showPost({ photo });
   };
   const handleSetLink = (link: string) => {
-    setPost({ ...post, link });
+    props.showPost({ link });
   };
-  // ! -
 
-  // async handlers
-  const handleVoteClick = () => {
-    setShowConfirm(!showConfirm);
-    const url = `/post/${_id}/vote?user=${props.auth.user._id}`;
-    axios({
-      method: "patch",
-      url
-    })
-      .then((response: AxiosResponse<any>) => {
-        setPost({ ...post, votes: [...post.votes, props.auth.user._id] });
-        props.getPosts(props.auth.user.location);
-      })
-      .catch((error: AxiosResponse<any>) => console.log(error));
+  const handleReplyChange = (event: any) => {
+    props.showPost({ reply: { text: event.target.value } });
   };
+
+  // submit
+  const submitUpdatePost = (answer?: string) => {
+    logger({
+      text: "submitUpdatePost:",
+      emph: answer || "",
+      type: "positive"
+    });
+    setMuniEditModal(false);
+    setMuniEdit(false);
+    setShowNewReply(false);
+    if (answer) {
+      setEdit(false);
+      showUpdateConfirmation(false);
+      if (answer === "attention") {
+        props.showPost(originalPost);
+      } else {
+        props.updatePost(post);
+      }
+    } else {
+      props.updatePost(post);
+    }
+  };
+  const submitVote = () => {
+    setShowConfirm(!showConfirm);
+    setTimeout(() => {
+      setShowConfirm(!showConfirm);
+    }, 2000);
+    props.votePost(post._id);
+  };
+
+  const submitDeletePost = (answer: string) => {
+    logger({ text: "submitDeletePost:", emph: answer, type: "positive" });
+
+    if (answer === "secondary") {
+      props.deletePost(post._id);
+      props.setModule(props.prevModule);
+    }
+  };
+
+  const submitDeleteMuniReply = (answer: string) => {
+    logger({ text: "submitDeletePost:", emph: answer, type: "positive" });
+
+    if (answer === "primary") {
+      const newPost = { ...post, reply: {} };
+      props.showPost(newPost);
+      props.updatePost(newPost);
+    }
+    setMuniEdit(false);
+  };
+
+  // TODO: refactor
 
   const handleReplyVoting = (updown: boolean) => {
-    // console.log(updown);
-    let newVotesUp = reply.up;
-    let newVotesDown = reply.down;
+    console.log("object");
+    logger({
+      text: "handleReplyVoting:",
+      emph: updown.toString(),
+      type: "positive"
+    });
+
+    let up = post.reply.up;
+    let down = post.reply.down;
 
     if (updown) {
-      newVotesUp.push(props.auth.user._id);
+      up.push(props.auth.user._id);
     } else {
-      newVotesDown.push(props.auth.user._id);
+      down.push(props.auth.user._id);
     }
-
-    const url = `/post/${_id}/reply/vote?user=${props.auth.user._id}&vote=${updown}`;
-    axios({
-      method: "get",
-      url
-    })
-      .then((response: AxiosResponse<any>) => {
-        setPost({
-          ...post,
-          reply: { ...post.reply, up: newVotesUp, down: newVotesDown }
-        });
-        props.getPosts(props.auth.user.location);
-      })
-      .catch((error: AxiosResponse<any>) => console.log(error));
+    const reply = { ...post.reply, reply: { ...post.reply, up, down } };
+    props.updatePost({ ...post, reply });
   };
 
   // numbers line
   const ageText: { [index: string]: string } = text["post.age"];
   const numbersLine = (
     <NumbersLine
-      date={createdAt}
+      date={post.createdAt}
       daysText={ageText}
       direction={direction}
-      votes={votes.length}
+      votes={post.votes.length}
       voterText={voterText}
     />
   );
 
   // setting up components
   const modal = showConfirm ? (
-    <ModalView close={handleVoteClick} text={text["vote.thanks"]} />
+    <ModalView close={submitVote} text={text["vote.thanks"]} />
   ) : null;
 
   let voteButton =
     includes || author || muniUser ? null : (
-      <div className={style.voteButton} onClick={() => handleVoteClick()}>
+      <div className={style.voteButton} onClick={() => submitVote()}>
         <VoteButton />
       </div>
     );
 
-  if (votes.includes(props.auth.user._id))
+  if (post.votes.includes(props.auth.user._id))
     voteButton = <Voted text={text["post.voted"]} direction={direction} />;
 
   let newReplyComponent: any = "";
@@ -329,27 +271,30 @@ const Post = (props: {
   let setOfThumbs: any = "";
 
   const newReplyButton =
-    muniUser && !reply.text ? (
+    muniUser && !post.reply.text ? (
       <NewReplyButton action={toggleShowNewReplyButton} />
     ) : null;
 
   // if there is muni reply
-  if (reply) {
+  if (post.reply) {
     const { replyCardStyle, replyCardColor } = replyCardStyleUtil(
-      reply,
+      post.reply,
       replyOpened
     );
 
-    if (reply.text && !allowToReply) {
+    if (post.reply.text && !allowToReply) {
       setOfThumbs = (
-        <SetOfThumbs fill={replyCardColor} onClick={handleReplyVoting} />
+        <div className={style[styleFactory("thumbsContainer", direction)]}>
+          <div onClick={(event: any) => handleReplyVoting(true)}>⬆</div>
+          <div onClick={(event: any) => handleReplyVoting(false)}>⬇</div>
+        </div>
       );
     } else if (allowToReply) {
       setOfThumbs = <Voted text={text["post.voted"]} direction={direction} />;
     }
 
     const replyVotes = (
-      <ReplyVotes replies={{ up: reply.up, down: reply.down }} />
+      <ReplyVotes replies={{ up: post.reply.up, down: post.reply.down }} />
     );
     let setOfEditButtons = null;
     let muniDeleteModal = null;
@@ -373,14 +318,14 @@ const Post = (props: {
       muniDeleteModal = muniDeleteConfirmation ? (
         <ModalEdit
           close={toggleMuniDeleteConfirmation}
-          action={handleDeleteMuniReply}
+          action={submitDeleteMuniReply}
           text={text["muni-reply.delete.text"]}></ModalEdit>
       ) : null;
 
       muniEditModal = showMuniEditModal ? (
         <ModalEdit
           close={toggleMuniEditModal}
-          action={handleEditMuniReply}
+          action={submitUpdatePost}
           text={text["muni-reply.edit.text"]}>
           {
             <div className='section'>
@@ -388,7 +333,7 @@ const Post = (props: {
                 autoFocus={true}
                 type='text'
                 name='reply'
-                value={newReply}
+                value={post.reply.text}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                   handleReplyChange(event)
                 }
@@ -400,7 +345,7 @@ const Post = (props: {
         </ModalEdit>
       ) : null;
     }
-    ReplyMessage = reply.text ? (
+    ReplyMessage = post.reply.text ? (
       <div className={style[replyCardStyle]}>
         <div className={style[styleFactory("replyTitleLine", direction)]}>
           {replyVotes}
@@ -408,8 +353,8 @@ const Post = (props: {
             {text["munireply.title"]}
           </span>
         </div>
-        <div className={style.replyMessage}>{newReply}</div>
-        {reply.text.length > 50 ? (
+        <div className={style.replyMessage}>{post.reply.text}</div>
+        {post.reply.text.length > 50 ? (
           <ShowMore
             color={replyCardColor === "white" ? "primary" : "white"}
             title={showMoreLessText}
@@ -431,20 +376,20 @@ const Post = (props: {
     <Confirm
       text={text["post.delete.confirm"]}
       close={toggleDeleteConfirmation}
-      action={handleDelete}
+      action={submitDeletePost}
       direction={direction}
     />
   ) : null;
 
   newReplyComponent = showNewReply ? (
-    <Modal disabled close={handleNewReplySubmit}>
+    <Modal disabled close={toggleShowNewReplyButton}>
       <NewReply
         label={text["newreply.label"]}
-        value={newReply}
+        value={post.reply.text}
         placeholder={text["newreply.placeholder"]}
-        action={handleNewReplyChange}
+        action={handleReplyChange}
         direction={direction}
-        submit={handleNewReplySubmit}
+        submit={submitUpdatePost}
         submitText={text["login.button.submit"]}
       />
     </Modal>
@@ -455,7 +400,7 @@ const Post = (props: {
       <Confirm
         text={text["post.update.confirm"]}
         close={toggleCloseSave}
-        action={handleUpdate}
+        action={submitUpdatePost}
         direction={direction}
       />
     </div>
@@ -500,20 +445,20 @@ const Post = (props: {
     <div className={style.container}>
       <Header {...headerObject} />
       <div className={style.wrapper}>
-        <div data-testid='post__view' id={_id} className={style.post}>
+        <div data-testid='post__view' id={post._id} className={style.post}>
           <TopBlock
             category={category}
-            title={title}
+            title={post.title}
             numbersLine={numbersLine}
           />
           <Photo
-            src={photo}
+            src={post.photo}
             edit={edit}
             actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
           />
           <Link
             primary
-            text={link}
+            text={post.link}
             direction={direction}
             edit={edit}
             actions={{ set: handleSetLink, remove: handleRemoveLink }}
@@ -529,13 +474,13 @@ const Post = (props: {
             <Text
               step
               title={text["post.problem"]}
-              text={problem}
+              text={post.problem}
               direction={direction}
             />
             <Text
               back
               title={text["post.solution"]}
-              text={solution}
+              text={post.solution}
               direction={direction}
             />
           </div>
@@ -552,7 +497,7 @@ const Post = (props: {
         {newReplyButton}
         {newReplyComponent}
         {ReplyMessage}
-        {reply.text ? (
+        {post.reply.text ? (
           <div className={style.replyVoted}>{setOfThumbs}</div>
         ) : null}
         {deleteButton}
@@ -567,17 +512,26 @@ const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
     locations: state.locations,
-    // @ts-ignore
-    post: state.posts.filter((post: any) => post._id === state.post._id)[0],
+    posts: state.posts,
+    post: state.post,
     mode: state.mode,
     prevModule: state.prevModule,
     token: state.token,
     auth: state.auth,
-    categories:state.categories
+    categories: state.categories
   };
 };
 
 export default connect(
   mapStateToProps,
-  { vote, updatePost, setModule, fetchData, getPosts, deletePost, showPost }
+  {
+    vote,
+    updatePost,
+    setModule,
+    fetchData,
+    getPosts,
+    deletePost,
+    showPost,
+    votePost
+  }
 )(Post);

@@ -9,13 +9,11 @@ import {
   checkToken,
   login,
   fetchData,
-  getPosts,
-  getNews,
   setMessage,
   getCategories
 } from "./store/users/actions";
 import { fetchLocations, setModule } from "./store/app/actions";
-import { showPost } from "./store/post/actions";
+import { showPost, getPosts } from "./store/post/actions";
 
 import NewButton from "./features/New/components/NewButton";
 import Navigation from "./features/Navigation";
@@ -49,7 +47,6 @@ const App = (props: {
   posts: data;
   showPost: (arg0: showPostPayload) => void;
   getPosts: (arg0: string) => void;
-  getNews: (arg0: string) => void;
   // type: any;
   getCategories: () => void;
   setMessage: (arg0: string) => void;
@@ -176,7 +173,7 @@ const App = (props: {
     props.getPosts(user.location);
     logger({ text: "fetching", emph: "news", type: "positive" });
     setMessage("fetching news...");
-    props.getNews(user.location);
+    // props.getNews(user.location);
   };
 
   const toggleModule = (module: string) => {
@@ -358,7 +355,6 @@ export default connect(
     showPost,
     // prevModule,
     getPosts,
-    getNews,
     setMessage,
     getCategories
   }

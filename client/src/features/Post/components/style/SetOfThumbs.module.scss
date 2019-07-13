@@ -8,21 +8,38 @@
   align-items: center;
   flex-direction: row;
 
-  span {
+  div {
+    padding: 0.5rem;
     height: 3rem;
-    margin: 0 2rem;
-    position: relative;
+    width: 3rem;
+
+    margin: {
+      top: -1.5rem;
+      left: 2rem;
+      right: 2rem;
+    }
+    border-radius: 50%;
+    font-size: 2rem;
+    text-align: center;
+    color: white;
+    border: var(--borderWhiteThick);
+    box-shadow: var(--boxShadow);
 
     &:first-of-type {
       bottom: 1.3rem;
+      background-color: var(--colorSecondary);
     }
 
     &:last-of-type {
-      transform: rotate(180deg); // bottom: 1.3rem;
+      background-color: var(--colorAttention);
     }
-
-    svg {
-      height: 3rem;
-    }
+    &:active {
+        transform: scale(0.9);
+      }
   }
+}
+
+.containerRTL {
+  @extend .container;
+  flex-direction: row-reverse;
 }

@@ -16,10 +16,10 @@ const PostSchema = new mongoose.Schema({
         minLength: 3,
         unique: true
     },
-    problem: { type: String, required: true, trim: true, minLength: 20 },
-    solution: { type: String, required: true, trim: true, minLength: 20 },
+    problem: { type: String, required: true, trim: true, minLength: 10 },
+    solution: { type: String, required: true, trim: true, minLength: 10 },
     photo: { type: String, trim: true },
-    link: { type: String, trim: true, minLength: 20 },
+    link: { type: String, trim: true, minLength: 5 },
     newsId: { type: mongoose.Schema.Types.ObjectId },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

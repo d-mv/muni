@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import { formSection } from "../../components/formSection";
@@ -33,43 +33,32 @@ const Login = (props: {
   typed: TYPE.indexedObj;
   login: (arg0: LoginProps) => void;
   muniLogin: (arg0: LoginProps) => void;
-  setModule: (arg0: string) => void;
+  setModule: (arg0: string, arg1: string) => void;
   setMessage: (arg0: string) => void;
   setLoading: (arg0: boolean) => void;
   typingData: (arg0: TYPE.data) => void;
   desktop?: boolean;
 }) => {
   // get the language[]
-  const { text, direction } = props.language;
-  // set local hooks
-  const [email, setEmail] = useState(props.typed ? props.typed.email : "");
-  const [pass, setPass] = useState(props.typed ? props.typed.pass : "");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (props.message !== message) {
-      setMessage(props.message);
-    }
-    if (props.loading !== loading) {
-      setLoading(props.loading);
-    }
-  }, [props.message, props.loading]);
+  const { typed, language, message, loading} = props;
+  const { pass, email } = typed;
+  const { text, direction } = language;
 
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    props.setLoading(true);
-    const login: LoginProps = {
-      email,
-      pass
-    };
     if (props.desktop) {
       // TODO: refactor
-      props.muniLogin(login);
+      props.muniLogin({
+        email,
+        pass
+      });
     } else {
-      props.login(login);
+      props.login({
+        email,
+        pass
+      });
     }
   };
 
@@ -81,16 +70,12 @@ const Login = (props: {
     if (message) {
       props.setMessage("");
     }
-    if (name === "email") {
-      setEmail(value);
-    } else {
-      setPass(value);
-    }
+    props.typingData({ [name]: value });
   };
 
   const handleSecondaryButton = () => {
     props.setMessage("");
-    props.setModule("register");
+    props.setModule("login", "register");
   };
 
   // set the form elements
@@ -112,6 +97,7 @@ const Login = (props: {
     type: "email",
     name: "email",
     value: email,
+    autoComplete: 'username',
     placeholder: text["login.prompt.email"],
     action: handleInputChange,
     focus: !props.loading
@@ -122,6 +108,7 @@ const Login = (props: {
     type: "password",
     name: "pass",
     value: pass,
+    autoComplete: "current-password",
     placeholder: text["login.prompt.password"],
     action: handleInputChange,
     length: 7

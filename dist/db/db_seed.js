@@ -111,7 +111,7 @@ const users = () => __awaiter(this, void 0, void 0, function* () {
     try {
         const listOfLocations = yield Location.find({});
         listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
-            for (let i = 0; i < randomNumber(3); i++) {
+            for (let i = 0; i < randomNumber(6); i++) {
                 const user = new User({
                     pass: "1234567",
                     fName: faker.name.firstName(),
@@ -136,7 +136,7 @@ const posts = () => __awaiter(this, void 0, void 0, function* () {
         const louLength = listOfUsers.length - 1;
         const listOfCategories = yield Category.find({});
         listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
-            for (let i = 0; i < randomNumber(10); i++) {
+            for (let i = 0; i < randomNumber(20); i++) {
                 const usr = listOfUsers[randomNumber(louLength)];
                 const post = new Post({
                     title: faker.lorem.sentence(),
@@ -166,7 +166,7 @@ const news = () => __awaiter(this, void 0, void 0, function* () {
     try {
         const listOfLocations = yield Location.find({});
         listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
-            for (let i = 0; i < randomNumber(10); i++) {
+            for (let i = 0; i < randomNumber(20); i++) {
                 const post = new News({
                     title: faker.lorem.sentence(),
                     text: faker.lorem.paragraphs(5),
@@ -190,14 +190,13 @@ const dbSeed = () => __awaiter(this, void 0, void 0, function* () {
         // const category = await categories();
         // const location = await locations();
         // const user = await users();
-        // const post = await posts();
+        const post = yield posts();
         // const newsPosts = await news();
         return [
-        // category
-        // location,
-        // user
-        // post
-        // newsPosts
+            // category,
+            // location,
+            // user,
+            post,
         ];
     }
     catch (error) {

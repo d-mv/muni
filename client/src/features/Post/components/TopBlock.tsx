@@ -1,9 +1,7 @@
 import React from "react";
 
 import Category from "../../../components/Card/components/Category";
-
 import Section from "../../../layout/Section";
-
 import styles from "./style/TopBlock.module.scss";
 
 export const TopBlock = (props: {

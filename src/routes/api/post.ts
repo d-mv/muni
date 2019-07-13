@@ -9,23 +9,51 @@ const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, async (req: any, res: any) => {
   const post = new Post({
     ...req.body,
-    createdBy: req.user._id
+    createdBy: req.user._id,
+    location: req.user.location
   });
   try {
-    await post.save();
-    res.status(201).send(post);
+    const result = await post.save();
+    const posts = await Post.find({});
+    res.status(201).send(posts);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 });
 router.get("/:id", authenticate, async (req: any, res: any) => {
   try {
-    const post = await Post.find({_id:req.params.id})
+    const post = await Post.find({ _id: req.params.id });
     res.status(201).send(post);
   } catch (error) {
     res.status(400).send(error);
   }
 });
+// vote
+router.get("/:id/vote", authenticate, async (req: any, res: any) => {
+  const _id = req.params.id;
+
+  if (!ObjectID.isValid(_id)) {
+    res.status(404).send();
+  }
+  try {
+    const post = await Post.findOne({
+      _id: req.params.id
+    });
+
+    if (!post) {
+      res.status(404).send();
+    }
+    post.votes = [...post.votes, req.user._id];
+    await post.save();
+    const posts = await Post.find({});
+    res.send(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send();
+  }
+});
+
 router.patch("/:id", authenticate, async (req: any, res: any) => {
   const _id = req.params.id;
   const updates = Object.keys(req.body);
@@ -35,19 +63,20 @@ router.patch("/:id", authenticate, async (req: any, res: any) => {
   }
   try {
     const post = await Post.findOne({
-      _id: req.params.id,
-      author: req.user._id
+      _id: req.params.id
     });
 
     if (!post) {
       res.status(404).send();
     }
-
     updates.forEach(update => (post[update] = req.body[update]));
+
     await post.save();
 
-    res.send(post);
+    const posts = await Post.find({});
+    res.send(posts);
   } catch (error) {
+    console.log(error);
     res.status(400).send();
   }
 });
@@ -59,14 +88,15 @@ router.delete("/:id", authenticate, async (req: any, res: any) => {
   }
   try {
     const deletepost = await Post.findOneAndDelete({
-      _id: _id,
-      author: req.user._id
+      _id: _id
     });
     if (!deletepost) {
       return res.status(404).send();
     }
-    res.send(deletepost);
+    const posts = await Post.find({});
+    res.send(posts);
   } catch (error) {
+    console.log(error);
     res.status(500).send();
   }
 });

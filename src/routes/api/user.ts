@@ -1,5 +1,5 @@
 import { ObjectID } from "mongodb";
-const data = require("../../data/data.json")
+import sendEmail from "../../modules/send_mail";
 const express = require("express");
 const router = new express.Router();
 
@@ -7,6 +7,7 @@ const User = require("../../models/user");
 const Post = require("../../models/post");
 
 const authenticate = require("../../middleware/auth");
+const data = require("../../data/data.json");
 const translation: { [index: string]: any } = data;
 
 router.post("/", async (req: any, res: any) => {
@@ -14,13 +15,16 @@ router.post("/", async (req: any, res: any) => {
   try {
     const token = await user.newAuthToken();
     // send confirmation mail
+    const url = `http://localhost:8080/user/verify?id=${token}`;
+    // const send =  sendEmail(email, url, language);
+    const send = await sendEmail(user.email, url, user.settings.language);
     const messages = user.lang ? translation[user.lang] : translation["עב"];
     //.assign message
     const message = messages.user.verificationMessageSent;
 
     res.status(201).send({ message });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send(e.errmsg ? e.errmsg : e);
   }
 });
 
@@ -130,7 +134,5 @@ router.patch("/:id", authenticate, async (req: any, res: any) => {
     res.status(400).send();
   }
 });
-
-
 
 export default router;
