@@ -15,7 +15,7 @@ router.post("/", async (req: any, res: any) => {
   try {
     const token = await user.newAuthToken();
     // send confirmation mail
-    const url = `http://localhost:8080/user/verify?id=${token}`;
+    const url = `https://muni-dev.herokuapp.com/user/verify?id=${token}`;
     // const send =  sendEmail(email, url, language);
     const send = await sendEmail(user.email, url, user.settings.language);
     const messages = user.lang ? translation[user.lang] : translation["עב"];
