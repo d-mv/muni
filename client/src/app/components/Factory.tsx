@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 
 import Loading from "../../pages/Loading";
 import WelcomePage from "../../pages/Welcome";
+import WelcomeDesktopPage from "../../pages/WelcomeDesktop";
 import LoginPage from "../../pages/Enter";
 import RegisterPage from "../../pages/Enter";
 import ConfirmationPage from "../../pages/Confirmation";
@@ -9,6 +10,7 @@ import MunicipalityPage from "../../pages/Municipality";
 import NewPage from "../../pages/New";
 import PostPage from "../../pages/Post";
 import HomePage from "../../pages/Home";
+import HomeDesktopPage from "../../pages/HomeDesktop";
 import MinePage from "../../pages/Mine";
 import ProfilePage from "../../pages/Profile";
 
@@ -70,11 +72,28 @@ export const Welcome = (props: {
     nav: true,
     config: props.config
   });
+export const WelcomeDesktop = (props: {
+  config: { action: () => void; user: boolean };
+}) =>
+  componentFactory({
+    children: <WelcomeDesktopPage />,
+    nav: true,
+    config: props.config
+  });
 export const Login = (props: {
   config: { action: () => void; user: boolean };
 }) =>
   componentFactory({
     children: <LoginPage />,
+    nav: true,
+    lazy: true,
+    config: props.config
+  });
+export const LoginDesktop = (props: {
+  config: { action: () => void; user: boolean };
+}) =>
+  componentFactory({
+    children: <LoginPage desktop />,
     nav: true,
     lazy: true,
     config: props.config
@@ -128,6 +147,15 @@ export const Home = (props: {
     nav: true,
     lazy: true,
     new: true,
+    config: props.config
+  });
+export const HomeDesktop = (props: {
+  config: { action: () => void; user: boolean };
+}) =>
+  componentFactory({
+    children: <HomeDesktopPage />,
+    nav: true,
+    lazy: true,
     config: props.config
   });
 export const Mine = (props: {

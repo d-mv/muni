@@ -69,36 +69,36 @@
 
   .blockLeft {
     width: 40%;
-    height: 40%;
+    height: 80%;
     max-width: 300px;
     margin: 0 auto;
     display: flex;
     align-content: center;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: center;
 
     .logo {
-      width: 50%;
-      height: 30%;
+      width: 20vw;
+      height: 20vw;
       margin-bottom: 10%;
     }
 
     .title {
-      width: 60%;
+      width: 25vw;
       max-height: 30%;
-
     }
 
     .subTitle {
-      width: 40%;
+      width: 15vw;
       max-height: 20%;
 
     }
 
     .divider {
       height: 2px;
-      width: 75%;
+      width: 30vw;
+      margin: 2rem;
       background-color: white;
     }
   }

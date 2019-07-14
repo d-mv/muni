@@ -28,18 +28,11 @@ const Home = (props: {
 }) => {
   const { locations, auth } = props
   const {user} = auth
-  const { text } = props.language;
+  const { text,short } = props.language;
 const charts:indexedObjAny=chartsData
-  const location = locations.filter((el: any) => el._id === user.location)[0];
+  const location = locations[0].name[short]
 
-
-
-  const sortPostList = (posts: post[]) => {
-    return posts.sort((a: post, b: post) =>
-      a.votes.length < b.votes.length ? 1 : -1
-    );
-  };
-
+console.log(user)
   return (
     <div className={style.desktop}>
       <div className={style.header}>

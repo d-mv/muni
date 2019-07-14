@@ -48,6 +48,29 @@ router.post("/login", async (req: any, res: any) => {
     res.status(400).send({ message: error.toString() });
   }
 });
+router.post("/munilogin", async (req: any, res: any) => {
+  try {
+    const user = await User.checkValidCredentials(
+      req.body.email,
+      req.body.pass
+    );
+    console.log(user.type);
+    if (user.type === "user") throw new Error("Please, use mobile version");
+
+    if (user.status) {
+      const token = await user.newAuthToken();
+      res.send({ user, token });
+    } else {
+      const messages = user.lang ? translation[user.lang] : translation["עב"];
+      //.assign message
+      const message = messages.user.notVerified;
+      // send mail with link
+      res.send({ message });
+    }
+  } catch (error) {
+    res.status(400).send({ message: error.toString() });
+  }
+});
 router.get("/check", authenticate, async (req: any, res: any) => {
   try {
     const { type, location, _id, settings } = req.user;

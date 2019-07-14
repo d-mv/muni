@@ -87,6 +87,52 @@ export const login = (login: LoginProps) => async (
       });
     });
 };
+export const muniLogin = (login: LoginProps) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
+  dispatch({
+    type: "SET_LOADING",
+    loading: true
+  });
+  dispatch({
+    type: "SET_MESSAGE",
+    message: ""
+  });
+  post({ url: "/users/munilogin", body: login })
+    .then(response => {
+      const { token } = response.data;
+      const { _id, location, type, settings } = response.data.user;
+      dispatch({
+        type: "SET_AUTH",
+        payload: { status: true, user: { _id, location, type, settings } }
+      });
+      dispatch({
+        type: "SET_LANGUAGE",
+        data: data.language[settings.language]
+      });
+      dispatch({ type: "SET", token });
+      dispatch({
+        type: "SET_MESSAGE",
+        message: "Loading data..."
+      });
+      dispatch({ type: "TYPING_DATA", payload: { email: "", pass: "" } });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    })
+    .catch((error: any) => {
+      const { message } = error.response.data;
+      dispatch({
+        type: "SET_MESSAGE",
+        message: message.split("Error: ")[1]
+      });
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    });
+};
 
 export const register = (props: registerType) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
