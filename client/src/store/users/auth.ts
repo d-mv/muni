@@ -169,7 +169,7 @@ export const register = (props: registerType) => async (
 export const logOff = () => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) =>
-  post({ url: "http://localhost:8080/api/users/logout" })
+  post({ url: "/users/logout" })
     .then((response: any) => {
       dispatch({ type: "SET", token: "clear" });
       dispatch({
