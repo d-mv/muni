@@ -22,7 +22,7 @@ router.post("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const token = yield user.newAuthToken();
         // send confirmation mail
-        const url = `http://localhost:8080/user/verify?id=${token}`;
+        const url = `https://muni-dev.herokuapp.com/user/verify?id=${token}`;
         // const send =  sendEmail(email, url, language);
         const send = yield send_mail_1.default(user.email, url, user.settings.language);
         const messages = user.lang ? translation[user.lang] : translation["עב"];
@@ -47,6 +47,28 @@ router.post("/login", (req, res) => __awaiter(this, void 0, void 0, function* ()
             const message = messages.user.notVerified;
             // send mail with link
             res.send({ message: message });
+        }
+    }
+    catch (error) {
+        res.status(400).send({ message: error.toString() });
+    }
+}));
+router.post("/munilogin", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const user = yield User.checkValidCredentials(req.body.email, req.body.pass);
+        console.log(user.type);
+        if (user.type === "user")
+            throw new Error("Please, use mobile version");
+        if (user.status) {
+            const token = yield user.newAuthToken();
+            res.send({ user, token });
+        }
+        else {
+            const messages = user.lang ? translation[user.lang] : translation["עב"];
+            //.assign message
+            const message = messages.user.notVerified;
+            // send mail with link
+            res.send({ message });
         }
     }
     catch (error) {

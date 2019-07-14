@@ -181,10 +181,6 @@ export const logOff = () => async (
         payload: { ...apiState }
       });
       dispatch({
-        type: "SET_NEWS",
-        posts: []
-      });
-      dispatch({
         type: "SET_MESSAGE",
         message: ""
       });

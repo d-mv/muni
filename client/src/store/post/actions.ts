@@ -7,6 +7,9 @@ export * from "./fetch";
 export const setPosts = (posts: any): Action => {
   return { type: "SET_POSTS", payload: posts };
 };
+export const setNews = (news: any): Action => {
+  return { type: "SET_NEWS", payload: news };
+};
 
 export const showPost = (props: any): Action => {
   return { type: "SHOW_POST", payload: { ...props } };

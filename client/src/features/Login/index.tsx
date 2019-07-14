@@ -39,7 +39,6 @@ const Login = (props: {
   typingData: (arg0: TYPE.data) => void;
   desktop?: boolean;
 }) => {
-  // get the language[]
   const { typed, language, message, loading} = props;
   const { pass, email } = typed;
   const { text, direction } = language;

@@ -40,10 +40,10 @@ app.use("/api", api_1.default);
 app.use("/user/verify", verify_1.default);
 // * React
 //Static file declaration
-app.use(express.static(path.join(__dirname, "../../client/build/")));
+app.use(express.static(path.join(__dirname, "../client/build/")));
 //build mode
 app.get("/index.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "../../client/build/index.html"));
+    res.sendFile(path.join(__dirname + "../client/build/index.html"));
 });
 // * end of React
 exports.default = app;

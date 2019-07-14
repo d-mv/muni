@@ -14,7 +14,13 @@ import {
   getCategories
 } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
-import { showPost, getPosts, getNews } from "../store/post/actions";
+import {
+  showPost,
+  getPosts,
+  getNews,
+  setPosts,
+  setNews
+} from "../store/post/actions";
 
 import logger from "../modules/logger";
 
@@ -55,6 +61,8 @@ const App = (props: {
   showPost: (arg0: showPostPayload) => void;
   getPosts: (arg0: string) => void;
   getNews: (arg0: string) => void;
+  setPosts: (arg0: any) => void;
+  setNews: (arg0: any) => void;
 }) => {
   const { token, userMuni, cookies, auth, posts } = props;
 
@@ -64,7 +72,7 @@ const App = (props: {
   const fetchPostsNews = () => {
     logger({ text: "fetching", emph: "categories", type: "positive" });
     setMessage("fetching categories...");
-    console.log(!Object(props.categories))
+    console.log(!Object(props.categories));
     if (!Object(props.categories).keys) props.getCategories();
     logger({ text: "fetching", emph: "petitions", type: "positive" });
     setMessage("fetching petitions...");
@@ -85,6 +93,8 @@ const App = (props: {
       logger({ text: "token is", emph: "clear", type: "attention" });
       cookies.set("token", "");
       toggleModule("welcome");
+      props.setNews([]);
+      props.setPosts([]);
     }
 
     if (auth.user._id && auth.user.location && token) {
@@ -227,6 +237,8 @@ export default connect(
     showPost,
     getPosts,
     getNews,
-    getCategories
+    getCategories,
+    setPosts,
+    setNews
   }
 )(withCookies(App));
