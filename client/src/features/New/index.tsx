@@ -97,7 +97,7 @@ const NewPost = (props: {
           check = problem;
           break;
         case 4:
-          check = solution;
+          check = '_';
           break;
         case 5:
           check = "_";
