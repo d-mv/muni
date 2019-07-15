@@ -74,6 +74,7 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setMessage("");
+    props.typingData({email:'',pass:''})
     props.setModule("register");
   };
 

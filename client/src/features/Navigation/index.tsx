@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import styleFactory from "../../modules/style_factory";
 
 import { AppState } from "../../store";
-import { setModule, setLoading } from "../../store/users/actions";
+import { setModule, setLoading, typingData } from "../../store/users/actions";
 
 import NavButton from "./components/NavButton";
 import EntranceButton from "./components/EntranceButton";
@@ -34,6 +34,16 @@ const Navigation = (props: any) => {
         props.setModule("confirmation");
         break;
       default:
+        if (module === "login") {
+          props.typingData({
+            email: "",
+            pass: "",
+            location: "",
+            fName: "",
+            lName: "",
+            secondPass: ""
+          });
+        }
         props.setModule(module);
     }
   };
@@ -53,8 +63,8 @@ const Navigation = (props: any) => {
         <nav className={headerStyle}>
           <NavButton mode='return-welcome' action={action} />
           <h1>Our Change</h1>
-          <div className="langSwitchButton">
-            <LangSwitch white/>
+          <div className='langSwitchButton'>
+            <LangSwitch white />
           </div>
         </nav>
       );
@@ -65,7 +75,7 @@ const Navigation = (props: any) => {
           <NavButton mode='return-login' action={action} />
           <h1>Our Change</h1>
           <div className='langSwitchButton'>
-            <LangSwitch white/>
+            <LangSwitch white />
           </div>
         </nav>
       );
@@ -116,5 +126,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setModule, setLoading }
+  { setModule, setLoading, typingData }
 )(Navigation);

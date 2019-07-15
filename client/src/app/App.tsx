@@ -11,7 +11,8 @@ import {
   setToken,
   checkToken,
   fetchData,
-  getCategories
+  getCategories,
+  typingData
 } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
 import {
@@ -63,6 +64,7 @@ const App = (props: {
   getNews: (arg0: string) => void;
   setPosts: (arg0: any) => void;
   setNews: (arg0: any) => void;
+  typingData: (arg0: any) => void;
 }) => {
   const { token, userMuni, cookies, auth, posts } = props;
 
@@ -155,6 +157,15 @@ const App = (props: {
       console.log("- posts are there, show post");
       toggleModule("home");
       setLoading(false);
+      // TODO: set a method in Redux to clear
+      props.typingData({
+        email: "",
+        pass: "",
+        location: "",
+        fName: "",
+        lName: "",
+        secondPass: ""
+      });
     }
   }, [props.posts]);
 
@@ -239,6 +250,7 @@ export default connect(
     getNews,
     getCategories,
     setPosts,
-    setNews
+    setNews,
+    typingData
   }
 )(withCookies(App));
