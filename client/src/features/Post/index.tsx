@@ -477,12 +477,14 @@ const Post = (props: {
               text={post.problem}
               direction={direction}
             />
-            <Text
-              back
-              title={text["post.solution"]}
-              text={post.solution}
-              direction={direction}
-            />
+            {post.solution ? (
+              <Text
+                back
+                title={text["post.solution"]}
+                text={post.solution}
+                direction={direction}
+              />
+            ) : null}
           </div>
           <ShowMore
             color='primary'

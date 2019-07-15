@@ -25,11 +25,6 @@ const Home = (props: {
     name: location.name[user.settings.language],
     right: { icon: <div />, action: () => {} }
   };
-  // TODO: move to back
-  const sortPostList = (posts: post[]) =>
-    posts.sort((a: post, b: post) =>
-      a.votes.length < b.votes.length ? 1 : -1
-    );
 
   console.log(pinned);
   return (
@@ -37,7 +32,7 @@ const Home = (props: {
       <Header {...headerObject} />
       <Content header>
         {pinned ? <PinnedCard post={pinned} /> : null}
-        <PostList posts={sortPostList(posts)} />;
+        <PostList posts={posts} />;
       </Content>
     </Page>
   );

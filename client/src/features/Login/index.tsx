@@ -33,13 +33,12 @@ const Login = (props: {
   typed: TYPE.indexedObj;
   login: (arg0: LoginProps) => void;
   muniLogin: (arg0: LoginProps) => void;
-  setModule: (arg0: string, arg1: string) => void;
+  setModule: (arg0: string) => void;
   setMessage: (arg0: string) => void;
   setLoading: (arg0: boolean) => void;
   typingData: (arg0: TYPE.data) => void;
   desktop?: boolean;
 }) => {
-  // get the language[]
   const { typed, language, message, loading} = props;
   const { pass, email } = typed;
   const { text, direction } = language;
@@ -75,7 +74,8 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setMessage("");
-    props.setModule("login", "register");
+    props.typingData({email:'',pass:''})
+    props.setModule("register");
   };
 
   // set the form elements

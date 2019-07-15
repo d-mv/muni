@@ -33,7 +33,7 @@ export const Preview = (props: {
           text={props.post.problem}
           direction={props.direction}
         />
-        {props.muni ? null : (
+          {props.muni || !props.post.solution ? null : (
           <Text
             back
             title={props.text.solution}
@@ -44,4 +44,4 @@ export const Preview = (props: {
       </div>
     </div>
   </div>
-);
+)

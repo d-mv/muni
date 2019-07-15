@@ -97,23 +97,12 @@ const NewPost = (props: {
           check = problem;
           break;
         case 4:
-          check = solution;
+          check = '_';
           break;
         case 5:
-          if (link) {
-            const regex = new RegExp(
-              "^([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
-            );
-            check = regex.test(link) ? "true" : "";
-            if (!check) {
-              response = text["new.message.urlMalformed"];
-            }
-          } else {
-            check = " ";
-          }
+          check = "_";
           break;
       }
-      console.log(check);
       if (check) {
         setMessage("");
         setStep(step + 1);
@@ -217,7 +206,7 @@ const NewPost = (props: {
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: true
+          focus: false
         })
       : null;
   const stepFour =
@@ -230,7 +219,7 @@ const NewPost = (props: {
           placeholder: text["new.field.solution.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: true
+          focus: false
         })
       : null;
   const stepFive =
@@ -341,5 +330,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setStep,setModule, typingPost, setLoading, createPost }
+  { setStep, setModule, typingPost, setLoading, createPost }
 )(NewPost);

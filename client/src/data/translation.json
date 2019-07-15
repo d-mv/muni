@@ -40,7 +40,6 @@
         "post.replied": "replied",
         "post.voted": "you have voted",
         "profile.text.changeLanguage": "Please, choose the app language. The language chosen is shown next to the switch button",
-        "profile.text.logOff": "Please press the button below if you want to log off the app. You will have to log in if you want to use the app again.",
         "profile.button.logOff": "LOG OUT",
         "new.steps.button.next": "NEXT",
         "new.steps.button.back": "BACK",
@@ -121,7 +120,9 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text"
+        "muni.post.prompt.text":"enter the text",
+        "register.passwords.min-7": "Password should be 7+ symbols",
+        "register.prompt.city": "please, choose location..."
       }
     },
     "עב": {
@@ -165,7 +166,6 @@
         "post.replied": "יש מענה",
         "post.voted": "כבר הצבעת",
         "profile.text.changeLanguage": "בחר, בחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד הלחצן למטה",
-        "profile.text.logOff": "אנא לחץ על הלחצן למטה אם אתה רוצה לצאת מהאפליקצייה. יהיה עליך להתחבר מחדש אם ברצונך להשתמש באפליקציה שוב.",
         "profile.button.logOff": "התנתק",
         "new.steps.button.next": "לשלב הבא",
         "new.steps.button.back": "לשלב הקודם",
@@ -244,7 +244,9 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text"
+        "muni.post.prompt.text":"enter the text",
+        "register.passwords.min-7": "Password should be 7+ symbols",
+        "register.prompt.city":"please, choose location..."
       }
     },
     "ع": {
@@ -287,7 +289,6 @@
         "post.replied": "تم الرد",
         "post.voted": "قمت بالتصويت مسبقا",
         "profile.text.changeLanguage": "من فضلك اختر لغة التطبيق. اللغة اللتي تم اختيارها تظهر اسفل بجانب زر التغيير",
-        "profile.text.logOff": "الرجاء الضغط على الزر اسفل الصفحة لتسجيل الخروج. ستحتاجون لتسجيل الدخول من جديد اذا اردتم استعمال التطبيق.",
         "profile.button.logOff": "تسجيل الخروج",
         "new.steps.button.next": "التالي",
         "new.steps.button.back": "السابق",
@@ -367,7 +368,9 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text"
+        "muni.post.prompt.text":"enter the text",
+        "register.passwords.min-7": "Password should be 7+ symbols",
+        "register.prompt.city": "please, choose location..."
       }
     }
   }

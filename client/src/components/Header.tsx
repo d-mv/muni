@@ -26,11 +26,11 @@ const Header = (props: {
     noRtl?: boolean;
   };
   user: any;
+  module: string;
   showHelp: (arg0: boolean) => void;
 }) => {
-  // const [showHelp, setShowHelp] = React.useState(props.help);
   const { direction } = props.language;
-  const { name, user } = props;
+  const { name, user, module } = props;
 
   const makeIcon = (icon: any, noRtl?: boolean) => {
     const style = noRtl
@@ -41,7 +41,7 @@ const Header = (props: {
 
   useEffect(() => {
     if (user.settings.help) {
-      props.showHelp(true)
+      props.showHelp(true);
     }
   }, []);
 
@@ -50,18 +50,26 @@ const Header = (props: {
   };
 
   const handleLeftAction = () => {
-    props.left ? props.left.action() : toggleHelp();
+    if (props.left) {
+      props.left.action();
+    } else if (module === "home") {
+      toggleHelp();
+    }
   };
   const handleRightAction = () => {
     if (props.right) props.right.action();
   };
 
-  const left = props.left
-    ? makeIcon(props.left.icon, props.left.noRtl)
-    : makeIcon(
-        iconHelp(props.user.type === "muni" ? "secondary" : "primary"),
-        true
-      );
+  const left = props.left ? (
+    makeIcon(props.left.icon, props.left.noRtl)
+  ) : module === "home" ? (
+    makeIcon(
+      iconHelp(props.user.type === "muni" ? "secondary" : "primary"),
+      true
+    )
+  ) : (
+    <div />
+  );
 
   const right = props.right ? (
     makeIcon(props.right.icon, props.right.noRtl)
@@ -87,7 +95,8 @@ const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
     user: state.auth.user,
-    help: state.help
+    help: state.help,
+    module: state.module
   };
 };
 

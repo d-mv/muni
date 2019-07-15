@@ -78,20 +78,9 @@ const NewPost = (props: {
           check = props.newPost.text;
           break;
         case 3:
-          if (link) {
-            const regex = new RegExp(
-              "^([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
-            );
-            check = regex.test(link) ? "true" : "";
-            if (!check) {
-              response = text["new.message.urlMalformed"];
-            }
-          } else {
-            check = "";
-          }
+          check = "_";
           break;
       }
-      console.log(check);
       if (check) {
         setMessage("");
         setStep(step + 1);
@@ -171,7 +160,7 @@ const NewPost = (props: {
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: true
+          focus: false
         })
       : null;
 

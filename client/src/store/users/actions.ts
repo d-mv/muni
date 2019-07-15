@@ -263,75 +263,75 @@ export const cachePost = (post: TYPE.post): Action => {
   return { type: "CACHE_POST", post };
 };
 
-export const muniLogin = (
-  props: LoginProps
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  const url = `/muni/login?pass=${props.pass}&email=${props.email}`;
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch({
-      type: "SET_LOADING",
-      loading: true
-    });
-    // clear state
-    dispatch({
-      type: "LOGIN",
-      payload: apiState
-    });
-    dispatch({
-      type: "SET_MESSAGE",
-      message: ""
-    });
-    dispatch({ type: "TYPING_DATA", payload: { ...props } });
-    // proceed with request
-    axios({
-      method: "get",
-      url
-    })
-      .then(response => {
-        // if successful change page
-        if (response.data.status) {
-          dispatch({ type: "SET_AUTH", status: true });
-          dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
-          if (response.data.payload.type) {
-            dispatch({
-              type: "USER_TYPE",
-              user: response.data.payload.type
-            });
-          }
-          dispatch({
-            type: "SET_LANGUAGE",
-            data: importedData.language[response.data.payload.lang]
-          });
-          dispatch({ type: "SET", token: response.data.token });
-        } else {
-          dispatch({
-            type: "SET_MESSAGE",
-            message: response.data.message
-          });
-        }
-        dispatch({
-          type: "LOGIN",
-          payload: { ...response.data, code: response.status }
-        });
-        dispatch({
-          type: "SET_LOADING",
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        const payload = error.response ? error.response.data : error.toString();
-        dispatch({
-          type: "SET_MESSAGE",
-          message: payload.message || payload || ""
-        });
-        dispatch({
-          type: "LOGIN",
-          payload
-        });
-      });
-  };
-};
+// export const muniLogin = (
+//   props: LoginProps
+// ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+//   const url = `/muni/login?pass=${props.pass}&email=${props.email}`;
+//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+//     dispatch({
+//       type: "SET_LOADING",
+//       loading: true
+//     });
+//     // clear state
+//     dispatch({
+//       type: "LOGIN",
+//       payload: apiState
+//     });
+//     dispatch({
+//       type: "SET_MESSAGE",
+//       message: ""
+//     });
+//     dispatch({ type: "TYPING_DATA", payload: { ...props } });
+//     // proceed with request
+//     axios({
+//       method: "get",
+//       url
+//     })
+//       .then(response => {
+//         // if successful change page
+//         if (response.data.status) {
+//           dispatch({ type: "SET_AUTH", status: true });
+//           dispatch({ type: "SET_LOCATION_DATA", data: response.data.payload });
+//           if (response.data.payload.type) {
+//             dispatch({
+//               type: "USER_TYPE",
+//               user: response.data.payload.type
+//             });
+//           }
+//           dispatch({
+//             type: "SET_LANGUAGE",
+//             data: importedData.language[response.data.payload.lang]
+//           });
+//           dispatch({ type: "SET", token: response.data.token });
+//         } else {
+//           dispatch({
+//             type: "SET_MESSAGE",
+//             message: response.data.message
+//           });
+//         }
+//         dispatch({
+//           type: "LOGIN",
+//           payload: { ...response.data, code: response.status }
+//         });
+//         dispatch({
+//           type: "SET_LOADING",
+//           loading: false
+//         });
+//       })
+//       .catch(error => {
+//         console.log(error);
+//         const payload = error.response ? error.response.data : error.toString();
+//         dispatch({
+//           type: "SET_MESSAGE",
+//           message: payload.message || payload || ""
+//         });
+//         dispatch({
+//           type: "LOGIN",
+//           payload
+//         });
+//       });
+//   };
+// };
 
 // TODO: move to utils
 export const clearState = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
