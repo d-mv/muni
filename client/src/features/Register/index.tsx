@@ -36,7 +36,7 @@ const Register = (props: {
   typingData: (arg0: { [index: string]: any }) => void;
 }) => {
   // get the language
-  const { locations, language, message, loading, typed } = props;
+  const { locations, language, message, loading, typed, setMessage } = props;
   const { text, direction, short } = language;
   const { location, fName, lName, pass, secondPass, email } = typed;
 
@@ -46,6 +46,7 @@ const Register = (props: {
     props.typingData({ location: locations[0]._id });
   }, []);
 
+  // enable the button, when ready
   useEffect(() => {
     if (!fName && !lName && !location && !email && !pass && !secondPass) {
       setDisabled(true);
@@ -55,6 +56,7 @@ const Register = (props: {
       location &&
       email &&
       pass &&
+      pass.length >= 7 &&
       secondPass &&
       pass === secondPass
     ) {
@@ -62,41 +64,30 @@ const Register = (props: {
     }
   }, [fName, lName, location, email, pass, secondPass]);
 
+  // check the passwords
+  useEffect(() => {
+    if (secondPass && pass && pass.length < 7) {
+      setMessage(text["register.passwords.min-7"]);
+    } else if (pass && secondPass && pass !== secondPass)
+      setMessage(text["register.passwords.dont-match"]);
+  }, [pass, secondPass]);
+
   // * form methods
   // handle data submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // only if not loading & not disabled
     if (!loading && !disabled) {
-      if (pass !== secondPass) {
-        setMessage(text["register.passwords.dont-match"]);
-      } else {
-        // export interface UserType {
-        //   _id: ObjectID;
-        //   location: ObjectID;
-        //   fName: string;
-        //   lName: string;
-        //   email: string;
-        //   pass: string;
-        //   type: UserKind;
-        //   tokens: string[];
-        //   settings: UserSettings;
-        //   status: boolean;
-        //   createdAt: Date;
-        // }
-
-        // props.setLoading(true);
-        props.register({
-          email,
-          pass,
-          location,
-          fName,
-          lName,
-          settings: {
-            language: props.language.short
-          }
-        });
-      }
+      props.register({
+        email,
+        pass,
+        location,
+        fName,
+        lName,
+        settings: {
+          language: props.language.short
+        }
+      });
     }
   };
 

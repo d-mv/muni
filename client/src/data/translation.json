@@ -120,7 +120,8 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text"
+        "muni.post.prompt.text":"enter the text",
+        "register.passwords.min-7": "Password should be 7+ symbols"
       }
     },
     "עב": {
@@ -242,7 +243,8 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text"
+        "muni.post.prompt.text":"enter the text",
+        "register.passwords.min-7": "Password should be 7+ symbols"
       }
     },
     "ع": {
@@ -364,7 +366,8 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text"
+        "muni.post.prompt.text":"enter the text",
+        "register.passwords.min-7": "Password should be 7+ symbols"
       }
     }
   }

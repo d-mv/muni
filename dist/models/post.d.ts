@@ -9,7 +9,7 @@ export interface PostType {
     location: ObjectID;
     title: string;
     problem: string;
-    solution: string;
+    solution?: string;
     photo?: string;
     link?: string;
     newsId?: ObjectID;
