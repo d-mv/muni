@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const sort_1 = require("../../modules/sort");
 const express = require("express");
 const router = new express.Router();
 const { ObjectID } = require("mongodb");
@@ -18,7 +19,7 @@ router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, fun
     try {
         const result = yield post.save();
         const posts = yield Post.find({});
-        res.status(201).send(posts);
+        res.status(201).send(sort_1.sortPosts(posts));
     }
     catch (error) {
         console.log(error);
@@ -50,7 +51,7 @@ router.get("/:id/vote", authenticate, (req, res) => __awaiter(this, void 0, void
         post.votes = [...post.votes, req.user._id];
         yield post.save();
         const posts = yield Post.find({});
-        res.send(posts);
+        res.send(sort_1.sortPosts(posts));
     }
     catch (error) {
         console.log(error);
@@ -73,7 +74,7 @@ router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0,
         updates.forEach(update => (post[update] = req.body[update]));
         yield post.save();
         const posts = yield Post.find({});
-        res.send(posts);
+        res.send(sort_1.sortPosts(posts));
     }
     catch (error) {
         console.log(error);
@@ -93,7 +94,7 @@ router.delete("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0
             return res.status(404).send();
         }
         const posts = yield Post.find({});
-        res.send(posts);
+        res.send(sort_1.sortPosts(posts));
     }
     catch (error) {
         console.log(error);

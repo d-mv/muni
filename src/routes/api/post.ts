@@ -1,3 +1,5 @@
+import { sortPosts } from "../../modules/sort";
+
 const express = require("express");
 const router = new express.Router();
 const { ObjectID } = require("mongodb");
@@ -15,7 +17,7 @@ router.post("/", authenticate, async (req: any, res: any) => {
   try {
     const result = await post.save();
     const posts = await Post.find({});
-    res.status(201).send(posts);
+    res.status(201).send(sortPosts(posts));
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -47,7 +49,7 @@ router.get("/:id/vote", authenticate, async (req: any, res: any) => {
     post.votes = [...post.votes, req.user._id];
     await post.save();
     const posts = await Post.find({});
-    res.send(posts);
+    res.send(sortPosts(posts));
   } catch (error) {
     console.log(error);
     res.status(400).send();
@@ -74,7 +76,7 @@ router.patch("/:id", authenticate, async (req: any, res: any) => {
     await post.save();
 
     const posts = await Post.find({});
-    res.send(posts);
+    res.send(sortPosts(posts));
   } catch (error) {
     console.log(error);
     res.status(400).send();
@@ -94,7 +96,7 @@ router.delete("/:id", authenticate, async (req: any, res: any) => {
       return res.status(404).send();
     }
     const posts = await Post.find({});
-    res.send(posts);
+    res.send(sortPosts(posts));
   } catch (error) {
     console.log(error);
     res.status(500).send();

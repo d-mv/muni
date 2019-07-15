@@ -1,9 +1,12 @@
+import { PostType } from "../../models/post";
+import { sortPosts } from "../../modules/sort";
+
 const express = require("express");
 const router = new express.Router();
 
 const Location = require("../../models/location");
-const Post = require('../../models/post')
-const News = require('../../models/news')
+const Post = require("../../models/post");
+const News = require("../../models/news");
 
 const authenticate = require("../../middleware/auth");
 
@@ -30,7 +33,7 @@ router.get("/", async (req: any, res: any) => {
 router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   try {
     const posts = await Post.find({ location: req.params.id });
-    res.send(posts);
+    res.send(sortPosts(posts));
   } catch (error) {
     res.status(500).send();
   }
@@ -38,7 +41,7 @@ router.get("/:id/posts", authenticate, async (req: any, res: any) => {
 
 router.get("/:id/news", authenticate, async (req: any, res: any) => {
   try {
-    const news = await News.find({ location: req.params.id });
+    const news = await News.find({ location: req.params.id }).sort('-createdAt');
     res.send(news);
   } catch (error) {
     res.status(500).send();

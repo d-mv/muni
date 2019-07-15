@@ -16,7 +16,7 @@ router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, fun
     const post = new News(Object.assign({}, req.body, { location: req.user.location }));
     try {
         yield post.save();
-        const news = yield News.find({});
+        const news = yield News.find({}).sort('-createdAt');
         res.status(201).send(news);
     }
     catch (error) {

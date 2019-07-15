@@ -12,7 +12,7 @@ router.post("/", authenticate, async (req: any, res: any) => {
   });
   try {
     await post.save();
-    const news = await News.find({});
+    const news = await News.find({}).sort('-createdAt');
     res.status(201).send(news);
   } catch (error) {
     console.log(error);

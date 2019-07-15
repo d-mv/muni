@@ -8,11 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const sort_1 = require("../../modules/sort");
 const express = require("express");
 const router = new express.Router();
 const Location = require("../../models/location");
-const Post = require('../../models/post');
-const News = require('../../models/news');
+const Post = require("../../models/post");
+const News = require("../../models/news");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const post = new Location(Object.assign({}, req.body));
@@ -36,7 +37,7 @@ router.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
 router.get("/:id/posts", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const posts = yield Post.find({ location: req.params.id });
-        res.send(posts);
+        res.send(sort_1.sortPosts(posts));
     }
     catch (error) {
         res.status(500).send();
@@ -44,7 +45,7 @@ router.get("/:id/posts", authenticate, (req, res) => __awaiter(this, void 0, voi
 }));
 router.get("/:id/news", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const news = yield News.find({ location: req.params.id });
+        const news = yield News.find({ location: req.params.id }).sort('-createdAt');
         res.send(news);
     }
     catch (error) {
