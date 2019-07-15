@@ -14,7 +14,7 @@ const Confirmation = (props: {
   const { text } = props.language;
   setTimeout(() => {
     props.setModule("login");
-  }, 3000);
+  }, 6000);
   return (
     <Page>
       <div className={layout.wrapper}>
