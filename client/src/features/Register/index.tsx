@@ -39,12 +39,23 @@ const Register = (props: {
   const { locations, language, message, loading, typed, setMessage } = props;
   const { text, direction, short } = language;
   const { location, fName, lName, pass, secondPass, email } = typed;
-
   const [disabled, setDisabled] = useState(true);
 
+  const defaultValue = { label: text["register.prompt.city"], value: -1 };
+  const defaultList = locationsList(locations, short);
+  const [locationsObject, setLocationsObject] = useState([
+    defaultValue,
+    ...defaultList
+  ]);
+
   useEffect(() => {
-    props.typingData({ location: locations[0]._id });
-  }, []);
+    if (
+      typed.location &&
+      typed.location !== "" &&
+      locationsObject.length === defaultList.length + 1
+    )
+      setLocationsObject(defaultList);
+  }, [locationsObject, typed]);
 
   // enable the button, when ready
   useEffect(() => {
@@ -99,7 +110,9 @@ const Register = (props: {
     const { value } = event.target;
     let name = event.target.name;
     if (!name) name = "location";
-    props.typingData({ [name]: value });
+    // set only once
+    if (typed[name]!==value) {
+    props.typingData({ [name]: value })};
   };
 
   // set the form elements
@@ -138,11 +151,12 @@ const Register = (props: {
   };
 
   const locationsElement = formSelection({
-    list: locationsList(locations, short),
-    value: typed[location],
+    list: locationsObject,
+    value: typed.location,
     direction,
     label: text["login.label.location"],
-    action: handleInputChange
+    action: handleInputChange,
+    register: true,
   });
 
   const fNameElement = formSection({
@@ -164,6 +178,7 @@ const Register = (props: {
     action: handleInputChange,
     length: 3
   });
+
   return (
     <form
       className={direction === "rtl" ? "formRight" : "formLeft"}

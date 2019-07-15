@@ -121,7 +121,8 @@
         },
         "help.new.muni": "create a new post",
         "muni.post.prompt.text":"enter the text",
-        "register.passwords.min-7": "Password should be 7+ symbols"
+        "register.passwords.min-7": "Password should be 7+ symbols",
+        "register.prompt.city": "please, choose location..."
       }
     },
     "עב": {
@@ -244,7 +245,8 @@
         },
         "help.new.muni": "create a new post",
         "muni.post.prompt.text":"enter the text",
-        "register.passwords.min-7": "Password should be 7+ symbols"
+        "register.passwords.min-7": "Password should be 7+ symbols",
+        "register.prompt.city":"please, choose location..."
       }
     },
     "ع": {
@@ -367,7 +369,8 @@
         },
         "help.new.muni": "create a new post",
         "muni.post.prompt.text":"enter the text",
-        "register.passwords.min-7": "Password should be 7+ symbols"
+        "register.passwords.min-7": "Password should be 7+ symbols",
+        "register.prompt.city": "please, choose location..."
       }
     }
   }
