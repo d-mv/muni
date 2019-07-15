@@ -47,18 +47,6 @@ const Profile = (props: {
             </Line>
           </Paragraph>
         </Section>
-        <Section>
-          <Paragraph direction={direction}>
-            <Line direction={direction}>{user.type}</Line>
-            <Line direction={direction}>{user._id}</Line>
-            <Line direction={direction}>{user.location}</Line>
-          </Paragraph>
-        </Section>
-        <Section>
-          <Paragraph direction={direction}>
-            {text["profile.text.logOff"]}
-          </Paragraph>
-        </Section>
         <Paragraph direction={direction}>
           <Button mode='primary' action={props.logOff}>
             {text["profile.button.logOff"]}
