@@ -217,7 +217,7 @@ const NewPost = (props: {
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: true
+          focus: false
         })
       : null;
   const stepFour =
@@ -230,7 +230,7 @@ const NewPost = (props: {
           placeholder: text["new.field.solution.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: true
+          focus: false
         })
       : null;
   const stepFive =

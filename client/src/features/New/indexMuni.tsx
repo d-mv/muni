@@ -171,7 +171,7 @@ const NewPost = (props: {
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: true
+          focus: false
         })
       : null;
 
