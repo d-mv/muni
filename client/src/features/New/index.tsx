@@ -100,20 +100,9 @@ const NewPost = (props: {
           check = solution;
           break;
         case 5:
-          if (link) {
-            const regex = new RegExp(
-              "^([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
-            );
-            check = regex.test(link) ? "true" : "";
-            if (!check) {
-              response = text["new.message.urlMalformed"];
-            }
-          } else {
-            check = " ";
-          }
+          check = "_";
           break;
       }
-      console.log(check);
       if (check) {
         setMessage("");
         setStep(step + 1);
@@ -341,5 +330,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setStep,setModule, typingPost, setLoading, createPost }
+  { setStep, setModule, typingPost, setLoading, createPost }
 )(NewPost);
