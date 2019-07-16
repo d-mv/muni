@@ -97,7 +97,7 @@ const NewPost = (props: {
           check = problem;
           break;
         case 4:
-          check = '_';
+          check = "_";
           break;
         case 5:
           check = "_";
@@ -304,10 +304,10 @@ const NewPost = (props: {
         message={message}
       />
       <ButtonsWrapper row direction={direction}>
-        {buttonPrimary}
         <Button mode='secondary' disabled={step === 1} action={handleBackStep}>
           {text["new.steps.button.back"]}
         </Button>
+        {buttonPrimary}
       </ButtonsWrapper>
     </Content>
   );

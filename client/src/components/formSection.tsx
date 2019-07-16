@@ -29,7 +29,7 @@ export const formSection = (props: {
         }
         placeholder={props.value ? "" : props.placeholder}
         minLength={props.length ? props.length : 0}
-        rows={10}
+        rows={7}
         required
       />
     ) : (
