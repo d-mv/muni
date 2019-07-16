@@ -449,7 +449,7 @@ const Post = (props: {
       <div className={style.wrapper}>
         <div data-testid='post__view' id={post._id} className={style.post}>
           {post.reply.text ? (
-            <ReplyTag text='reply'/>
+            <ReplyTag text={text["post.reply.tag"]} />
           ) : null}
           <TopBlock
             category={category}
