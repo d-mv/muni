@@ -1,0 +1,30 @@
+.tag {
+  position: absolute;
+  top: 10rem;
+  right: -2.3rem;
+  padding: 0.1rem 1rem;
+  background-color: var(--colorSecondaryTrans);
+  width: fit-content;
+  border-radius: 0.4rem;
+  position: fixed;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  transform: rotate(90deg);
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    margin: 0;
+    color: var(--colorWhite);
+    font: var(--textFormFieldName);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .arrow {
+    height: 2rem;
+    width: 2rem;
+    margin: 0 0.5rem;
+    transform: rotate(180deg);
+  }
+}

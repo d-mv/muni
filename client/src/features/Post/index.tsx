@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { categoryIdToName } from "../../modules/category_processor";
 import { replyCardStyleUtil } from "../../modules/reply_style_generator";
@@ -42,6 +42,7 @@ import Button from "../../components/Button";
 import { AuthState } from "../../models";
 import { emptyPost } from "../../store/defaults";
 import logger from "../../modules/logger";
+import { ReplyTag } from "./components/ReplyTag";
 
 const Post = (props: {
   posts: any;
@@ -71,6 +72,7 @@ const Post = (props: {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showNewReply, setShowNewReply] = useState(false);
   // const [newReply, setNewReply] = useState(post.reply.text);
+  const replyRef = React.createRef<HTMLDivElement>();
 
   const originalPost = props.posts.filter(
     (post: any) => post._id === props.post._id
@@ -346,7 +348,7 @@ const Post = (props: {
       ) : null;
     }
     ReplyMessage = post.reply.text ? (
-      <div className={style[replyCardStyle]}>
+      <div ref={replyRef} id='replyRef' className={style[replyCardStyle]}>
         <div className={style[styleFactory("replyTitleLine", direction)]}>
           {replyVotes}
           <span className={style.replyCardTitle}>
@@ -446,6 +448,9 @@ const Post = (props: {
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={post._id} className={style.post}>
+          {post.reply.text ? (
+            <ReplyTag text='reply'/>
+          ) : null}
           <TopBlock
             category={category}
             title={post.title}

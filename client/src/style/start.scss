@@ -200,7 +200,9 @@
   }
 }
 
-
+html {
+    scroll-behavior: smooth;
+}
 .page {
   position: fixed;
   left: 0;
