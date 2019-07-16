@@ -22,7 +22,10 @@ const sendEmail = (user, url, language) => {
     });
     const { text, html } = make_email_1.default(url, language);
     let mailOptions = {
-        from: login,
+        from: {
+            name: 'Our Change',
+            address: login
+        },
         to: user,
         subject: translated["email.verification.subject"],
         text,

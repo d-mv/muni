@@ -287,8 +287,12 @@ const Post = (props: {
     if (post.reply.text && !allowToReply) {
       setOfThumbs = (
         <div className={style[styleFactory("thumbsContainer", direction)]}>
-          <div onClick={(event: any) => handleReplyVoting(true)}>⬆</div>
-          <div onClick={(event: any) => handleReplyVoting(false)}>⬇</div>
+          <div onClick={(event: any) => handleReplyVoting(true)}>
+            {goBack("white")}
+          </div>
+          <div onClick={(event: any) => handleReplyVoting(false)}>
+            {goBack("white")}
+          </div>
         </div>
       );
     } else if (allowToReply) {
@@ -448,9 +452,7 @@ const Post = (props: {
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={post._id} className={style.post}>
-          {post.reply.text ? (
-            <ReplyTag text={text["post.reply.tag"]} />
-          ) : null}
+          {post.reply.text ? <ReplyTag text={text["post.reply.tag"]} /> : null}
           <TopBlock
             category={category}
             title={post.title}
