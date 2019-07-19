@@ -1,11 +1,10 @@
-// import { fetchLocations } from "./actions";
 import { Action } from "./types";
 import * as TYPE from "../types";
 import data from "../../data/translation.json";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 
-export * from './locations'
+export * from "./locations";
 
 const importedData: TYPE.indexedObjAny = data;
 
@@ -45,7 +44,12 @@ export const setModule = (
   next: string
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch({ type: "PREV_MODULE", module:previous });
+    dispatch({ type: "PREV_MODULE", module: previous });
     dispatch({ type: "SET_MODULE", module: next });
   };
 };
+
+export const setPageLocation = (module: string, location: number) => ({
+  type: "PAGE_LOCATION",
+  payload: {module,location}
+});

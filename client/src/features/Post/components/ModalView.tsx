@@ -7,6 +7,6 @@ import Center from "../../../layout/Center";
 
 export const ModalView = (props: { close: () => void; text: string }) => (
   <Modal close={props.close}>
-    <span className={styles.text}>{props.text}</span>
+    <div className={styles.text}>{props.text}</div>
   </Modal>
 );

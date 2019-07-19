@@ -50,22 +50,22 @@
         "new.steps.step.2": "2. Please choose a category for your petition from the categories below",
         "new.steps.step.3": "3. Explain the problem you want to solve. People are more likely to support your petition if it’s clear why you care. Explain how this change will impact you, your family, or your community.",
         "new.steps.step.4": "4. Suggest a solution for your problem that authorities can use.",
-        "new.steps.step.5": "5. A good picture always helps get the attention of others, you can relevant links too.",
+        "new.steps.step.5": "5. A good picture always helps get the attention of others, you can add relevant links too.",
         "new.field.title.label": "Title",
         "new.field.title.prompt": "Please, enter the title of the petition",
         "new.field.category.label": "category",
-        "new.field.category.prompt": "category",
+        "new.field.category.prompt": "choose a category",
         "new.field.problem.label": "problem",
-        "new.field.problem.prompt": "problem",
+        "new.field.problem.prompt": "write about the problem or the change you want to make...",
         "new.field.solution.label": "solution",
-        "new.field.solution.prompt": "solution",
+        "new.field.solution.prompt": "This is optional, suggest a solution if you have any ideas...",
         "new.field.photo.label": "Photo",
         "new.field.photo.prompt": "Add/change photo",
         "new.field.link.label": "link",
         "new.field.link.prompt": "link",
         "new.message.fieldEmpty": "Please, add the information",
         "new.message.urlMalformed": "URL is malformed",
-        "new.preview": "This is preview",
+        "new.preview": "Preview your post",
         "new.error.incomplete": "Can't create post - incomplete data",
         "post.problem": "Problem",
         "post.solution": "Solution",
@@ -87,16 +87,16 @@
         "post.delete.button": "Delete post",
         "post.delete.confirm": {
           "message": "Are you sure you want to delete the petition?",
-          "buttonYes": "Yes",
-          "buttonNo": "No"
+          "buttonYes": "Delete",
+          "buttonNo": "Cancel"
         },
         "post.link.edit": "Edit the link below",
         "confirm": "Confirm",
         "cancel": "Cancel",
         "post.update.confirm": {
           "message": "Do you want to save?",
-          "buttonYes": "Yes",
-          "buttonNo": "No"
+          "buttonYes": "Save",
+          "buttonNo": "Cancel"
         },
         "help.mycity": "my city",
         "help.button.help": "press on Help button to close",
@@ -104,15 +104,15 @@
         "help.post.photo": "petition photo with tag 'REPLIED' if municipality has replied",
         "help.post.category": "petition category",
         "help.post.title": "petition title",
-        "help.post.age": "petition age and quantity of supporters",
+        "help.post.age": "petition age and number of supporters",
         "help.new": "create a new petition",
         "help.navigation": "navigation",
         "muni-reply.edit": "Edit",
         "muni-reply.delete": "Delete",
         "muni-reply.delete.text": {
           "message": "Are you sure you want to delete?",
-          "confirm": "Yes",
-          "cancel": "No"
+          "confirm": "Delete",
+          "cancel": "Cancel"
         },
         "muni-reply.edit.text": {
           "message": "Edit the text below",
@@ -120,10 +120,17 @@
           "cancel": "Cancel"
         },
         "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text",
-        "register.passwords.min-7": "Password should be 7+ symbols",
+        "muni.post.prompt.text": "enter the text",
+        "register.passwords.min-7": "Password should be 7+ characters",
         "register.prompt.city": "please, choose location...",
-        "post.reply.tag":"reply"
+        "post.reply.tag": "Municipality reply",
+        "new.muni.steps.title": "Add News...",
+        "new.muni.field.text.label": "Text",
+        "new.muni.field.title.prompt": "Please, enter the text of the news",
+        "new.muni.preview.text.label": "Text",
+        "new.muni.steps.step.1": "Write your post title, Get people attention with a short title that focuses on issues that matter",
+        "new.muni.steps.step.2": "Explain the issue you want people to know about. People are more likely to support this if it’s clear why these news help them.",
+        "new.muni.steps.step.3": "A good picture always helps get the attention of others, you can add relevant links too."
       }
     },
     "עב": {
@@ -144,7 +151,6 @@
         "Nov",
         "Dec"
       ],
-
       "text": {
         "welcome.enter": "כניסה",
         "login.label.email": "דוא\"ל",
@@ -166,7 +172,7 @@
         "post.voters": "תומכים",
         "post.replied": "יש מענה",
         "post.voted": "כבר הצבעת",
-        "profile.text.changeLanguage": "בחר, בחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד הלחצן למטה",
+        "profile.text.changeLanguage": "ֿבחר את שפת האפליקציה. השפה שנבחרה מוצגת ליד הלחצן למטה",
         "profile.button.logOff": "התנתק",
         "new.steps.button.next": "לשלב הבא",
         "new.steps.button.back": "לשלב הקודם",
@@ -209,7 +215,8 @@
           "day(s)": "ימים",
           "hour(s)": "שעות",
           "minute(s)": "דקות"
-        },"post.delete.button": "מחק עצומה",
+        },
+        "post.delete.button": "מחק עצומה",
         "post.delete.confirm": {
           "message": "אתה בטוח שברצונך למחוק את העצומה?",
           "buttonYes": "אישור",
@@ -232,23 +239,30 @@
         "help.post.age": "זמן פרסום העצומה ומספר תומכים",
         "help.new": "ליצור עתירה חדשה",
         "help.navigation": "ניווט",
-        "muni-reply.edit": "Edit",
-        "muni-reply.delete": "Delete",
+        "muni-reply.edit": "ערוך",
+        "muni-reply.delete": "מחק",
         "muni-reply.delete.text": {
-          "message": "Are you sure you want to delete?",
-          "confirm": "Yes",
-          "cancel": "No"
+          "message": "אתה בטוח שברצונך למחוק?",
+          "confirm": "מחיקה",
+          "cancel": "ביטול"
         },
         "muni-reply.edit.text": {
-          "message": "Edit the text below",
-          "confirm": "Confirm",
-          "cancel": "Cancel"
+          "message": "ערוך את הטקסט למטה",
+          "confirm": "אישור",
+          "cancel": "ביטול"
         },
-        "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text",
-        "register.passwords.min-7": "Password should be 7+ symbols",
-        "register.prompt.city":"please, choose location...",
-        "post.reply.tag": "מענה"
+        "help.new.muni": "צור הודעה חדשה",
+        "muni.post.prompt.text": "הכנס את הטקסט",
+        "register.passwords.min-7": "הסיסמה צריכה להיות באורך 7 תווים לפחות",
+        "register.prompt.city": "בחר את העיר שלך",
+        "post.reply.tag": "מענה העירייה",
+        "new.muni.steps.title": "הוסף חדשות",
+        "new.muni.field.text.label": "טקסט",
+        "new.muni.field.title.prompt": "נא להכניס את הטקסט",
+        "new.muni.preview.text.label": "טקסט",
+        "new.muni.steps.step.1": "כתוב כותרת להודעה שלך, משוך תשומת לב עם כותרת קצרה שמתרכזת על דברים חשובים לתושבים",
+        "new.muni.steps.step.2": "כתוב הסבר הולם על הנושא בהקשר. אנשים יתמכו בזה אם ידעו איך זה עוזר להם.",
+        "new.muni.steps.step.3": "תמונה טובה ורלוונטית תמיד עוזרת למשוך תשומת לבם של אחרים, ואפשר להוסיף קישור רלוונטי לבעייה."
       }
     },
     "ع": {
@@ -297,7 +311,7 @@
         "new.steps.button.submit": "تأكيد",
         "new.steps.title": "عريضة جديدة...",
         "new.steps.button.cancel": "الغاء",
-        "new.steps.step.1": "اكتبت عنوان العريضة, اجذب انتباه الناس بعنوان قصير يركز على التغيير الذي تريدهم ان يدعموه.",
+        "new.steps.step.1": "اكتب عنوان العريضة, اجذب انتباه الناس بعنوان قصير يركز على التغيير الذي تريدهم ان يدعموه.",
         "new.steps.step.2": "2. الرجاء اختيار القسم/الفئة الذي يخص موضوع عريضتك من القائمة ادناه",
         "new.steps.step.3": "3. اشرح المشكلة التي تريد ان تحلها. قد يتضامن الناس معك بشكل اكبر اذا فهموا المشكلة بشكل واضح وكيف تأثر عليك وعلى اهل البلد.",
         "new.steps.step.4": "4. اقترح حلا للمشكلة كي تساعد البلدية على حلها.",
@@ -334,7 +348,8 @@
           "day(s)": "أيام",
           "hour(s)": "ساعات",
           "minute(s)": "دقائق"
-        },"post.delete.button": "حذف المنشور",
+        },
+        "post.delete.button": "حذف المنشور",
         "post.delete.confirm": {
           "message": "الرجاء التأكيد حذف المنشور",
           "buttonYes": "تأكيد",
@@ -357,23 +372,32 @@
         "help.post.age": "وقت نشر العريضة وعدد الداعمين",
         "help.new": "انشاء عريضة جديدة",
         "help.navigation": "للتنقل بين الاقسام",
-        "muni-reply.edit": "Edit",
-        "muni-reply.delete": "Delete",
+        "muni-reply.edit": "تغيير",
+        "muni-reply.delete": "حذف",
         "muni-reply.delete.text": {
-          "message": "Are you sure you want to delete?",
-          "confirm": "Yes",
-          "cancel": "No"
+          "message": "الرجاء التأكيد حذف المنشور",
+          "confirm": "تأكيد",
+          "cancel": "الغاء"
         },
         "muni-reply.edit.text": {
-          "message": "Edit the text below",
-          "confirm": "Confirm",
-          "cancel": "Cancel"
+          "message": "تغيير النص ادناه",
+          "confirm": "تأكيد",
+          "cancel": "الغاء"
         },
-        "help.new.muni": "create a new post",
-        "muni.post.prompt.text":"enter the text",
-        "register.passwords.min-7": "Password should be 7+ symbols",
-        "register.prompt.city": "please, choose location...",
-        "post.reply.tag": "reply"
+        "help.new.muni": "نشر رسالة جديدة",
+        "muni.post.prompt.text": "ادخل النص",
+        "register.passwords.min-7": "يجب ان تحتوي كلمة المرور على سبعة رموز/احرف على الاقل",
+        "register.prompt.city": "الرجاء اختيار بلدك",
+        "post.reply.tag": "رد البلدية",
+        "new.muni.steps.title": "اضافة خبر جديد",
+        "new.muni.field.title.label": "العنوان",
+        "new.muni.field.title.prompt": "الرجاء ادخال عنوان الخبر.",
+        "new.muni.field.text.label": "النص",
+        "new.muni.field.text.prompt": "الرجاء ادخال نص الخبر",
+        "new.muni.preview.text.label": "النص",
+        "new.muni.steps.step.1": "اكتب عنوان الخبر, اجذب انتباه الناس بعنوان قصير يركز على مواضيع تهمهم.",
+        "new.muni.steps.step.2": "اضف تفاصيل الخبر. قد يتفاعل الناس مع الخبر بشكل اكبر اذا فهموا اهميته وكيف يساهم في حياتهم.",
+        "new.muni.steps.step.3": "اختر صورة جيدة ذات صلة بالموضوع, بامكانكم اضافة رابط خارجي ايضا. الصور تساعد في انتشار منشوراتكم بصورة اكبر."
       }
     }
   }

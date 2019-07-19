@@ -3,7 +3,13 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import { logger } from "redux-logger";
 
-import { setStep, fetchLocations, prevModule, setModule } from "./app/reducers";
+import {
+  setStep,
+  fetchLocations,
+  prevModule,
+  setModule,
+  setPageLocation
+} from "./app/reducers";
 import {
   submitPost,
   posts,
@@ -76,7 +82,8 @@ const rootReducer = combineReducers({
   deleted: deletePost,
   type: userType,
   news: setNews,
-  categories: getCategories
+  categories: getCategories,
+  pageLocation: setPageLocation
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
@@ -114,6 +121,7 @@ export default function configureStore() {
     type: string;
     news: any;
     categories: TYPE.indexedObjAny;
+    pageLocation: { module: string; location: number };
   }
 
   const initialState: state = {
@@ -144,7 +152,8 @@ export default function configureStore() {
     deleted: apiState,
     type: "",
     news: [],
-    categories: {}
+    categories: {},
+    pageLocation: { module: "", location: 0 }
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

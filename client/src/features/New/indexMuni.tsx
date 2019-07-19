@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 
-import { formSection, formSelection } from "../../components/formSection";
+import { formSection } from "../../components/formSection";
 import { Preview } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { createNews, typingPost } from "../../store/post/actions";
 import { setModule } from "../../store/users/actions";
-import { indexedObjAny, data } from "../../store/types";
+import { data } from "../../store/types";
 
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -24,25 +23,18 @@ import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
-import CatDescription from "./components/CatDescription";
-import Header from "../../components/Header";
-import { categoryIdToName } from "../../modules/category_processor";
 import { AuthState } from "../../models";
 
 const NewPost = (props: {
   language: data;
-  // location: data;
   auth: AuthState;
   token: string;
   step: number;
-  // submitResult: data;
   setStep: (arg0: number) => void;
-  // submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
   //
   loading: boolean;
-  // setLoading: (arg0: boolean) => void;
   typingPost: (arg0: { [index: string]: any }) => void;
   newPost: {
     title: "";
@@ -116,7 +108,7 @@ const NewPost = (props: {
     props.createNews(newPost);
   };
 
-  let pageSubTitle = text["new.steps.title"];
+  let pageSubTitle = text["new.muni.steps.title"];
   let stepsComponent = (
     <Steps muni current={step} direction={direction} action={handleAnyStep} />
   );
@@ -139,11 +131,11 @@ const NewPost = (props: {
   const stepOne =
     step === 1
       ? formSection({
-          label: text["new.field.title.label"],
+          label: text["new.muni.field.title.label"],
           type: "text",
           name: "title",
           value: title,
-          placeholder: text["new.field.title.prompt"],
+          placeholder: text["new.muni.field.title.prompt"],
           action: handleInputChange,
           length: 2,
           focus: true
@@ -153,11 +145,11 @@ const NewPost = (props: {
   const stepTwo =
     step === 2
       ? formSection({
-          label: text["new.field.problem.label"],
+          label: text["new.muni.field.text.label"],
           type: "textarea",
           name: "text",
           value: props.newPost.text,
-          placeholder: text["new.field.problem.prompt"],
+          placeholder: text["new.muni.field.text.prompt"],
           action: handleInputChange,
           length: 50,
           focus: false
@@ -196,38 +188,17 @@ const NewPost = (props: {
   };
   // TODO: fix below
   const preview =
-    step === 4 ? (
-      <Preview
-        muni
-        post={post}
-        direction={direction}
-        text={{
-          problem: text["post.problem"],
-          solution: text["post.solution"]
-        }}
-      />
-    ) : null;
+    step === 4 ? <Preview muni post={post} direction={direction} /> : null;
   const loadingElement = loading ? <Loading /> : null;
 
-  const goHome = () => {
-    props.setModule(props.prevModule);
-  };
-
-  const headerObject = {
-    name: "New Post",
-    left: { icon: <div>back</div>, action: goHome }
-  };
-
-  // console.log(message);
   return (
     <Content padded>
-      {/* <Header {...headerObject} /> */}
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
       </Center>
       <Paragraph direction={direction}>
-        {text[`new.steps.step.${step}`]}
+        {text[`new.muni.steps.step.${step}`]}
       </Paragraph>
       <ContentBlock
         stepOne={stepOne}

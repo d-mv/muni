@@ -48,8 +48,6 @@ export const setStep = (state = 1, action: Action): number => {
   return state;
 };
 
-
-
 export const fetchLocations = (
   state: LocationState = {},
   action: Action
@@ -74,4 +72,14 @@ export const setModule = (state = "welcome", action: Action) => {
       return action.module;
   }
   return state;
+};
+
+export const setPageLocation = (
+  state = { module: "", location: 0 },
+  action: Action
+) => {
+  switch (action.type) {
+    case "PAGE_LOCATION":
+      return action.payload;
+  }
 };

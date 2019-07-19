@@ -25,7 +25,7 @@ const Home = (props: {
     name: location.name[user.settings.language],
     right: { icon: <div />, action: () => {} }
   };
-
+  console.log(window.pageYOffset);
   console.log(pinned);
   return (
     <Page>

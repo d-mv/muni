@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { categoryIdToName } from "../../modules/category_processor";
 import { replyCardStyleUtil } from "../../modules/reply_style_generator";
-import { goBack, iconEdit, iconClose } from "../../icons";
+import { goBack, iconEdit, iconClose, votersSecondary } from "../../icons";
 
 import { AppState } from "../../store";
 import { vote, setModule, fetchData } from "../../store/users/actions";
@@ -131,6 +131,10 @@ const Post = (props: {
     showUpdateConfirmation(!updateConfirmation);
   };
 
+  const toggleShowConfirm = () => {
+    setShowConfirm(!showConfirm)
+  }
+
   const toggleDeleteConfirmation = () => {
     setDeleteConfirmation(!deleteConfirmation);
   };
@@ -192,10 +196,11 @@ const Post = (props: {
     }
   };
   const submitVote = () => {
-    setShowConfirm(!showConfirm);
+    setShowConfirm(true)
     setTimeout(() => {
-      setShowConfirm(!showConfirm);
+      setShowConfirm(false);
     }, 2000);
+    props.showPost({ ...post, votes: [post.votes, user._id]})
     props.votePost(post._id);
   };
 
@@ -255,7 +260,7 @@ const Post = (props: {
 
   // setting up components
   const modal = showConfirm ? (
-    <ModalView close={submitVote} text={text["vote.thanks"]} />
+    <ModalView close={toggleShowConfirm} text={text["vote.thanks"]} />
   ) : null;
 
   let voteButton =

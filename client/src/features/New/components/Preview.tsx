@@ -13,7 +13,7 @@ export const Preview = (props: {
     link: string;
   };
   direction: string;
-  text: { problem: string; solution: string };
+  text?: { problem: string; solution?: string };
   muni?: boolean;
 }) => (
   <div className={style.wrapper}>
@@ -29,14 +29,20 @@ export const Preview = (props: {
       <div className={style.text}>
         <Text
           step
-          title={props.text.problem}
+          title={
+            props.muni && !props.text
+              ? ""
+              : props.text
+              ? props.text.problem
+              : ""
+          }
           text={props.post.problem}
           direction={props.direction}
         />
-          {props.muni || !props.post.solution ? null : (
+        {props.muni || !props.post.solution ? null : (
           <Text
             back
-            title={props.text.solution}
+            title={props.text ? props.text.solution : ""}
             text={props.post.solution || ""}
             direction={props.direction}
           />
@@ -44,4 +50,4 @@ export const Preview = (props: {
       </div>
     </div>
   </div>
-)
+);

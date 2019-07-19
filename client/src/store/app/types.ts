@@ -29,18 +29,24 @@ export interface fetchLocationsAction {
 
 export interface prevModuleAction {
   type: "PREV_MODULE";
-  module:string
+  module: string;
 }
 export interface setModuleAction {
   type: "SET_MODULE";
-  module:string
+  module: string;
 }
+
+export interface setPageLocation {
+  type: "PAGE_LOCATION";
+  payload: { module: string; location: number };
+}
+
 export type Action =
+  | setPageLocation
   | setModuleAction
   | prevModuleAction
   | fetchLocationsAction
   | loadDataAction
   | setLanguageAction
   | setLocationDataAction
-  | setStepAction
-
+  | setStepAction;
