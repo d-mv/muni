@@ -5,9 +5,12 @@ import { get } from "../services";
 export const getPosts = (location: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
+  console.log('getposts')
   dispatch({ type: "POSTS_LOADING", payload: true });
   get({ url: `/locations/${location}/posts` })
     .then(response => {
+      console.log('getposts')
+
       dispatch({
         type: "SET_POSTS",
         payload: response.data

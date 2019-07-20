@@ -15,13 +15,20 @@ export const votePost = (id: string) => async (
   });
   get({ url: `/posts/${id}/vote` })
     .then(response => {
+      console.log(response)
       dispatch({
         type: "SET_LOADING",
         loading: false
       });
       dispatch({ type: "SET_POSTS", payload: response.data });
     })
-    .catch(e => console.log(e));
+    .catch(e => {
+      console.log(e);
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    });
 };
 
 export const updatePost = (updatedPost: any) => async (

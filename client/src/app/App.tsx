@@ -84,7 +84,8 @@ const App = (props: {
     logger({ text: "fetching", emph: "news", type: "positive" });
     props.getNews(auth.user.location);
     logger({ text: "fetching", emph: "categories", type: "positive" });
-    if (!Object(props.categories).keys) props.getCategories();
+    // if (!Object(props.categories).keys)
+      props.getCategories();
     logger({ text: "fetching", emph: "petitions", type: "positive" });
     props.getPosts(auth.user.location);
   };
@@ -123,11 +124,11 @@ const App = (props: {
       }
       axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
-      if (posts.length < 1) {
+      // if (posts.length < 1) {
         logger({ text: "posts are", emph: "false", type: "attention" });
         setMessage("fetching data...");
         fetchPostsNews();
-      }
+      // }
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -138,7 +139,6 @@ const App = (props: {
         props.checkToken(cookie);
       } else if (!cookie && props.module === "welcome") {
         logger({ text: "cookie is", emph: "false", type: "attention" });
-
         setLoading(false);
       }
       setMessage("fetching locations...");

@@ -137,8 +137,10 @@ const posts = async () => {
     const louLength = listOfUsers.length - 1;
     const listOfCategories = await Category.find({});
     listOfLocations.forEach(async (loc: UserType) => {
-      for (let i = 0; i < randomNumber(20); i++) {
+      for (let i = 0; i < 20; i++) {
+        console.log("new post");
         const usr = listOfUsers[randomNumber(louLength)];
+        let other = listOfUsers[randomNumber(louLength)];
         const post = new Post({
           title: faker.lorem.sentence(),
           problem: faker.lorem.paragraphs(5),
@@ -148,11 +150,8 @@ const posts = async () => {
           location: loc._id,
           category: listOfCategories[randomNumber(listOfCategories.length - 1)],
           createdBy: usr._id,
-          votes: [
-            listOfUsers[randomNumber(louLength)],
-            listOfUsers[randomNumber(louLength)],
-            listOfUsers[randomNumber(louLength)]
-          ]
+          votes: [other === usr ? listOfUsers[randomNumber(louLength)] : other]
+          // reply:{ text:'', up: [], down: [] }
         });
         await post.save();
       }
@@ -197,7 +196,7 @@ const dbSeed = async () => {
       // category,
       // location,
       // user,
-      post,
+      post
       // newsPosts
     ];
   } catch (error) {

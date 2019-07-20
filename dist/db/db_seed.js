@@ -136,8 +136,10 @@ const posts = () => __awaiter(this, void 0, void 0, function* () {
         const louLength = listOfUsers.length - 1;
         const listOfCategories = yield Category.find({});
         listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
-            for (let i = 0; i < randomNumber(20); i++) {
+            for (let i = 0; i < 20; i++) {
+                console.log("new post");
                 const usr = listOfUsers[randomNumber(louLength)];
+                let other = listOfUsers[randomNumber(louLength)];
                 const post = new Post({
                     title: faker.lorem.sentence(),
                     problem: faker.lorem.paragraphs(5),
@@ -147,11 +149,8 @@ const posts = () => __awaiter(this, void 0, void 0, function* () {
                     location: loc._id,
                     category: listOfCategories[randomNumber(listOfCategories.length - 1)],
                     createdBy: usr._id,
-                    votes: [
-                        listOfUsers[randomNumber(louLength)],
-                        listOfUsers[randomNumber(louLength)],
-                        listOfUsers[randomNumber(louLength)]
-                    ]
+                    votes: [other === usr ? listOfUsers[randomNumber(louLength)] : other]
+                    // reply:{ text:'', up: [], down: [] }
                 });
                 yield post.save();
             }
@@ -196,7 +195,8 @@ const dbSeed = () => __awaiter(this, void 0, void 0, function* () {
             // category,
             // location,
             // user,
-            post,
+            post
+            // newsPosts
         ];
     }
     catch (error) {

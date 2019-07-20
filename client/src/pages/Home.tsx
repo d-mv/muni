@@ -31,6 +31,7 @@ const Home = (props: {
   const message = props.message ? <Message>{props.message}</Message> : null;
 
   console.log(pinned);
+  console.log(posts);
   return (
     <Page>
       <Header {...headerObject} />
