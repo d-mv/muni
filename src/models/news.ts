@@ -31,7 +31,7 @@ const NewsSchema = new mongoose.Schema({
   },
   text: { type: String, required: true, trim: true, minLength: 20 },
   photo: { type: String, trim: true },
-  link: { type: String, required: true, trim: true, minLength: 20 },
+  link: { type: String, trim: true, minLength: 20 },
   active: { type: Boolean, required: true, default: true },
   pinned: { type: Boolean, required: true, default: false },
   createdAt: {

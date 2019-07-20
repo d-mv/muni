@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection, formSelection } from "../../components/formSection";
-import { Preview } from "./components";
+import { Preview, PreviewBlock } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { typingPost, createPost } from "../../store/post/actions";
 import { setModule, setLoading } from "../../store/users/actions";
 import { data } from "../../store/types";
 
-import Button from "../../components/Button";
+import Button from "../Button";
 import Loading from "../../components/Loading";
 import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
@@ -18,13 +18,16 @@ import ContentBlock from "./components/ContentBlock";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
-import Label from "../../layout/Label";
+// import Label from "../../layout/Label";
+import Label from "../../styles/form/Label";
 import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
 import { categoryIdToName } from "../../modules/category_processor";
+import Message from "../../styles/form/Message";
+import InLine from "../../styles/utils/InLine";
 
 const NewPost = (props: {
   language: data;
@@ -146,7 +149,7 @@ const NewPost = (props: {
     <Steps current={step} direction={direction} action={handleAnyStep} />
   );
   let buttonPrimary = (
-    <Button mode='primary' action={handleNextStep}>
+    <Button mode='primary' onClick={handleNextStep} label='Next'>
       {text["new.steps.button.next"]}
     </Button>
   );
@@ -155,7 +158,7 @@ const NewPost = (props: {
     stepsComponent = <Zero />;
     pageSubTitle = text["new.preview"];
     buttonPrimary = (
-      <Button mode='primary' action={handleSubmit}>
+      <Button mode='primary' onClick={handleSubmit} label='Submit'>
         {text["new.steps.button.submit"]}
       </Button>
     );
@@ -171,7 +174,8 @@ const NewPost = (props: {
           placeholder: text["new.field.title.prompt"],
           action: handleInputChange,
           length: 2,
-          focus: true
+          focus: true,
+          direction: direction
         })
       : null;
 
@@ -206,7 +210,8 @@ const NewPost = (props: {
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: false
+          focus: false,
+          direction: direction
         })
       : null;
   const stepFour =
@@ -219,13 +224,14 @@ const NewPost = (props: {
           placeholder: text["new.field.solution.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: false
+          focus: false,
+          direction: direction
         })
       : null;
   const stepFive =
     step === 5 ? (
       <Section>
-        <Label direction={direction} value={text["new.field.photo.label"]} />
+        <Label direction={direction}>{text["new.field.photo.label"]}</Label>
         <PhotoUpload
           label={text["new.field.photo.prompt"]}
           direction={direction}
@@ -239,7 +245,8 @@ const NewPost = (props: {
           value: link,
           placeholder: text["new.field.link.prompt"],
           action: handleInputChange,
-          length: 5
+          length: 5,
+          direction: direction
         })}
       </Section>
     ) : null;
@@ -263,10 +270,13 @@ const NewPost = (props: {
   // TODO: fix below
   const preview =
     step === 6 ? (
-      <Preview
+      <PreviewBlock
         post={post}
         direction={direction}
-        text={{
+        onChange={() => {}}
+        text=''
+        pinned={false}
+        titles={{
           problem: text["post.problem"],
           solution: text["post.solution"]
         }}
@@ -303,12 +313,18 @@ const NewPost = (props: {
         direction={direction}
         message={message}
       />
-      <ButtonsWrapper row direction={direction}>
-        <Button mode='secondary' disabled={step === 1} action={handleBackStep}>
+      {preview}
+      <Message direction={direction}>{message}</Message>
+      <InLine direction={direction} justify='space-around'>
+        <Button
+          mode='secondary'
+          disabled={step === 1}
+          onClick={handleBackStep}
+          label='Back'>
           {text["new.steps.button.back"]}
         </Button>
         {buttonPrimary}
-      </ButtonsWrapper>
+      </InLine>
     </Content>
   );
 };

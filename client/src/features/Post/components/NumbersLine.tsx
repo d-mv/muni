@@ -8,6 +8,7 @@ import Voters from "../../../components/Card/components/Voters";
 import { Separator } from "../../../layout/Utils";
 
 import style from "./style/NumbersLine.module.scss";
+import InLine from "../../../styles/utils/InLine";
 
 export  const NumbersLine = (props: {
   date: string;
@@ -26,7 +27,7 @@ export  const NumbersLine = (props: {
   />) : null
 
   return (
-    <div className={style.numbers}>
+    <InLine direction={props.direction} justify='flex-start' padding='0 1rem'>
       {date}
       <Separator />
       <Age
@@ -35,7 +36,7 @@ export  const NumbersLine = (props: {
         direction={props.direction}
       />
       {props.votes? <Separator />:null}
-      {voters}
-    </div>
+        {voters}
+      </InLine>
   );
 };

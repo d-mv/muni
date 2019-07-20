@@ -5,7 +5,7 @@ import styleFactory from "../modules/style_factory";
 import Button from "./Button";
 import { iconHelp } from "../icons/";
 import React, { useEffect } from "react";
-import Title from "./Title";
+import Title from "../styles/Title";
 import { connect } from "react-redux";
 import styles from "./style/Header.module.scss";
 import Help from "../features/Help";
@@ -82,7 +82,7 @@ const Header = (props: {
       <Button mode='minimal' action={handleLeftAction}>
         {left}
       </Button>
-      <Title title={name} direction={direction} />
+      <Title muni={props.user.type==='muni'}>{name}</Title>
       <Button mode='minimal' action={handleRightAction}>
         {right}
       </Button>

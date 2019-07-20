@@ -11,6 +11,7 @@ import { indexedObjAny } from "../../../store/types";
 import styles from "./style/Text.module.scss";
 import styleFactory from "../../../modules/style_factory";
 import { IconEdit } from "../../../icons";
+import TextSubtitle from "../../../styles/post/TextSubtitle";
 // import { setPosts } from "../../../store/users/actions";
 
 const iconWrapper = (
@@ -67,7 +68,7 @@ const Text = (props: {
 
   const title = props.title ? (
     <Line flat direction={props.direction}>
-      <h4>{props.title}</h4>
+      <TextSubtitle>{props.title}</TextSubtitle>
     </Line>
   ) : null;
 

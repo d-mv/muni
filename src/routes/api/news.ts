@@ -11,8 +11,14 @@ router.post("/", authenticate, async (req: any, res: any) => {
     location: req.user.location
   });
   try {
+    if (req.body.pinned) {
+      const update = await News.updateOne({
+        location: req.user.location,
+        pinned: true
+      }, { pinned: true });
+    }
     await post.save();
-    const news = await News.find({}).sort('-createdAt');
+    const news = await News.find({}).sort("-createdAt");
     res.status(201).send(news);
   } catch (error) {
     console.log(error);

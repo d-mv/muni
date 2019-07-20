@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import { AppState } from "../store";
-import { data, indexedObj, indexedObjAny } from "../store/types";
+import { data } from "../store/types";
 import { showPostPayload } from "../store/post/types";
 
 import {
@@ -12,7 +12,8 @@ import {
   checkToken,
   fetchData,
   getCategories,
-  typingData
+  typingData,
+  setMessage
 } from "../store/users/actions";
 import { fetchLocations, setModule, setStep } from "../store/app/actions";
 import {
@@ -57,6 +58,8 @@ const App = (props: {
   categories: data;
   message: string;
   step: number;
+  postsLoading: boolean;
+  setMessage: (arg0: string) => void;
   getCategories: () => void;
   setModule: (previous: string, next: string) => void;
   setToken: (arg0: string) => void;
@@ -72,22 +75,27 @@ const App = (props: {
   setStep: (arg0: number) => void;
   typingPost: (arg0: { [index: string]: any }) => void;
 }) => {
-  const { token, userMuni, cookies, auth, posts,post, step,module } = props;
+  const { token, userMuni, cookies, auth, posts, post, step, module } = props;
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
   const fetchPostsNews = () => {
+    logger({ text: "fetching", emph: "news", type: "positive" });
+    props.getNews(auth.user.location);
     logger({ text: "fetching", emph: "categories", type: "positive" });
-    setMessage("fetching categories...");
     if (!Object(props.categories).keys) props.getCategories();
     logger({ text: "fetching", emph: "petitions", type: "positive" });
-    setMessage("fetching petitions...");
     props.getPosts(auth.user.location);
-    logger({ text: "fetching", emph: "news", type: "positive" });
-    setMessage("fetching news...");
-    props.getNews(auth.user.location);
   };
+
+  useEffect(() => {
+    if (props.postsLoading) {
+      props.setMessage("fetching news & petitions...");
+    } else {
+      props.setMessage("");
+    }
+  }, [props.postsLoading]);
 
   const toggleModule = (module: string) => {
     props.setModule(props.module, module);
@@ -142,11 +150,12 @@ const App = (props: {
     logger({ text: "auth has", emph: "changed" });
 
     if (
-      posts.length > 0 &&
+      // posts.length > 0 &&
       module !== "post" &&
       token !== "clear" &&
       auth.user._id.length > 0 &&
-      module !== "home"
+      module !== "home" &&
+      module !== "new"
     ) {
       logger({ text: "switching to", emph: "changed", type: "positive" });
       toggleModule("home");
@@ -176,7 +185,7 @@ const App = (props: {
         photo: "",
         link: ""
       });
-      if (step!== 1) props.setStep(1);
+      if (step !== 1) props.setStep(1);
       if (post.show) props.showPost({ show: false });
     }
   }, [props.module]);
@@ -249,7 +258,8 @@ const mapStateToProps = (state: AppState) => {
     auth: state.auth,
     categories: state.categories,
     message: state.message,
-    step:state.step
+    step: state.step,
+    postsLoading: state.postsLoading
   };
 };
 
@@ -269,6 +279,7 @@ export default connect(
     setNews,
     typingData,
     setStep,
-    typingPost
+    typingPost,
+    setMessage
   }
 )(withCookies(App));

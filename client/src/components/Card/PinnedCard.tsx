@@ -10,7 +10,7 @@ import shortText from "../../modules/short_text";
 import styleFactory from "../../modules/style_factory";
 
 import Block from "../../layout/Block";
-import Card from "../../layout/Card";
+import Card from "../../styles/Card";
 import Line from "../../layout/Line";
 import Paragraph from "../../layout/Paragraph";
 import IconMunicipality from "../../icons/Municipality";
@@ -34,10 +34,8 @@ const PinnedCard = (props: {
   const iconStyle = styleFactory("icon", direction);
   return (
     <Card
-      direction={direction}
-      id={props.post._id}
-      margin={25}
-      action={handleClick}>
+      onClick={()=>handleClick()}
+    >
       <div className={style[iconStyle]}>
         <IconMunicipality
           filled

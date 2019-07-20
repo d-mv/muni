@@ -15,8 +15,14 @@ const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const post = new News(Object.assign({}, req.body, { location: req.user.location }));
     try {
+        if (req.body.pinned) {
+            const update = yield News.updateOne({
+                location: req.user.location,
+                pinned: true
+            }, { pinned: true });
+        }
         yield post.save();
-        const news = yield News.find({}).sort('-createdAt');
+        const news = yield News.find({}).sort("-createdAt");
         res.status(201).send(news);
     }
     catch (error) {

@@ -35,7 +35,12 @@ export interface setMuniPostsAction {
   type: "SET_NEWS";
   payload: any;
 }
-export type Action =
+export interface postsLoading {
+  type: "POSTS_LOADING";
+  payload: boolean;
+}
+
+export type Action = postsLoading
   | setMuniPostsAction
   | setPostsAction
   | typingPostAction

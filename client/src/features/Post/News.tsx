@@ -6,7 +6,7 @@ import { setModule } from "../../store/users/actions";
 import { getNews } from "../../store/post/actions";
 import { indexedObjAny } from "../../store/types";
 
-import { Photo, Link, Confirm, TopBlock, NumbersLine } from "./components";
+import { Photo, Link, Confirm, NumbersLine } from "./components";
 import Text from "./components/Text";
 
 import Block from "../../layout/Block";
@@ -17,6 +17,8 @@ import Header from "../../components/Header";
 import { goBack, iconEdit, iconClose } from "../../icons";
 import Button from "../../components/Button";
 import { AuthState, NewsType } from "../../models";
+import Section from "../../styles/Section";
+import Title from "../../styles/common/Title";
 
 const PostMuni = (props: {
   auth: AuthState;
@@ -138,13 +140,6 @@ const PostMuni = (props: {
   ) : null;
   const ageText: { [index: string]: string } = text["post.age"];
 
-  const numbersLine = (
-    <NumbersLine
-      date={post.createdAt}
-      daysText={ageText}
-      direction={direction}
-    />
-  );
 
   // header
   let editIcon = muniUser
@@ -177,7 +172,14 @@ const PostMuni = (props: {
       <Header {...headerObject} />
       <div className={style.wrapper}>
         <div data-testid='post__view' id={post._id} className={style.post}>
-          <TopBlock muni title={post.title} numbersLine={numbersLine} />
+          <Section direction={direction} padding='0 1rem'>
+            <Title direction={direction} padding='0 1rem;'>{post.title}</Title>
+            <NumbersLine
+              date={post.createdAt}
+              daysText={ageText}
+              direction={direction}
+            />
+          </Section>
           <Photo
             src={post.photo}
             edit={muniEdit}

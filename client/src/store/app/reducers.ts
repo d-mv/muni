@@ -74,12 +74,3 @@ export const setModule = (state = "welcome", action: Action) => {
   return state;
 };
 
-export const setPageLocation = (
-  state = { module: "", location: 0 },
-  action: Action
-) => {
-  switch (action.type) {
-    case "PAGE_LOCATION":
-      return action.payload;
-  }
-};

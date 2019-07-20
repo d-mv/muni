@@ -1,29 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
 
-import { AppState } from "../store";
-import { indexedObjAny } from "../store/types";
+import { Button, Title } from "../styles/VoteButton";
 
-import style from "./style/VoteButton.module.scss";
+const VoteButton = (props: { title: string }) => (
+  <Button>
+    <Title>{props.title}</Title>
+  </Button>
+);
 
-const CardVoteButton = (props: { language: indexedObjAny }) => {
-  const { text } = props.language;
-  return (
-    <button className={style.vote}>
-      <div className={style.inner}>
-        <span>{text["card.button.vote"]}</span>
-      </div>
-    </button>
-  );
-};
-
-const mapStateToProps = (state: AppState) => {
-  return {
-    language: state.language
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {}
-)(CardVoteButton);
+export default VoteButton;

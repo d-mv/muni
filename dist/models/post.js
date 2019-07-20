@@ -34,7 +34,8 @@ const PostSchema = new mongoose.Schema({
     active: { type: Boolean, required: true, default: true },
     votes: [
         {
-            type: mongoose.Schema.Types.ObjectId
+            type: mongoose.Schema.Types.ObjectId,
+            unique: true
         }
     ],
     reply: {
@@ -42,12 +43,14 @@ const PostSchema = new mongoose.Schema({
         createdAt: { type: Date, default: Date.now },
         up: [
             {
-                type: mongoose.Schema.Types.ObjectId
+                type: mongoose.Schema.Types.ObjectId,
+                unique: true
             }
         ],
         down: [
             {
-                type: mongoose.Schema.Types.ObjectId
+                type: mongoose.Schema.Types.ObjectId,
+                unique: true
             }
         ]
     },

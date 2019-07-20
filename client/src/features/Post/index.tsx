@@ -22,12 +22,10 @@ import Modal from "../../components/Modal";
 import {
   Photo,
   Link,
-  TopBlock,
   ShowMore,
   NumbersLine,
   NewReply,
   Voted,
-  SetOfThumbs,
   ReplyVotes,
   NewReplyButton,
   ModalView,
@@ -36,13 +34,30 @@ import {
 } from "./components";
 import Text from "./components/Text";
 
+import PostCard from "../../styles/Post";
+import Content from "../../styles/Content";
 import style from "./style/Post.module.scss";
 import styleFactory from "../../modules/style_factory";
 import Button from "../../components/Button";
 import { AuthState } from "../../models";
 import { emptyPost } from "../../store/defaults";
 import logger from "../../modules/logger";
-import { ReplyTag } from "./components/ReplyTag";
+// import { ReplyTag } from "./components/ReplyTag";
+import ReplyTag from "../../styles/post/ReplyTag";
+import Spacer from "../../styles/utils/Spacer";
+import ScrolledContent from "../../styles/ScrolledContent";
+import AlreadyPosted from "../../styles/post/AlreadyPosted";
+import InLine from "../../styles/utils/InLine";
+import Section from "../../styles/Section";
+import Category from "../../styles/common/Category";
+import Title from "../../styles/common/Title";
+import Field from "../../styles/form/Field";
+import Reply from "../../styles/post/Reply";
+import { secondary70, attention, secondary } from "../../styles/_colors";
+import DownIcon from "../../styles/form/DownIcon";
+import Votes from "../../styles/post/Votes";
+import PlainText from "../../styles/post/PlainText";
+import Thumb from "../../icons/Thumb";
 
 const Post = (props: {
   posts: any;
@@ -132,8 +147,8 @@ const Post = (props: {
   };
 
   const toggleShowConfirm = () => {
-    setShowConfirm(!showConfirm)
-  }
+    setShowConfirm(!showConfirm);
+  };
 
   const toggleDeleteConfirmation = () => {
     setDeleteConfirmation(!deleteConfirmation);
@@ -196,11 +211,11 @@ const Post = (props: {
     }
   };
   const submitVote = () => {
-    setShowConfirm(true)
+    setShowConfirm(true);
     setTimeout(() => {
       setShowConfirm(false);
     }, 2000);
-    props.showPost({ ...post, votes: [post.votes, user._id]})
+    props.showPost({ ...post, votes: [post.votes, user._id] });
     props.votePost(post._id);
   };
 
@@ -248,30 +263,25 @@ const Post = (props: {
 
   // numbers line
   const ageText: { [index: string]: string } = text["post.age"];
-  const numbersLine = (
-    <NumbersLine
-      date={post.createdAt}
-      daysText={ageText}
-      direction={direction}
-      votes={post.votes.length}
-      voterText={voterText}
-    />
-  );
 
   // setting up components
   const modal = showConfirm ? (
     <ModalView close={toggleShowConfirm} text={text["vote.thanks"]} />
   ) : null;
 
-  let voteButton =
-    includes || author || muniUser ? null : (
-      <div className={style.voteButton} onClick={() => submitVote()}>
-        <VoteButton />
-      </div>
-    );
+  const voted = post.votes.includes(props.auth.user._id);
 
-  if (post.votes.includes(props.auth.user._id))
-    voteButton = <Voted text={text["post.voted"]} direction={direction} />;
+  const renderVoteButton = () => {
+    if (voted) return <AlreadyPosted>{text["post.voted"]}</AlreadyPosted>;
+
+    const allowed = includes || author || muniUser;
+    if (!allowed)
+      return (
+        <div className={style.voteButton} onClick={() => submitVote()}>
+          <VoteButton title={text["card.button.vote"]} />
+        </div>
+      );
+  };
 
   let newReplyComponent: any = "";
   let ReplyMessage: any = "";
@@ -279,7 +289,10 @@ const Post = (props: {
 
   const newReplyButton =
     muniUser && !post.reply.text ? (
-      <NewReplyButton action={toggleShowNewReplyButton} />
+      <NewReplyButton
+        action={toggleShowNewReplyButton}
+        text={text["post.muni.newreply"]}
+      />
     ) : null;
 
   // if there is muni reply
@@ -301,12 +314,9 @@ const Post = (props: {
         </div>
       );
     } else if (allowToReply) {
-      setOfThumbs = <Voted text={text["post.voted"]} direction={direction} />;
+      setOfThumbs = "";
     }
 
-    const replyVotes = (
-      <ReplyVotes replies={{ up: post.reply.up, down: post.reply.down }} />
-    );
     let setOfEditButtons = null;
     let muniDeleteModal = null;
     let muniEditModal = null;
@@ -340,7 +350,8 @@ const Post = (props: {
           text={text["muni-reply.edit.text"]}>
           {
             <div className='section'>
-              <input
+              <Field
+                direction={direction}
                 autoFocus={true}
                 type='text'
                 name='reply'
@@ -357,15 +368,23 @@ const Post = (props: {
       ) : null;
     }
     ReplyMessage = post.reply.text ? (
-      <div ref={replyRef} id='replyRef' className={style[replyCardStyle]}>
-        <div className={style[styleFactory("replyTitleLine", direction)]}>
-          {replyVotes}
-          <span className={style.replyCardTitle}>
-            {text["munireply.title"]}
-          </span>
-        </div>
-        <div className={style.replyMessage}>{post.reply.text}</div>
-        {post.reply.text.length > 50 ? (
+      <Reply>
+        <InLine
+          padding='1rem 1rem 0 1rem'
+          direction={direction}
+          justify='space-between'>
+          <Title direction={direction}>{text["munireply.title"]}</Title>
+          <ReplyVotes
+            replies={{ up: post.reply.up, down: post.reply.down }}
+            direction={direction}
+          />
+        </InLine>
+        <Section direction={direction}>
+          <PlainText direction={direction}>{post.reply.text}</PlainText>
+          {voted ? null : <AlreadyPosted>{text["post.voted"]}</AlreadyPosted>}
+        </Section>
+
+        {/* {post.reply.text.length > 50 ? (
           <ShowMore
             color={replyCardColor === "white" ? "primary" : "white"}
             title={showMoreLessText}
@@ -373,11 +392,12 @@ const Post = (props: {
             opened={replyOpened}
             action={setReplyOpened}
           />
-        ) : null}
+        ) : null} */}
         {setOfEditButtons}
         {muniDeleteModal}
         {muniEditModal}
-      </div>
+        <Spacer space={5} />
+      </Reply>
     ) : null;
     if (muniUser) setOfThumbs = null;
   }
@@ -453,51 +473,65 @@ const Post = (props: {
   };
 
   return (
-    <div className={style.container}>
+    <Content>
       <Header {...headerObject} />
-      <div className={style.wrapper}>
-        <div data-testid='post__view' id={post._id} className={style.post}>
-          {post.reply.text ? <ReplyTag text={text["post.reply.tag"]} /> : null}
-          <TopBlock
-            category={category}
-            title={post.title}
-            numbersLine={numbersLine}
-          />
-          <Photo
-            src={post.photo}
-            edit={edit}
-            actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
-          />
-          <Link
-            primary
-            text={post.link}
+      <Spacer space={7} />
+      <PostCard>
+        <Section direction={direction} padding='0 1rem'>
+          <InLine direction={direction} justify='space-between'>
+            <Category>{category}</Category>
+            {post.reply.text ? (
+              <ReplyTag back={secondary70}>{goBack("white")}</ReplyTag>
+            ) : null}
+          </InLine>
+          <Title direction={direction} padding='0 1rem;'>
+            {post.title}
+          </Title>
+          <NumbersLine
+            date={post.createdAt}
+            daysText={ageText}
             direction={direction}
-            edit={edit}
-            actions={{ set: handleSetLink, remove: handleRemoveLink }}
-            editText={{
-              message: text["post.link.edit"],
-              confirm: text["confirm"],
-              cancel: text["cancel"],
-              label: text["new.field.link.label"],
-              placeholder: text["new.field.link.prompt"]
-            }}
+            votes={post.votes.length}
+            voterText={voterText}
           />
-          <div className={showStyle}>
+        </Section>
+        <Photo
+          src={post.photo}
+          edit={edit}
+          actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
+        />
+        <Link
+          primary
+          text={post.link}
+          direction={direction}
+          edit={edit}
+          actions={{ set: handleSetLink, remove: handleRemoveLink }}
+          editText={{
+            message: text["post.link.edit"],
+            confirm: text["confirm"],
+            cancel: text["cancel"],
+            label: text["new.field.link.label"],
+            placeholder: text["new.field.link.prompt"]
+          }}
+        />
+        <div className={showStyle}>
+          <Text
+            step
+            title={text["post.problem"]}
+            text={post.problem}
+            direction={direction}
+          />
+          {post.solution ? (
             <Text
-              step
-              title={text["post.problem"]}
-              text={post.problem}
+              back
+              title={text["post.solution"]}
+              text={post.solution}
               direction={direction}
             />
-            {post.solution ? (
-              <Text
-                back
-                title={text["post.solution"]}
-                text={post.solution}
-                direction={direction}
-              />
-            ) : null}
-          </div>
+          ) : null}
+        </div>
+        <InLine direction={direction} justify='space-between'>
+          {voted ? renderVoteButton() : null}
           <ShowMore
             color='primary'
             title={showMoreLessText}
@@ -505,20 +539,19 @@ const Post = (props: {
             opened={textOpened}
             action={setTextOpened}
           />
-        </div>
-        <div className={style.voted}>{voteButton}</div>
-        {modal}
-        {newReplyButton}
-        {newReplyComponent}
-        {ReplyMessage}
-        {post.reply.text ? (
-          <div className={style.replyVoted}>{setOfThumbs}</div>
-        ) : null}
-        {deleteButton}
-        {deleteConfirmationComponent}
-        {updateConfirmComponent}
-      </div>
-    </div>
+        </InLine>
+      </PostCard>
+      {voted ? null : renderVoteButton()}
+      <Spacer space={3} />
+      {modal}
+      {newReplyButton}
+      {newReplyComponent}
+      {ReplyMessage}
+      {post.reply.text ? setOfThumbs : null}
+      {deleteButton}
+      {deleteConfirmationComponent}
+      {updateConfirmComponent}
+    </Content>
   );
 };
 

@@ -6,16 +6,17 @@ import { logOff, showHelp } from "../store/users/actions";
 
 import Header from "../components/Header";
 import LangSwitch from "../components/LangSwitch";
-import Button from "../components/Button";
+import Button from "../features/Button";
 
 import Page from "../layout/Page";
-import Section from "../layout/Section";
+import Section from "../styles/Section";
 import Paragraph from "../layout/Paragraph";
 import Line from "../layout/Line";
 import Content from "../layout/Content";
 
 import style from "./style/Profile.module.scss";
 import { data } from "../store/types";
+import Spacer from "../styles/utils/Spacer";
 
 const Profile = (props: {
   locations: data;
@@ -36,7 +37,7 @@ const Profile = (props: {
     <Page>
       <Header {...headerObject} />
       <Content header>
-        <Section>
+        <Section direction={direction}>
           <Paragraph direction={direction}>
             {text["profile.text.changeLanguage"]}
           </Paragraph>
@@ -47,11 +48,13 @@ const Profile = (props: {
             </Line>
           </Paragraph>
         </Section>
-        <Paragraph direction={direction}>
-          <Button mode='primary' action={props.logOff}>
+        <Spacer space={1} />
+        <Section direction={direction} width='50%' margin='0 auto'>
+          <Button mode='primary' onClick={props.logOff} label='Log Out'>
             {text["profile.button.logOff"]}
           </Button>
-        </Paragraph>
+          <Spacer space={1} />
+        </Section>
       </Content>
     </Page>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 
+import PostPhoto from "../../../styles/post/Photo";
 import styles from "./style/Photo.module.scss";
 import { IconEdit, IconDelete } from "../../../icons";
 import { ModalEdit } from ".";
@@ -53,12 +54,6 @@ export const Photo = (props: {
     });
   };
 
-  const showPhoto = graphic ? (
-    <img src={graphic} alt='upload-image' className={styles.image} />
-  ) : (
-    <img src={defaultPhoto} alt='upload-image' className={styles.imageDef} />
-  );
-
   const toggleShowEdit = () => {
     setShowEdit(!showEdit);
     setGraphic("");
@@ -72,8 +67,8 @@ export const Photo = (props: {
   };
 
   const handleRemove = () => {
-    if (props.actions) props.actions.remove()
-  }
+    if (props.actions) props.actions.remove();
+  };
 
   const editText = props.editText
     ? props.editText
@@ -84,7 +79,7 @@ export const Photo = (props: {
     <ModalEdit close={toggleShowEdit} action={handleYesNo} text={editText}>
       {
         <div className={styles.container}>
-          {showPhoto}
+          <PostPhoto image={graphic ? graphic : defaultPhoto} />
           <input
             id='file'
             type='file'
@@ -120,12 +115,10 @@ export const Photo = (props: {
     image = require("../../../assets/image__default.png");
   }
 
-  const photo = <img src={image} className={styles.photo} />;
-
   return (
     <div className={mainStyle}>
       {iconEdit}
-      {photo}
+      <PostPhoto image={image} />
       <div className={styles.circle}>{iconDelete}</div>
       {showEdit ? modal : null}
     </div>

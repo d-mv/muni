@@ -10,7 +10,6 @@ export const submitPost = (state = apiState, action: Action) => {
   return state;
 };
 export const posts = (state: post[] = [emptyPost], action: Action): post[] => {
-
   switch (action.type) {
     case "SET_POSTS":
       return action.payload;
@@ -46,6 +45,14 @@ export const typingPost = (state = {}, action: Action) => {
 export const setNews = (state = [], action: Action) => {
   switch (action.type) {
     case "SET_NEWS":
+      return action.payload;
+  }
+  return state;
+};
+
+export const postsLoading = (state = false, action: Action) => {
+  switch (action.type) {
+    case "POSTS_LOADING":
       return action.payload;
   }
   return state;

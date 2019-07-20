@@ -22,10 +22,6 @@ const ContentBlock = (props: {
     {props.stepThree}
     {props.stepFour}
     {props.stepFive}
-    {props.preview}
-    <Message direction={props.direction} mode='attention' use='form'>
-      {props.message}
-    </Message>
     {props.loadingElement}
   </Content>
 );

@@ -48,8 +48,3 @@ export const setModule = (
     dispatch({ type: "SET_MODULE", module: next });
   };
 };
-
-export const setPageLocation = (module: string, location: number) => ({
-  type: "PAGE_LOCATION",
-  payload: {module,location}
-});

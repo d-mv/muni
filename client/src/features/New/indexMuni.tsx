@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection } from "../../components/formSection";
-import { Preview } from "./components";
+import { Preview, PreviewBlock } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { createNews, typingPost } from "../../store/post/actions";
 import { setModule } from "../../store/users/actions";
 import { data } from "../../store/types";
 
-import Button from "../../components/Button";
+import Button from "../Button";
 import Loading from "../../components/Loading";
 import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
@@ -18,12 +18,20 @@ import ContentBlock from "./components/ContentBlock";
 import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
-import Label from "../../layout/Label";
+import Label from "../../styles/form/Label";
 import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 import { AuthState } from "../../models";
+import InLine from "../../styles/utils/InLine";
+import Message from "../../styles/form/Message";
+import InColumn from "../../styles/utils/InColumn";
+// import Switch from "../../styles/form/Switch";
+
+import SwitchComponent from "../../components/Switch";
+import Spacer from "../../styles/utils/Spacer";
+import SwitchLine from "../../styles/form/SwitchTitle";
 
 const NewPost = (props: {
   language: data;
@@ -36,19 +44,14 @@ const NewPost = (props: {
   //
   loading: boolean;
   typingPost: (arg0: { [index: string]: any }) => void;
-  newPost: {
-    title: "";
-    text: "";
-    photo: "";
-    link: "";
-  };
+  newPost: any;
   createNews: (arg0: any) => void;
 }) => {
   const { language, newPost, typingPost, loading, step, setStep } = props;
   const { direction, text, short } = language;
   const [review, setReview] = React.useState(false);
   // form fields
-  const { title, photo, link } = newPost;
+  const { title, photo, link, pinned } = newPost;
   // message
   const [message, setMessage] = React.useState("");
 
@@ -113,7 +116,7 @@ const NewPost = (props: {
     <Steps muni current={step} direction={direction} action={handleAnyStep} />
   );
   let buttonPrimary = (
-    <Button mode='primary' action={handleNextStep}>
+    <Button mode='primary' onClick={handleNextStep} label='Next'>
       {text["new.steps.button.next"]}
     </Button>
   );
@@ -122,12 +125,13 @@ const NewPost = (props: {
     stepsComponent = <Zero />;
     pageSubTitle = text["new.preview"];
     buttonPrimary = (
-      <Button mode='primary' action={handleSubmit}>
+      <Button mode='primary' onClick={handleSubmit} label='Submit'>
         {text["new.steps.button.submit"]}
       </Button>
     );
   }
 
+  const togglePinned = () => typingPost({ pinned: !pinned });
   const stepOne =
     step === 1
       ? formSection({
@@ -138,7 +142,8 @@ const NewPost = (props: {
           placeholder: text["new.muni.field.title.prompt"],
           action: handleInputChange,
           length: 2,
-          focus: true
+          focus: true,
+          direction: direction
         })
       : null;
 
@@ -152,14 +157,15 @@ const NewPost = (props: {
           placeholder: text["new.muni.field.text.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: false
+          focus: false,
+          direction: direction
         })
       : null;
 
   const stepThree =
     step === 3 ? (
       <Section>
-        <Label direction={direction} value={text["new.field.photo.label"]} />
+        <Label direction={direction}>{text["new.field.photo.label"]}</Label>
         <PhotoUpload
           label={text["new.field.photo.prompt"]}
           direction={direction}
@@ -173,7 +179,8 @@ const NewPost = (props: {
           value: link,
           placeholder: text["new.field.link.prompt"],
           action: handleInputChange,
-          length: 5
+          length: 5,
+          direction: direction
         })}
       </Section>
     ) : null;
@@ -186,35 +193,54 @@ const NewPost = (props: {
     photo,
     link
   };
-  // TODO: fix below
   const preview =
-    step === 4 ? <Preview muni post={post} direction={direction} /> : null;
+    step === 4 ? (
+      <PreviewBlock
+        muni
+        post={post}
+        direction={direction}
+        onChange={togglePinned}
+        text={text["new.muni.preview.pinned"]}
+        pinned={pinned}
+      />
+    ) : null;
+
   const loadingElement = loading ? <Loading /> : null;
 
   return (
     <Content padded>
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
-        {stepsComponent}
+        {step > 3 ? null : stepsComponent}
       </Center>
-      <Paragraph direction={direction}>
-        {text[`new.muni.steps.step.${step}`]}
-      </Paragraph>
-      <ContentBlock
-        stepOne={stepOne}
-        stepTwo={stepTwo}
-        stepThree={stepThree}
-        preview={preview}
-        loadingElement={loadingElement}
-        direction={direction}
-        message={message}
-      />
-      <ButtonsWrapper row direction={direction}>
+      {step > 3 ? null : (
+        <Paragraph direction={direction}>
+          {text[`new.muni.steps.step.${step}`]}
+        </Paragraph>
+      )}
+      {step > 3 ? null : (
+        <ContentBlock
+          stepOne={stepOne}
+          stepTwo={stepTwo}
+          stepThree={stepThree}
+          preview={preview}
+          loadingElement={loadingElement}
+          direction={direction}
+          message={message}
+        />
+      )}
+      {preview}
+      <Message direction={direction}>{message}</Message>
+      <InLine direction={direction} justify='space-around'>
         {buttonPrimary}
-        <Button mode='secondary' disabled={step === 1} action={handleBackStep}>
+        <Button
+          mode='secondary'
+          disabled={step === 1}
+          onClick={handleBackStep}
+          label='Back'>
           {text["new.steps.button.back"]}
         </Button>
-      </ButtonsWrapper>
+      </InLine>
     </Content>
   );
 };

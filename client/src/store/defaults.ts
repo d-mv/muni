@@ -26,3 +26,11 @@ export const emptyPost = {
     down: []
   }
 };
+
+export const emptyNewPost = {
+  title: "",
+  text: "",
+  photo: "",
+  link: "",
+  pinned: false
+};

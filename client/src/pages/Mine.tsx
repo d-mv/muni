@@ -27,7 +27,7 @@ const Mine = (props: {
 
   const headerObject = {
     name: location.name[auth.user.settings.language],
-    right: { icon: <div />, action: () => { } }
+    right: { icon: <div />, action: () => {} }
   };
 
   return (

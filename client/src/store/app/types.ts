@@ -36,13 +36,7 @@ export interface setModuleAction {
   module: string;
 }
 
-export interface setPageLocation {
-  type: "PAGE_LOCATION";
-  payload: { module: string; location: number };
-}
-
 export type Action =
-  | setPageLocation
   | setModuleAction
   | prevModuleAction
   | fetchLocationsAction

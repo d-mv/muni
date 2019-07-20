@@ -1,7 +1,10 @@
 import React from "react";
-import { TopBlock, Photo, Link } from "../../Post/components";
+import { Photo, Link } from "../../Post/components";
 import Text from "../../Post/components/Text";
 import style from "../../Post/style/Post.module.scss";
+import Section from "../../../styles/Section";
+import Title from "../../../styles/common/Title";
+import Post from "../../../styles/Post";
 
 export const Preview = (props: {
   post: {
@@ -16,38 +19,38 @@ export const Preview = (props: {
   text?: { problem: string; solution?: string };
   muni?: boolean;
 }) => (
-  <div className={style.wrapper}>
-    <div data-testid='post__preview' className={style.post}>
-      <TopBlock title={props.post.title} category={props.post.category} />
-      {props.post.photo ? <Photo src={props.post.photo} edit={false} /> : null}
+  <Post>
+    <Section direction={props.direction} padding='0 1rem'>
+      <Title direction={props.direction} padding='1rem 0'>
+        {props.post.title}
+      </Title>
+    </Section>
+    {props.post.photo ? <Photo src={props.post.photo} edit={false} /> : null}
+    {props.post.link ? (
       <Link
         primary
         text={props.post.link}
         direction={props.direction}
         edit={false}
       />
-      <div className={style.text}>
+    ) : null}
+    <div className={style.text}>
+      <Text
+        step
+        title={
+          props.muni && !props.text ? "" : props.text ? props.text.problem : ""
+        }
+        text={props.post.problem}
+        direction={props.direction}
+      />
+      {props.muni || !props.post.solution ? null : (
         <Text
-          step
-          title={
-            props.muni && !props.text
-              ? ""
-              : props.text
-              ? props.text.problem
-              : ""
-          }
-          text={props.post.problem}
+          back
+          title={props.text ? props.text.solution : ""}
+          text={props.post.solution || ""}
           direction={props.direction}
         />
-        {props.muni || !props.post.solution ? null : (
-          <Text
-            back
-            title={props.text ? props.text.solution : ""}
-            text={props.post.solution || ""}
-            direction={props.direction}
-          />
-        )}
-      </div>
+      )}
     </div>
-  </div>
+  </Post>
 );
