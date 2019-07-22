@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection, formSelection } from "../../components/formSection";
-import { Preview, PreviewBlock } from "./components";
+import { PreviewBlock } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { typingPost, createPost } from "../../store/post/actions";
@@ -15,10 +15,8 @@ import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
 import ContentBlock from "./components/ContentBlock";
 
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
-// import Label from "../../layout/Label";
 import Label from "../../styles/form/Label";
 import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
@@ -33,12 +31,10 @@ const NewPost = (props: {
   language: data;
   auth: data;
   categories: any;
-  // locations: data;
   token: string;
   step: number;
   submitResult: data;
   setStep: (arg0: number) => void;
-  // submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
   //
@@ -251,8 +247,6 @@ const NewPost = (props: {
       </Section>
     ) : null;
 
-  const mockFn = (props: any) => {};
-
   const categoryName = categoryIdToName(
     categories,
     props.language.short,
@@ -284,17 +278,8 @@ const NewPost = (props: {
     ) : null;
   const loadingElement = props.loading ? <Loading /> : null;
 
-  const goHome = () => {
-    props.setModule(props.prevModule);
-  };
-  const headerObject = {
-    name: "New Post",
-    left: { icon: <div>back</div>, action: goHome }
-  };
-  // console.log(message)
   return (
     <Content padded>
-      {/* <Header {...headerObject} /> */}
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}

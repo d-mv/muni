@@ -16,28 +16,26 @@
       --colorWhite: #fcfcfc;
       --colorSecondary: #379b37;
       --pageShadow: 0 3px 10px 5px rgba(68, 68, 68, 0.3);
-      --pageShadowOpposite: 0 -3px 10px 5px rgba(68, 68, 68, 0.3)
     }
-    .app {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: var(--colorPrimary);
-    }
-    .appMuni {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: var(--colorSecondary);
-    }
+    .app,
+    .appMuni,
     .welcome {
       position: fixed;
       left: 0;
       right: 0;
+    }
+    .app,
+    .appMuni {
+      top: 0;
+      bottom: 0;
+    }
+    .app {
+      background-color: var(--colorPrimary);
+    }
+    .appMuni {
+      background-color: var(--colorSecondary);
+    }
+    .welcome {
       background-color: var(--colorWhite);
       box-sizing: border-box;
       overflow: scroll;

@@ -23,6 +23,8 @@ import button from "../../components/style/Button.module.scss";
 import styleFactory from "../../modules/style_factory";
 import { LoginProps } from "../../store/users/types";
 import InLine from "../../styles/utils/InLine";
+import LangSwitch from "../../components/LangSwitch";
+import Form from "../../styles/form/Form";
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -118,12 +120,11 @@ const Login = (props: {
     direction: direction
   });
 
-  let loginStyle = direction === "rtl" ? "formRight" : "formLeft";
-  if (props.desktop) loginStyle = styleFactory("formDesktop", direction);
-
   return (
-    <form
-      className={loginStyle}
+    <Form
+      desktop={props.desktop}
+      direction={direction}
+      // className={loginStyle}
       onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
         handleSubmit(event)
       }>
@@ -142,7 +143,9 @@ const Login = (props: {
             id='submit_button'
           />
         </Button>
-        {props.desktop ? null : (
+        {props.desktop ? (
+          <LangSwitch />
+        ) : (
           <Button
             mode='secondary'
             onClick={handleSecondaryButton}
@@ -152,7 +155,7 @@ const Login = (props: {
         )}
       </InLine>
       {/* </ButtonsWrapper> */}
-    </form>
+    </Form>
   );
 };
 

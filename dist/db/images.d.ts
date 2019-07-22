@@ -1,2 +1,6 @@
-declare const imagesArray: string[];
-export default imagesArray;
+export declare const imagesArray: {
+    link: string;
+}[];
+export declare const imagesArrayNews: {
+    link: string;
+}[];

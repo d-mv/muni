@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection } from "../../components/formSection";
-import { Preview, PreviewBlock } from "./components";
+import { PreviewBlock } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { createNews, typingPost } from "../../store/post/actions";
@@ -15,7 +15,6 @@ import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
 import ContentBlock from "./components/ContentBlock";
 
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
 import Label from "../../styles/form/Label";
@@ -26,12 +25,6 @@ import { Zero } from "../../layout/Utils";
 import { AuthState } from "../../models";
 import InLine from "../../styles/utils/InLine";
 import Message from "../../styles/form/Message";
-import InColumn from "../../styles/utils/InColumn";
-// import Switch from "../../styles/form/Switch";
-
-import SwitchComponent from "../../components/Switch";
-import Spacer from "../../styles/utils/Spacer";
-import SwitchLine from "../../styles/form/SwitchTitle";
 
 const NewPost = (props: {
   language: data;
@@ -48,7 +41,7 @@ const NewPost = (props: {
   createNews: (arg0: any) => void;
 }) => {
   const { language, newPost, typingPost, loading, step, setStep } = props;
-  const { direction, text, short } = language;
+  const { direction, text } = language;
   const [review, setReview] = React.useState(false);
   // form fields
   const { title, photo, link, pinned } = newPost;
@@ -84,7 +77,6 @@ const NewPost = (props: {
       }
     }
   };
-  // console.log(step);
   const handleBackStep = () => {
     if (step - 1 > 0) {
       setStep(step - 1);
@@ -184,8 +176,6 @@ const NewPost = (props: {
         })}
       </Section>
     ) : null;
-
-  const mockFn = (props: any) => {};
 
   const post = {
     title,

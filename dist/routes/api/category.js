@@ -14,19 +14,21 @@ const Category = require("../../models/category");
 const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    const post = new Category(Object.assign({}, req.body));
+    const category = new Category(Object.assign({}, req.body));
     try {
-        yield post.save();
-        res.status(201).send(post);
+        yield category.save();
+        res.status(201).send(category);
     }
     catch (error) {
         res.status(400).send(error);
     }
 }));
 router.get("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
+    console.log("get categories");
     try {
-        const Categories = yield Category.find({});
-        res.send(Categories);
+        const categories = yield Category.find({});
+        console.log("returning categories");
+        res.send(categories);
     }
     catch (error) {
         res.status(500).send();
@@ -34,8 +36,8 @@ router.get("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, func
 }));
 router.get("/:id/posts", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const Posts = yield Post.find({ category: req.params.id });
-        res.send(Posts);
+        const posts = yield Post.find({ category: req.params.id });
+        res.send(posts);
     }
     catch (error) {
         res.status(500).send();

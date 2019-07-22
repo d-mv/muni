@@ -42,7 +42,6 @@ import Button from "../../components/Button";
 import { AuthState } from "../../models";
 import { emptyPost } from "../../store/defaults";
 import logger from "../../modules/logger";
-// import { ReplyTag } from "./components/ReplyTag";
 import ReplyTag from "../../styles/post/ReplyTag";
 import Spacer from "../../styles/utils/Spacer";
 import ScrolledContent from "../../styles/ScrolledContent";

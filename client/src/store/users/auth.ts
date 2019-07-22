@@ -6,7 +6,7 @@ import { indexedObjAny, registerType } from "../types";
 
 import fromJson from "../../data/translation.json";
 import { apiState } from "../defaults";
-import { AxiosResponse } from "axios";
+
 const data: indexedObjAny = fromJson;
 
 export const checkToken = (token: string) => async (

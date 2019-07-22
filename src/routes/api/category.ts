@@ -7,21 +7,23 @@ const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 
 router.post("/", authenticate, async (req: any, res: any) => {
-  const post = new Category({
+  const category = new Category({
     ...req.body
   });
   try {
-    await post.save();
-    res.status(201).send(post);
+    await category.save();
+    res.status(201).send(category);
   } catch (error) {
     res.status(400).send(error);
   }
 });
 
 router.get("/", authenticate, async (req: any, res: any) => {
+  console.log("get categories");
   try {
-    const Categories = await Category.find({});
-    res.send(Categories);
+    const categories = await Category.find({});
+    console.log("returning categories");
+    res.send(categories);
   } catch (error) {
     res.status(500).send();
   }
@@ -29,8 +31,8 @@ router.get("/", authenticate, async (req: any, res: any) => {
 
 router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   try {
-    const Posts = await Post.find({ category: req.params.id });
-    res.send(Posts);
+    const posts = await Post.find({ category: req.params.id });
+    res.send(posts);
   } catch (error) {
     res.status(500).send();
   }

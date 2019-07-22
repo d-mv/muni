@@ -1,13 +1,13 @@
 import React from "react";
 
-import Label from "../styles/form/Label";
-import { down } from "../icons";
 import styleFactory from "../modules/style_factory";
+
+import Label from "../styles/form/Label";
 import Field from "../styles/form/Field";
 import Area from "../styles/form/Area";
-import { Select } from "../styles/form/Select";
-import InLine from "../styles/utils/InLine";
 import DownIcon from "../styles/form/DownIcon";
+
+import { down } from "../icons";
 
 export const formSection = (props: {
   label: string;
@@ -53,19 +53,6 @@ export const formSection = (props: {
         minLength={props.length ? props.length : 0}
         required
       />
-      // <input
-      //   autoFocus={props.focus}
-      //   type={props.type}
-      //   name={props.name}
-      //   value={props.value}
-      //   autoComplete={props.autoComplete ? props.autoComplete : props.name}
-      //   onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-      //     props.action(event)
-      //   }
-      //   placeholder={props.value ? "" : props.placeholder}
-      //   minLength={props.length ? props.length : 0}
-      //   required
-      // />
     );
   return (
     <section className='section'>

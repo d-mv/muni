@@ -6,10 +6,12 @@ export interface IProps {
   padding?: string;
   height?: string;
   align?: string;
+  width?: string;
 }
 
 const InLine = styled.span<IProps>`
 height: ${props => (props.height ? props.height : "unset")};
+width: ${props => (props.width ? props.width : "undefined")};
 display:flex;
 flex-direction: row;
 justify-content: ${props => props.justify};

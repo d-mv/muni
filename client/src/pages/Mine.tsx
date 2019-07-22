@@ -7,7 +7,7 @@ import { data, post } from "../store/types";
 import Header from "../components/Header";
 import PostList from "../components/PostList";
 
-import Page from "../layout/Page";
+import { Page } from "../styles/Page";
 import SubTitle from "../layout/SubTitle";
 import Content from "../layout/Content";
 import { AuthState } from "../models";
@@ -31,7 +31,7 @@ const Mine = (props: {
   };
 
   return (
-    <Page data-testid='page__mine'>
+    <Page>
       <Header {...headerObject} />
       <Content padded>
         <SubTitle title={text["mine.subtitle"]} direction={direction} />

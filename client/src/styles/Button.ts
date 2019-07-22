@@ -1,20 +1,7 @@
 import styled from "styled-components";
-import {
-  primary,
-  white,
-  primary30,
-  secondary30,
-  secondary,
-  dark,
-  grey
-} from "./_colors";
-import {
-  buttonShadow,
-  borderPrimaryLight,
-  borderPrimary,
-  borderDark
-} from "./_ui";
-import { textButtonVote, h5, h4 } from "./_typography";
+import { primary, white, primary30, secondary, grey } from "./_colors";
+import { buttonShadow, borderPrimary } from "./_ui";
+import { h5, h4 } from "./_typography";
 
 const Button = styled.button`
   letter-spacing: 0.1rem;

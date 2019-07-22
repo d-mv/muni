@@ -8,7 +8,7 @@ import Header from "../components/Header";
 import LangSwitch from "../components/LangSwitch";
 import Button from "../features/Button";
 
-import Page from "../layout/Page";
+import { Page } from "../styles/Page";
 import Section from "../styles/Section";
 import Paragraph from "../layout/Paragraph";
 import Line from "../layout/Line";

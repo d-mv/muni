@@ -57,9 +57,6 @@ export const Link = (props: {
   const editText = props.editText
     ? props.editText
     : { message: "Edit the link", confirm: "Save", cancel: "Cancel" };
-  const inputText = props.editText
-    ? props.editText
-    : { label: "Link", placeholder: "enter the link" };
 
   const modal = (
     <ModalEdit close={toggleShowEdit} action={handleYesNo} text={editText}>

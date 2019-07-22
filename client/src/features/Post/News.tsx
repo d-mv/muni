@@ -12,13 +12,15 @@ import Text from "./components/Text";
 import Block from "../../layout/Block";
 
 import style from "./style/Post.module.scss";
-import Content from "../../layout/Content";
+import PostCard from "../../styles/Post";
+import Content from "../../styles/Content";
 import Header from "../../components/Header";
 import { goBack, iconEdit, iconClose } from "../../icons";
 import Button from "../../components/Button";
 import { AuthState, NewsType } from "../../models";
 import Section from "../../styles/Section";
 import Title from "../../styles/common/Title";
+import Spacer from "../../styles/utils/Spacer";
 
 const PostMuni = (props: {
   auth: AuthState;
@@ -140,7 +142,6 @@ const PostMuni = (props: {
   ) : null;
   const ageText: { [index: string]: string } = text["post.age"];
 
-
   // header
   let editIcon = muniUser
     ? {
@@ -168,49 +169,51 @@ const PostMuni = (props: {
   };
   console.log(location);
   return (
-    <Content header>
+    <Content>
       <Header {...headerObject} />
-      <div className={style.wrapper}>
-        <div data-testid='post__view' id={post._id} className={style.post}>
-          <Section direction={direction} padding='0 1rem'>
-            <Title direction={direction} padding='0 1rem;'>{post.title}</Title>
-            <NumbersLine
-              date={post.createdAt}
-              daysText={ageText}
-              direction={direction}
-            />
-          </Section>
-          <Photo
-            src={post.photo}
-            edit={muniEdit}
-            actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
+      <Spacer space={7} />
+      <PostCard>
+        <Section direction={direction} padding='0 1rem'>
+          <Spacer space={1} />
+          <Title direction={direction} padding='0 1rem;'>
+            {post.title}
+          </Title>
+          <NumbersLine
+            date={post.createdAt}
+            daysText={ageText}
+            direction={direction}
           />
-          <Block>
-            <Link
-              primary
-              text={post.link}
-              direction={direction}
-              edit={muniEdit}
-              actions={{ set: handleSetLink, remove: handleRemoveLink }}
-              editText={{
-                message: text["post.link.edit"],
-                confirm: text["confirm"],
-                cancel: text["cancel"],
-                label: text["new.field.link.label"],
-                placeholder: text["new.field.link.prompt"]
-              }}
-            />
-          </Block>
-          <Text
-            muni
-            text={post.text}
+        </Section>
+        <Photo
+          src={post.photo}
+          edit={muniEdit}
+          actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
+        />
+        <Block>
+          <Link
+            primary
+            text={post.link}
             direction={direction}
             edit={muniEdit}
-            action={handleSetText}
-            // setAction={handleUpdate}
+            actions={{ set: handleSetLink, remove: handleRemoveLink }}
+            editText={{
+              message: text["post.link.edit"],
+              confirm: text["confirm"],
+              cancel: text["cancel"],
+              label: text["new.field.link.label"],
+              placeholder: text["new.field.link.prompt"]
+            }}
           />
-        </div>
-      </div>
+        </Block>
+        <Text
+          muni
+          text={post.text}
+          direction={direction}
+          edit={muniEdit}
+          action={handleSetText}
+          // setAction={handleUpdate}
+        />
+      </PostCard>
       {deleteButton}
       {deleteConfirmationComponent}
       {updateConfirmComponent}

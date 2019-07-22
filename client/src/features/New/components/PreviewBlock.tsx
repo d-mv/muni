@@ -4,7 +4,6 @@ import { Preview } from ".";
 import InLine from "../../../styles/utils/InLine";
 import SwitchLine from "../../../styles/form/SwitchTitle";
 import SwitchComponent from "../../../components/Switch";
-import { post } from "../../../store/types";
 import Spacer from "../../../styles/utils/Spacer";
 
 export const PreviewBlock = (props: {

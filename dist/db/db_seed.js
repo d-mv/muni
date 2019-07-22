@@ -82,7 +82,8 @@ const randomNumber = (max) => faker.random.number({
     min: 0,
     max
 });
-const getImage = () => images_1.default[randomNumber(images_1.default.length - 1)];
+const getImage = () => images_1.imagesArray[randomNumber(images_1.imagesArray.length - 1)].link;
+const getImageNews = () => images_1.imagesArrayNews[randomNumber(images_1.imagesArrayNews.length - 1)].link;
 const categories = () => __awaiter(this, void 0, void 0, function* () {
     try {
         categoryArray.forEach((el) => __awaiter(this, void 0, void 0, function* () {
@@ -137,7 +138,6 @@ const posts = () => __awaiter(this, void 0, void 0, function* () {
         const listOfCategories = yield Category.find({});
         listOfLocations.forEach((loc) => __awaiter(this, void 0, void 0, function* () {
             for (let i = 0; i < 20; i++) {
-                console.log("new post");
                 const usr = listOfUsers[randomNumber(louLength)];
                 let other = listOfUsers[randomNumber(louLength)];
                 const post = new Post({
@@ -169,7 +169,7 @@ const news = () => __awaiter(this, void 0, void 0, function* () {
                 const post = new News({
                     title: faker.lorem.sentence(),
                     text: faker.lorem.paragraphs(5),
-                    photo: getImage(),
+                    photo: getImageNews(),
                     link: faker.internet.url(),
                     location: loc._id,
                     pinned: i === 0 ? true : false
@@ -189,14 +189,14 @@ const dbSeed = () => __awaiter(this, void 0, void 0, function* () {
         // const category = await categories();
         // const location = await locations();
         // const user = await users();
-        const post = yield posts();
-        // const newsPosts = await news();
+        // const post = await posts();
+        const newsPosts = yield news();
         return [
             // category,
             // location,
             // user,
-            post
-            // newsPosts
+            // post
+            newsPosts
         ];
     }
     catch (error) {

@@ -9,6 +9,8 @@ import AppDesktop from "./app/AppDesktop";
 import * as serviceWorker from "./serviceWorker";
 import configureStore from "./store";
 
+import "./styles/index.scss";
+// TODO: remove
 import "./style/start.scss";
 
 const store = configureStore();

@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import { post, data } from "../store/types";
+import { data } from "../store/types";
 
 import Header from "../components/Header";
 
-import Page from "../layout/Page";
+import { Page } from "../styles/Page";
 import PostList from "../components/PostList";
 import Content from "../layout/Content";
 import Spacer from "../styles/utils/Spacer";

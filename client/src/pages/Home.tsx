@@ -7,7 +7,7 @@ import PinnedCard from "../components/Card/PinnedCard";
 import Header from "../components/Header";
 import PostList from "../components/PostList";
 
-import Page from "../layout/Page";
+import { Page } from "../styles/Page";
 import Content from "../layout/Content";
 import { data, post } from "../store/types";
 import Message from "../styles/Message";
@@ -30,8 +30,6 @@ const Home = (props: {
 
   const message = props.message ? <Message>{props.message}</Message> : null;
 
-  console.log(pinned);
-  console.log(posts);
   return (
     <Page>
       <Header {...headerObject} />

@@ -9,7 +9,7 @@ export const Button = styled.button`
   height: 6.5rem;
   border-radius: 50%;
   background-color: ${primary};
-  border: ${borderPrimaryLight};
+  border: ${borderPrimaryLight} !important;
   display: flex;
   align-items: center;
   justify-content: center;

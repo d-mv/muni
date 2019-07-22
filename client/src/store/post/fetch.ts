@@ -5,12 +5,11 @@ import { get } from "../services";
 export const getPosts = (location: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
-  console.log('getposts')
+  console.log("getposts");
   dispatch({ type: "POSTS_LOADING", payload: true });
   get({ url: `/locations/${location}/posts` })
     .then(response => {
-      console.log('getposts')
-
+      console.log("getposts");
       dispatch({
         type: "SET_POSTS",
         payload: response.data
@@ -25,8 +24,7 @@ export const getPosts = (location: string) => async (
 
 export const getNews = (location: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-) =>
-{
+) => {
   dispatch({ type: "POSTS_LOADING", payload: true });
   get({ url: `/locations/${location}/news` })
     .then(response => {
@@ -39,4 +37,5 @@ export const getNews = (location: string) => async (
     .catch((e: any) => {
       console.log(e);
       dispatch({ type: "POSTS_LOADING", payload: false });
-    })};
+    });
+};

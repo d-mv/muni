@@ -75,19 +75,20 @@ const App = (props: {
   setStep: (arg0: number) => void;
   typingPost: (arg0: { [index: string]: any }) => void;
 }) => {
-  const { token, userMuni, cookies, auth, posts, post, step, module } = props;
+  const { token, userMuni, cookies, auth, posts, post, step, module,postsLoading } = props;
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
   const fetchPostsNews = () => {
+    if (!postsLoading) {
     logger({ text: "fetching", emph: "news", type: "positive" });
     props.getNews(auth.user.location);
     logger({ text: "fetching", emph: "categories", type: "positive" });
     // if (!Object(props.categories).keys)
       props.getCategories();
     logger({ text: "fetching", emph: "petitions", type: "positive" });
-    props.getPosts(auth.user.location);
+    props.getPosts(auth.user.location);}
   };
 
   useEffect(() => {

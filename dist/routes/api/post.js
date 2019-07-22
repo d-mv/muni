@@ -9,13 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sort_1 = require("../../modules/sort");
+const cloudinary_1 = require("../../middleware/cloudinary");
 const express = require("express");
 const router = new express.Router();
 const { ObjectID } = require("mongodb");
 const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    const post = new Post(Object.assign({}, req.body, { createdBy: req.user._id, location: req.user.location }));
+    const data = req.body;
+    const { photo } = req.body;
+    let photoUploaded = { secure_url: "" };
+    if (photo) {
+        delete data.photo;
+        photoUploaded = yield cloudinary_1.uploadPhoto(photo);
+    }
+    const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
+    const post = new Post(Object.assign({}, req.body, { photo: photoLink, createdBy: req.user._id, location: req.user.location }));
     try {
         const result = yield post.save();
         const posts = yield Post.find({});

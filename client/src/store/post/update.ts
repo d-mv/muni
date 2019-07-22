@@ -5,6 +5,7 @@ import { patch, get, del } from "../services";
 export const votePost = (id: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
+  console.log("vote");
   dispatch({
     type: "SET_LOADING",
     loading: true
@@ -15,7 +16,7 @@ export const votePost = (id: string) => async (
   });
   get({ url: `/posts/${id}/vote` })
     .then(response => {
-      console.log(response)
+      console.log(response);
       dispatch({
         type: "SET_LOADING",
         loading: false

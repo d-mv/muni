@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "../../../store";
 
-import { ParagraphBlock, ModalEdit } from "./";
+import { ModalEdit } from "./";
 
 import Section from "../../../layout/Section";
 import Line from "../../../layout/Line";
@@ -12,7 +12,6 @@ import styles from "./style/Text.module.scss";
 import styleFactory from "../../../modules/style_factory";
 import { IconEdit } from "../../../icons";
 import TextSubtitle from "../../../styles/post/TextSubtitle";
-// import { setPosts } from "../../../store/users/actions";
 
 const iconWrapper = (
   style: string,
@@ -47,9 +46,6 @@ const Text = (props: {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setText(event.target.value);
-  };
-  const toggleShowEdit = () => {
-    setShowEdit(!showEdit);
   };
 
   const toggleShowModal = () => {

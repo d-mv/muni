@@ -5,16 +5,14 @@ import shortText from "../../modules/short_text";
 
 import { AppState } from "../../store";
 import { showPost } from "../../store/post/actions";
-import { post, indexedObjAny, data, postMuni } from "../../store/types";
+import { indexedObjAny, data } from "../../store/types";
+import { showPostPayload } from "../../store/post/types";
 
 import Age from "./components/Age";
 import Photo from "./components/Photo";
+
 import Title from "../../styles/common/Title";
-
 import Card from "../../styles/Card";
-
-import style from "./style/PostCard.module.scss";
-import { showPostPayload } from "../../store/post/types";
 import Section from "../../styles/Section";
 import InLine from "../../styles/utils/InLine";
 
@@ -25,7 +23,7 @@ const CardMuni = (props: {
   showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction } = props.language;
-  const { _id, title, date, photo, createdAt } = props.post;
+  const { title, photo, createdAt } = props.post;
 
   const handleClick = () => {
     props.showPost({ show: true, type: "news", ...props.post });

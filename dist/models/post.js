@@ -32,21 +32,22 @@ const PostSchema = new mongoose.Schema({
         ref: "Category"
     },
     active: { type: Boolean, required: true, default: true },
-    votes: {
-        type: [mongoose.Schema.Types.ObjectId],
-        default: undefined,
-    },
+    votes: [
+        {
+            type: mongoose.Schema.Types.ObjectId
+        }
+    ],
     reply: {
         text: { type: String },
         createdAt: { type: Date, default: Date.now },
-        up: {
-            type: [mongoose.Schema.Types.ObjectId],
-            default: undefined,
-        },
-        down: {
-            type: [mongoose.Schema.Types.ObjectId],
-            default: undefined,
-        }
+        up: [
+            {
+                type: mongoose.Schema.Types.ObjectId
+            }
+        ],
+        down: [
+            { type: mongoose.Schema.Types.ObjectId }
+        ]
     },
     createdAt: {
         type: Date,

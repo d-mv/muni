@@ -1,4 +1,5 @@
 import { sortPosts } from "../../modules/sort";
+import { uploadPhoto } from "../../middleware/cloudinary";
 
 const express = require("express");
 const router = new express.Router();
@@ -9,11 +10,24 @@ const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 
 router.post("/", authenticate, async (req: any, res: any) => {
+  const data = req.body;
+  const { photo } = req.body;
+
+  let photoUploaded = { secure_url: "" };
+  if (photo) {
+    delete data.photo;
+    photoUploaded = await uploadPhoto(photo);
+  }
+
+  const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
+
   const post = new Post({
     ...req.body,
+    photo: photoLink,
     createdBy: req.user._id,
     location: req.user.location
   });
+
   try {
     const result = await post.save();
     const posts = await Post.find({});

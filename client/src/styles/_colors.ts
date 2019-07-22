@@ -7,6 +7,7 @@ export const primaryLight = "#aed2f9";
 export const primary70 = "rgba(71, 143, 223, 0.7)";
 export const primary30 = "rgba(71, 143, 223, 0.3)";
 export const secondary = "#379B37";
+export const secondaryLight = "#7ec47e";
 export const secondary30 = "rgba(55, 155, 55, 0.3)";
 export const secondary70 = "rgba(55, 155, 55, 0.7)";
 export const white = `#fcfcfc`;
