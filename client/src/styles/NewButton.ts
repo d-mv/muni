@@ -10,7 +10,7 @@ export const Button = styled.button`
   width: 6.5rem;
   height: 6.5rem;
   position: fixed;
-  z-index: 50;
+  z-index: 10;
   bottom: 3rem;
   left: 41vw;
   border-radius: 50%;

@@ -1,5 +1,6 @@
 export const dark = "#444444";
 export const darkTrans = "rgba(68, 68, 68, 0.3)";
+export const dark70 = "rgba(68, 68, 68, .7)";
 export const darkTransLight = "rgba(68, 68, 68, 0.12)";
 export const grey = `#d3d3d3`;
 export const primary = `#478FDF`;
@@ -13,6 +14,7 @@ export const secondary70 = "rgba(55, 155, 55, 0.7)";
 export const white = `#fcfcfc`;
 export const white30 = `rgba(255, 255, 255, .3)`;
 export const attention = "#E33039";
+export const attention30 = "rgba(227, 48, 57, .3)";
 
 //   --colorPrimaryTrans: rgba(71, 143, 223, 0.3);
 //   --;

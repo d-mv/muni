@@ -4,6 +4,7 @@ import { IconLink, IconEdit, IconDelete } from "../../../icons";
 
 import styles from "./style/Link.module.scss";
 import { ModalEdit } from "./ModalEdit";
+import Field from "../../../styles/form/Field";
 
 const iconWrapper = (
   style: string,
@@ -61,21 +62,26 @@ export const Link = (props: {
     : { message: "Edit the link", confirm: "Save", cancel: "Cancel" };
 
   const modal = (
-    <ModalEdit close={toggleShowEdit} action={handleYesNo} text={editText}>
+    <ModalEdit
+      direction={props.direction}
+      close={toggleShowEdit}
+      action={handleYesNo}
+      text={editText}>
       {
-        <div className='section'>
-          <input
-            autoFocus={true}
-            type='text'
-            name='link'
-            value={link}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              handleInputChange(event)
-            }
-            placeholder={props.editText ? props.editText.placeholder : ""}
-            required
-          />
-        </div>
+        <Field
+          medium
+          width='75%'
+          direction='ltr'
+          autoFocus={true}
+          type='text'
+          name='link'
+          value={link}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            handleInputChange(event)
+          }
+          placeholder={props.editText ? props.editText.placeholder : ""}
+          required
+        />
       }
     </ModalEdit>
   );

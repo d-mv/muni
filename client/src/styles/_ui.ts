@@ -7,7 +7,8 @@ import {
   dark,
   darkTrans,
   white,
-  secondaryLight
+  secondaryLight,
+  attention
 } from "./_colors";
 
 // Shadows
@@ -25,5 +26,6 @@ export const borderPrimary = `.1rem solid ${primary}`;
 export const borderPrimaryLight = `.4rem solid ${primaryLight}`;
 export const borderSecondary = `.1rem solid ${secondary}`;
 export const borderSecondaryLight = `.4rem solid ${secondaryLight}`;
+export const borderAttention = `.1rem solid ${attention}`;
 export const borderDark = `.1rem solid ${dark}`;
 export const borderPage = `0.3rem solid ${white}`;

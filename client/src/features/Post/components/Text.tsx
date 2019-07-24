@@ -74,6 +74,7 @@ const Text = (props: {
 
   const modal = showModal ? (
     <ModalEdit
+      direction={props.direction}
       close={handleYesNo}
       action={handleYesNo}
       text={signs["muni-reply.edit.text"]}>

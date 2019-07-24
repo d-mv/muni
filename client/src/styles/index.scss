@@ -267,3 +267,12 @@ html {
   @extend .footer;
   direction: rtl;
 }
+
+.buttonSemiPrimary {
+  letter-spacing: 0.1rem;
+  background: none;
+  margin: 1rem;
+  color: #478fdf;
+  font: normal 300 1.8rem var(--fontBasic);
+  border-bottom: 1px solid #478fdf !important;
+}

@@ -177,6 +177,7 @@ const Post = (props: {
   const handleSetPhoto = (photo: string) => {
     props.showPost({ photo });
   };
+  
   const handleSetLink = (link: string) => {
     props.showPost({ link });
   };
@@ -332,6 +333,7 @@ const Post = (props: {
       ) : null;
       muniDeleteModal = muniDeleteConfirmation ? (
         <ModalEdit
+          direction={direction}
           close={toggleMuniDeleteConfirmation}
           action={submitDeleteMuniReply}
           text={text["muni-reply.delete.text"]}></ModalEdit>
@@ -339,6 +341,7 @@ const Post = (props: {
 
       muniEditModal = showMuniEditModal ? (
         <ModalEdit
+          direction={direction}
           close={toggleMuniEditModal}
           action={submitUpdatePost}
           text={text["muni-reply.edit.text"]}>
@@ -500,9 +503,17 @@ const Post = (props: {
           />
         </Section>
         <Photo
+          direction={direction}
           src={post.photo}
           edit={edit}
           actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
+          editText={{
+            message: text["post.photo.edit"].message,
+            confirm: text["post.photo.edit"].confirm,
+            cancel: text["post.photo.edit"].cancel,
+            label: text["new.field.photo.prompt"],
+            placeholder: ""
+          }}
         />
         <Link
           primary

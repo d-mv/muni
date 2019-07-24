@@ -18,7 +18,7 @@ const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const data = req.body;
     delete data._id;
-    if (data.newsId === '')
+    if (data.newsId === "")
         delete data.newsId;
     const { photo } = req.body;
     let photoUploaded = { secure_url: "" };
@@ -72,10 +72,19 @@ router.get("/:id/vote", authenticate, (req, res) => __awaiter(this, void 0, void
 }));
 router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const _id = req.params.id;
-    const updates = Object.keys(req.body);
     if (!ObjectID.isValid(_id)) {
         res.status(404).send();
     }
+    const data = req.body;
+    if (data.newsId === "")
+        delete data.newsId;
+    const { photo } = data;
+    let photoUploaded = { secure_url: "" };
+    const startOfUrl = photo.split(":")[0];
+    if (photo && (startOfUrl !== "http" || startOfUrl !== "htts")) {
+        photoUploaded = yield cloudinary_1.uploadPhoto(photo);
+    }
+    data.photo === photoUploaded.secure_url;
     try {
         const post = yield Post.findOne({
             _id: req.params.id
@@ -83,7 +92,8 @@ router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0,
         if (!post) {
             res.status(404).send();
         }
-        updates.forEach(update => (post[update] = req.body[update]));
+        const updates = Object.keys(data);
+        updates.forEach(update => (post[update] = data[update]));
         yield post.save();
         const posts = yield Post.find({});
         res.send(sort_1.sortPosts(posts));

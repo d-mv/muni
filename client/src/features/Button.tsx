@@ -1,20 +1,36 @@
 import React from "react";
 
-import { PrimaryButton, SecondaryButton, FormButton } from "../styles/Button";
+import {
+  PrimaryButton,
+  SecondaryButton,
+  AttentionButton,
+  FormButton
+} from "../styles/Button";
 
 const Button = (props: {
   mode: string;
   children: any;
-  label: string;
+  label?: string;
   submit?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  onClickMessage?: (arg0: string) => void;
 }) => {
-  const { mode, submit, disabled, onClick, children, label } = props;
+  const {
+    mode,
+    submit,
+    disabled,
+    onClick,
+    children,
+    label,
+    onClickMessage
+  } = props;
+
   const type = submit ? "submit" : undefined;
 
   const handleClick = () => {
     if (onClick) onClick();
+    if (onClickMessage) onClickMessage(props.mode);
   };
 
   let button = (
@@ -22,7 +38,7 @@ const Button = (props: {
       type={type}
       onClick={() => handleClick()}
       disabled={disabled}
-      aria-label={label}>
+      aria-label={label ? label : children}>
       {children}
     </PrimaryButton>
   );
@@ -33,9 +49,20 @@ const Button = (props: {
           type={type}
           onClick={() => handleClick()}
           disabled={disabled}
-          aria-label={label}>
+          aria-label={label ? label : children}>
           {children}
         </SecondaryButton>
+      );
+      break;
+    case "attention":
+      button = (
+        <AttentionButton
+          type={type}
+          onClick={() => handleClick()}
+          disabled={disabled}
+          aria-label={label ? label : children}>
+          {children}
+        </AttentionButton>
       );
       break;
     case "form":

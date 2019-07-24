@@ -131,8 +131,13 @@
         "new.muni.steps.step.1": "Write your post title, Get people attention with a short title that focuses on issues that matter",
         "new.muni.steps.step.2": "Explain the issue you want people to know about. People are more likely to support this if it’s clear why these news help them.",
         "new.muni.steps.step.3": "A good picture always helps get the attention of others, you can add relevant links too.",
-        "new.muni.preview.pinned":"Pin this article",
-        "post.muni.newreply":"Add a reply"
+        "new.muni.preview.pinned": "Pin this article",
+        "post.muni.newreply": "Add a reply",
+        "post.photo.edit": {
+          "message": "Choose new photo",
+          "confirm": "Save",
+          "cancel": "Cancel"
+        }
       }
     },
     "עב": {
@@ -266,7 +271,12 @@
         "new.muni.steps.step.2": "כתוב הסבר הולם על הנושא בהקשר. אנשים יתמכו בזה אם ידעו איך זה עוזר להם.",
         "new.muni.steps.step.3": "תמונה טובה ורלוונטית תמיד עוזרת למשוך תשומת לבם של אחרים, ואפשר להוסיף קישור רלוונטי לבעייה.",
         "new.muni.preview.pinned": "Pin this article",
-        "post.muni.newreply": "Add a reply"
+        "post.muni.newreply": "Add a reply",
+        "post.photo.edit": {
+          "message": "Choose new photo",
+          "confirm": "Save",
+          "cancel": "Cancel"
+        }
       }
     },
     "ع": {
@@ -403,7 +413,12 @@
         "new.muni.steps.step.2": "اضف تفاصيل الخبر. قد يتفاعل الناس مع الخبر بشكل اكبر اذا فهموا اهميته وكيف يساهم في حياتهم.",
         "new.muni.steps.step.3": "اختر صورة جيدة ذات صلة بالموضوع, بامكانكم اضافة رابط خارجي ايضا. الصور تساعد في انتشار منشوراتكم بصورة اكبر.",
         "new.muni.preview.pinned": "Pin this article",
-        "post.muni.newreply": "Add a reply"
+        "post.muni.newreply": "Add a reply",
+        "post.photo.edit": {
+          "message": "Choose new photo",
+          "confirm": "Save",
+          "cancel": "Cancel"
+        }
       }
     }
   }

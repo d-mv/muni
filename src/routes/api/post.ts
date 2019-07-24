@@ -11,9 +11,9 @@ const authenticate = require("../../middleware/auth");
 
 router.post("/", authenticate, async (req: any, res: any) => {
   const data = req.body;
-  delete data._id
-  if (data.newsId === '') delete data.newsId
-  
+  delete data._id;
+  if (data.newsId === "") delete data.newsId;
+
   const { photo } = req.body;
 
   let photoUploaded = { secure_url: "" };
@@ -23,7 +23,6 @@ router.post("/", authenticate, async (req: any, res: any) => {
   }
 
   const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
-
 
   const post = new Post({
     ...req.body,
@@ -76,11 +75,23 @@ router.get("/:id/vote", authenticate, async (req: any, res: any) => {
 
 router.patch("/:id", authenticate, async (req: any, res: any) => {
   const _id = req.params.id;
-  const updates = Object.keys(req.body);
 
   if (!ObjectID.isValid(_id)) {
     res.status(404).send();
   }
+  const data: any = req.body;
+  if (data.newsId === "") delete data.newsId;
+
+  const { photo } = data;
+
+  let photoUploaded = { secure_url: "" };
+  const startOfUrl = photo.split(":")[0];
+  if (photo && (startOfUrl !== "http" || startOfUrl !== "htts")) {
+    photoUploaded = await uploadPhoto(photo);
+  }
+  delete data.photo;
+  data["photo"] = photoUploaded.secure_url;
+
   try {
     const post = await Post.findOne({
       _id: req.params.id
@@ -89,7 +100,9 @@ router.patch("/:id", authenticate, async (req: any, res: any) => {
     if (!post) {
       res.status(404).send();
     }
-    updates.forEach(update => (post[update] = req.body[update]));
+
+    const updates = Object.keys(data);
+    updates.forEach(update => (post[update] = data[update]));
 
     await post.save();
 
