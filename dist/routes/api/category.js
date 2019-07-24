@@ -24,10 +24,8 @@ router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, fun
     }
 }));
 router.get("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    console.log("get categories");
     try {
         const categories = yield Category.find({});
-        console.log("returning categories");
         res.send(categories);
     }
     catch (error) {

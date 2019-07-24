@@ -6,6 +6,7 @@ import { IconEdit, IconDelete } from "../../../icons";
 import { ModalEdit } from ".";
 import { imageEncoder, imageDecoder } from "../../../modules/image_coder";
 import button from "../../../components/style/Button.module.scss";
+import imageUrl from "../../../modules/image_url";
 
 const iconWrapper = (
   style: string,
@@ -110,7 +111,7 @@ export const Photo = (props: {
 
   let image: any = "";
   if (props.src) {
-    image = props.src;
+    image = imageUrl(props.src);
   } else {
     image = require("../../../assets/image__default.png");
   }
