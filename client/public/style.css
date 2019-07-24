@@ -1,4 +1,18 @@
-
+@font-face {
+  font-family: "M PLUS Rounded 1c";
+  font-style: normal;
+  font-weight: 800;
+  src: local("M PLUS Rounded 1c ExtraBold"), local("MPLUSRounded1c-ExtraBold"),
+    url("/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.woff")
+      format("woff");
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 800;
+  src: local("Tajawal ExtraBold"), local("Tajawal-ExtraBold"),
+    url("/fonts/tajawal-v2-arabic-800.woff") format("woff");
+}
 @font-face {
   font-family: "M PLUS Rounded 1c";
   font-style: normal;
@@ -26,15 +40,6 @@
       format("woff");
 }
 
-@font-face {
-  font-family: "M PLUS Rounded 1c";
-  font-style: normal;
-  font-weight: 800;
-  src: local("M PLUS Rounded 1c ExtraBold"), local("MPLUSRounded1c-ExtraBold"),
-    url("/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.woff")
-      format("woff");
-}
-
 /* tajawal-300 - latin */
 @font-face {
   font-family: "Tajawal";
@@ -58,12 +63,4 @@
   font-weight: 500;
   src: local("Tajawal Medium"), local("Tajawal-Medium"),
     url("/fonts/tajawal-v2-arabic-500.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Tajawal";
-  font-style: normal;
-  font-weight: 800;
-  src: local("Tajawal ExtraBold"), local("Tajawal-ExtraBold"),
-    url("/fonts/tajawal-v2-arabic-800.woff") format("woff");
 }
