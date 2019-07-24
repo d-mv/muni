@@ -13,8 +13,8 @@ const Votes = styled(Category)<PIprops>`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: baseline;
-  p{margin: 0 1rem;}
+  align-items: center;
+  span {margin: 0 1rem;}
   svg {
     height: 2rem;
     width: 2rem;

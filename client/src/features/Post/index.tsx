@@ -44,7 +44,6 @@ import { emptyPost } from "../../store/defaults";
 import logger from "../../modules/logger";
 import ReplyTag from "../../styles/post/ReplyTag";
 import Spacer from "../../styles/utils/Spacer";
-import ScrolledContent from "../../styles/ScrolledContent";
 import AlreadyPosted from "../../styles/post/AlreadyPosted";
 import InLine from "../../styles/utils/InLine";
 import Section from "../../styles/Section";
@@ -52,14 +51,13 @@ import Category from "../../styles/common/Category";
 import Title from "../../styles/common/Title";
 import Field from "../../styles/form/Field";
 import Reply from "../../styles/post/Reply";
-import { secondary70, attention, secondary } from "../../styles/_colors";
-import DownIcon from "../../styles/form/DownIcon";
-import Votes from "../../styles/post/Votes";
+import { secondary70 } from "../../styles/_colors";
 import PlainText from "../../styles/post/PlainText";
-import Thumb from "../../icons/Thumb";
+import newsLink from "../../modules/news_link";
 
 const Post = (props: {
   posts: any;
+  news: any;
   post: any;
   language: indexedObjAny;
   votePost: (arg0: string) => void;
@@ -257,6 +255,8 @@ const Post = (props: {
       down.push(props.auth.user._id);
     }
     const reply = { ...post.reply, reply: { ...post.reply, up, down } };
+    const newPost = { ...post, reply };
+    props.showPost(newPost);
     props.updatePost({ ...post, reply });
   };
 
@@ -269,7 +269,7 @@ const Post = (props: {
   ) : null;
 
   const voted = post.votes.includes(props.auth.user._id);
-
+  console.log("voted ", voted);
   const renderVoteButton = () => {
     if (voted) return <AlreadyPosted>{text["post.voted"]}</AlreadyPosted>;
 
@@ -296,11 +296,6 @@ const Post = (props: {
 
   // if there is muni reply
   if (post.reply) {
-    const { replyCardStyle, replyCardColor } = replyCardStyleUtil(
-      post.reply,
-      replyOpened
-    );
-
     if (post.reply.text && !allowToReply) {
       setOfThumbs = (
         <div className={style[styleFactory("thumbsContainer", direction)]}>
@@ -380,7 +375,8 @@ const Post = (props: {
         </InLine>
         <Section direction={direction}>
           <PlainText direction={direction}>{post.reply.text}</PlainText>
-          {voted ? null : <AlreadyPosted>{text["post.voted"]}</AlreadyPosted>}
+          {/* {voted ? <AlreadyPosted>{text["post.voted"]}</AlreadyPosted> : null} */}
+          <Spacer space={1} />
         </Section>
 
         {/* {post.reply.text.length > 50 ? (
@@ -395,7 +391,6 @@ const Post = (props: {
         {setOfEditButtons}
         {muniDeleteModal}
         {muniEditModal}
-        <Spacer space={5} />
       </Reply>
     ) : null;
     if (muniUser) setOfThumbs = null;
@@ -471,6 +466,16 @@ const Post = (props: {
     left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };
 
+  const linkToShow = newsLink(post.link, props.news);
+
+  const handleNewsClick = () => {
+    const linkElements = post.link.split(":");
+    const newsToShow = props.news.filter(
+      (el: any) => el._id === linkElements[1]
+    );
+    props.showPost({ show: true, type: "news", ...newsToShow[0] });
+  };
+
   return (
     <Content>
       <Header {...headerObject} />
@@ -501,10 +506,11 @@ const Post = (props: {
         />
         <Link
           primary
-          text={post.link}
+          text={linkToShow}
           direction={direction}
           edit={edit}
           actions={{ set: handleSetLink, remove: handleRemoveLink }}
+          newsClick={handleNewsClick}
           editText={{
             message: text["post.link.edit"],
             confirm: text["confirm"],
@@ -550,6 +556,7 @@ const Post = (props: {
       {deleteButton}
       {deleteConfirmationComponent}
       {updateConfirmComponent}
+      <Spacer space={5} />
     </Content>
   );
 };
@@ -559,6 +566,7 @@ const mapStateToProps = (state: AppState) => {
     language: state.language,
     locations: state.locations,
     posts: state.posts,
+    news: state.news,
     post: state.post,
     mode: state.mode,
     prevModule: state.prevModule,

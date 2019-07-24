@@ -1,6 +1,8 @@
 import React from "react";
-import CardPhoto from "../../../styles/card/Photo";
+
 import imageUrl from "../../../modules/image_url";
+
+import CardPhoto from "../../../styles/card/Photo";
 
 const defaultImage = require("../../../assets/image__default.png");
 

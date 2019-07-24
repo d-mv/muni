@@ -11,12 +11,14 @@ export const PreviewBlock = (props: {
   post: any;
   text: string;
   muni?: boolean;
+  link?: string;
   titles?: { problem: string; solution?: string };
   onChange: () => void;
   pinned: boolean;
 }) => (
   <InColumn direction={props.direction} justify='flex-start' width='undefined'>
     <Preview
+      link={props.link ? props.link : props.post.link}
       muni={props.muni}
       post={props.post}
       direction={props.direction}

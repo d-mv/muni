@@ -25,9 +25,11 @@ export const getPosts = (location: string) => async (
 export const getNews = (location: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
+  console.log("response");
   dispatch({ type: "POSTS_LOADING", payload: true });
   get({ url: `/locations/${location}/news` })
     .then(response => {
+      console.log(response);
       dispatch({
         type: "SET_NEWS",
         payload: response.data

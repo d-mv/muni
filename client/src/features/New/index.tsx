@@ -26,6 +26,7 @@ import CatDescription from "./components/CatDescription";
 import { categoryIdToName } from "../../modules/category_processor";
 import Message from "../../styles/form/Message";
 import InLine from "../../styles/utils/InLine";
+import newsLink from "../../modules/news_link";
 
 const NewPost = (props: {
   language: data;
@@ -34,6 +35,7 @@ const NewPost = (props: {
   token: string;
   step: number;
   submitResult: data;
+  news: any;
   setStep: (arg0: number) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
@@ -224,6 +226,9 @@ const NewPost = (props: {
           direction: direction
         })
       : null;
+
+  const linkToShow = newsLink(link, props.news);
+
   const stepFive =
     step === 5 ? (
       <Section>
@@ -238,7 +243,7 @@ const NewPost = (props: {
           label: text["new.field.link.label"],
           type: "url",
           name: "link",
-          value: link,
+          value: linkToShow,
           placeholder: text["new.field.link.prompt"],
           action: handleInputChange,
           length: 5,
@@ -266,6 +271,7 @@ const NewPost = (props: {
     step === 6 ? (
       <PreviewBlock
         post={post}
+        link={linkToShow}
         direction={direction}
         onChange={() => {}}
         text=''
@@ -325,7 +331,8 @@ const mapStateToProps = (state: AppState) => {
     step: state.step,
     prevModule: state.prevModule,
     newPost: state.newPost,
-    loading: state.loading
+    loading: state.loading,
+    news: state.news
   };
 };
 

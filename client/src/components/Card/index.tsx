@@ -14,7 +14,6 @@ import Photo from "./components/Photo";
 import Category from "../../styles/common/Category";
 import Title from "../../styles/common/Title";
 import Age from "./components/Age";
-import { RepliedTag } from "./components";
 import Card from "../../styles/Card";
 import { Zero } from "../../layout/Utils";
 
@@ -23,7 +22,7 @@ import { showPostPayload } from "../../store/post/types";
 import { PostType } from "../../models/post";
 import Section from "../../styles/Section";
 import InLine from "../../styles/utils/InLine";
-import { secondary, secondary70 } from "../../styles/_colors";
+import {secondary70 } from "../../styles/_colors";
 
 const PostCard = (props: {
   post: PostType;
@@ -93,7 +92,7 @@ const PostCard = (props: {
         </InLine>
       </Photo>
       <Section direction={direction}>
-        <Title direction={direction}>{shortText(title, 50)}</Title>
+        <Title card direction={direction}>{shortText(title, 45)}</Title>
         <InLine direction={direction} justify='space-between'>
           <InLine direction={direction} justify='flex-start' padding='0 1rem'>
             <Age date={createdAt} text={ageText} direction={direction} />

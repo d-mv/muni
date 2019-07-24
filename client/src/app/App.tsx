@@ -22,7 +22,8 @@ import {
   getNews,
   setPosts,
   setNews,
-  typingPost
+  typingPost,
+  clearPost
 } from "../store/post/actions";
 
 import logger from "../modules/logger";
@@ -44,6 +45,7 @@ import {
 
 import "../style/App.scss";
 import { AuthState } from "../models";
+import { emptyPost, emptyNewPost } from "../store/defaults";
 
 const App = (props: {
   token: string;
@@ -59,6 +61,7 @@ const App = (props: {
   message: string;
   step: number;
   postsLoading: boolean;
+  clearPost: () => void;
   setMessage: (arg0: string) => void;
   getCategories: () => void;
   setModule: (previous: string, next: string) => void;
@@ -75,20 +78,31 @@ const App = (props: {
   setStep: (arg0: number) => void;
   typingPost: (arg0: { [index: string]: any }) => void;
 }) => {
-  const { token, userMuni, cookies, auth, posts, post, step, module,postsLoading } = props;
+  const {
+    token,
+    userMuni,
+    cookies,
+    auth,
+    posts,
+    post,
+    step,
+    module,
+    postsLoading
+  } = props;
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
   const fetchPostsNews = () => {
     if (!postsLoading) {
-    logger({ text: "fetching", emph: "news", type: "positive" });
-    props.getNews(auth.user.location);
-    logger({ text: "fetching", emph: "categories", type: "positive" });
-    // if (!Object(props.categories).keys)
+      logger({ text: "fetching", emph: "news", type: "positive" });
+      props.getNews(auth.user.location);
+      logger({ text: "fetching", emph: "categories", type: "positive" });
+      // if (!Object(props.categories).keys)
       props.getCategories();
-    logger({ text: "fetching", emph: "petitions", type: "positive" });
-    props.getPosts(auth.user.location);}
+      logger({ text: "fetching", emph: "petitions", type: "positive" });
+      props.getPosts(auth.user.location);
+    }
   };
 
   useEffect(() => {
@@ -126,9 +140,9 @@ const App = (props: {
       axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
       // if (posts.length < 1) {
-        logger({ text: "posts are", emph: "false", type: "attention" });
-        setMessage("fetching data...");
-        fetchPostsNews();
+      logger({ text: "posts are", emph: "false", type: "attention" });
+      setMessage("fetching data...");
+      fetchPostsNews();
       // }
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
@@ -186,8 +200,10 @@ const App = (props: {
         photo: "",
         link: ""
       });
+      // props.showPost(emptyNewPost);
+      props.clearPost()
       if (step !== 1) props.setStep(1);
-      if (post.show) props.showPost({ show: false });
+      // if (post.show) props.showPost({ show: false });
     }
   }, [props.module]);
 
@@ -202,6 +218,8 @@ const App = (props: {
 
   const handleNewButtonClick = () => {
     toggleModule("new");
+    if (props.post.type === "news")
+      props.typingPost({ link: `news:${props.post._id}` });
   };
 
   const config = { action: handleNewButtonClick, user: userMuni };
@@ -281,6 +299,7 @@ export default connect(
     typingData,
     setStep,
     typingPost,
-    setMessage
+    setMessage,
+    clearPost
   }
 )(withCookies(App));

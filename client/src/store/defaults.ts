@@ -28,9 +28,11 @@ export const emptyPost = {
 };
 
 export const emptyNewPost = {
+  _id:'',
   title: "",
   text: "",
   photo: "",
   link: "",
-  pinned: false
+  pinned: false,
+  show: false
 };

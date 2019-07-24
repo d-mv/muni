@@ -1,5 +1,5 @@
 import { Action } from "./types";
-import { apiState, emptyPost } from "../defaults";
+import { apiState, emptyPost, emptyNewPost } from "../defaults";
 import { post } from "../types";
 
 export const submitPost = (state = apiState, action: Action) => {
@@ -23,6 +23,8 @@ export const showPost = (state = { show: false }, action: Action) => {
   switch (action.type) {
     case "SHOW_POST":
       return { ...state, ...action.payload };
+    case "CLEAR_POST":
+      return emptyNewPost;
   }
   return state;
 };

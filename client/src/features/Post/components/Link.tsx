@@ -18,6 +18,7 @@ const iconWrapper = (
 export const Link = (props: {
   text: string;
   direction: string;
+  preview?: boolean;
   primary?: boolean;
   secondary?: boolean;
   edit?: boolean;
@@ -29,6 +30,7 @@ export const Link = (props: {
     label: string;
     placeholder: string;
   };
+  newsClick?: () => void;
 }) => {
   const [link, setLink] = React.useState(props.text);
   const [showEdit, setShowEdit] = React.useState(false);
@@ -90,11 +92,16 @@ export const Link = (props: {
   );
 
   const openLink = () => {
-    let url = props.text;
-    if (props.text.substr(0, 4) !== "http") {
-      url = `https://${props.text}`;
+    const linkItems = props.text.split(":");
+    if (!props.preview && linkItems[0] !== "News") {
+      let url = props.text;
+      if (props.text.substr(0, 4) !== "http") {
+        url = `https://${props.text}`;
+      }
+      window.open(url, "_blank");
+    } else if (linkItems[0] === "News" && props.newsClick) {
+      props.newsClick();
     }
-    window.open(url, "_blank");
   };
   const iconLink = iconWrapper("link", <IconLink color={color} />, openLink);
 
@@ -102,7 +109,9 @@ export const Link = (props: {
     <div className={mainStyle}>
       {iconEdit}
       {iconLink}
-      <div className={styles.text} onClick={() => openLink()}>
+      <div
+        className={props.preview ? styles.textPreview : styles.text}
+        onClick={() => openLink()}>
         {props.text}
       </div>
       {iconDelete}

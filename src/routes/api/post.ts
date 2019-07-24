@@ -11,6 +11,9 @@ const authenticate = require("../../middleware/auth");
 
 router.post("/", authenticate, async (req: any, res: any) => {
   const data = req.body;
+  delete data._id
+  if (data.newsId === '') delete data.newsId
+  
   const { photo } = req.body;
 
   let photoUploaded = { secure_url: "" };
@@ -21,6 +24,7 @@ router.post("/", authenticate, async (req: any, res: any) => {
 
   const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
 
+
   const post = new Post({
     ...req.body,
     photo: photoLink,
@@ -29,7 +33,7 @@ router.post("/", authenticate, async (req: any, res: any) => {
   });
 
   try {
-    const result = await post.save();
+    await post.save();
     const posts = await Post.find({});
     res.status(201).send(sortPosts(posts));
   } catch (error) {

@@ -17,6 +17,9 @@ const Post = require("../../models/post");
 const authenticate = require("../../middleware/auth");
 router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     const data = req.body;
+    delete data._id;
+    if (data.newsId === '')
+        delete data.newsId;
     const { photo } = req.body;
     let photoUploaded = { secure_url: "" };
     if (photo) {
@@ -26,7 +29,7 @@ router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, fun
     const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
     const post = new Post(Object.assign({}, req.body, { photo: photoLink, createdBy: req.user._id, location: req.user.location }));
     try {
-        const result = yield post.save();
+        yield post.save();
         const posts = yield Post.find({});
         res.status(201).send(sort_1.sortPosts(posts));
     }

@@ -1,4 +1,4 @@
-import { Action, } from "./types";
+import { Action } from "./types";
 
 export * from "./create";
 export * from "./update";
@@ -13,6 +13,9 @@ export const setNews = (news: any): Action => {
 
 export const showPost = (props: any): Action => {
   return { type: "SHOW_POST", payload: { ...props } };
+};
+export const clearPost = (): Action => {
+  return { type: "CLEAR_POST", payload: { } };
 };
 
 export const updatePosts = (props: any) => {

@@ -7,6 +7,7 @@ import Title from "../../../styles/common/Title";
 import Post from "../../../styles/Post";
 
 export const Preview = (props: {
+  link: string;
   post: {
     title: string;
     category?: string;
@@ -28,8 +29,9 @@ export const Preview = (props: {
     {props.post.photo ? <Photo src={props.post.photo} edit={false} /> : null}
     {props.post.link ? (
       <Link
+        preview
         primary
-        text={props.post.link}
+        text={props.link}
         direction={props.direction}
         edit={false}
       />

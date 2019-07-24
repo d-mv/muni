@@ -1,8 +1,9 @@
 // Font
 const fontMain = '"M PLUS Rounded 1c", "Tajawal", sans-serif';
 // Text
-export const textMessage = `normal 400 1.6rem ${fontMain}`;
+export const textMessage = `normal 300 1.6rem ${fontMain}`;
 export const textMessageSmall = `normal 300 1.4rem ${fontMain}`;
+export const textMessageMedium = `normal 500 1.4rem ${fontMain}`;
 export const textButtonVote = `normal 500 1.3rem ${fontMain}`;
 export const textSubtitle = `normal 500 1.8rem ${fontMain}`;
 export const textStandard = `normal 300 1.7rem  ${fontMain}`;

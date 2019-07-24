@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
-import { votersSecondary } from '../../../icons'
+import { votersSecondary } from "../../../icons";
 
-import style from './style/Voters.module.scss'
+import { PostVoters, PostVotersIcon, PostVotersNumber, PostVotersText } from "../../../styles/common/PostVoters";
 
-const Voters = (props:{number:number,text:string,direction:string}) => {
+const Voters = (props: { number: number; text: string; direction: string }) => {
   return (
-    <p className={props.direction === 'rtl' ? style.votersRight : style.voters}>
-      <span className={style.icon}> {votersSecondary}</span>
-      <span className={style.number}>{props.number.toLocaleString()} </span>
-      <span className={style.text}>{props.text}</span>
-    </p>
+    <PostVoters direction={props.direction}>
+      <PostVotersIcon>{votersSecondary}</PostVotersIcon>
+      <PostVotersNumber>{props.number.toLocaleString()}</PostVotersNumber>
+      <PostVotersText>{props.text}</PostVotersText>
+    </PostVoters>
   );
-}
+};
 
-export default Voters
+export default Voters;

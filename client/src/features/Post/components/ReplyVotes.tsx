@@ -15,11 +15,11 @@ export const ReplyVotes = (props: {
          // <div className={styles.container}>
          <InLine padding='0' direction={props.direction} justify='space-around'>
            <Votes color={secondary}>
-             <p>{length(props.replies.up)}</p>
+             <span>{length(props.replies.up)}</span>
              <Thumb frame='secondary' fill='secondary' />
            </Votes>
            <Votes color={attention}>
-             <p>{length(props.replies.down)}</p>
+             <span>{length(props.replies.down)}</span>
              <Thumb frame='attention' fill='attention' />
            </Votes>
          </InLine>
