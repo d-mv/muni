@@ -6,7 +6,7 @@ import { logOff, showHelp } from "../store/users/actions";
 
 import Header from "../components/Header";
 import LangSwitch from "../components/LangSwitch";
-import Button from "../features/Button";
+import Button from "../components/Button";
 
 import { Page } from "../styles/Page";
 import Section from "../styles/Section";
@@ -14,9 +14,9 @@ import Paragraph from "../layout/Paragraph";
 import Line from "../layout/Line";
 import Content from "../layout/Content";
 
-import style from "./style/Profile.module.scss";
 import { data } from "../store/types";
 import Spacer from "../styles/utils/Spacer";
+import TextLine from "../styles/post/TextLine";
 
 const Profile = (props: {
   locations: data;
@@ -44,7 +44,7 @@ const Profile = (props: {
           <Paragraph direction={direction}>
             <Line direction={direction}>
               <LangSwitch />
-              <span className={style.language}>{language.name}</span>
+              <TextLine direction={direction}>{language.name}</TextLine>
             </Line>
           </Paragraph>
         </Section>

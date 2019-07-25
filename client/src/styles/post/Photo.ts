@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface IProps {
   image: string;
+  width?: string;
 }
 
 const Photo = styled.div<IProps>`
@@ -13,7 +14,7 @@ const Photo = styled.div<IProps>`
   background-size: cover;
   object-fit: cover;
   height: 15rem;
-  width: 100%;
+  width: ${props => (props.width ? props.width : "100%")};
 `;
 
 export default Photo;

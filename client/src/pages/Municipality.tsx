@@ -8,7 +8,6 @@ import Header from "../components/Header";
 
 import { Page } from "../styles/Page";
 import PostList from "../components/PostList";
-import Content from "../layout/Content";
 import Spacer from "../styles/utils/Spacer";
 
 const Municipality = (props: {

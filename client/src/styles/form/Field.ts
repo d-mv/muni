@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { borderPost, radiusMin } from "../_ui";
-import { textField, textPlaceholder, textFieldMedium } from "../_typography";
+import { textField, textPlaceholder, textFieldMedium, textPlaceholderMedium } from "../_typography";
 import { grey } from "../_colors";
 
 export interface IProps {
@@ -16,7 +16,7 @@ const Field = styled.input<IProps>`
   font: ${props => (props.medium ? textFieldMedium : textField)};
   &::placeholder {
     color: ${grey};
-    font: ${textPlaceholder};
+    font: ${props => (props.medium ? textPlaceholderMedium : textPlaceholder)};
   }
   direction: ${props => props.direction};
   width: ${props => (props.width ? props.width : "undefined")};

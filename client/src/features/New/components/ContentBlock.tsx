@@ -1,7 +1,5 @@
 import React from "react";
 
-import Message from "../../../components/Message";
-
 import Content from "../../../layout/Content";
 
 const ContentBlock = (props: {

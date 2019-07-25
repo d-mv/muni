@@ -1,6 +1,5 @@
 import React from "react";
 import { data } from "../../../store/types";
-import Line from "../../../layout/Line";
 import InLine from "../../../styles/utils/InLine";
 import PlainText from "../../../styles/post/PlainText";
 

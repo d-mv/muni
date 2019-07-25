@@ -24,7 +24,7 @@ const Home = (props: {
 const charts:indexedObjAny=chartsData
   const location = locations[0].name[short]
 
-console.log(user)
+// console.log(user)
   return (
     <div className={style.desktop}>
       <div className={style.header}>
@@ -32,7 +32,7 @@ console.log(user)
           {location}
         </p>
         <div>
-          <Button mode='primarySmall' action={props.logOff}>
+          <Button mode='primarySmall' onClick={props.logOff}>
             {text["profile.button.logOff"]}
           </Button>
         </div>

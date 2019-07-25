@@ -8,24 +8,19 @@ export interface UserSettings {
   help: boolean;
 }
 
-export interface UserType {
-  _id: string;
-  location: string;
-  fName: string;
-  lName: string;
-  email: string;
-  pass: string;
-  type: UserKind;
-  tokens: string[];
-  settings: UserSettings;
-  status: boolean;
-  createdAt: Date;
-}
-
-export interface LoginResponse {
-  token: string;
-  user: UserType;
-}
+// export interface UserType {
+//   _id: string;
+//   location: string;
+//   fName: string;
+//   lName: string;
+//   email: string;
+//   pass: string;
+//   type: UserKind;
+//   tokens: string[];
+//   settings: UserSettings;
+//   status: boolean;
+//   createdAt: Date;
+// }
 
 export interface AuthState {
   status: boolean;

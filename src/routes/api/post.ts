@@ -25,7 +25,7 @@ router.post("/", authenticate, async (req: any, res: any) => {
   const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
 
   const post = new Post({
-    ...req.body,
+    ...data,
     photo: photoLink,
     createdBy: req.user._id,
     location: req.user.location
@@ -65,8 +65,8 @@ router.get("/:id/vote", authenticate, async (req: any, res: any) => {
     }
     post.votes = [...post.votes, req.user._id];
     await post.save();
-    const posts = await Post.find({});
-    res.send(sortPosts(posts));
+    const posts = await Post.find({}).sort("-votesCount");
+    res.send(posts);
   } catch (error) {
     console.log(error);
     res.status(400).send();
@@ -106,8 +106,8 @@ router.patch("/:id", authenticate, async (req: any, res: any) => {
 
     await post.save();
 
-    const posts = await Post.find({});
-    res.send(sortPosts(posts));
+    const posts = await Post.find({}).sort("-votesCount");
+    res.send(posts);
   } catch (error) {
     console.log(error);
     res.status(400).send();

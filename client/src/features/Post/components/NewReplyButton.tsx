@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./style/NewReplyButton.module.scss";
-import Button from "../../Button";
+import Button from "../../../components/Button";
 import Center from "../../../styles/Center";
 
 export const NewReplyButton = (props: { action: () => void; text: string }) => (

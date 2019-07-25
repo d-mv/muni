@@ -18,6 +18,7 @@ export const emptyPost = {
   date: "",
   status: "",
   votes: [],
+  votesCount:0,
   newsId: "",
   reply: {
     date: "",

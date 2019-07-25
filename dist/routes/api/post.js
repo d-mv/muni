@@ -27,7 +27,7 @@ router.post("/", authenticate, (req, res) => __awaiter(this, void 0, void 0, fun
         photoUploaded = yield cloudinary_1.uploadPhoto(photo);
     }
     const photoLink = photoUploaded.secure_url ? photoUploaded.secure_url : "";
-    const post = new Post(Object.assign({}, req.body, { photo: photoLink, createdBy: req.user._id, location: req.user.location }));
+    const post = new Post(Object.assign({}, data, { photo: photoLink, createdBy: req.user._id, location: req.user.location }));
     try {
         yield post.save();
         const posts = yield Post.find({});
@@ -62,8 +62,8 @@ router.get("/:id/vote", authenticate, (req, res) => __awaiter(this, void 0, void
         }
         post.votes = [...post.votes, req.user._id];
         yield post.save();
-        const posts = yield Post.find({});
-        res.send(sort_1.sortPosts(posts));
+        const posts = yield Post.find({}).sort("-votesCount");
+        res.send(posts);
     }
     catch (error) {
         console.log(error);
@@ -84,7 +84,8 @@ router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0,
     if (photo && (startOfUrl !== "http" || startOfUrl !== "htts")) {
         photoUploaded = yield cloudinary_1.uploadPhoto(photo);
     }
-    data.photo === photoUploaded.secure_url;
+    delete data.photo;
+    data["photo"] = photoUploaded.secure_url;
     try {
         const post = yield Post.findOne({
             _id: req.params.id
@@ -95,8 +96,8 @@ router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0,
         const updates = Object.keys(data);
         updates.forEach(update => (post[update] = data[update]));
         yield post.save();
-        const posts = yield Post.find({});
-        res.send(sort_1.sortPosts(posts));
+        const posts = yield Post.find({}).sort("-votesCount");
+        res.send(posts);
     }
     catch (error) {
         console.log(error);

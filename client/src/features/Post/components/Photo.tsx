@@ -5,7 +5,6 @@ import styles from "./style/Photo.module.scss";
 import { IconEdit, IconDelete } from "../../../icons";
 import { ModalEdit } from ".";
 import { imageEncoder, imageDecoder } from "../../../modules/image_coder";
-import button from "../../../components/style/Button.module.scss";
 import imageUrl from "../../../modules/image_url";
 import Frame from "../../../styles/post/Frame";
 
@@ -57,19 +56,19 @@ export const Photo = (props: {
   };
 
   const toggleShowEdit = () => {
-    // setShowEdit(true);
     setShowEdit(!showEdit);
   };
 
   const handleYesNo = (mode: string) => {
     if (mode === "primary") {
-      toggleShowEdit();
       if (props.actions) props.actions.set(image64);
-      setGraphic("");
     }
+    setGraphic("");
+    toggleShowEdit();
   };
 
   const handleRemove = () => {
+    setGraphic("");
     if (props.actions) props.actions.remove();
   };
 
@@ -84,8 +83,11 @@ export const Photo = (props: {
       close={toggleShowEdit}
       action={handleYesNo}
       text={editText}>
-      <Frame>
-        <PostPhoto image={graphic ? graphic : defaultPhoto} />
+      <Frame id='post__frame_modal-edit-photo'>
+        <PostPhoto
+          id='post__modal-edit-photo'
+          image={graphic ? graphic : defaultPhoto}
+        />
         <input
           id='file'
           type='file'
@@ -113,7 +115,7 @@ export const Photo = (props: {
 
   let image: any = defaultPhoto;
   if (props.src) image = imageUrl(props.src);
-  if (graphic !== props.src) image = graphic;
+  if (graphic) image = graphic;
 
   return (
     <div className={mainStyle}>

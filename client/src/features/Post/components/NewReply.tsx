@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./style/NewReply.module.scss";
-import Button from "../../../features/Button";
+import Button from "../../../components/Button";
 import Label from "../../../styles/form/Label";
 import Area from "../../../styles/form/Area";
 

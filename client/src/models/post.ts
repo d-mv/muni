@@ -18,6 +18,7 @@ export interface PostType {
   category: string;
   active: boolean;
   votes: string[];
+  votesCount: number;
   reply: ReplyType;
   createdAt: string;
 }

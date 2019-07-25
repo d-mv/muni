@@ -9,7 +9,7 @@ import { createNews, typingPost } from "../../store/post/actions";
 import { setModule } from "../../store/users/actions";
 import { data } from "../../store/types";
 
-import Button from "../Button";
+import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";

@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import {
-  secondary,
-  secondary30
-} from "./_colors";
+import { secondary, secondary30 } from "./_colors";
 import { buttonShadow, borderSecondaryLight } from "./_ui";
+import { beat2Ds, transition } from "./_animation";
 
 export const Button = styled.button`
   box-shadow: ${buttonShadow(secondary30)};
@@ -19,4 +17,9 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: ${beat2Ds};
+  transition: ${transition};
+  &:active {
+    transform: scale(0.95);
+  }
 `;

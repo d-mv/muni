@@ -22,6 +22,7 @@ export interface PostType {
   category: ObjectID;
   active: boolean;
   votes?: ObjectID[];
+  votesCount: number;
   reply?: ReplyType;
   createdAt: Date;
 }
@@ -61,7 +62,9 @@ const PostSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId
     }
   ],
-
+  votesCount: {
+    type: Number
+  },
   reply: {
     text: { type: String },
     createdAt: { type: Date, default: Date.now },
@@ -70,9 +73,7 @@ const PostSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId
       }
     ],
-    down: [
-      { type: mongoose.Schema.Types.ObjectId}
-    ]
+    down: [{ type: mongoose.Schema.Types.ObjectId }]
   },
   createdAt: {
     type: Date,
@@ -84,6 +85,13 @@ PostSchema.virtual("users", {
   ref: "User",
   localField: "createdBy",
   foreignField: "_id"
+});
+
+//hash the plain text password before saving
+PostSchema.pre("save", async function(next: any) {
+  const post: any = this;
+  post.votesCount = post.votes.length;
+  next();
 });
 
 const Post = mongoose.model("Post", PostSchema);

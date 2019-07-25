@@ -6,17 +6,20 @@ import {
   secondary,
   grey,
   attention,
-  attention30
+  attention10,
+  transparent
 } from "./_colors";
 import { buttonShadow, borderPrimary, borderAttention } from "./_ui";
 import { h5, h4 } from "./_typography";
+import { transition } from "./_animation";
 
 const Button = styled.button`
   letter-spacing: 0.1rem;
   background: none;
   margin: 0 1rem;
+  transition: ${transition}
   &:active {
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
 `;
 
@@ -44,7 +47,7 @@ export const AttentionButton = styled(PrimaryButton)`
   color: ${attention};
   font: ${h5};
   border: ${borderAttention} !important;
-  box-shadow: ${buttonShadow(attention30)};
+  box-shadow: ${buttonShadow(attention10)};
 `;
 
 export const FormButton = styled.button`
@@ -52,5 +55,16 @@ export const FormButton = styled.button`
   box-shadow: none;
   &:active {
     transform: scale(0.9);
+  }
+`;
+
+export const MinimalButton = styled.button`
+  height: 4rem;
+  width: 4rem;
+  margin: 1rem;
+  background-color: ${transparent};
+  transition: ${transition};
+  &:active {
+    transform: scale(0.95);
   }
 `;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Modal, ModalContent } from "../../../styles/Modal";
-import Button from "../../Button";
+import Button from "../../../components/Button";
 
 import InLine from "../../../styles/utils/InLine";
 import InColumn from "../../../styles/utils/InColumn";

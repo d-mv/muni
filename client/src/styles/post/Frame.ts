@@ -1,15 +1,20 @@
-import styled from 'styled-components';
-import { radiusMin, borderPost } from '../_ui';
+import styled from "styled-components";
+import { radiusMin, borderPost } from "../_ui";
 
-const Frame = styled.div`
-  width: 80%;
+export interface FProps {
+  width?: string;
+}
+
+const Frame = styled.div<FProps>`
+  width: ${props => (props.width ? props.width : "80%")};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: ${borderPost} !important;
-  border-radius:${radiusMin};
-  z-index: 50
+  border-radius: ${radiusMin};
+  background-color: white;
+  z-index: 50;
 `;
 
-export default Frame
+export default Frame;

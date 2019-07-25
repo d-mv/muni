@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { categoryIdToName } from "../../modules/category_processor";
-import { replyCardStyleUtil } from "../../modules/reply_style_generator";
-import { goBack, iconEdit, iconClose, votersSecondary } from "../../icons";
+import { goBack, iconEdit, iconClose } from "../../icons";
 
 import { AppState } from "../../store";
 import { vote, setModule, fetchData } from "../../store/users/actions";
@@ -25,7 +24,6 @@ import {
   ShowMore,
   NumbersLine,
   NewReply,
-  Voted,
   ReplyVotes,
   NewReplyButton,
   ModalView,
@@ -177,7 +175,7 @@ const Post = (props: {
   const handleSetPhoto = (photo: string) => {
     props.showPost({ photo });
   };
-  
+
   const handleSetLink = (link: string) => {
     props.showPost({ link });
   };
@@ -318,18 +316,21 @@ const Post = (props: {
 
     if (muniUser) {
       setOfEditButtons = muniEdit ? (
-        <div className={style[styleFactory("replyEditButtons", direction)]}>
-          <Button
-            mode='secondary'
-            title={text["muni-reply.edit"]}
-            action={toggleMuniEditModal}
-          />
+        <InLine
+          id='reply__edit-delete_buttons-wrapper'
+          direction={direction}
+          justify='space-around'
+          padding='0 0 2rem 0'
+          width='100%'>
+          <Button mode='secondary' onClick={toggleMuniEditModal}>
+            {text["muni-reply.edit"]}
+          </Button>
           <Button
             mode='attention'
-            title={text["muni-reply.delete"]}
-            actionMessage={toggleMuniDeleteConfirmation}
-          />
-        </div>
+            onClickMessage={toggleMuniDeleteConfirmation}>
+            {text["muni-reply.delete"]}
+          </Button>
+        </InLine>
       ) : null;
       muniDeleteModal = muniDeleteConfirmation ? (
         <ModalEdit
@@ -436,7 +437,7 @@ const Post = (props: {
 
   const deleteButton = edit ? (
     <div className={style.deleteButton}>
-      <Button mode='attention' action={toggleDeleteConfirmation}>
+      <Button mode='attention' onClick={toggleDeleteConfirmation}>
         {text["post.delete.button"]}
       </Button>
     </div>

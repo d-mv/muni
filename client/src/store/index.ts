@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
-import { logger } from "redux-logger";
+// import { logger } from "redux-logger";
 
 import { setStep, fetchLocations, prevModule, setModule } from "./app/reducers";
 import {
@@ -78,7 +78,8 @@ const rootReducer = combineReducers({
 export type AppState = ReturnType<typeof rootReducer>;
 
 export default function configureStore() {
-  const middlewares = [thunk, logger];
+  const middlewares = [thunk];
+  // const middlewares = [thunk, logger];
 
   const middleWareEnhancer = applyMiddleware(...middlewares);
 

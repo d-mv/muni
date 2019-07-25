@@ -3,7 +3,7 @@ import React from "react";
 import { IconLink, IconEdit, IconDelete } from "../../../icons";
 
 import styles from "./style/Link.module.scss";
-import { ModalEdit } from "./ModalEdit";
+import { ModalEdit } from "./";
 import Field from "../../../styles/form/Field";
 
 const iconWrapper = (
@@ -49,9 +49,9 @@ export const Link = (props: {
 
   const handleYesNo = (mode: string) => {
     if (mode === "primary") {
-      toggleShowEdit();
       if (props.actions) props.actions.set(link);
     }
+    toggleShowEdit();
   };
 
   const handleRemove = () => {
@@ -99,7 +99,7 @@ export const Link = (props: {
 
   const openLink = () => {
     const linkItems = props.text.split(":");
-    if (!props.preview && linkItems[0] !== "News") {
+    if (props.text && !props.preview && linkItems[0] !== "News") {
       let url = props.text;
       if (props.text.substr(0, 4) !== "http") {
         url = `https://${props.text}`;
@@ -114,12 +114,14 @@ export const Link = (props: {
   return (
     <div className={mainStyle}>
       {iconEdit}
-      {iconLink}
-      <div
-        className={props.preview ? styles.textPreview : styles.text}
-        onClick={() => openLink()}>
-        {props.text}
-      </div>
+      {props.text ? iconLink : null}
+      {props.text ? (
+        <div
+          className={props.preview ? styles.textPreview : styles.text}
+          onClick={() => openLink()}>
+          {props.text}
+        </div>
+      ) : null}
       {iconDelete}
       {showEdit ? modal : null}
     </div>

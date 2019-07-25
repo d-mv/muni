@@ -1,5 +1,5 @@
 import React from "react";
-import { colorsArray } from "../style/_colors";
+import { colorsArray } from "../styles/_colors";
 
 const Thumb = (props: {
   frame: string;

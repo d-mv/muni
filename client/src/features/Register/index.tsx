@@ -14,9 +14,7 @@ import {
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
-import button from "../../components/style/Button.module.scss";
 import Label from "../../styles/form/Label";
 import locationsList from "../../modules/locations_list";
 import { LocationState } from "../../models";
@@ -190,51 +188,50 @@ const Register = (props: {
 
   return (
     <Content padding='1rem'>
-    <Form
-      direction={ direction }
-      onSubmit={handleSubmit}>
-      {/* visible during registration */}
-      {locationsElement}
-      {fNameElement}
-      {lNameElement}
-      {emailElement}
-      {passwordElement}
-      <section className='section'>
-        <Label direction={direction}>
-          {text["login.label.password.repeat"]}
-        </Label>
-        <Field
-          direction={direction}
-          type='password'
-          name='secondPass'
-          value={typed[secondPass]}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            handleInputChange(event)
-          }
-          placeholder={text["login.prompt.password.repeat"]}
-          minLength={7}
-          required
-          style={pass === secondPass ? styles.regular : styles.notMatching}
-        />
-      </section>
-      {/* message & loading */}
-      {showElement}
-      {/* buttons */}
-      <InLine direction={direction} justify='space-around'>
-        <Button
-          mode='form'
-          submit
-          disabled={disabled || loading}
-          label='Submit'>
-          <input
-            type='button'
-            value={text["login.button.register"]}
-            id='submit_button'
-            className={disabled ? "primaryButtonDisabled" : "primaryButton"}
+      <Form direction={direction} onSubmit={handleSubmit}>
+        {/* visible during registration */}
+        {locationsElement}
+        {fNameElement}
+        {lNameElement}
+        {emailElement}
+        {passwordElement}
+        <section className='section'>
+          <Label direction={direction}>
+            {text["login.label.password.repeat"]}
+          </Label>
+          <Field
+            direction={direction}
+            type='password'
+            name='secondPass'
+            value={typed[secondPass]}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(event)
+            }
+            placeholder={text["login.prompt.password.repeat"]}
+            minLength={7}
+            required
+            style={pass === secondPass ? styles.regular : styles.notMatching}
           />
-        </Button>
-      </InLine>
-      </Form></Content>
+        </section>
+        {/* message & loading */}
+        {showElement}
+        {/* buttons */}
+        <InLine direction={direction} justify='space-around'>
+          <Button
+            mode='form'
+            submit
+            disabled={disabled || loading}
+            label='Submit'>
+            <input
+              type='button'
+              value={text["login.button.register"]}
+              id='submit_button'
+              className={disabled ? "primaryButtonDisabled" : "primaryButton"}
+            />
+          </Button>
+        </InLine>
+      </Form>
+    </Content>
   );
 };
 

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import axios, { AxiosResponse } from "axios";
 import { AppState } from "../../store";
 import { setModule } from "../../store/users/actions";
-import { getNews } from "../../store/post/actions";
+import {
+  getNews,
+  updateNews,
+  showPost,
+  deleteNews
+} from "../../store/post/actions";
 import { indexedObjAny } from "../../store/types";
 
 import { Photo, Link, Confirm, NumbersLine } from "./components";
@@ -11,24 +15,29 @@ import Text from "./components/Text";
 
 import Block from "../../layout/Block";
 
-import style from "./style/Post.module.scss";
 import PostCard from "../../styles/Post";
 import Content from "../../styles/Content";
 import Header from "../../components/Header";
 import { goBack, iconEdit, iconClose } from "../../icons";
 import Button from "../../components/Button";
-import { AuthState, NewsType } from "../../models";
+import { AuthState } from "../../models";
 import Section from "../../styles/Section";
 import Title from "../../styles/common/Title";
 import Spacer from "../../styles/utils/Spacer";
+import InLine from "../../styles/utils/InLine";
+import { emptyPost } from "../../store/defaults";
 
 const PostMuni = (props: {
   auth: AuthState;
-  post: NewsType;
+  post: any;
+  news: any;
   language: indexedObjAny;
   locations: indexedObjAny;
   setModule: (arg0: string) => void;
   getNews: (arg0: string) => void;
+  updateNews: (arg0: any) => void;
+  showPost: (arg0: any) => void;
+  deleteNews: (arg0: string) => void;
   prevModule: string;
 }) => {
   const { direction, text } = props.language;
@@ -37,7 +46,10 @@ const PostMuni = (props: {
     (el: any) => el._id === user.location
   )[0];
 
-  const [post, setPost] = useState(props.post);
+  const originalPost = props.news.filter(
+    (post: any) => post._id === props.post._id
+  )[0];
+
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [updateConfirmation, showUpdateConfirmation] = useState(false);
 
@@ -45,7 +57,7 @@ const PostMuni = (props: {
 
   // !
   const muniUser = user.type === "muni";
-  console.log(post.title);
+
   const toggleMuniEdit = () => {
     setMuniEdit(!muniEdit);
   };
@@ -55,70 +67,55 @@ const PostMuni = (props: {
   const toggleCloseSave = () => {
     showUpdateConfirmation(!updateConfirmation);
   };
+
   const goHome = () => {
+    props.showPost({ show: false, ...emptyPost });
     props.setModule(props.prevModule);
   };
 
-  const handleEdits = (editedText: string) => {
-    setPost({ ...post, text: editedText });
-  };
-
   const handleUpdate = (answer: string) => {
-    // console.log(answer);
     if (answer === "attention") {
-      toggleMuniEdit();
-      setPost(props.post);
-      toggleCloseSave();
+      props.showPost(originalPost);
     } else {
-      const url = `/muni/${user.location}`;
-      axios
-        .patch(url, { ...post })
-        .then((response: AxiosResponse<any>) => {
-          toggleMuniEdit();
-          props.getNews(user.location);
-        })
-        .catch((reason: any) => {
-          console.log(reason);
-        });
+      props.updateNews(props.post);
     }
+    setMuniEdit(false);
+    showUpdateConfirmation(false);
   };
 
   const handleDelete = (mode: string) => {
-    if (mode === "secondary") {
-      const url = `/muni/${user.location}`;
-      axios
-        .put(url, { post: post._id })
-        .then((response: AxiosResponse<any>) => {
-          toggleMuniEdit();
-          props.getNews(user.location);
-        })
-        .catch((reason: any) => {
-          console.log(reason);
-        });
+    if (mode === "primary") {
+      props.deleteNews(props.post._id);
+      goHome();
     }
   };
   const handleRemovePhoto = () => {
-    setPost({ ...post, photo: "" });
+    props.showPost({ photo: "" });
   };
   const handleRemoveLink = () => {
-    setPost({ ...post, link: "" });
+    props.showPost({ link: "" });
   };
   const handleSetPhoto = (photo: string) => {
-    setPost({ ...post, photo });
+    props.showPost({ photo });
   };
+
   const handleSetLink = (link: string) => {
-    setPost({ ...post, link });
+    props.showPost({ link });
   };
   const handleSetText = (text: string) => {
-    setPost({ ...post, text });
+    props.showPost({ text });
   };
 
   const deleteButton = muniEdit ? (
-    <div className={style.deleteButton}>
-      <Button mode='attention' action={toggleDeleteConfirmation}>
+    <InLine
+      direction={direction}
+      justify='center'
+      width='100%'
+      padding='2rem 0'>
+      <Button mode='attention' onClick={toggleDeleteConfirmation}>
         {text["post.delete.button"]}
       </Button>
-    </div>
+    </InLine>
   ) : null;
 
   const updateConfirmComponent = updateConfirmation ? (
@@ -167,7 +164,6 @@ const PostMuni = (props: {
     ...editIcon,
     left: { icon: goBack(muniUser ? "secondary" : "primary"), action: goHome }
   };
-  console.log(location);
   return (
     <Content>
       <Header {...headerObject} />
@@ -176,23 +172,23 @@ const PostMuni = (props: {
         <Section direction={direction} padding='0 1rem'>
           <Spacer space={1} />
           <Title direction={direction} padding='0 1rem;'>
-            {post.title}
+            {props.post.title}
           </Title>
           <NumbersLine
-            date={post.createdAt}
+            date={props.post.createdAt}
             daysText={ageText}
             direction={direction}
           />
         </Section>
         <Photo
-          src={post.photo}
+          src={props.post.photo}
           edit={muniEdit}
           actions={{ set: handleSetPhoto, remove: handleRemovePhoto }}
         />
         <Block>
           <Link
             primary
-            text={post.link}
+            text={props.post.link}
             direction={direction}
             edit={muniEdit}
             actions={{ set: handleSetLink, remove: handleRemoveLink }}
@@ -207,11 +203,10 @@ const PostMuni = (props: {
         </Block>
         <Text
           muni
-          text={post.text}
+          text={props.post.text}
           direction={direction}
           edit={muniEdit}
           action={handleSetText}
-          // setAction={handleUpdate}
         />
       </PostCard>
       {deleteButton}
@@ -227,14 +222,12 @@ const mapStateToProps = (state: AppState) => {
     language: state.language,
     locations: state.locations,
     prevModule: state.prevModule,
-    post: state.news.filter(
-      // @ts-ignore
-      (post: NewsType) => post._id === state.post._id
-    )[0]
+    post: state.post,
+    news: state.news
   };
 };
 
 export default connect(
   mapStateToProps,
-  { setModule, getNews }
+  { setModule, getNews, updateNews, showPost, deleteNews }
 )(PostMuni);

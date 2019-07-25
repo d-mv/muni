@@ -15,12 +15,8 @@ import {
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
-// import Button from "../../components/Button";
-import Button from "../Button";
+import Button from "../../components/Button";
 
-import button from "../../components/style/Button.module.scss";
-import styleFactory from "../../modules/style_factory";
 import { LoginProps } from "../../store/users/types";
 import InLine from "../../styles/utils/InLine";
 import LangSwitch from "../../components/LangSwitch";
@@ -124,7 +120,6 @@ const Login = (props: {
     <Form
       desktop={props.desktop}
       direction={direction}
-      // className={loginStyle}
       onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
         handleSubmit(event)
       }>
@@ -133,7 +128,6 @@ const Login = (props: {
       {/* message & loading */}
       {showElement}
       {/* buttons */}
-      {/* <ButtonsWrapper column direction={direction}> */}
       <InLine direction={direction} justify='space-around'>
         <Button mode='form' submit disabled={props.loading} label='Submit'>
           <input
@@ -154,7 +148,6 @@ const Login = (props: {
           </Button>
         )}
       </InLine>
-      {/* </ButtonsWrapper> */}
     </Form>
   );
 };

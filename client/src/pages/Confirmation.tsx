@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { AppState } from "../store";
 import { setModule } from "../store/users/actions";
 
-
 import layout from "./style/Confirmation.module.scss";
 import { data } from "../store/types";
 import { Page } from "../styles/Page";

@@ -79,11 +79,11 @@ const Header = (props: {
 
   return (
     <header className={styles[styleFactory("plank", direction)]}>
-      <Button mode='minimal' action={handleLeftAction}>
+      <Button mode='minimal' onClick={handleLeftAction}>
         {left}
       </Button>
       <Title muni={props.user.type==='muni'}>{name}</Title>
-      <Button mode='minimal' action={handleRightAction}>
+      <Button mode='minimal' onClick={handleRightAction}>
         {right}
       </Button>
       {props.help ? <Help /> : null}

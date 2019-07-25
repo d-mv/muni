@@ -61,6 +61,7 @@ const App = (props: {
   message: string;
   step: number;
   postsLoading: boolean;
+  loading: boolean;
   clearPost: () => void;
   setMessage: (arg0: string) => void;
   getCategories: () => void;
@@ -120,7 +121,7 @@ const App = (props: {
   useEffect(() => {
     logger({ text: "main process is", emph: "launched", type: "positive" });
 
-    if (token === "clear") {
+    if (token === "clear" && !props.loading) {
       logger({ text: "token is", emph: "clear", type: "attention" });
       cookies.set("token", "");
       toggleModule("welcome");
@@ -130,20 +131,18 @@ const App = (props: {
 
     if (auth.user._id && auth.user.location && token) {
       logger({ text: "auth is", emph: "true", type: "positive" });
+      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
       if (cookies.get("token") !== token) {
         logger({ text: "set token in", emph: "cookies" });
         setMessage("saving auth...");
-        // set auth settings for axios
         cookies.set("token", token);
       }
-      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
-      // if (posts.length < 1) {
-      logger({ text: "posts are", emph: "false", type: "attention" });
-      setMessage("fetching data...");
-      fetchPostsNews();
-      // }
+      setTimeout(() => {
+        setMessage("fetching data...");
+        fetchPostsNews();
+      }, 1000);
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -154,7 +153,7 @@ const App = (props: {
         props.checkToken(cookie);
       } else if (!cookie && props.module === "welcome") {
         logger({ text: "cookie is", emph: "false", type: "attention" });
-        setLoading(false);
+        // setLoading(false);
       }
       setMessage("fetching locations...");
       if (!Object(props.locations).keys) props.fetchLocations();
@@ -162,13 +161,19 @@ const App = (props: {
   }, [auth, token]);
 
   useEffect(() => {
+    logger({ text: "loactions has", emph: "changed" });
+    if (props.locations.length > 0) {
+      setMessage("");
+    }
+  }, [props.locations]);
+
+  useEffect(() => {
     logger({ text: "auth has", emph: "changed" });
 
     if (
-      // posts.length > 0 &&
       module !== "post" &&
-      token !== "clear" &&
-      auth.user._id.length > 0 &&
+      // token !== "clear" &&
+      auth.status &&
       module !== "home" &&
       module !== "new"
     ) {
@@ -200,10 +205,13 @@ const App = (props: {
         photo: "",
         link: ""
       });
-      // props.showPost(emptyNewPost);
-      props.clearPost()
+      props.clearPost();
       if (step !== 1) props.setStep(1);
-      // if (post.show) props.showPost({ show: false });
+    } else if (props.module === 'welcome') {
+      // if (module !== "welcome" && !auth.status && !props.loading && !loading) {
+      // toggleModule("welcome");
+      setLoading(false);
+    // }
     }
   }, [props.module]);
 
@@ -278,7 +286,8 @@ const mapStateToProps = (state: AppState) => {
     categories: state.categories,
     message: state.message,
     step: state.step,
-    postsLoading: state.postsLoading
+    postsLoading: state.postsLoading,
+    loading: state.loading
   };
 };
 

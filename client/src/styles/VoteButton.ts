@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { primary, white, primary30 } from "./_colors";
 import { buttonShadow, borderPrimaryLight } from "./_ui";
 import { textButtonVote } from "./_typography";
+import { beatAnimation, transition } from "./_animation";
 
 export const Button = styled.button`
   box-shadow: ${buttonShadow(primary30)};
@@ -13,6 +14,11 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: ${beatAnimation};
+  transition: ${transition};
+  &:active {
+    transform: scale(0.95);
+  }
 `;
 
 export const Title = styled.div`
