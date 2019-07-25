@@ -54,7 +54,6 @@ router.post("/munilogin", async (req: any, res: any) => {
       req.body.email,
       req.body.pass
     );
-    console.log(user.type);
     if (user.type === "user") throw new Error("Please, use mobile version");
 
     if (user.status) {
@@ -113,10 +112,8 @@ router.get("/:id/posts", authenticate, async (req: any, res: any) => {
   }
 });
 router.patch("/settings", authenticate, async (req: any, res: any) => {
-  console.log("hello");
   const { _id } = req.user;
   const updates = Object.keys(req.body);
-  console.log(_id);
   if (!ObjectID.isValid(_id)) {
     res.status(404).send();
   }
@@ -127,7 +124,6 @@ router.patch("/settings", authenticate, async (req: any, res: any) => {
       res.status(404).send();
     }
     updates.forEach(update => (user.settings[update] = req.body[update]));
-    console.log(user);
     await user.save();
 
     res.send(user);

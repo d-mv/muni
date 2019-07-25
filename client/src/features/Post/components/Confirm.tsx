@@ -3,31 +3,26 @@ import Modal from "../../../components/Modal";
 
 import styles from "./style/Confirm.module.scss";
 import Button from "../../../components/Button";
-import styleFactory from "../../../modules/style_factory";
+import InLine from "../../../styles/utils/InLine";
 
 export const Confirm = (props: {
   text: { message: string; buttonYes: string; buttonNo: string };
   close: () => void;
   action: (arg0: string) => void;
   direction: string;
-}) => {
-  // console.log(props.text);
-  return (
-  <Modal close={props.close}>
-    <div className={styles.container}>
-      {props.text.message}
-      <div className={styles[styleFactory("buttons", props.direction)]}>
-        <Button
-          mode='secondary'
-          title={props.text.buttonYes}
-          actionMessage={props.action}
-        />
-        <Button
-          mode='attention'
-          title={props.text.buttonNo}
-          actionMessage={props.action}
-        />
+}) => (
+    <Modal close={props.close}>
+      <div className={styles.container}>
+        {props.text.message}
+        <InLine direction={props.direction} justify='space-around' padding='2rem 0 .5rem 0'>
+          <Button mode='primary' onClickMessage={props.action}>
+            {props.text.buttonYes}
+          </Button>
+          <Button mode='attention' onClickMessage={props.action}>
+            {props.text.buttonNo}
+          </Button>
+        </InLine>
       </div>
-    </div>
-  </Modal>
-);}
+    </Modal>
+  );
+

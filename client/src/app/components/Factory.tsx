@@ -46,8 +46,8 @@ const componentFactory = (props: {
   const content = (
     <AppComponent userMuni={props.config.user}>
       {nav}
-      {newButton}
       {children}
+      {newButton}
     </AppComponent>
   );
   return content;

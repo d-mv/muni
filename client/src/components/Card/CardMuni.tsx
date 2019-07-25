@@ -4,17 +4,17 @@ import { connect } from "react-redux";
 import shortText from "../../modules/short_text";
 
 import { AppState } from "../../store";
-import {showPost} from '../../store/post/actions'
-import { post, indexedObjAny, data, postMuni } from "../../store/types";
+import { showPost } from "../../store/post/actions";
+import { indexedObjAny, data } from "../../store/types";
+import { showPostPayload } from "../../store/post/types";
 
 import Age from "./components/Age";
 import Photo from "./components/Photo";
-import Title from "./components/Title";
 
-import Card from "../../layout/Card";
-
-import style from "./style/PostCard.module.scss";
-import { showPostPayload } from "../../store/post/types";
+import Title from "../../styles/common/Title";
+import Card from "../../styles/Card";
+import Section from "../../styles/Section";
+import InLine from "../../styles/utils/InLine";
 
 const CardMuni = (props: {
   muni?: boolean;
@@ -23,7 +23,7 @@ const CardMuni = (props: {
   showPost: (arg0: showPostPayload) => void;
 }) => {
   const { text, direction } = props.language;
-  const { _id, title, date, photo,createdAt } = props.post;
+  const { title, photo, createdAt } = props.post;
 
   const handleClick = () => {
     props.showPost({ show: true, type: "news", ...props.post });
@@ -31,32 +31,27 @@ const CardMuni = (props: {
   const ageText: { [index: string]: string } = text["post.age"];
 
   return (
-    <Card id={_id} direction={direction} action={handleClick}>
-      <Photo photo={photo}>
-        <div>''</div>
-      </Photo>
-      <section
-        className={
-          direction === "rtl" ? style.informationRTL : style.information
-        }>
-        <Title news title={title} direction={direction} />
-        <section
-          id='age'
-          className={direction === "rtl" ? style.dataRTL : style.data}>
-          <Age date={createdAt} text={ageText} direction={direction} />
-        </section>
-      </section>
+    <Card onClick={handleClick}>
+      <Photo photo={photo} />
+      <Section direction={direction}>
+        <Title direction={direction}>{shortText(title, 50)}</Title>
+        <InLine direction={direction} justify='space-between'>
+          <InLine direction={direction} justify='flex-start' padding='0 1rem'>
+            <Age date={createdAt} text={ageText} direction={direction} />
+          </InLine>
+        </InLine>
+      </Section>
     </Card>
   );
 };
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language,
+    language: state.language
   };
 };
 
 export default connect(
   mapStateToProps,
-  {showPost}
+  { showPost }
 )(CardMuni);

@@ -1,6 +1,6 @@
 import { emptyPost } from "./../defaults";
 import { Action } from "./types";
-import { data, indexedObjAny, indexedObj } from "../types";
+import { data, indexedObjAny } from "../types";
 import { apiState } from "../defaults";
 import { AUTH_EMPTY_STATE } from "../../models";
 
@@ -59,13 +59,13 @@ export const register = (state = apiState, action: Action) => {
   return { ...state };
 };
 
-export const setModule = (state = "", action: Action): string => {
-  switch (action.type) {
-    case "SET_MODULE":
-      return action.module ? action.module : state;
-  }
-  return state;
-};
+// export const setModule = (state = "", action: Action): string => {
+//   switch (action.type) {
+//     case "SET_MODULE":
+//       return action.module ? action.module : state;
+//   }
+//   return state;
+// };
 
 export const setAuth = (state = AUTH_EMPTY_STATE, action: Action) => {
   switch (action.type) {
@@ -75,13 +75,13 @@ export const setAuth = (state = AUTH_EMPTY_STATE, action: Action) => {
   return state;
 };
 
-export const setLocationData = (state = {}, action: Action): data => {
-  switch (action.type) {
-    case "SET_LOCATION_DATA":
-      return { ...action.data };
-  }
-  return state;
-};
+// export const setLocationData = (state = {}, action: Action): data => {
+//   switch (action.type) {
+//     case "SET_LOCATION_DATA":
+//       return { ...action.data };
+//   }
+//   return state;
+// };
 
 /**
  * Reducer function to process the loadData action
@@ -121,13 +121,13 @@ export const vote = (state = apiState, action: Action) => {
   return state;
 };
 
-export const fetchData = (state = apiState, action: Action) => {
-  switch (action.type) {
-    case "FETCH_DATA":
-      return action.payload;
-  }
-  return state;
-};
+// export const fetchData = (state = apiState, action: Action) => {
+//   switch (action.type) {
+//     case "FETCH_DATA":
+//       return action.payload;
+//   }
+//   return state;
+// };
 
 
 

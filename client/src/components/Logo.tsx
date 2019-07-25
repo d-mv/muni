@@ -1,7 +1,7 @@
 import React from "react";
 
 import { appLogo } from "../icons/AppLogo";
-import style from "./styles/Logo.module.scss";
+import style from "./style/Logo.module.scss";
 
 const Logo = () => <span className={style.logo}>{appLogo}</span>;
 

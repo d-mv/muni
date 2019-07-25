@@ -56,7 +56,6 @@ router.post("/login", (req, res) => __awaiter(this, void 0, void 0, function* ()
 router.post("/munilogin", (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const user = yield User.checkValidCredentials(req.body.email, req.body.pass);
-        console.log(user.type);
         if (user.type === "user")
             throw new Error("Please, use mobile version");
         if (user.status) {
@@ -118,10 +117,8 @@ router.get("/:id/posts", authenticate, (req, res) => __awaiter(this, void 0, voi
     }
 }));
 router.patch("/settings", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    console.log("hello");
     const { _id } = req.user;
     const updates = Object.keys(req.body);
-    console.log(_id);
     if (!mongodb_1.ObjectID.isValid(_id)) {
         res.status(404).send();
     }
@@ -131,7 +128,6 @@ router.patch("/settings", authenticate, (req, res) => __awaiter(this, void 0, vo
             res.status(404).send();
         }
         updates.forEach(update => (user.settings[update] = req.body[update]));
-        console.log(user);
         yield user.save();
         res.send(user);
     }

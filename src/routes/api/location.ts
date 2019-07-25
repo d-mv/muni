@@ -30,18 +30,34 @@ router.get("/", async (req: any, res: any) => {
     res.status(500).send();
   }
 });
-router.get("/:id/posts", authenticate, async (req: any, res: any) => {
+router.get("/:id/posts-photos", authenticate, async (req: any, res: any) => {
   try {
-    const posts = await Post.find({ location: req.params.id });
+    const posts = await Post.find({ location: req.params.id }).select("-photo");
     res.send(sortPosts(posts));
   } catch (error) {
+    console.log(error);
+    res.status(500).send();
+  }
+});
+router.get("/:id/posts", authenticate, async (req: any, res: any) => {
+  console.log("get posts");
+  try {
+    const posts = await Post.find({ location: req.params.id });
+    console.log('sending posts')
+    res.send(sortPosts(posts));
+  } catch (error) {
+    console.log(error);
     res.status(500).send();
   }
 });
 
 router.get("/:id/news", authenticate, async (req: any, res: any) => {
+  console.log('get news')
   try {
-    const news = await News.find({ location: req.params.id }).sort('-createdAt');
+    const news = await News.find({ location: req.params.id }).sort(
+      "-createdAt"
+    );
+    console.log('sending news')
     res.send(news);
   } catch (error) {
     res.status(500).send();

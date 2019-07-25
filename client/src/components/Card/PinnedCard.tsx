@@ -9,15 +9,16 @@ import dateBeautify from "../../modules/date_beautify";
 import shortText from "../../modules/short_text";
 import styleFactory from "../../modules/style_factory";
 
-import Block from "../../layout/Block";
-import Card from "../../layout/Card";
-import Line from "../../layout/Line";
-import Paragraph from "../../layout/Paragraph";
+import Card from "../../styles/Card";
 import IconMunicipality from "../../icons/Municipality";
 
 import style from "./style/PinnedCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
 import { NewsType } from "../../models";
+import Title from "../../styles/common/Title";
+import PlainText from "../../styles/post/PlainText";
+import TextLine from "../../styles/post/TextLine";
+import Section from "../../styles/Section";
 
 const PinnedCard = (props: {
   post: NewsType;
@@ -25,7 +26,6 @@ const PinnedCard = (props: {
   showPost: (arg0: showPostPayload) => void;
   type: any;
 }) => {
-
   const handleClick = () => {
     props.showPost({ show: true, type: "news", ...props.post });
   };
@@ -33,30 +33,22 @@ const PinnedCard = (props: {
   const { direction } = props.language;
   const iconStyle = styleFactory("icon", direction);
   return (
-    <Card
-      direction={direction}
-      id={props.post._id}
-      margin={25}
-      action={handleClick}>
+    <Card onClick={() => handleClick()}>
       <div className={style[iconStyle]}>
         <IconMunicipality
           filled
           color={props.type === "muni" ? "secondary" : "primary"}
         />
       </div>
-      <Block>
-        <Line direction={direction}>
-          <span className={style.title}>{shortText(props.post.title, 55)}</span>
-        </Line>
-        <Line thin direction={direction}>
-          <span className={style.date}>
-            {dateBeautify(props.post.createdAt, direction)}
-          </span>
-        </Line>
-        <Paragraph direction={direction}>
+      <Section direction={direction}>
+        <Title direction={direction}>{shortText(props.post.title, 55)}</Title>
+        <TextLine direction={direction}>
+          {dateBeautify(props.post.createdAt, direction)}
+        </TextLine>
+        <PlainText direction={direction}>
           {shortText(props.post.text, 95)}
-        </Paragraph>
-      </Block>
+        </PlainText>
+      </Section>
     </Card>
   );
 };

@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from "axios";
-import { logger } from "redux-logger";
+// import { logger } from "redux-logger";
 
 import { setStep, fetchLocations, prevModule, setModule } from "./app/reducers";
 import {
@@ -10,17 +10,16 @@ import {
   showPost,
   deletePost,
   typingPost,
-  setNews
+  setNews,
+  postsLoading
 } from "./post/reducers";
 import {
   vote,
   setToken,
   checkToken,
-  // login,
   register,
   setLoading,
   setAuth,
-  // setLocationData,
   showHelp,
   setMessage,
   changeMode,
@@ -32,7 +31,7 @@ import {
   getCategories
 } from "./users/reducers";
 import * as TYPE from "./types";
-import { apiState, showPostState, emptyPost } from "./defaults";
+import { apiState, showPostState, emptyPost, emptyNewPost } from "./defaults";
 
 import data from "../data/translation.json";
 import { showPostPayload } from "./post/types";
@@ -54,14 +53,12 @@ const rootReducer = combineReducers({
   vote: vote,
   token: setToken,
   checkTokenResult: checkToken,
-  // login: login,
   module: setModule,
   prevModule: prevModule,
   loading: setLoading,
   register: register,
   data: loadData,
   language: setLanguage,
-  // locationData: setLocationData,
   auth: setAuth,
   submitPost: submitPost,
   help: showHelp,
@@ -69,19 +66,20 @@ const rootReducer = combineReducers({
   mode: changeMode,
   step: setStep,
   posts: posts,
-  // update: updatePost,
   post: showPost,
   typed: typingData,
   cached: cachePost,
   deleted: deletePost,
   type: userType,
   news: setNews,
-  categories: getCategories
+  categories: getCategories,
+  postsLoading
 });
 export type AppState = ReturnType<typeof rootReducer>;
 
 export default function configureStore() {
-  const middlewares = [thunk, logger];
+  const middlewares = [thunk];
+  // const middlewares = [thunk, logger];
 
   const middleWareEnhancer = applyMiddleware(...middlewares);
 
@@ -90,14 +88,12 @@ export default function configureStore() {
     token: string;
     checkTokenResult: any;
     newPost: {};
-    // login: TYPE.apiResponse;
     module: string;
     prevModule: string;
     loading: boolean;
     register: TYPE.apiResponse;
     data: TYPE.indexedObjAny;
     language: TYPE.indexedObjAny;
-    // locationData: TYPE.data;
     auth: AuthState | {};
     step: number;
     submitPost: TYPE.apiResponse;
@@ -106,7 +102,6 @@ export default function configureStore() {
     mode: string;
     vote: TYPE.apiResponse;
     posts: post[];
-    // update: TYPE.apiResponse;
     post: showPostPayload;
     typed: TYPE.indexedObj;
     cached: any;
@@ -114,21 +109,20 @@ export default function configureStore() {
     type: string;
     news: any;
     categories: TYPE.indexedObjAny;
+    postsLoading: boolean;
   }
 
   const initialState: state = {
     locations: {},
     token: "",
     checkTokenResult: "",
-    newPost: {},
-    // login: apiState,
+    newPost: emptyNewPost,
     module: "welcome",
     prevModule: "welcome",
     loading: false,
     register: apiState,
     data: data,
     language: data.language["עב"],
-    // locationData: {},
     auth: AUTH_EMPTY_STATE,
     step: 1,
     submitPost: apiState,
@@ -137,14 +131,14 @@ export default function configureStore() {
     mode: "show",
     vote: apiState,
     posts: [],
-    // update: apiState,
     post: showPostState,
     typed: {},
     cached: emptyPost,
     deleted: apiState,
     type: "",
     news: [],
-    categories: {}
+    categories: {},
+    postsLoading: false
   };
 
   const store = createStore(rootReducer, initialState, middleWareEnhancer);

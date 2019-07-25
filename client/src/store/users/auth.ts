@@ -6,7 +6,7 @@ import { indexedObjAny, registerType } from "../types";
 
 import fromJson from "../../data/translation.json";
 import { apiState } from "../defaults";
-import { AxiosResponse } from "axios";
+
 const data: indexedObjAny = fromJson;
 
 export const checkToken = (token: string) => async (
@@ -24,10 +24,10 @@ export const checkToken = (token: string) => async (
         data: data.language[settings.language]
       });
       dispatch({ type: "SET", token });
-      dispatch({
-        type: "SET_MESSAGE",
-        message: "Loading data..."
-      });
+      // dispatch({
+      //   type: "SET_MESSAGE",
+      //   message: "Loading data..."
+      // });
       dispatch({
         type: "SET_LOADING",
         loading: false
@@ -65,10 +65,10 @@ export const login = (login: LoginProps) => async (
         data: data.language[settings.language]
       });
       dispatch({ type: "SET", token });
-      dispatch({
-        type: "SET_MESSAGE",
-        message: "Loading data..."
-      });
+      // dispatch({
+      //   type: "SET_MESSAGE",
+      //   message: "Loading data..."
+      // });
       dispatch({ type: "TYPING_DATA", payload: { email: "", pass: "" } });
       dispatch({
         type: "SET_LOADING",
@@ -111,10 +111,10 @@ export const muniLogin = (login: LoginProps) => async (
         data: data.language[settings.language]
       });
       dispatch({ type: "SET", token });
-      dispatch({
-        type: "SET_MESSAGE",
-        message: "Loading data..."
-      });
+      // dispatch({
+      //   type: "SET_MESSAGE",
+      //   message: "Loading data..."
+      // });
       dispatch({ type: "TYPING_DATA", payload: { email: "", pass: "" } });
       dispatch({
         type: "SET_LOADING",

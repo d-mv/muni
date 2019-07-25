@@ -9,6 +9,8 @@ import AppDesktop from "./app/AppDesktop";
 import * as serviceWorker from "./serviceWorker";
 import configureStore from "./store";
 
+import "./styles/index.scss";
+// TODO: remove
 import "./style/start.scss";
 
 const store = configureStore();
@@ -28,4 +30,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

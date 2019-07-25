@@ -1,8 +1,10 @@
 import React from "react";
 import { imageDecoder, imageEncoder } from "../../../modules/image_coder";
 
-import button from "../../../components/style/Button.module.scss";
+import PostPhoto from "../../../styles/post/Photo";
+
 import style from "./style/PhotoUpload.module.scss";
+import Frame from "../../../styles/post/Frame";
 
 const PhotoUpload = (props: {
   label: string;
@@ -10,8 +12,6 @@ const PhotoUpload = (props: {
   action: (arg0: any) => void;
   photo?: string;
 }) => {
-  const defaultPhoto =
-    "https://res.cloudinary.com/diciu4xpu/image/upload/v1560088174/dev/photo.svg";
   const [photo, setPhoto] = React.useState(props.photo ? props.photo : null);
 
   /**
@@ -26,15 +26,11 @@ const PhotoUpload = (props: {
     });
   };
 
-  const showPhoto = photo ? (
-    <img src={photo} alt='upload-image' className={style.image} />
-  ) : (
-    <img src={defaultPhoto} alt='upload-image' className={style.imageDef} />
-  );
+  const defaultPhoto = require("../../../assets/image__default.png");
 
   return (
-    <div className={style.container}>
-      {showPhoto}
+    <Frame id='post__frame_new-photo' width='auto'>
+      <PostPhoto id='post__new-photo' image={photo ? photo : defaultPhoto} />
       <input
         id='file'
         type='file'
@@ -42,10 +38,10 @@ const PhotoUpload = (props: {
         className={style.input}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => getBaseFile(e)}
       />
-      <label htmlFor='file' className={button.primarySmall}>
+      <label htmlFor='file' className='buttonSemiPrimary'>
         {props.label}
       </label>
-    </div>
+    </Frame>
   );
 };
 

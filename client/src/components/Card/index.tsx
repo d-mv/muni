@@ -5,23 +5,24 @@ import shortText from "../../modules/short_text";
 import { categoryIdToName } from "../../modules/category_processor";
 
 import { AppState } from "../../store";
-import { post, indexedObjAny, data } from "../../store/types";
-import { cachePost } from "../../store/users/actions";
+import { indexedObjAny, data } from "../../store/types";
+
 import { showPost } from "../../store/post/actions";
 import Voters from "./components/Voters";
 import VoteButton from "../VoteButton";
 import Photo from "./components/Photo";
-import Category from "./components/Category";
-import Title from "./components/Title";
+import Category from "../../styles/common/Category";
+import Title from "../../styles/common/Title";
 import Age from "./components/Age";
-import { RepliedTag } from "./components";
-import Card from "../../layout/Card";
+import Card from "../../styles/Card";
 import { Zero } from "../../layout/Utils";
 
 import style from "./style/PostCard.module.scss";
 import { showPostPayload } from "../../store/post/types";
 import { PostType } from "../../models/post";
-import styleFactory from "../../modules/style_factory";
+import Section from "../../styles/Section";
+import InLine from "../../styles/utils/InLine";
+import {secondary70 } from "../../styles/_colors";
 
 const PostCard = (props: {
   post: PostType;
@@ -29,7 +30,6 @@ const PostCard = (props: {
   categories: any;
   auth: data;
   showPost: (arg0: showPostPayload) => void;
-  // locationData: data;
 }) => {
   const { categories } = props;
   const { user } = props.auth;
@@ -44,23 +44,21 @@ const PostCard = (props: {
     reply
   } = props.post;
   const votes = props.post.votes ? props.post.votes : [];
+  const cardRef = React.createRef<HTMLElement>();
 
   const handleClick = () => {
     props.showPost({ show: true, type: "user", ...props.post });
   };
 
   let voterText = "";
-  let categoryElement: React.ClassicElement<any> = <Zero />;
   let voterElement: React.ClassicElement<any> = <Zero />;
-  // let voteButtonElement: React.ClassicElement<any> = <div className={style.button}/>;
 
-  // const { categories } = props.locationData;
   const categoryTranslated = categoryIdToName(
     categories,
     short,
     category || ""
   );
-  categoryElement = <Category category={categoryTranslated} />;
+
   voterText = votes.length === 1 ? text["post.voter"] : text["post.voters"];
   voterElement = (
     <Voters number={votes.length} text={voterText} direction={direction} />
@@ -72,35 +70,37 @@ const PostCard = (props: {
   const voteButtonElement =
     !author && !voted && !muniUser ? (
       <span className={style.button}>
-        <VoteButton />
+        <VoteButton title={text["card.button.vote"]} />
       </span>
     ) : (
       <div className={style.button} />
     );
 
-  const replyTag = reply.text ? (
-    <RepliedTag text={text["post.replied"]} direction={direction} />
-  ) : null;
   const ageText: { [index: string]: string } = text["post.age"];
   return (
-    <Card id={_id} direction={direction} action={handleClick}>
-      <Photo photo={photo} direction={direction}>
-        {replyTag}
+    <Card onClick={() => handleClick()}>
+      <Photo photo={photo}>
+        <InLine
+          justify='flex-start'
+          direction={direction}
+          height='inherit'
+          align='flex-end'>
+          <Category>{categoryTranslated}</Category>
+          {reply.text ? (
+            <Category back={secondary70}>{text["post.replied"]}</Category>
+          ) : null}
+        </InLine>
       </Photo>
-      <section
-        className={
-          direction === "rtl" ? style.informationRTL : style.information
-        }>
-        {categoryElement}
-        <Title title={shortText(title, 50)} direction={direction} />
-        <section className={style[styleFactory("bottomline", direction)]}>
-          <div className={style[styleFactory("data", direction)]}>
+      <Section direction={direction}>
+        <Title card direction={direction}>{shortText(title, 45)}</Title>
+        <InLine direction={direction} justify='space-between'>
+          <InLine direction={direction} justify='flex-start' padding='0 1rem'>
             <Age date={createdAt} text={ageText} direction={direction} />
             {voterElement}
-          </div>
+          </InLine>
           {voteButtonElement}
-        </section>
-      </section>
+        </InLine>
+      </Section>
     </Card>
   );
 };
@@ -110,7 +110,6 @@ const mapStateToProps = (state: AppState) => {
     language: state.language,
     categories: state.categories,
     auth: state.auth
-    // locationData: state.locationData
   };
 };
 

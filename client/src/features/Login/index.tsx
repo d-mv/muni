@@ -15,12 +15,12 @@ import {
 } from "../../store/users/actions";
 
 import Loading from "../../components/Loading";
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Button from "../../components/Button";
 
-import button from "../../components/style/Button.module.scss";
-import styleFactory from "../../modules/style_factory";
 import { LoginProps } from "../../store/users/types";
+import InLine from "../../styles/utils/InLine";
+import LangSwitch from "../../components/LangSwitch";
+import Form from "../../styles/form/Form";
 
 /** Functional component to render login page content
  * @param {object} props - Object, containing functions & state from Redux
@@ -39,7 +39,7 @@ const Login = (props: {
   typingData: (arg0: TYPE.data) => void;
   desktop?: boolean;
 }) => {
-  const { typed, language, message, loading} = props;
+  const { typed, language, message, loading } = props;
   const { pass, email } = typed;
   const { text, direction } = language;
 
@@ -74,7 +74,7 @@ const Login = (props: {
 
   const handleSecondaryButton = () => {
     props.setMessage("");
-    props.typingData({email:'',pass:''})
+    props.typingData({ email: "", pass: "" });
     props.setModule("register");
   };
 
@@ -97,10 +97,11 @@ const Login = (props: {
     type: "email",
     name: "email",
     value: email,
-    autoComplete: 'username',
+    autoComplete: "username",
     placeholder: text["login.prompt.email"],
     action: handleInputChange,
-    focus: !props.loading
+    focus: !props.loading,
+    direction: direction
   });
 
   let passwordElement = formSection({
@@ -111,15 +112,14 @@ const Login = (props: {
     autoComplete: "current-password",
     placeholder: text["login.prompt.password"],
     action: handleInputChange,
-    length: 7
+    length: 7,
+    direction: direction
   });
 
-  let loginStyle = direction === "rtl" ? "formRight" : "formLeft";
-  if (props.desktop) loginStyle = styleFactory("formDesktop", direction);
-
   return (
-    <form
-      className={loginStyle}
+    <Form
+      desktop={props.desktop}
+      direction={direction}
       onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
         handleSubmit(event)
       }>
@@ -128,22 +128,27 @@ const Login = (props: {
       {/* message & loading */}
       {showElement}
       {/* buttons */}
-      <ButtonsWrapper column direction={direction}>
-        <Button mode='form' submit disabled={props.loading} aria-label='Submit'>
+      <InLine direction={direction} justify='space-around'>
+        <Button mode='form' submit disabled={props.loading} label='Submit'>
           <input
-            className={button.primary}
+            className='primaryButton'
             type='button'
             value={text["login.button.login"]}
             id='submit_button'
           />
         </Button>
-        {props.desktop ? null : (
-          <Button mode='secondaryFlat' action={handleSecondaryButton}>
+        {props.desktop ? (
+          <LangSwitch />
+        ) : (
+          <Button
+            mode='secondary'
+            onClick={handleSecondaryButton}
+            label='Register'>
             {text["login.button.register"]}
           </Button>
         )}
-      </ButtonsWrapper>
-    </form>
+      </InLine>
+    </Form>
   );
 };
 

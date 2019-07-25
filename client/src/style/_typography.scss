@@ -1,10 +1,6 @@
-/// Defining global variables with text settings
-/// @group Typography
 :root {
   /// Fonts
-  --fontBasic: 'M PLUS Rounded 1c',
-    'Tajawal',
-    sans-serif;
+  --fontBasic: "M PLUS Rounded 1c", "Tajawal", sans-serif;
   /// Button name
   --textButton: normal 800 1.6rem var(--fontBasic);
   --textButtonR: normal 800 1.8rem var(--fontBasic);
@@ -13,7 +9,6 @@
   --textButtonSmall: normal 500 1.2rem var(--fontBasic);
   /// Fields
   --textFormField: normal 400 1.6rem var(--fontBasic);
-  // --textFormFieldPrompt: normal 300 0.8rem var(--fontBasic);
   --textFormFieldName: normal 500 1.9rem var(--fontBasic);
   --textFormFieldNameR: normal 500 2rem var(--fontBasic);
   --textFormMessage: normal 300 1.5rem var(--fontBasic);
@@ -29,15 +24,11 @@
   --textParaStandardR: normal 300 1.7rem var(--fontBasic);
   /// Card
   --textButtonVote: normal 500 1.3rem var(--fontBasic);
-
   --textVotersNumber: normal 400 1.4rem var(--fontBasic);
   --textVotersText: normal 300 1.5rem var(--fontBasic);
-
   --textPostCardTitle: normal 500 1.6rem var(--fontBasic);
   --textPostCardCategory: normal 400 1.4rem var(--fontBasic);
   --textIconStep: normal 500 1.4rem var(--fontBasic);
-
   --textNormal15: normal 400 1.5rem var(--fontBasic);
-
   --textAppTitle: normal 800 3rem var(--fontBasic);
 }

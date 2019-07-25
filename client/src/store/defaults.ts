@@ -18,6 +18,7 @@ export const emptyPost = {
   date: "",
   status: "",
   votes: [],
+  votesCount:0,
   newsId: "",
   reply: {
     date: "",
@@ -25,4 +26,14 @@ export const emptyPost = {
     up: [],
     down: []
   }
+};
+
+export const emptyNewPost = {
+  _id:'',
+  title: "",
+  text: "",
+  photo: "",
+  link: "",
+  pinned: false,
+  show: false
 };

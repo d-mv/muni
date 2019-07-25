@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import { AppState } from "../store";
-import { data, indexedObj, indexedObjAny } from "../store/types";
+import { data } from "../store/types";
 import { showPostPayload } from "../store/post/types";
 
 import {
@@ -12,15 +12,18 @@ import {
   checkToken,
   fetchData,
   getCategories,
-  typingData
+  typingData,
+  setMessage
 } from "../store/users/actions";
-import { fetchLocations, setModule } from "../store/app/actions";
+import { fetchLocations, setModule, setStep } from "../store/app/actions";
 import {
   showPost,
   getPosts,
   getNews,
   setPosts,
-  setNews
+  setNews,
+  typingPost,
+  clearPost
 } from "../store/post/actions";
 
 import logger from "../modules/logger";
@@ -42,6 +45,7 @@ import {
 
 import "../style/App.scss";
 import { AuthState } from "../models";
+import { emptyPost, emptyNewPost } from "../store/defaults";
 
 const App = (props: {
   token: string;
@@ -50,9 +54,16 @@ const App = (props: {
   locations: data;
   cookies: any;
   posts: data;
+  news: data;
   userMuni: boolean;
   auth: AuthState;
   categories: data;
+  message: string;
+  step: number;
+  postsLoading: boolean;
+  loading: boolean;
+  clearPost: () => void;
+  setMessage: (arg0: string) => void;
   getCategories: () => void;
   setModule: (previous: string, next: string) => void;
   setToken: (arg0: string) => void;
@@ -65,24 +76,43 @@ const App = (props: {
   setPosts: (arg0: any) => void;
   setNews: (arg0: any) => void;
   typingData: (arg0: any) => void;
+  setStep: (arg0: number) => void;
+  typingPost: (arg0: { [index: string]: any }) => void;
 }) => {
-  const { token, userMuni, cookies, auth, posts } = props;
+  const {
+    token,
+    userMuni,
+    cookies,
+    auth,
+    posts,
+    post,
+    step,
+    module,
+    postsLoading
+  } = props;
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
   const fetchPostsNews = () => {
-    logger({ text: "fetching", emph: "categories", type: "positive" });
-    setMessage("fetching categories...");
-    console.log(!Object(props.categories));
-    if (!Object(props.categories).keys) props.getCategories();
-    logger({ text: "fetching", emph: "petitions", type: "positive" });
-    setMessage("fetching petitions...");
-    props.getPosts(auth.user.location);
-    logger({ text: "fetching", emph: "news", type: "positive" });
-    setMessage("fetching news...");
-    props.getNews(auth.user.location);
+    if (!postsLoading) {
+      logger({ text: "fetching", emph: "news", type: "positive" });
+      props.getNews(auth.user.location);
+      logger({ text: "fetching", emph: "categories", type: "positive" });
+      // if (!Object(props.categories).keys)
+      props.getCategories();
+      logger({ text: "fetching", emph: "petitions", type: "positive" });
+      props.getPosts(auth.user.location);
+    }
   };
+
+  useEffect(() => {
+    if (props.postsLoading) {
+      props.setMessage("fetching news & petitions...");
+    } else {
+      props.setMessage("");
+    }
+  }, [props.postsLoading]);
 
   const toggleModule = (module: string) => {
     props.setModule(props.module, module);
@@ -91,7 +121,7 @@ const App = (props: {
   useEffect(() => {
     logger({ text: "main process is", emph: "launched", type: "positive" });
 
-    if (token === "clear") {
+    if (token === "clear" && !props.loading) {
       logger({ text: "token is", emph: "clear", type: "attention" });
       cookies.set("token", "");
       toggleModule("welcome");
@@ -101,20 +131,18 @@ const App = (props: {
 
     if (auth.user._id && auth.user.location && token) {
       logger({ text: "auth is", emph: "true", type: "positive" });
+      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
       if (cookies.get("token") !== token) {
         logger({ text: "set token in", emph: "cookies" });
         setMessage("saving auth...");
-        // set auth settings for axios
         cookies.set("token", token);
       }
-      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
-      if (posts.length < 1) {
-        logger({ text: "posts are", emph: "false", type: "attention" });
+      setTimeout(() => {
         setMessage("fetching data...");
         fetchPostsNews();
-      }
+      }, 1000);
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -125,8 +153,7 @@ const App = (props: {
         props.checkToken(cookie);
       } else if (!cookie && props.module === "welcome") {
         logger({ text: "cookie is", emph: "false", type: "attention" });
-
-        setLoading(false);
+        // setLoading(false);
       }
       setMessage("fetching locations...");
       if (!Object(props.locations).keys) props.fetchLocations();
@@ -134,30 +161,34 @@ const App = (props: {
   }, [auth, token]);
 
   useEffect(() => {
-    console.log("2. triggered module");
-    if (props.module != "post" && props.post.show) {
-      console.log("- module is not post, clear it");
-      props.showPost({ show: false });
+    logger({ text: "loactions has", emph: "changed" });
+    if (props.locations.length > 0) {
+      setMessage("");
     }
-    if (props.module === "home") {
-      console.log("- module is home");
-      setLoading(false);
-    }
-  }, [props.module]);
+  }, [props.locations]);
 
   useEffect(() => {
-    console.log("6. triggered posts");
+    logger({ text: "auth has", emph: "changed" });
+
     if (
-      // props.posts.length > 0 &&
-      props.module !== "post" &&
-      token !== "clear" &&
-      auth.user._id.length > 0 &&
-      props.module !== "home"
+      module !== "post" &&
+      // token !== "clear" &&
+      auth.status &&
+      module !== "home" &&
+      module !== "new"
     ) {
-      console.log("- posts are there, show post");
+      logger({ text: "switching to", emph: "changed", type: "positive" });
       toggleModule("home");
       setLoading(false);
-      // TODO: set a method in Redux to clear
+    }
+  }, [auth, posts]);
+
+  // cleans data
+  useEffect(() => {
+    logger({ text: "module has", emph: "changed" });
+
+    if (props.module === "home") {
+      logger({ text: "module is home,", emph: "cleaning", type: "positive" });
       props.typingData({
         email: "",
         pass: "",
@@ -166,19 +197,37 @@ const App = (props: {
         lName: "",
         secondPass: ""
       });
+      props.typingPost({
+        title: "",
+        category: "",
+        problem: "",
+        solution: "",
+        photo: "",
+        link: ""
+      });
+      props.clearPost();
+      if (step !== 1) props.setStep(1);
+    } else if (props.module === 'welcome') {
+      // if (module !== "welcome" && !auth.status && !props.loading && !loading) {
+      // toggleModule("welcome");
+      setLoading(false);
+    // }
     }
-  }, [props.posts]);
+  }, [props.module]);
 
   useEffect(() => {
-    console.log("4. triggered post");
+    logger({ text: "post has", emph: "changed" });
+
     if (props.post.show && props.module !== "post") {
-      console.log("- post is there, show post");
+      logger({ text: "switching to", emph: "post", type: "positive" });
       toggleModule("post");
     }
   }, [props.post]);
 
   const handleNewButtonClick = () => {
     toggleModule("new");
+    if (props.post.type === "news")
+      props.typingPost({ link: `news:${props.post._id}` });
   };
 
   const config = { action: handleNewButtonClick, user: userMuni };
@@ -231,9 +280,14 @@ const mapStateToProps = (state: AppState) => {
     locations: state.locations,
     post: state.post,
     posts: state.posts,
+    news: state.news,
     userMuni: state.auth.user.type === "muni",
     auth: state.auth,
-    categories: state.categories
+    categories: state.categories,
+    message: state.message,
+    step: state.step,
+    postsLoading: state.postsLoading,
+    loading: state.loading
   };
 };
 
@@ -251,6 +305,10 @@ export default connect(
     getCategories,
     setPosts,
     setNews,
-    typingData
+    typingData,
+    setStep,
+    typingPost,
+    setMessage,
+    clearPost
   }
 )(withCookies(App));

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "../../../store";
 
-import { ParagraphBlock, ModalEdit } from "./";
+import { ModalEdit } from "./";
 
 import Section from "../../../layout/Section";
 import Line from "../../../layout/Line";
@@ -11,7 +11,7 @@ import { indexedObjAny } from "../../../store/types";
 import styles from "./style/Text.module.scss";
 import styleFactory from "../../../modules/style_factory";
 import { IconEdit } from "../../../icons";
-// import { setPosts } from "../../../store/users/actions";
+import TextSubtitle from "../../../styles/post/TextSubtitle";
 
 const iconWrapper = (
   style: string,
@@ -47,9 +47,6 @@ const Text = (props: {
   ) => {
     setText(event.target.value);
   };
-  const toggleShowEdit = () => {
-    setShowEdit(!showEdit);
-  };
 
   const toggleShowModal = () => {
     setShowModal(!showModal);
@@ -67,7 +64,7 @@ const Text = (props: {
 
   const title = props.title ? (
     <Line flat direction={props.direction}>
-      <h4>{props.title}</h4>
+      <TextSubtitle>{props.title}</TextSubtitle>
     </Line>
   ) : null;
 
@@ -77,6 +74,7 @@ const Text = (props: {
 
   const modal = showModal ? (
     <ModalEdit
+      direction={props.direction}
       close={handleYesNo}
       action={handleYesNo}
       text={signs["muni-reply.edit.text"]}>

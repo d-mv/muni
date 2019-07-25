@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 
-import { formSection, formSelection } from "../../components/formSection";
-import { Preview } from "./components";
+import { formSection } from "../../components/formSection";
+import { PreviewBlock } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { createNews, typingPost } from "../../store/post/actions";
 import { setModule } from "../../store/users/actions";
-import { indexedObjAny, data } from "../../store/types";
+import { data } from "../../store/types";
 
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -16,47 +15,36 @@ import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
 import ContentBlock from "./components/ContentBlock";
 
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
-import Label from "../../layout/Label";
+import Label from "../../styles/form/Label";
 import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
-import CatDescription from "./components/CatDescription";
-import Header from "../../components/Header";
-import { categoryIdToName } from "../../modules/category_processor";
 import { AuthState } from "../../models";
+import InLine from "../../styles/utils/InLine";
+import Message from "../../styles/form/Message";
 
 const NewPost = (props: {
   language: data;
-  // location: data;
   auth: AuthState;
   token: string;
   step: number;
-  // submitResult: data;
   setStep: (arg0: number) => void;
-  // submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
   //
   loading: boolean;
-  // setLoading: (arg0: boolean) => void;
   typingPost: (arg0: { [index: string]: any }) => void;
-  newPost: {
-    title: "";
-    text: "";
-    photo: "";
-    link: "";
-  };
+  newPost: any;
   createNews: (arg0: any) => void;
 }) => {
   const { language, newPost, typingPost, loading, step, setStep } = props;
-  const { direction, text, short } = language;
+  const { direction, text } = language;
   const [review, setReview] = React.useState(false);
   // form fields
-  const { title, photo, link } = newPost;
+  const { title, photo, link, pinned } = newPost;
   // message
   const [message, setMessage] = React.useState("");
 
@@ -89,7 +77,6 @@ const NewPost = (props: {
       }
     }
   };
-  // console.log(step);
   const handleBackStep = () => {
     if (step - 1 > 0) {
       setStep(step - 1);
@@ -116,12 +103,12 @@ const NewPost = (props: {
     props.createNews(newPost);
   };
 
-  let pageSubTitle = text["new.steps.title"];
+  let pageSubTitle = text["new.muni.steps.title"];
   let stepsComponent = (
     <Steps muni current={step} direction={direction} action={handleAnyStep} />
   );
   let buttonPrimary = (
-    <Button mode='primary' action={handleNextStep}>
+    <Button mode='primary' onClick={handleNextStep} label='Next'>
       {text["new.steps.button.next"]}
     </Button>
   );
@@ -130,44 +117,47 @@ const NewPost = (props: {
     stepsComponent = <Zero />;
     pageSubTitle = text["new.preview"];
     buttonPrimary = (
-      <Button mode='primary' action={handleSubmit}>
+      <Button mode='primary' onClick={handleSubmit} label='Submit'>
         {text["new.steps.button.submit"]}
       </Button>
     );
   }
 
+  const togglePinned = () => typingPost({ pinned: !pinned });
   const stepOne =
     step === 1
       ? formSection({
-          label: text["new.field.title.label"],
+          label: text["new.muni.field.title.label"],
           type: "text",
           name: "title",
           value: title,
-          placeholder: text["new.field.title.prompt"],
+          placeholder: text["new.muni.field.title.prompt"],
           action: handleInputChange,
           length: 2,
-          focus: true
+          focus: true,
+          direction: direction
         })
       : null;
 
   const stepTwo =
     step === 2
       ? formSection({
-          label: text["new.field.problem.label"],
+          label: text["new.muni.field.text.label"],
           type: "textarea",
           name: "text",
           value: props.newPost.text,
-          placeholder: text["new.field.problem.prompt"],
+          placeholder: text["new.muni.field.text.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: false
+          focus: false,
+          direction: direction
         })
       : null;
 
   const stepThree =
     step === 3 ? (
       <Section>
-        <Label direction={direction} value={text["new.field.photo.label"]} />
+        <Label direction={direction}>{text["new.field.photo.label"]}</Label>
         <PhotoUpload
           label={text["new.field.photo.prompt"]}
           direction={direction}
@@ -181,12 +171,11 @@ const NewPost = (props: {
           value: link,
           placeholder: text["new.field.link.prompt"],
           action: handleInputChange,
-          length: 5
+          length: 5,
+          direction: direction
         })}
       </Section>
     ) : null;
-
-  const mockFn = (props: any) => {};
 
   const post = {
     title,
@@ -194,56 +183,54 @@ const NewPost = (props: {
     photo,
     link
   };
-  // TODO: fix below
   const preview =
     step === 4 ? (
-      <Preview
+      <PreviewBlock
         muni
         post={post}
         direction={direction}
-        text={{
-          problem: text["post.problem"],
-          solution: text["post.solution"]
-        }}
+        onChange={togglePinned}
+        text={text["new.muni.preview.pinned"]}
+        pinned={pinned}
       />
     ) : null;
+
   const loadingElement = loading ? <Loading /> : null;
 
-  const goHome = () => {
-    props.setModule(props.prevModule);
-  };
-
-  const headerObject = {
-    name: "New Post",
-    left: { icon: <div>back</div>, action: goHome }
-  };
-
-  // console.log(message);
   return (
     <Content padded>
-      {/* <Header {...headerObject} /> */}
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
-        {stepsComponent}
+        {step > 3 ? null : stepsComponent}
       </Center>
-      <Paragraph direction={direction}>
-        {text[`new.steps.step.${step}`]}
-      </Paragraph>
-      <ContentBlock
-        stepOne={stepOne}
-        stepTwo={stepTwo}
-        stepThree={stepThree}
-        preview={preview}
-        loadingElement={loadingElement}
-        direction={direction}
-        message={message}
-      />
-      <ButtonsWrapper row direction={direction}>
+      {step > 3 ? null : (
+        <Paragraph direction={direction}>
+          {text[`new.muni.steps.step.${step}`]}
+        </Paragraph>
+      )}
+      {step > 3 ? null : (
+        <ContentBlock
+          stepOne={stepOne}
+          stepTwo={stepTwo}
+          stepThree={stepThree}
+          preview={preview}
+          loadingElement={loadingElement}
+          direction={direction}
+          message={message}
+        />
+      )}
+      {preview}
+      <Message direction={direction}>{message}</Message>
+      <InLine direction={direction} justify='space-around'>
         {buttonPrimary}
-        <Button mode='secondary' disabled={step === 1} action={handleBackStep}>
+        <Button
+          mode='secondary'
+          disabled={step === 1}
+          onClick={handleBackStep}
+          label='Back'>
           {text["new.steps.button.back"]}
         </Button>
-      </ButtonsWrapper>
+      </InLine>
     </Content>
   );
 };

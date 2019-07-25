@@ -5,6 +5,7 @@ import { patch, get, del } from "../services";
 export const votePost = (id: string) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
+  // console.log("vote");
   dispatch({
     type: "SET_LOADING",
     loading: true
@@ -15,13 +16,20 @@ export const votePost = (id: string) => async (
   });
   get({ url: `/posts/${id}/vote` })
     .then(response => {
+      // console.log(response);
       dispatch({
         type: "SET_LOADING",
         loading: false
       });
       dispatch({ type: "SET_POSTS", payload: response.data });
     })
-    .catch(e => console.log(e));
+    .catch(e => {
+      console.log(e);
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    });
 };
 
 export const updatePost = (updatedPost: any) => async (
@@ -48,6 +56,33 @@ export const updatePost = (updatedPost: any) => async (
     })
     .catch(e => {});
 };
+export const updateNews = (updatedNews: any) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
+  console.log("response");
+  console.log(updatedNews);
+  dispatch({
+    type: "SET_LOADING",
+    loading: true
+  });
+  dispatch({
+    type: "SET_MESSAGE",
+    message: ""
+  });
+  patch({ url: `/news/${updatedNews._id}`, body: updatedNews })
+    .then(response => {
+      console.log(response);
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+      dispatch({
+        type: "SET_NEWS",
+        payload: response.data
+      });
+    })
+    .catch(e => console.log(e));
+};
 export const deletePost = (id: any) => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
@@ -67,6 +102,30 @@ export const deletePost = (id: any) => async (
       });
       dispatch({
         type: "SET_POSTS",
+        payload: response.data
+      });
+    })
+    .catch(e => {});
+};
+export const deleteNews = (id: any) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
+  dispatch({
+    type: "SET_LOADING",
+    loading: true
+  });
+  dispatch({
+    type: "SET_MESSAGE",
+    message: ""
+  });
+  del({ url: `/news/${id}` })
+    .then(response => {
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+      dispatch({
+        type: "SET_NEWS",
         payload: response.data
       });
     })

@@ -1,14 +1,14 @@
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import axios, { AxiosResponse } from "axios";
-import { Action, LoginProps } from "./types";
+import { Action } from "./types";
 import * as TYPE from "../types";
 
 import { AnyAction } from "redux";
-import { apiState } from "../defaults";
+// import { apiState } from "../defaults";
 
 import data from "../../data/translation.json";
 
-export * from "./posts";
+// export * from "./posts";
 export * from "./auth";
 export * from './categories'
 export * from './settings'
@@ -24,20 +24,15 @@ const importedData: TYPE.indexedObjAny = data;
 export const setToken = (token: string): Action => {
   return { type: "SET", token };
 };
-/**
- * Action function to set the token in the state
- * @function setLoading
- * @param {boolean} loading
- * @return {Object} - Returns object of action type and token
- */
+
 export const setLoading = (loading: boolean): Action => {
   // console.log(loading)
   return { type: "SET_LOADING", loading };
 };
 
-export const changeMode = (mode: string): Action => {
-  return { type: "CHANGE_MODE", mode };
-};
+// export const changeMode = (mode: string): Action => {
+//   return { type: "CHANGE_MODE", mode };
+// };
 
 /**
  * Action function to verify the token with API
@@ -177,25 +172,25 @@ export const setMessage = (message: string) => {
   };
 };
 
-/**
- * Action function to load built-in data
- * @function loadData
- * @param {}
- * @returns {object}
- */
-export const loadData = (): Action => {
-  return { type: "LOAD_DATA", data };
-};
+// /**
+//  * Action function to load built-in data
+//  * @function loadData
+//  * @param {}
+//  * @returns {object}
+//  */
+// export const loadData = (): Action => {
+//   return { type: "LOAD_DATA", data };
+// };
 
 
-/** Action function to store location data
- * @function setLocationData
- * @param {object} data - Location data
- * @returns {object}
- */
-export const setLocationData = (data: TYPE.data): Action => {
-  return { type: "SET_LOCATION_DATA", data };
-};
+// /** Action function to store location data
+//  * @function setLocationData
+//  * @param {object} data - Location data
+//  * @returns {object}
+//  */
+// export const setLocationData = (data: TYPE.data): Action => {
+//   return { type: "SET_LOCATION_DATA", data };
+// };
 
 
 
@@ -259,9 +254,9 @@ export const fetchData = (
 //   return { type: "TYPING_DATA", payload: { ...data } };
 // };
 
-export const cachePost = (post: TYPE.post): Action => {
-  return { type: "CACHE_POST", post };
-};
+// export const cachePost = (post: TYPE.post): Action => {
+//   return { type: "CACHE_POST", post };
+// };
 
 // export const muniLogin = (
 //   props: LoginProps
@@ -333,12 +328,12 @@ export const cachePost = (post: TYPE.post): Action => {
 //   };
 // };
 
-// TODO: move to utils
-export const clearState = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    // dispatch({
-    //   type: "TYPING_DATA",
-    //   payload: { email: "", pass: "", fName: "", lName: "", location: "" }
-    // });
-  };
-};
+// // TODO: move to utils
+// export const clearState = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+//   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+//     // dispatch({
+//     //   type: "TYPING_DATA",
+//     //   payload: { email: "", pass: "", fName: "", lName: "", location: "" }
+//     // });
+//   };
+// };

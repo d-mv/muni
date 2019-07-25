@@ -3,7 +3,7 @@ import React from "react";
 import PostUser from "../features/Post/";
 import News from "../features/Post/News";
 
-import Page from "../layout/Page";
+import { Page } from "../styles/Page";
 
 const Post = (props: { news?: boolean }) => (
   <Page>{props.news ? <News /> : <PostUser />}</Page>

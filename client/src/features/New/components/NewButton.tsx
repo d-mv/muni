@@ -2,15 +2,12 @@ import React from "react";
 import { iconCreateNew } from "../../../icons";
 import { add } from "../../../icons/add";
 
-import style from "./style/NewButton.module.scss";
+import { Button } from "../../../styles/NewButton";
 
-const NewButton = (props: { config: { action: () => void; user: any } }) => {
-  const icon = props.config.user ? add("white") : iconCreateNew;
-  return (
-    <button className={style.new} onClick={() => props.config.action()}>
-      {icon}
-    </button>
-  );
-};
+const NewButton = (props: { config: { action: () => void; user: any } }) => (
+  <Button onClick={() => props.config.action()}>
+    {props.config.user ? add("white") : iconCreateNew}
+  </Button>
+);
 
 export default NewButton;

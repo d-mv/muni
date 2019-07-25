@@ -28,6 +28,8 @@ const Navigation = (props: any) => {
 
   // toggle module to show
   const action = (module: string) => {
+    console.log(module);
+
     switch (module) {
       // TODO: check if below is needed
       case "confirmation":
@@ -44,6 +46,9 @@ const Navigation = (props: any) => {
             secondPass: ""
           });
         }
+        // else if (module === "home") {
+
+        // }
         props.setModule(module);
     }
   };

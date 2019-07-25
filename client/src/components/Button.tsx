@@ -1,35 +1,87 @@
 import React from "react";
 
-import style from "./style/Button.module.scss";
+import {
+  PrimaryButton,
+  SecondaryButton,
+  AttentionButton,
+  FormButton,
+  MinimalButton
+} from "../styles/Button";
 
 const Button = (props: {
-  children?: any;
-  action?: () => void;
   mode: string;
+  children?: any;
+  label?: string;
   submit?: boolean;
   disabled?: boolean;
-  label?: string;
-  title?: string;
-  actionMessage?: (arg0: string) => void;
+  onClick?: () => void;
+  onClickMessage?: (arg0: string) => void;
 }) => {
-  let undefined;
-  let buttonStyle = style[props.mode] || style.trans;
+  const {
+    mode,
+    submit,
+    disabled,
+    onClick,
+    children,
+    label,
+    onClickMessage
+  } = props;
+
+  const type = submit ? "submit" : undefined;
 
   const handleClick = () => {
-    if (props.action) props.action();
-    if (props.actionMessage) props.actionMessage(props.mode);
+    if (onClick) onClick();
+    if (onClickMessage) onClickMessage(props.mode);
   };
 
-  return (
-    <button
-      className={buttonStyle}
+  let button = (
+    <PrimaryButton
+      type={type}
       onClick={() => handleClick()}
-      type={props.submit ? "submit" : undefined}
-      disabled={props.disabled}
-      aria-label={props.label}>
-      {props.children || props.title}
-    </button>
+      disabled={disabled}
+      aria-label={label ? label : children}>
+      {children}
+    </PrimaryButton>
   );
+  switch (mode) {
+    case "secondary":
+      button = (
+        <SecondaryButton
+          type={type}
+          onClick={() => handleClick()}
+          disabled={disabled}
+          aria-label={label ? label : children}>
+          {children}
+        </SecondaryButton>
+      );
+      break;
+    case "attention":
+      button = (
+        <AttentionButton
+          type={type}
+          onClick={() => handleClick()}
+          disabled={disabled}
+          aria-label={label ? label : children}>
+          {children}
+        </AttentionButton>
+      );
+      break;
+    case "form":
+      button = (
+        <FormButton type={type} onClick={() => handleClick()}>
+          {children}
+        </FormButton>
+      );
+      break;
+    case "minimal":
+      button = (
+        <MinimalButton type={type} onClick={() => handleClick()}>
+          {children}
+        </MinimalButton>
+      );
+  }
+
+  return button;
 };
 
 export default Button;

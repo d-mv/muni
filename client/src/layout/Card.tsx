@@ -15,8 +15,10 @@ const Card = (props: {
   id: string;
   margin?: number;
   action: () => void;
+  reference?: any;
 }) => (
   <article
+    ref={props.reference}
     id={props.id}
     className={styles[styleFactory("card", props.direction)]}
     style={{ marginTop: props.margin }}

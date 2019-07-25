@@ -1,7 +1,5 @@
 import React from "react";
 
-import Message from "../../../components/Message";
-
 import Content from "../../../layout/Content";
 
 const ContentBlock = (props: {
@@ -22,10 +20,6 @@ const ContentBlock = (props: {
     {props.stepThree}
     {props.stepFour}
     {props.stepFive}
-    {props.preview}
-    <Message direction={props.direction} mode='attention' use='form'>
-      {props.message}
-    </Message>
     {props.loadingElement}
   </Content>
 );

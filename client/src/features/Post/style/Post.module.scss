@@ -5,7 +5,7 @@
 
 .post {
   border: var(--border) !important;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   width: 95%;
   margin: 0 auto;
 
@@ -25,12 +25,13 @@
   overflow: hidden;
 }
 
-
 .voteButton {
-  position: relative;
-  margin: 0;
-  bottom: 2rem;
-  width: 100%;
+  margin: {
+    top: -3.3rem;
+    left: auto;
+    right: auto;
+  }
+  width: fit-content;
   display: flex;
   justify-content: center;
 }
@@ -46,16 +47,14 @@
   background-color: var(--colorWhite);
 }
 
-
 .modalText {
   width: fit-content;
   font: var(--textPostCardTitle);
   color: var(--colorDark);
 }
 
-
 .replyCard {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   width: 95%;
   margin: 1rem auto;
   display: flex;
@@ -64,7 +63,7 @@
 
   .replyMessage {
     font: var(--textParaStandard);
-    margin: .5rem 1rem;
+    margin: 0.5rem 1rem;
   }
 
   .replyTitleLine {
@@ -85,7 +84,6 @@
     font: var(--textPageSubTitle);
   }
 }
-
 
 .cardSecondaryClosed {
   @extend .replyCard;
@@ -176,12 +174,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .replyEditButtonsRTL {
   @extend .replyEditButtons;
-  direction: rtl
+  direction: rtl;
 }
 
 .thumbsContainer {
@@ -189,6 +187,7 @@
   margin: 0;
   padding: 0;
   height: 4rem;
+  bottom: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -207,6 +206,8 @@
     border-radius: 50%;
     font-size: 2rem;
     text-align: center;
+    justify-content: center;
+    align-items: center;
     color: white;
     border: var(--borderWhiteThick);
     box-shadow: var(--boxShadow);
@@ -214,14 +215,24 @@
     &:first-of-type {
       bottom: 1.3rem;
       background-color: var(--colorSecondary);
+      svg {
+        margin-top: 0.4rem;
+        height: 1.8rem;
+        transform: rotate(90deg);
+      }
     }
 
     &:last-of-type {
       background-color: var(--colorAttention);
+      svg {
+        margin-top: 0.7rem;
+        height: 1.8rem;
+        transform: rotate(270deg);
+      }
     }
     &:active {
-        transform: scale(0.9);
-      }
+      transform: scale(0.9);
+    }
   }
 }
 

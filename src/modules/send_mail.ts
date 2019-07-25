@@ -24,7 +24,10 @@ const sendEmail = (user: string, url: string, language: string) => {
 
   const { text, html } = makeEmail(url, language);
   let mailOptions = {
-    from: login,
+    from: {
+      name: 'Our Change',
+      address: login
+    },
     to: user,
     subject: translated["email.verification.subject"],
     text,

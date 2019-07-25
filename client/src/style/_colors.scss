@@ -2,33 +2,28 @@
 /// @group Colors
 :root {
   /// Colors
-  // --colorPrimary: #478FDF;
+  --colorPrimary: #478fdf;
   --colorPrimaryTrans: rgba(71, 143, 223, 0.3);
   --colorPrimaryLight: #aed2f9;
-  --colorSecondary: #379B37;
-  --colorSecondaryTrans: rgba(55, 155, 55,0.5);
-  --colorAttention: #E33039;
+  --colorSecondary: #379b37;
+  --colorSecondaryTrans: rgba(55, 155, 55, 0.5);
+  --colorAttention: #e33039;
   --colorDark: #444;
   --colorDarkTrans: rgba(68, 68, 68, 0.3);
   --colorDarkTransLight: rgba(68, 68, 68, 0.12);
   --colorDarkGrey: #777;
   --colorGrey: #d3d3d3;
+  --colorGrey30: rgba(211, 211, 211, 0.3);
   --colorContourBlue: #376ca8;
-  // --colorWhite: #fcfcfc;
+  --colorWhite: #fcfcfc;
   --colorTransparent: rgba(0, 0, 0, 0);
-  --colorWhiteThird: rgba(255, 255, 255, .3);
+  --colorWhiteThird: rgba(255, 255, 255, 0.3);
   /// Shadows
-  --boxShadow: 0 .1rem .3rem var(--colorDarkTransLight),
-    0 1px .2rem rgba(68, 68, 68, 0.24);
-
-  // --boxShadow: 0 .1rem .3rem var(--colorDarkTransLight),
-  //   0 1px .2rem rgba(68, 68, 68, 0.24);
-
-  // --pageShadow: 0 .3rem .3rem .5rem var(--colorDarkTransLight);
-
+  --boxShadow: 0 0.1rem 0.3rem var(--colorDarkTransLight),
+    0 1px 0.2rem rgba(68, 68, 68, 0.24);
   --boxShadowHover: 0 1.4rem 2.8rem rgba(68, 68, 68, 0.25),
     0 1rem 1rem rgba(68, 68, 68, 0.22);
-  --svgShadowHover: 0 1.2rem .5rem rgba(68, 68, 68, 0.22);
-  --newButtonShadow: 0 .3rem .3rem .3rem var(--colorDarkTransLight);
-  --txtShadow: .1rem .1rem .2rem var(--colorDarkTrans);
+  --svgShadowHover: 0 1.2rem 0.5rem rgba(68, 68, 68, 0.22);
+  --newButtonShadow: 0 0.3rem 0.3rem 0.3rem var(--colorDarkTransLight);
+  --txtShadow: 0.1rem 0.1rem 0.2rem var(--colorDarkTrans);
 }

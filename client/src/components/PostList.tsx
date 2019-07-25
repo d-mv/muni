@@ -1,8 +1,7 @@
 import React from "react";
 
 import Card from "./Card";
-import CardMuni from './Card/CardMuni'
-import { post } from "../store/types";
+import CardMuni from "./Card/CardMuni";
 
 const PostList = (props: { posts: any; muni?: boolean }) =>
   props.posts.map((post: any) =>

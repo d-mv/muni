@@ -22,6 +22,10 @@ export interface showPostAction {
   type: "SHOW_POST";
   payload: showPostPayload;
 }
+export interface clearPostAction {
+  type: "CLEAR_POST";
+  payload: {};
+}
 
 export interface deletePostAction {
   type: "DELETE_POST";
@@ -35,7 +39,14 @@ export interface setMuniPostsAction {
   type: "SET_NEWS";
   payload: any;
 }
+export interface postsLoading {
+  type: "POSTS_LOADING";
+  payload: boolean;
+}
+
 export type Action =
+  | clearPostAction
+  | postsLoading
   | setMuniPostsAction
   | setPostsAction
   | typingPostAction

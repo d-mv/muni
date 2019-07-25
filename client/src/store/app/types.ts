@@ -29,12 +29,13 @@ export interface fetchLocationsAction {
 
 export interface prevModuleAction {
   type: "PREV_MODULE";
-  module:string
+  module: string;
 }
 export interface setModuleAction {
   type: "SET_MODULE";
-  module:string
+  module: string;
 }
+
 export type Action =
   | setModuleAction
   | prevModuleAction
@@ -42,5 +43,4 @@ export type Action =
   | loadDataAction
   | setLanguageAction
   | setLocationDataAction
-  | setStepAction
-
+  | setStepAction;

@@ -1,15 +1,10 @@
 import React, { Suspense } from "react";
 
 import Login from "../features/Login";
-// import Register from "../features/Register";
 
-import LangSwitch from "../components/LangSwitch";
-
-import Page from "../layout/Page";
 import Loading from "./Loading";
-import style from "./style/Login.module.scss";
-import pageStyle from "./style/HomeDesktop.module.scss";
 import { data } from "../store/types";
+import { PageOpposite, PageDesktop } from "../styles/Page";
 
 const Register = React.lazy(() => import("../features/Register"));
 
@@ -28,11 +23,11 @@ const Enter = (props: {
   );
   const show = props.register ? register : <Login />;
   const content = props.desktop ? (
-    <div className={pageStyle.desktop}>
+    <PageDesktop>
       <Login desktop />
-    </div>
+    </PageDesktop>
   ) : (
-    <Page opposite>{show}</Page>
+    <PageOpposite>{show}</PageOpposite>
   );
   return content;
 };

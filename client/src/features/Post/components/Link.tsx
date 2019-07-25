@@ -3,7 +3,8 @@ import React from "react";
 import { IconLink, IconEdit, IconDelete } from "../../../icons";
 
 import styles from "./style/Link.module.scss";
-import { ModalEdit } from "./ModalEdit";
+import { ModalEdit } from "./";
+import Field from "../../../styles/form/Field";
 
 const iconWrapper = (
   style: string,
@@ -18,6 +19,7 @@ const iconWrapper = (
 export const Link = (props: {
   text: string;
   direction: string;
+  preview?: boolean;
   primary?: boolean;
   secondary?: boolean;
   edit?: boolean;
@@ -29,6 +31,7 @@ export const Link = (props: {
     label: string;
     placeholder: string;
   };
+  newsClick?: () => void;
 }) => {
   const [link, setLink] = React.useState(props.text);
   const [showEdit, setShowEdit] = React.useState(false);
@@ -46,9 +49,9 @@ export const Link = (props: {
 
   const handleYesNo = (mode: string) => {
     if (mode === "primary") {
-      toggleShowEdit();
       if (props.actions) props.actions.set(link);
     }
+    toggleShowEdit();
   };
 
   const handleRemove = () => {
@@ -57,26 +60,28 @@ export const Link = (props: {
   const editText = props.editText
     ? props.editText
     : { message: "Edit the link", confirm: "Save", cancel: "Cancel" };
-  const inputText = props.editText
-    ? props.editText
-    : { label: "Link", placeholder: "enter the link" };
 
   const modal = (
-    <ModalEdit close={toggleShowEdit} action={handleYesNo} text={editText}>
+    <ModalEdit
+      direction={props.direction}
+      close={toggleShowEdit}
+      action={handleYesNo}
+      text={editText}>
       {
-        <div className='section'>
-          <input
-            autoFocus={true}
-            type='text'
-            name='link'
-            value={link}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              handleInputChange(event)
-            }
-            placeholder={props.editText ? props.editText.placeholder : ""}
-            required
-          />
-        </div>
+        <Field
+          medium
+          width='75%'
+          direction='ltr'
+          autoFocus={true}
+          type='text'
+          name='link'
+          value={link}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            handleInputChange(event)
+          }
+          placeholder={props.editText ? props.editText.placeholder : ""}
+          required
+        />
       }
     </ModalEdit>
   );
@@ -93,21 +98,30 @@ export const Link = (props: {
   );
 
   const openLink = () => {
-    let url = props.text;
-    if (props.text.substr(0, 4) !== "http") {
-      url = `https://${props.text}`;
+    const linkItems = props.text.split(":");
+    if (props.text && !props.preview && linkItems[0] !== "News") {
+      let url = props.text;
+      if (props.text.substr(0, 4) !== "http") {
+        url = `https://${props.text}`;
+      }
+      window.open(url, "_blank");
+    } else if (linkItems[0] === "News" && props.newsClick) {
+      props.newsClick();
     }
-    window.open(url, "_blank");
   };
   const iconLink = iconWrapper("link", <IconLink color={color} />, openLink);
 
   return (
     <div className={mainStyle}>
       {iconEdit}
-      {iconLink}
-      <div className={styles.text} onClick={() => openLink()}>
-        {props.text}
-      </div>
+      {props.text ? iconLink : null}
+      {props.text ? (
+        <div
+          className={props.preview ? styles.textPreview : styles.text}
+          onClick={() => openLink()}>
+          {props.text}
+        </div>
+      ) : null}
       {iconDelete}
       {showEdit ? modal : null}
     </div>

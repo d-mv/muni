@@ -10,7 +10,7 @@ import Button from "../../../components/Button";
 import { iconHelp } from "../../../icons";
 import style from "./style/index.module.scss";
 
-const Home = (props: { language: data; cancel: () => void,type:any }) => {
+const Home = (props: { language: data; cancel: () => void; type: any }) => {
   const { direction, text } = props.language;
 
   const headerStyle = style[styleFactory("header", direction)];
@@ -20,11 +20,11 @@ const Home = (props: { language: data; cancel: () => void,type:any }) => {
   return (
     <div className={style.content}>
       <section className={headerStyle}>
-        <Button mode='minimal' action={props.cancel}>
+        <Button mode='minimal' onClick={props.cancel}>
           {iconHelp("white")}
         </Button>
         <div className={titleStyle}>{text["help.mycity"]}</div>
-        <Button mode='minimal'></Button>
+        <Button mode='minimal' />
       </section>
       <section className={headerDescStyle}>
         <div>{text["help.button.help"]}</div>
@@ -54,7 +54,7 @@ const Home = (props: { language: data; cancel: () => void,type:any }) => {
 const mapStateToProps = (state: AppState) => {
   return {
     language: state.language,
-    type:state.type
+    type: state.type
   };
 };
 

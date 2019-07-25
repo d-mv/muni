@@ -1,10 +1,12 @@
 import React from "react";
 
+import PostPhoto from "../../../styles/post/Photo";
 import styles from "./style/Photo.module.scss";
 import { IconEdit, IconDelete } from "../../../icons";
 import { ModalEdit } from ".";
 import { imageEncoder, imageDecoder } from "../../../modules/image_coder";
-import button from "../../../components/style/Button.module.scss";
+import imageUrl from "../../../modules/image_url";
+import Frame from "../../../styles/post/Frame";
 
 const iconWrapper = (
   style: string,
@@ -17,6 +19,7 @@ const iconWrapper = (
 );
 
 export const Photo = (props: {
+  direction?: string;
   src: string;
   preview?: boolean;
   edit?: boolean;
@@ -38,8 +41,7 @@ export const Photo = (props: {
   const mainStyle = props.edit ? styles.editing : styles.show;
   const color = props.secondary ? "secondary" : "primary";
 
-  const defaultPhoto =
-    "https://res.cloudinary.com/diciu4xpu/image/upload/v1560088174/dev/photo.svg";
+  const defaultPhoto = require("../../../assets/image__default.png");
 
   /**
    * Function to convert file to base64, send it to props,set local URL as preview
@@ -53,27 +55,22 @@ export const Photo = (props: {
     });
   };
 
-  const showPhoto = graphic ? (
-    <img src={graphic} alt='upload-image' className={styles.image} />
-  ) : (
-    <img src={defaultPhoto} alt='upload-image' className={styles.imageDef} />
-  );
-
   const toggleShowEdit = () => {
     setShowEdit(!showEdit);
-    setGraphic("");
   };
 
   const handleYesNo = (mode: string) => {
     if (mode === "primary") {
-      toggleShowEdit();
       if (props.actions) props.actions.set(image64);
     }
+    setGraphic("");
+    toggleShowEdit();
   };
 
   const handleRemove = () => {
-    if (props.actions) props.actions.remove()
-  }
+    setGraphic("");
+    if (props.actions) props.actions.remove();
+  };
 
   const editText = props.editText
     ? props.editText
@@ -81,24 +78,27 @@ export const Photo = (props: {
   const inputText = props.editText ? props.editText : { label: "Add photo" };
 
   const modal = (
-    <ModalEdit close={toggleShowEdit} action={handleYesNo} text={editText}>
-      {
-        <div className={styles.container}>
-          {showPhoto}
-          <input
-            id='file'
-            type='file'
-            name='file'
-            className={styles.input}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              getBaseFile(e)
-            }
-          />
-          <label htmlFor='file' className={button.primarySmall}>
-            {inputText.label}
-          </label>
-        </div>
-      }
+    <ModalEdit
+      direction={props.direction ? props.direction : "ltr"}
+      close={toggleShowEdit}
+      action={handleYesNo}
+      text={editText}>
+      <Frame id='post__frame_modal-edit-photo'>
+        <PostPhoto
+          id='post__modal-edit-photo'
+          image={graphic ? graphic : defaultPhoto}
+        />
+        <input
+          id='file'
+          type='file'
+          name='file'
+          className={styles.input}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => getBaseFile(e)}
+        />
+        <label htmlFor='file' className='buttonSemiPrimary'>
+          {inputText.label}
+        </label>
+      </Frame>
     </ModalEdit>
   );
 
@@ -113,19 +113,14 @@ export const Photo = (props: {
     toggleShowEdit
   );
 
-  let image: any = "";
-  if (props.src) {
-    image = props.src;
-  } else {
-    image = require("../../../assets/image__default.png");
-  }
-
-  const photo = <img src={image} className={styles.photo} />;
+  let image: any = defaultPhoto;
+  if (props.src) image = imageUrl(props.src);
+  if (graphic) image = graphic;
 
   return (
     <div className={mainStyle}>
       {iconEdit}
-      {photo}
+      <PostPhoto image={image} />
       <div className={styles.circle}>{iconDelete}</div>
       {showEdit ? modal : null}
     </div>

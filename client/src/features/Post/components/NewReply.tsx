@@ -2,7 +2,8 @@ import React from "react";
 
 import styles from "./style/NewReply.module.scss";
 import Button from "../../../components/Button";
-import Label from "../../../layout/Label";
+import Label from "../../../styles/form/Label";
+import Area from "../../../styles/form/Area";
 
 export const NewReply = (props: {
   value: string;
@@ -15,8 +16,9 @@ export const NewReply = (props: {
 }) => (
   <div className={styles.window}>
     <section className='section'>
-      <Label direction={props.direction || "ltr"} value={props.label} />
-      <textarea
+      <Label direction={props.direction}>{props.label}</Label>
+      <Area
+        direction={props.direction}
         autoFocus={true}
         name='replyText'
         value={props.value}
@@ -27,7 +29,7 @@ export const NewReply = (props: {
         rows={10}
       />
     </section>
-    <Button mode='secondary' action={props.submit}>
+    <Button mode='primary' onClick={props.submit} label="Submit">
       {props.submitText}
     </Button>
   </div>

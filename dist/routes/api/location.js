@@ -34,18 +34,33 @@ router.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
         res.status(500).send();
     }
 }));
-router.get("/:id/posts", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.get("/:id/posts-photos", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const posts = yield Post.find({ location: req.params.id });
+        const posts = yield Post.find({ location: req.params.id }).select("-photo");
         res.send(sort_1.sortPosts(posts));
     }
     catch (error) {
+        console.log(error);
+        res.status(500).send();
+    }
+}));
+router.get("/:id/posts", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
+    console.log("get posts");
+    try {
+        const posts = yield Post.find({ location: req.params.id });
+        console.log('sending posts');
+        res.send(sort_1.sortPosts(posts));
+    }
+    catch (error) {
+        console.log(error);
         res.status(500).send();
     }
 }));
 router.get("/:id/news", authenticate, (req, res) => __awaiter(this, void 0, void 0, function* () {
+    console.log('get news');
     try {
-        const news = yield News.find({ location: req.params.id }).sort('-createdAt');
+        const news = yield News.find({ location: req.params.id }).sort("-createdAt");
+        console.log('sending news');
         res.send(news);
     }
     catch (error) {

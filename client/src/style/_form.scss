@@ -1,117 +1,3 @@
-/// Form template with elements
-/// @group Form
-.form-template {
-  width: 80%;
-  height: fit-content;
-  padding: 1em;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-
-  .section {
-    margin: 1em 0;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-
-    label {
-      font: var(--textFormFieldName);
-      margin: .5rem 0;
-      letter-spacing: .1rem;
-    }
-
-    input {
-      border: var(--border);
-      border-radius: var(--borderRadius);
-      background: none;
-      font: var(--textFormField);
-      padding: .5rem .8rem;
-      z-index: 10;
-
-      &:focus {
-        border: none;
-        border: var(--borderPrimaryThin);
-      }
-    }
-
-    .prompt {
-      z-index: 1;
-      margin: 0 auto;
-      margin-top: -1.7rem;
-      width: 95%;
-      min-height: 1.5rem;
-      font: var(--textFormFieldPrompt);
-      color: var(--colorGrey);
-    }
-  }
-
-  .buttonsWrapper {
-    display: flex;
-    align-items: baseline;
-  }
-}
-
-.borderNotMatching {
-  border: var(--borderAttentionThin)
-}
-
-/// Form alignment for left-to-right languages
-/// @group Form
-.formLeft {
-  @extend .form-template;
-  text-align: left;
-
-  span {
-    margin-left: 92%;
-  }
-}
-
-/// Form alignment for right-to-left languages
-/// @group Form
-.formRight {
-  @extend .form-template;
-  text-align: right;
-
-  label {
-    font-size: .9rem !important;
-  }
-
-  input {
-    direction: rtl;
-  }
-}
-
-/// Message style
-/// @group Form
-.formMessage {
-  margin: 1.5rem auto;
-  // height: fit-content;
-  margin: 0;
-  height: 2rem;
-  width: 100%;
-  text-align: center;
-  font: var(--textFormMessage);
-  color: var(--colorAttention);
-}
-
-/// Message positive
-/// @group Form
-.formMessagePos {
-  @extend .formMessage;
-  color: var(--colorSecondary);
-}
-
-
-
-/// Loading indicator wrapper
-/// @group Form
-.formLoading {
-  height: 2rem;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
 .section {
   margin-bottom: var(--distStandard);
   height: fit-content;
@@ -191,15 +77,77 @@
   }
 }
 
-.formDesktop {
-  @extend .formLeft;
-  background-color: white;
+
+.formMessage {
+  margin: 1.5rem auto;
+  // height: fit-content;
+  margin: 0;
+  height: 2rem;
+  width: 100%;
+  text-align: center;
+  font: var(--textFormMessage);
+  color: var(--colorAttention);
 }
 
-.formDesktopRTL {
-  @extend .formRight;
-  padding: 2rem;
-  border-radius: var(--borderRadius);
-  box-shadow: var(--boxShadow);
-  background-color: white;
+/// Message positive
+/// @group Form
+.formMessagePos {
+  @extend .formMessage;
+  color: var(--colorSecondary);
+}
+
+/// Loading indicator wrapper
+/// @group Form
+.formLoading {
+  height: 2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.section {
+  margin-bottom: var(--distStandard);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+
+  select {
+    // border: var(--border);
+    // border-radius: var(--borderRadius);
+    background-color: var(--colorWhite);
+    // font: var(--textFormField);
+    padding: 0.5rem 0.8rem;
+    z-index: 10;
+
+    padding: 0.5rem 3rem;
+    border: 0.1rem solid #d3d3d3 !important;
+    border-radius: 0.4rem;
+    font: normal 500 2rem "M PLUS Rounded 1c", "Tajawal", sans-serif;
+
+    &::placeholder {
+      color: var(--colorGrey);
+      font: normal 300 2rem "M PLUS Rounded 1c", "Tajawal";
+    }
+
+    &:focus {
+      border: none;
+      border: var(--borderPrimaryThin);
+    }
+  }
+
+  .inline {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+
+    svg {
+      position: absolute;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0.2rem;
+      grid-column: 1;
+      grid-row: 1;
+      margin-left: 0.8rem;
+    }
+  }
 }

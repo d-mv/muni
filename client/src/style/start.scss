@@ -1,229 +1,31 @@
-@import './_colors';
-@import './_animations';
-@import './_typography';
-@import './_ui';
-@import './_form';
+@import "./_colors";
+@import "./_animations";
+@import "./_typography";
+@import "./_ui";
+@import "./_form";
 
-/* m-plus-rounded-1c-regular - latin-ext_latin_hebrew */
-@font-face {
-  font-family: 'M PLUS Rounded 1c';
-  font-style: normal;
-  font-weight: 400;
-  // src: url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-regular.eot');
-  /* IE9 Compat Modes */
-  src: local('M PLUS Rounded 1c'), local('MPLUSRounded1c-Regular'),
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-regular.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-regular.woff2') format('woff2'),
-    /* Super Modern Browsers */
-    url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-regular.woff') format('woff'),
-    /* Modern Browsers */
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-regular.ttf') format('truetype'),
-    /* Safari, Android, iOS */
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-regular.svg#MPLUSRounded1c') format('svg');
-  /* Legacy iOS */
+.primaryButton {
+  padding: 1rem 2rem;
+  border-radius: 0.4rem;
+  background-color: var(--colorPrimary);
+  box-shadow: 0 5px 10px 3px rgba(71, 143, 223, 0.3);
+  color: var(--colorWhite);
+  letter-spacing: 0.1rem;
+  border: 1px solid var(--colorPrimary);
+  font: normal 500 1.8rem var(--fontBasic);
 }
 
-/* m-plus-rounded-1c-300 - latin-ext_latin_hebrew */
-@font-face {
-  font-family: 'M PLUS Rounded 1c';
-  font-style: normal;
-  font-weight: 300;
-  // src: url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-300.eot');
-  /* IE9 Compat Modes */
-  src: local('M PLUS Rounded 1c Light'), local('MPLUSRounded1c-Light'),
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-300.eot?#iefix') format('embedded-opentype'),
-    /* IE6-IE8 */
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-300.woff2') format('woff2'),
-    // /* Super Modern Browsers */
-    url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-300.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-300.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-300.svg#MPLUSRounded1c') format('svg');
-  // /* Legacy iOS */
+.primaryButtonDisabled {
+  @extend .primaryButton;
+  border: var(--borderDisabled);
+  background: none;
+  color: var(--colorGrey);
+  box-shadow: 0 5px 10px 3px rgba(211, 211, 211, 0.3);
 }
 
-/* m-plus-rounded-1c-500 - latin-ext_latin_hebrew */
-@font-face {
-  font-family: 'M PLUS Rounded 1c';
-  font-style: normal;
-  font-weight: 500;
-  // src: url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-500.eot');
-  /* IE9 Compat Modes */
-  src: local('M PLUS Rounded 1c Medium'), local('MPLUSRounded1c-Medium'),
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-500.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-500.woff2') format('woff2'),
-    /* Super Modern Browsers */
-    url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-500.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-500.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-500.svg#MPLUSRounded1c') format('svg');
-  // /* Legacy iOS */
-}
-
-/* m-plus-rounded-1c-800 - latin-ext_latin_hebrew */
-@font-face {
-  font-family: 'M PLUS Rounded 1c';
-  font-style: normal;
-  font-weight: 800;
-  // src: url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.eot');
-  /* IE9 Compat Modes */
-  src: local('M PLUS Rounded 1c ExtraBold'), local('MPLUSRounded1c-ExtraBold'),
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.woff2') format('woff2'),
-    // /* Super Modern Browsers */
-    url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/m-plus-rounded-1c-v9-latin-ext_latin_hebrew-800.svg#MPLUSRounded1c') format('svg');
-  // /* Legacy iOS */
-}
-
-/* tajawal-300 - latin */
-@font-face {
-  font-family: 'Tajawal';
-  font-style: normal;
-  font-weight: 300;
-  // src: url('/fonts/tajawal-v2-arabic-300.eot');
-  /* IE9 Compat Modes */
-  src: local('Tajawal Light'), local('Tajawal-Light'),
-    // url('/fonts/tajawal-v2-arabic-300.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/tajawal-v2-arabic-300.woff2') format('woff2'),
-    // /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-arabic-300.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/tajawal-v2-arabic-300.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/tajawal-v2-arabic-300.svg#Tajawal') format('svg');
-  // /* Legacy iOS */
-}
-
-/* tajawal-regular - latin */
-@font-face {
-  font-family: 'Tajawal';
-  font-style: normal;
-  font-weight: 400;
-  // src: url('/fonts/tajawal-v2-arabic-regular.eot');
-  /* IE9 Compat Modes */
-  src: local('Tajawal'), local('Tajawal-Regular'),
-    // url('/fonts/tajawal-v2-arabic-regular.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/tajawal-v2-arabic-regular.woff2') format('woff2'),
-    // /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-arabic-regular.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/tajawal-v2-arabic-regular.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/tajawal-v2-arabic-regular.svg#Tajawal') format('svg');
-  // /* Legacy iOS */
-}
-
-/* tajawal-500 - latin */
-@font-face {
-  font-family: 'Tajawal';
-  font-style: normal;
-  font-weight: 500;
-  // src: url('/fonts/tajawal-v2-arabic-500.eot');
-  /* IE9 Compat Modes */
-  src: local('Tajawal Medium'), local('Tajawal-Medium'),
-    // url('/fonts/tajawal-v2-arabic-500.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/tajawal-v2-arabic-500.woff2') format('woff2'),
-    // /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-arabic-500.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/tajawal-v2-arabic-500.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/tajawal-v2-arabic-500.svg#Tajawal') format('svg');
-  // /* Legacy iOS */
-}
-
-/* tajawal-800 - latin */
-@font-face {
-  font-family: 'Tajawal';
-  font-style: normal;
-  font-weight: 800;
-  // src: url('/fonts/tajawal-v2-arabic-800.eot');
-  /* IE9 Compat Modes */
-  src: local('Tajawal ExtraBold'), local('Tajawal-ExtraBold'),
-    // url('/fonts/tajawal-v2-arabic-800.eot?#iefix') format('embedded-opentype'),
-    // /* IE6-IE8 */
-    // url('/fonts/tajawal-v2-arabic-800.woff2') format('woff2'),
-    // /* Super Modern Browsers */
-    url('/fonts/tajawal-v2-arabic-800.woff') format('woff'),
-  //   /* Modern Browsers */
-  //   url('/fonts/tajawal-v2-arabic-800.ttf') format('truetype'),
-  //   /* Safari, Android, iOS */
-  //   url('/fonts/tajawal-v2-arabic-800.svg#Tajawal') format('svg');
-  // /* Legacy iOS */
-}
-
-@-ms-viewport {
-  width: device-width;
-}
-
-:root {
-  font-family: 'M PLUS Rounded 1c', 'Tajawal', sans-serif;
-  font-size: 62.5%;
-  color: #444;
-
-  @media (max-width: 399px) {
-    font-size: 60%;
-  }
-
-  @media (max-width: 650px) {}
-
-  @media (min-width: 651px) {
-    font-size: 50%;
-  }
-
-  * {
-    outline: none;
-    border: none;
-    appearance: none;
-
-    &:active {
-      text-decoration: none;
-      outline: none;
-    }
-
-    &:focus {
-      text-decoration: none;
-      outline: none;
-    }
-  }
-}
-
-
-.page {
-  position: fixed;
-  left: 0;
-  right: 0;
-  background-color: var(--colorWhite);
-  box-sizing: border-box;
-  overflow: scroll;
-}
-
-.pageWithContent {
-  @extend .page;
-  bottom: 6rem;
+.checkmark {position: absolute;
   top: 0;
-  box-shadow: var(--pageShadow);
-  border-radius: 0 0 2.5rem 2.5rem;
-  border-bottom: 0.3rem solid var(--colorWhite) !important;
-}
-
-.pageOpposite {
-  @extend .page;
-  top: 6rem;
-  bottom: 0;
-  border-radius: 2.5rem 2.5rem 0 0;
-  box-shadow: var(--pageShadowOpposite);
-  border-top: 0.3rem solid var(--colorWhite) !important;
-}
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;}

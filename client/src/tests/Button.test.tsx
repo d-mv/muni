@@ -1,7 +1,7 @@
 import React from "react";
 import { render, cleanup } from "react-testing-library";
 
-import Button from "../components/Button";
+import Button from "../components/_Button";
 
 /**
  * Setup function to be sent as props

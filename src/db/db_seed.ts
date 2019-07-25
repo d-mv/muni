@@ -1,7 +1,6 @@
 import * as faker from "faker";
-import imagesArray from "./images";
+import { imagesArray, imagesArrayNews} from "./images";
 import { LocationType } from "../models/location";
-import { PostType } from "../models/post";
 import { UserType } from "./../models/user";
 
 const Location = require("../models/location");
@@ -83,7 +82,8 @@ const randomNumber = (max: number) =>
     max
   });
 
-const getImage = () => imagesArray[randomNumber(imagesArray.length - 1)];
+const getImage = () => imagesArray[randomNumber(imagesArray.length - 1)].link;
+const getImageNews = () => imagesArrayNews[randomNumber(imagesArrayNews.length - 1)].link;
 
 const categories = async () => {
   try {
@@ -137,8 +137,9 @@ const posts = async () => {
     const louLength = listOfUsers.length - 1;
     const listOfCategories = await Category.find({});
     listOfLocations.forEach(async (loc: UserType) => {
-      for (let i = 0; i < randomNumber(20); i++) {
+      for (let i = 0; i < 20; i++) {
         const usr = listOfUsers[randomNumber(louLength)];
+        let other = listOfUsers[randomNumber(louLength)];
         const post = new Post({
           title: faker.lorem.sentence(),
           problem: faker.lorem.paragraphs(5),
@@ -148,11 +149,8 @@ const posts = async () => {
           location: loc._id,
           category: listOfCategories[randomNumber(listOfCategories.length - 1)],
           createdBy: usr._id,
-          votes: [
-            listOfUsers[randomNumber(louLength)],
-            listOfUsers[randomNumber(louLength)],
-            listOfUsers[randomNumber(louLength)]
-          ]
+          votes: [other === usr ? listOfUsers[randomNumber(louLength)] : other]
+          // reply:{ text:'', up: [], down: [] }
         });
         await post.save();
       }
@@ -171,7 +169,7 @@ const news = async () => {
         const post = new News({
           title: faker.lorem.sentence(),
           text: faker.lorem.paragraphs(5),
-          photo: getImage(),
+          photo: getImageNews(),
           link: faker.internet.url(),
           location: loc._id,
           pinned: i === 0 ? true : false
@@ -191,14 +189,14 @@ const dbSeed = async () => {
     // const category = await categories();
     // const location = await locations();
     // const user = await users();
-    const post = await posts();
-    // const newsPosts = await news();
+    // const post = await posts();
+    const newsPosts = await news();
     return [
       // category,
       // location,
       // user,
-      post,
-      // newsPosts
+      // post
+      newsPosts
     ];
   } catch (error) {
     return error;

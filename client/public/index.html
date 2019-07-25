@@ -8,36 +8,35 @@
     />
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Our Change</title>
   </head>
   <style>
     :root {
       --colorPrimary: #478fdf;
       --colorWhite: #fcfcfc;
-      --colorSecondary: #379B37;
-      --pageShadow: 0 0.1rem 0.3rem rgba(68, 68, 68, 0.4);
-      --pageShadowOpposite: 0 -0.3rem 0.3rem 0.3rem var(--colorDarkTransLight);
+      --colorSecondary: #379b37;
+      --pageShadow: 0 3px 10px 5px rgba(68, 68, 68, 0.3);
     }
-    .app {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: var(--colorPrimary);
-    }
-    .appMuni {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: var(--colorSecondary);
-    }
+    .app,
+    .appMuni,
     .welcome {
       position: fixed;
       left: 0;
       right: 0;
+    }
+    .app,
+    .appMuni {
+      top: 0;
+      bottom: 0;
+    }
+    .app {
+      background-color: var(--colorPrimary);
+    }
+    .appMuni {
+      background-color: var(--colorSecondary);
+    }
+    .welcome {
       background-color: var(--colorWhite);
       box-sizing: border-box;
       overflow: scroll;

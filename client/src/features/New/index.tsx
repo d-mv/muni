@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { formSection, formSelection } from "../../components/formSection";
-import { Preview } from "./components";
+import { PreviewBlock } from "./components";
 import { AppState } from "../../store";
 import { setStep } from "../../store/app/actions";
 import { typingPost, createPost } from "../../store/post/actions";
@@ -15,27 +15,28 @@ import PhotoUpload from "./components/PhotoUpload";
 import Steps from "./components/Steps";
 import ContentBlock from "./components/ContentBlock";
 
-import ButtonsWrapper from "../../layout/ButtonsWrapper";
 import Center from "../../layout/Center";
 import Content from "../../layout/Content";
-import Label from "../../layout/Label";
+import Label from "../../styles/form/Label";
 import Section from "../../layout/Section";
 import Paragraph from "../../layout/Paragraph";
 import SubTitle from "../../layout/SubTitle";
 import { Zero } from "../../layout/Utils";
 import CatDescription from "./components/CatDescription";
 import { categoryIdToName } from "../../modules/category_processor";
+import Message from "../../styles/form/Message";
+import InLine from "../../styles/utils/InLine";
+import newsLink from "../../modules/news_link";
 
 const NewPost = (props: {
   language: data;
   auth: data;
   categories: any;
-  // locations: data;
   token: string;
   step: number;
   submitResult: data;
+  news: any;
   setStep: (arg0: number) => void;
-  // submitPost: (arg0: indexedObjAny) => void;
   setModule: (arg0: string) => void;
   prevModule: string;
   //
@@ -97,7 +98,7 @@ const NewPost = (props: {
           check = problem;
           break;
         case 4:
-          check = '_';
+          check = "_";
           break;
         case 5:
           check = "_";
@@ -146,7 +147,7 @@ const NewPost = (props: {
     <Steps current={step} direction={direction} action={handleAnyStep} />
   );
   let buttonPrimary = (
-    <Button mode='primary' action={handleNextStep}>
+    <Button mode='primary' onClick={handleNextStep} label='Next'>
       {text["new.steps.button.next"]}
     </Button>
   );
@@ -155,7 +156,7 @@ const NewPost = (props: {
     stepsComponent = <Zero />;
     pageSubTitle = text["new.preview"];
     buttonPrimary = (
-      <Button mode='primary' action={handleSubmit}>
+      <Button mode='primary' onClick={handleSubmit} label='Submit'>
         {text["new.steps.button.submit"]}
       </Button>
     );
@@ -171,7 +172,8 @@ const NewPost = (props: {
           placeholder: text["new.field.title.prompt"],
           action: handleInputChange,
           length: 2,
-          focus: true
+          focus: true,
+          direction: direction
         })
       : null;
 
@@ -206,7 +208,8 @@ const NewPost = (props: {
           placeholder: text["new.field.problem.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: false
+          focus: false,
+          direction: direction
         })
       : null;
   const stepFour =
@@ -219,13 +222,17 @@ const NewPost = (props: {
           placeholder: text["new.field.solution.prompt"],
           action: handleInputChange,
           length: 50,
-          focus: false
+          focus: false,
+          direction: direction
         })
       : null;
+
+  const linkToShow = newsLink(link, props.news);
+
   const stepFive =
     step === 5 ? (
       <Section>
-        <Label direction={direction} value={text["new.field.photo.label"]} />
+        <Label direction={direction}>{text["new.field.photo.label"]}</Label>
         <PhotoUpload
           label={text["new.field.photo.prompt"]}
           direction={direction}
@@ -236,15 +243,14 @@ const NewPost = (props: {
           label: text["new.field.link.label"],
           type: "url",
           name: "link",
-          value: link,
+          value: linkToShow,
           placeholder: text["new.field.link.prompt"],
           action: handleInputChange,
-          length: 5
+          length: 5,
+          direction: direction
         })}
       </Section>
     ) : null;
-
-  const mockFn = (props: any) => {};
 
   const categoryName = categoryIdToName(
     categories,
@@ -263,10 +269,14 @@ const NewPost = (props: {
   // TODO: fix below
   const preview =
     step === 6 ? (
-      <Preview
+      <PreviewBlock
         post={post}
+        link={linkToShow}
         direction={direction}
-        text={{
+        onChange={() => {}}
+        text=''
+        pinned={false}
+        titles={{
           problem: text["post.problem"],
           solution: text["post.solution"]
         }}
@@ -274,17 +284,8 @@ const NewPost = (props: {
     ) : null;
   const loadingElement = props.loading ? <Loading /> : null;
 
-  const goHome = () => {
-    props.setModule(props.prevModule);
-  };
-  const headerObject = {
-    name: "New Post",
-    left: { icon: <div>back</div>, action: goHome }
-  };
-  // console.log(message)
   return (
     <Content padded>
-      {/* <Header {...headerObject} /> */}
       <Center>
         <SubTitle title={pageSubTitle} direction={direction} />
         {stepsComponent}
@@ -303,12 +304,18 @@ const NewPost = (props: {
         direction={direction}
         message={message}
       />
-      <ButtonsWrapper row direction={direction}>
-        {buttonPrimary}
-        <Button mode='secondary' disabled={step === 1} action={handleBackStep}>
+      {preview}
+      <Message direction={direction}>{message}</Message>
+      <InLine direction={direction} justify='space-around'>
+        <Button
+          mode='secondary'
+          disabled={step === 1}
+          onClick={handleBackStep}
+          label='Back'>
           {text["new.steps.button.back"]}
         </Button>
-      </ButtonsWrapper>
+        {buttonPrimary}
+      </InLine>
     </Content>
   );
 };
@@ -324,7 +331,8 @@ const mapStateToProps = (state: AppState) => {
     step: state.step,
     prevModule: state.prevModule,
     newPost: state.newPost,
-    loading: state.loading
+    loading: state.loading,
+    news: state.news
   };
 };
 

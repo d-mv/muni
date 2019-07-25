@@ -2,7 +2,7 @@ import React from "react";
 
 import postDays from "../../../modules/post_days";
 
-import style from "./style/Age.module.scss";
+import { PostAge, PostAgeText } from "../../../styles/common/PostAge";
 
 const Age = (props: {
   date: string;
@@ -11,15 +11,13 @@ const Age = (props: {
 }) => {
   const ageResponse: { [index: string]: string } = postDays(props.date);
   const ageNumber = ageResponse[Object.keys(ageResponse)[0]];
-  let elementStyle = { age: style.age, text: style.text };
 
   let text = props.text[Object.keys(ageResponse)[0]];
-  if (props.direction === "rtl") elementStyle.age = style.ageR;
   return (
-    <p className={elementStyle.age}>
+    <PostAge direction={props.direction}>
       {ageNumber.toLocaleString()}
-      <span className={elementStyle.text}>{text}</span>
-    </p>
+      <PostAgeText>{text}</PostAgeText>
+    </PostAge>
   );
 };
 
