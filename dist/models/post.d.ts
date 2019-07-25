@@ -17,6 +17,7 @@ export interface PostType {
     category: ObjectID;
     active: boolean;
     votes?: ObjectID[];
+    votesCount: number;
     reply?: ReplyType;
     createdAt: Date;
 }

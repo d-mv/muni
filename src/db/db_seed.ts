@@ -190,13 +190,13 @@ const dbSeed = async () => {
     // const location = await locations();
     // const user = await users();
     // const post = await posts();
-    const newsPosts = await news();
+    // const newsPosts = await news();
     return [
       // category,
       // location,
       // user,
       // post
-      newsPosts
+      // newsPosts
     ];
   } catch (error) {
     return error;

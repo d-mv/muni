@@ -49,6 +49,7 @@ router.patch("/:id", authenticate, (req, res) => __awaiter(this, void 0, void 0,
         res.status(404).send();
     }
     const data = req.body;
+    console.log(data);
     const { photo } = data;
     let photoUploaded = { secure_url: "" };
     const startOfUrl = photo.split(":")[0];

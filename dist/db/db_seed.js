@@ -190,13 +190,13 @@ const dbSeed = () => __awaiter(this, void 0, void 0, function* () {
         // const location = await locations();
         // const user = await users();
         // const post = await posts();
-        const newsPosts = yield news();
+        // const newsPosts = await news();
         return [
-            // category,
-            // location,
-            // user,
-            // post
-            newsPosts
+        // category,
+        // location,
+        // user,
+        // post
+        // newsPosts
         ];
     }
     catch (error) {
