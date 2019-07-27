@@ -1,16 +1,20 @@
 {
-  "5d1f6a5ab80e234c64cb452f": [
+  "5d3a2313a0c3688fd33599da": [
     {
-      "name": "Votes, per petiiton",
-      "url": "https://charts.mongodb.com/charts-m220js-zjtqv/embed/charts?id=d6fecdcc-582b-4d2e-8e81-c3740a2f2755&tenant=b877ca60-6a48-4905-bc3e-c7f74418d5d7"
+      "name": "Petitions, sorted by votes",
+      "url": "https://charts.mongodb.com/charts-project-0-gkjep/embed/charts?id=9b800b45-5ea3-4ef8-bb10-0317a59e4392&tenant=9a9ec02c-5930-4e74-b3da-5af331b65b97"
     },
     {
-      "name": "Municipality Replies, UP vs DOWN",
-      "url": "https://charts.mongodb.com/charts-m220js-zjtqv/embed/charts?id=84cd1412-4e12-4625-8b13-e52bd23a9c77&tenant=b877ca60-6a48-4905-bc3e-c7f74418d5d7"
+      "name": "Reply voting, per petition",
+      "url": "https://charts.mongodb.com/charts-project-0-gkjep/embed/charts?id=ddb39982-0dcb-4765-8567-206bb1c1a90e&tenant=9a9ec02c-5930-4e74-b3da-5af331b65b97"
     },
     {
-      "name": "Petitions per Month",
-      "url": "https://charts.mongodb.com/charts-m220js-zjtqv/embed/charts?id=ee8ce1fe-267b-4ca2-a1a2-2b151597c246&tenant=b877ca60-6a48-4905-bc3e-c7f74418d5d7"
+      "name": "Category intensity (posts, per category)",
+      "url": "https://charts.mongodb.com/charts-project-0-gkjep/embed/charts?id=d4ecb239-252d-43e6-accf-67442f980a2e&tenant=9a9ec02c-5930-4e74-b3da-5af331b65b97"
+    },
+    {
+      "name": "Petitions per user",
+      "url": "https://charts.mongodb.com/charts-project-0-gkjep/embed/charts?id=0473fae8-af60-4272-8e89-7f70b5ac42fe&tenant=9a9ec02c-5930-4e74-b3da-5af331b65b97"
     }
   ]
 }

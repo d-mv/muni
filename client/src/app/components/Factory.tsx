@@ -76,7 +76,7 @@ export const WelcomeDesktop = (props: {
 }) =>
   componentFactory({
     children: <WelcomeDesktopPage />,
-    nav: true,
+    nav: false,
     config: props.config
   });
 export const Login = (props: {

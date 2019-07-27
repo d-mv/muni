@@ -5,7 +5,8 @@ import {
   SecondaryButton,
   AttentionButton,
   FormButton,
-  MinimalButton
+  MinimalButton,
+  WhiteButton
 } from "../styles/Button";
 
 const Button = (props: {
@@ -78,6 +79,11 @@ const Button = (props: {
         <MinimalButton type={type} onClick={() => handleClick()}>
           {children}
         </MinimalButton>
+      );
+      break;
+    case "white":
+      button = (
+        <WhiteButton onClick={() => handleClick()}>{children}</WhiteButton>
       );
   }
 

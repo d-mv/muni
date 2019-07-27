@@ -8,7 +8,7 @@ import Help from "../features/Help";
 
 import Button from "./Button";
 import Title from "../styles/Title";
-import Icon from "../styles/Header/Icon";
+import Icon from "../styles/header/Icon";
 import PageHeader from "../styles/Header";
 
 import { iconHelp } from "../icons/";

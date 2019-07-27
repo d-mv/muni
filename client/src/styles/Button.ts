@@ -7,7 +7,11 @@ import {
   grey,
   attention,
   attention10,
-  transparent
+  transparent,
+  dark,
+  dark70,
+  primaryLight,
+  primaryDark
 } from "./_colors";
 import { buttonShadow, borderPrimary, borderAttention } from "./_ui";
 import { h5, h4 } from "./_typography";
@@ -20,7 +24,8 @@ const Button = styled.button`
   margin: 0 1rem;
   transition: ${transition};
   &:active {
-    transform: scale(0.95);
+    transform: translateY(4px);
+    /* transform: scale(0.95); */
   }
 `;
 
@@ -32,6 +37,10 @@ export const PrimaryButton = styled(Button)`
   color: ${white};
   box-shadow: ${buttonShadow(primary30)};
   font: ${h4};
+  &:hover {
+    background-color: ${primaryDark};
+    border-color: ${primaryDark};
+  }
 `;
 
 export const SecondaryButton = styled(Button)`
@@ -49,6 +58,13 @@ export const AttentionButton = styled(PrimaryButton)`
   font: ${h5};
   border: ${borderAttention} !important;
   box-shadow: ${buttonShadow(attention10)};
+`;
+export const WhiteButton = styled(PrimaryButton)`
+  background-color: ${white};
+  color: ${dark};
+  font: ${h5};
+  border: ${white} !important;
+  box-shadow: ${buttonShadow(dark70)};
 `;
 
 export const FormButton = styled.button`
