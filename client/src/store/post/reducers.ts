@@ -20,7 +20,6 @@ export const posts = (state: post[] = [emptyPost], action: Action): post[] => {
 };
 
 export const showPost = (state = { show: false }, action: Action) => {
-  console.log({ ...state, ...action.payload });
   switch (action.type) {
     case "SHOW_POST":
       return { ...state, ...action.payload };

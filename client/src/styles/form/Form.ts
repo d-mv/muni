@@ -12,7 +12,8 @@ const Form = styled.form<IProps>`
   direction: ${props => props.direction};
   border-radius: ${props => (props.desktop ? radiusMed : 0)};
   box-shadow: ${props => (props.desktop ? cardShadow : "none")};
-  background-color: ${props => (props.desktop ? white : "none")};
+  background-color: ${white};
+  /* background-color: ${props => (props.desktop ? white : "none")}; */
 `;
 
 export default Form;

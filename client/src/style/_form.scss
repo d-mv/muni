@@ -1,81 +1,81 @@
-.section {
-  margin-bottom: var(--distStandard);
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
+// .section {
+//   margin-bottom: var(--distStandard);
+//   height: fit-content;
+//   display: flex;
+//   flex-direction: column;
 
-  // to avoid difference in height between select and input
-  input {
-    height: 2rem;
-  }
+//   // to avoid difference in height between select and input
+//   input {
+//     height: 2rem;
+//   }
 
-  input,
-  select,
-  textarea {
-    border: var(--border);
-    border-radius: var(--borderRadius);
-    background-color: var(--colorWhite);
-    font: var(--textFormField);
-    padding: .5rem .8rem;
-    z-index: 10;
+//   input,
+//   select,
+//   textarea {
+//     border: var(--border);
+//     border-radius: var(--borderRadius);
+//     background-color: var(--colorWhite);
+//     font: var(--textFormField);
+//     padding: .5rem .8rem;
+//     z-index: 10;
 
-    &::placeholder {
-      color: var(--colorGrey);
-    }
+//     &::placeholder {
+//       color: var(--colorGrey);
+//     }
 
-    &:focus {
-      border: none;
-      border: var(--borderPrimaryThin);
-    }
-  }
+//     &:focus {
+//       border: none;
+//       border: var(--borderPrimaryThin);
+//     }
+//   }
 
-  // to avoid hiding down icon
-  select {
-    background: none;
-  }
+//   // to avoid hiding down icon
+//   select {
+//     background: none;
+//   }
 
-  // to avoid hiding the bottom right corner
-  textarea {
-    border-radius: var(--borderRadiusText);
-  }
+//   // to avoid hiding the bottom right corner
+//   textarea {
+//     border-radius: var(--borderRadiusText);
+//   }
 
-  .inline {
-    height: fit-content;
-    display: flex;
-    align-items: center;
+//   .inline {
+//     height: fit-content;
+//     display: flex;
+//     align-items: center;
 
-    select {
-      padding-left: 2.7rem;
-      width: 100%;
-    }
+//     select {
+//       padding-left: 2.7rem;
+//       width: 100%;
+//     }
 
-    svg {
-      position: absolute;
-      width: 1.5rem;
-      height: 1.5rem;
-      padding: .2rem;
-      grid-column: 1;
-      grid-row: 1;
-      margin-left: .8rem;
-    }
-  }
+//     svg {
+//       position: absolute;
+//       width: 1.5rem;
+//       height: 1.5rem;
+//       padding: .2rem;
+//       grid-column: 1;
+//       grid-row: 1;
+//       margin-left: .8rem;
+//     }
+//   }
 
-}
+// }
 
-.sectionRTL {
-  @extend .section;
-  direction: rtl;
+// .sectionRTL {
+//   @extend .section;
+//   direction: rtl;
 
-  select {
-    padding-right: 2.7rem;
-    padding-left: none;
-  }
+//   select {
+//     padding-right: 2.7rem;
+//     padding-left: none;
+//   }
 
-  svg {
-    margin-left: none;
-    margin-right: .8rem;
-  }
-}
+//   svg {
+//     margin-left: none;
+//     margin-right: .8rem;
+//   }
+// }
 
 
 .formMessage {

@@ -68,9 +68,7 @@ const Navigation = (props: any) => {
         <nav className={headerStyle}>
           <NavButton mode='return-welcome' action={action} />
           <h1>Our Change</h1>
-          <div className='langSwitchButton'>
-            <LangSwitch white />
-          </div>
+          <LangSwitch white />
         </nav>
       );
       break;
@@ -79,9 +77,7 @@ const Navigation = (props: any) => {
         <nav className={headerStyle}>
           <NavButton mode='return-login' action={action} />
           <h1>Our Change</h1>
-          <div className='langSwitchButton'>
-            <LangSwitch white />
-          </div>
+          <LangSwitch white />
         </nav>
       );
       break;

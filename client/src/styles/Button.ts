@@ -14,10 +14,11 @@ import { h5, h4 } from "./_typography";
 import { transition } from "./_animation";
 
 const Button = styled.button`
+  user-select: none;
   letter-spacing: 0.1rem;
   background: none;
   margin: 0 1rem;
-  transition: ${transition}
+  transition: ${transition};
   &:active {
     transform: scale(0.95);
   }

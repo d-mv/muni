@@ -26,7 +26,6 @@ import Content from "../../styles/Content";
 
 const Register = (props: {
   locations: LocationState;
-  // storedLocations?: TYPE.data;
   language: indexedObjAny;
   message: string;
   loading: boolean;
@@ -119,7 +118,7 @@ const Register = (props: {
   };
 
   // set the form elements
-  const showElement = loading ? (
+  const messageObject = loading ? (
     <div className='formLoading'>
       <Loading />
     </div>
@@ -127,7 +126,7 @@ const Register = (props: {
     <div className='formMessage'>{message}</div>
   );
 
-  let emailElement = formSection({
+  const emailElement = formSection({
     label: text["login.label.email"],
     type: "email",
     name: "email",
@@ -137,7 +136,7 @@ const Register = (props: {
     direction: direction
   });
 
-  let passwordElement = formSection({
+  const passwordElement = formSection({
     label: text["login.label.password"],
     type: "password",
     name: "pass",
@@ -147,13 +146,18 @@ const Register = (props: {
     length: 7,
     direction: direction
   });
-
-  const styles = {
-    regular: {},
-    notMatching: {
-      border: ".1rem solid var(--colorAttention)"
-    }
-  };
+  
+  const sPasswordElement = formSection({
+    attention: pass !== secondPass,
+    label: text["login.label.password.repeat"],
+    type: "password",
+    name: "secondPass",
+    value: typed[secondPass],
+    placeholder: text["login.prompt.password.repeat"],
+    action: handleInputChange,
+    length: 7,
+    direction: direction
+  });
 
   const locationsElement = formSelection({
     list: locationsObject,
@@ -189,33 +193,13 @@ const Register = (props: {
   return (
     <Content padding='1rem'>
       <Form direction={direction} onSubmit={handleSubmit}>
-        {/* visible during registration */}
         {locationsElement}
         {fNameElement}
         {lNameElement}
         {emailElement}
         {passwordElement}
-        <section className='section'>
-          <Label direction={direction}>
-            {text["login.label.password.repeat"]}
-          </Label>
-          <Field
-            direction={direction}
-            type='password'
-            name='secondPass'
-            value={typed[secondPass]}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              handleInputChange(event)
-            }
-            placeholder={text["login.prompt.password.repeat"]}
-            minLength={7}
-            required
-            style={pass === secondPass ? styles.regular : styles.notMatching}
-          />
-        </section>
-        {/* message & loading */}
-        {showElement}
-        {/* buttons */}
+        {sPasswordElement}
+        {messageObject}
         <InLine direction={direction} justify='space-around'>
           <Button
             mode='form'

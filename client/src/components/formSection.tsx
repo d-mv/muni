@@ -1,11 +1,12 @@
 import React from "react";
 
-import styleFactory from "../modules/style_factory";
-
 import Label from "../styles/form/Label";
 import Field from "../styles/form/Field";
 import Area from "../styles/form/Area";
 import DownIcon from "../styles/form/DownIcon";
+import Select from "../styles/form/Select";
+import Option from "../styles/form/Option";
+import Section from "../styles/Section";
 
 import { down } from "../icons";
 
@@ -18,6 +19,7 @@ export const formSection = (props: {
   action: (
     arg0: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  attention?: boolean;
   length?: number;
   direction: string;
   focus?: boolean;
@@ -26,6 +28,7 @@ export const formSection = (props: {
   const input =
     props.type === "textarea" ? (
       <Area
+        data-id={props.name}
         direction={props.direction}
         autoFocus={props.focus}
         name={props.name}
@@ -40,6 +43,8 @@ export const formSection = (props: {
       />
     ) : (
       <Field
+        data-id={props.name}
+        attention={props.attention}
         direction={props.direction}
         autoFocus={props.focus}
         type={props.type}
@@ -55,10 +60,12 @@ export const formSection = (props: {
       />
     );
   return (
-    <section className='section'>
-      <Label direction={props.direction}>{props.label}</Label>
+    <Section direction={props.direction}>
+      <Label id='form__label' direction={props.direction}>
+        {props.label}
+      </Label>
       {input}
-    </section>
+    </Section>
   );
 };
 
@@ -71,24 +78,22 @@ export const formSelection = (props: {
   focus?: boolean;
   register?: boolean;
 }) => (
-  <section
-    className={styleFactory("section", props.direction)}
+  <Section
+    id='form__section'
+    direction={props.direction}
     onChange={(event: React.FormEvent<Element>) => props.action(event)}>
-      <Label direction={props.direction}>{props.label}</Label>
-    <select
-      autoFocus={props.focus}
-      style={{ backgroundColor: "white", zIndex: "auto" }}>
-      {props.list.map((location: { value: string; label: string }) => {
-        return (
-          <option
-            selected={props.value === location.value}
-            key={Math.random() * 100}
-            value={location.value}>
-            {location.label}
-          </option>
-        );
-      })}
-    </select>
+    <Label direction={props.direction}>{props.label}</Label>
+    <Select id="form__select" direction={props.direction} autoFocus={props.focus} width='100%'>
+      {props.list.map((location: { value: string; label: string }) => (
+        <Option
+          id='form__option'
+          selected={props.value === location.value}
+          key={Math.random() * 100}
+          value={location.value}>
+          {location.label}
+        </Option>
+      ))}
+    </Select>
     <DownIcon direction={props.direction}>{down}</DownIcon>
-  </section>
+  </Section>
 );

@@ -1,19 +1,21 @@
-import { indexedObj } from "../store/types";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
 import { AppState } from "../store";
-import styleFactory from "../modules/style_factory";
-import Button from "./Button";
-import { iconHelp } from "../icons/";
-import React, { useEffect } from "react";
-import Title from "../styles/Title";
-import { connect } from "react-redux";
-import styles from "./style/Header.module.scss";
-import Help from "../features/Help";
 import { showHelp } from "../store/users/actions";
+
+import Help from "../features/Help";
+
+import Button from "./Button";
+import Title from "../styles/Title";
+import Icon from "../styles/Header/Icon";
+import PageHeader from "../styles/Header";
+
+import { iconHelp } from "../icons/";
 
 const Header = (props: {
   help: boolean;
-  language: indexedObj;
+  direction: string;
   name: string;
   right?: {
     icon: JSX.Element;
@@ -29,15 +31,7 @@ const Header = (props: {
   module: string;
   showHelp: (arg0: boolean) => void;
 }) => {
-  const { direction } = props.language;
   const { name, user, module } = props;
-
-  const makeIcon = (icon: any, noRtl?: boolean) => {
-    const style = noRtl
-      ? styles["icon"]
-      : styles[styleFactory("icon", direction)];
-    return <div className={style}>{icon}</div>;
-  };
 
   useEffect(() => {
     if (user.settings.help) {
@@ -61,39 +55,36 @@ const Header = (props: {
   };
 
   const left = props.left ? (
-    makeIcon(props.left.icon, props.left.noRtl)
+    <Icon rtl={props.left.noRtl ? props.left.noRtl : false}>
+      {props.left.icon}
+    </Icon>
   ) : module === "home" ? (
-    makeIcon(
-      iconHelp(props.user.type === "muni" ? "secondary" : "primary"),
-      true
-    )
-  ) : (
-    <div />
-  );
-
-  const right = props.right ? (
-    makeIcon(props.right.icon, props.right.noRtl)
-  ) : (
-    <div />
-  );
+    <Icon rtl={true}>
+      {iconHelp(props.user.type === "muni" ? "secondary" : "primary")}
+    </Icon>
+  ) : null;
 
   return (
-    <header className={styles[styleFactory("plank", direction)]}>
+    <PageHeader direction={props.direction}>
       <Button mode='minimal' onClick={handleLeftAction}>
         {left}
       </Button>
-      <Title muni={props.user.type==='muni'}>{name}</Title>
+      <Title muni={props.user.type === "muni"}>{name}</Title>
       <Button mode='minimal' onClick={handleRightAction}>
-        {right}
+        {props.right ? (
+          <Icon rtl={props.right.noRtl ? props.right.noRtl : false}>
+            {props.right.icon}
+          </Icon>
+        ) : null}
       </Button>
       {props.help ? <Help /> : null}
-    </header>
+    </PageHeader>
   );
 };
 
 const mapStateToProps = (state: AppState) => {
   return {
-    language: state.language,
+    direction: state.language.direction,
     user: state.auth.user,
     help: state.help,
     module: state.module

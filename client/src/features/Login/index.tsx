@@ -48,7 +48,6 @@ const Login = (props: {
     event.preventDefault();
 
     if (props.desktop) {
-      // TODO: refactor
       props.muniLogin({
         email,
         pass
@@ -92,7 +91,7 @@ const Login = (props: {
     </div>
   );
 
-  let emailElement = formSection({
+  const emailElement = formSection({
     label: text["login.label.email"],
     type: "email",
     name: "email",
@@ -104,7 +103,7 @@ const Login = (props: {
     direction: direction
   });
 
-  let passwordElement = formSection({
+  const passwordElement = formSection({
     label: text["login.label.password"],
     type: "password",
     name: "pass",
@@ -125,9 +124,7 @@ const Login = (props: {
       }>
       {emailElement}
       {passwordElement}
-      {/* message & loading */}
       {showElement}
-      {/* buttons */}
       <InLine direction={direction} justify='space-around'>
         <Button mode='form' submit disabled={props.loading} label='Submit'>
           <input

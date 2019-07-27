@@ -22,6 +22,7 @@ export const radiusMin = `.4rem`;
 export const radiusMed = `.8rem`;
 export const radiusLarg = `2rem`;
 export const borderPost = `.1rem solid ${grey}`;
+export const borderWhite = `.1rem solid ${white}`;
 export const borderPrimary = `.1rem solid ${primary}`;
 export const borderPrimaryLight = `.4rem solid ${primaryLight}`;
 export const borderSecondary = `.1rem solid ${secondary}`;

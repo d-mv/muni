@@ -10,7 +10,7 @@ const DownIcon = styled.div<IProps>`
   height: 2rem;
   width: 2rem;
   z-index: 2;
-  padding: 0.5rem 0rem;
+  padding: 0.5rem;
   direction: ${props => props.direction};
 `;
 

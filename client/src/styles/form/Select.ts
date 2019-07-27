@@ -1,24 +1,22 @@
 import styled from "styled-components";
-import { borderPost, radiusMin, borderAttention } from "../_ui";
 import {
-  textField,
+  textPlaceholderMedium,
   textPlaceholder,
   textFieldMedium,
-  textPlaceholderMedium
+  textField
 } from "../_typography";
+import { radiusMin, borderPost } from "../_ui";
 import { grey } from "../_colors";
 
-export interface IProps {
+export interface SProps {
   direction: string;
   medium?: boolean;
   width?: string;
-  attention?: boolean;
 }
 
-const Field = styled.input<IProps>`
-  padding: 0.5rem 1rem;
-  border: ${props =>
-    props.attention ? borderAttention : borderPost} !important;
+const Select = styled.select<SProps>`
+  padding: 0.5rem 3rem 0.5rem 1rem;
+  border: ${borderPost} !important;
   border-radius: ${radiusMin};
   font: ${props => (props.medium ? textFieldMedium : textField)};
   &::placeholder {
@@ -28,6 +26,7 @@ const Field = styled.input<IProps>`
   direction: ${props => props.direction};
   width: ${props => (props.width ? props.width : "undefined")};
   background-color: white;
+  z-index: auto;
 `;
 
-export default Field;
+export default Select;
