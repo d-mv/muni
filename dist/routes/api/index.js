@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_seed_1 = require("../../db/db_seed");
+const cloudinary_1 = require("../../middleware/cloudinary");
 const express = require("express");
 const router = new express.Router();
 router.get("/seed", (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -21,13 +22,16 @@ router.get("/seed", (req, res) => __awaiter(this, void 0, void 0, function* () {
     }
 }));
 router.delete("/image", (req, res) => __awaiter(this, void 0, void 0, function* () {
-    console.log(req.body);
-    // try {
-    //   const seed = await dbSeed();
-    //   res.status(201).send({ message: seed });
-    // } catch (e) {
-    //   res.status(400).send(e);
-    // }
+    const { link } = req.body;
+    if (link) {
+        try {
+            const result = yield cloudinary_1.deletePhoto(link);
+            res.status(201).send(result);
+        }
+        catch (e) {
+            res.status(400).send(e);
+        }
+    }
 }));
 exports.default = router;
 //# sourceMappingURL=index.js.map

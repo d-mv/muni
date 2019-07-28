@@ -19,4 +19,7 @@ exports.uploadPhoto = (photo) => __awaiter(this, void 0, void 0, function* () {
         folder: "muni/uploads"
     });
 });
+exports.deletePhoto = (link) => __awaiter(this, void 0, void 0, function* () {
+    return yield cloudinary.v2.uploader.destroy(`muni/${link.split("/muni/")[1].split(".")[0]}`);
+});
 //# sourceMappingURL=cloudinary.js.map

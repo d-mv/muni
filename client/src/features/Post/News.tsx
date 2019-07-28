@@ -6,7 +6,8 @@ import {
   getNews,
   updateNews,
   showPost,
-  deleteNews
+  deleteNews,
+  deletePhoto
 } from "../../store/post/actions";
 import { indexedObjAny } from "../../store/types";
 
@@ -39,6 +40,7 @@ const PostMuni = (props: {
   showPost: (arg0: any) => void;
   deleteNews: (arg0: string) => void;
   prevModule: string;
+  deletePhoto: (arg0: string) => void;
 }) => {
   const { direction, text } = props.language;
   const { user } = props.auth;
@@ -77,6 +79,8 @@ const PostMuni = (props: {
     if (answer === "attention") {
       props.showPost(originalPost);
     } else {
+      if (originalPost.photo && props.post.photo !== originalPost.photo)
+        props.deletePhoto(originalPost.photo);
       props.updateNews(props.post);
     }
     setMuniEdit(false);
@@ -229,5 +233,5 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(
   mapStateToProps,
-  { setModule, getNews, updateNews, showPost, deleteNews }
+  { setModule, getNews, updateNews, showPost, deleteNews, deletePhoto }
 )(PostMuni);

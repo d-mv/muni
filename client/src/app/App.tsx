@@ -263,7 +263,6 @@ const App = (props: {
       show = <Mine config={config} />;
       break;
     case "post":
-      console.log(props.post.type);
       show = <Post news={props.post.type === "news"} config={config} />;
       break;
   }

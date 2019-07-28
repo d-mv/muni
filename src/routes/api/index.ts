@@ -1,4 +1,5 @@
 import dbSeed from "../../db/db_seed";
+import { deletePhoto } from "../../middleware/cloudinary";
 
 const express = require("express");
 const router = new express.Router();
@@ -12,13 +13,15 @@ router.get("/seed", async (req: any, res: any) => {
   }
 });
 router.delete("/image", async (req: any, res: any) => {
-  console.log(req.body)
-  // try {
-  //   const seed = await dbSeed();
-  //   res.status(201).send({ message: seed });
-  // } catch (e) {
-  //   res.status(400).send(e);
-  // }
+  const { link } = req.body;
+  if (link) {
+    try {
+      const result = await deletePhoto(link);
+      res.status(201).send(result);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  }
 });
 
-export default router
+export default router;
