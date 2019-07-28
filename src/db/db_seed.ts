@@ -112,7 +112,7 @@ const users = async () => {
   try {
     const listOfLocations = await Location.find({});
     listOfLocations.forEach(async (loc: LocationType) => {
-      for (let i = 0; i < randomNumber(6); i++) {
+      for (let i = 0; i < 15; i++) {
         const user = new User({
           pass: "1234567",
           fName: faker.name.firstName(),
@@ -132,13 +132,11 @@ const users = async () => {
 
 const posts = async () => {
   try {
-    const listOfLocations = await Location.find({});
     const listOfUsers = await User.find({});
     const louLength = listOfUsers.length - 1;
     const listOfCategories = await Category.find({});
-    listOfLocations.forEach(async (loc: UserType) => {
-      for (let i = 0; i < 20; i++) {
-        const usr = listOfUsers[randomNumber(louLength)];
+    listOfUsers.forEach(async (usr: UserType) => {
+      for (let i = 0; i < 5; i++) {
         let other = listOfUsers[randomNumber(louLength)];
         const post = new Post({
           title: faker.lorem.sentence(),
@@ -146,11 +144,11 @@ const posts = async () => {
           solution: faker.lorem.paragraphs(2),
           photo: getImage(),
           link: faker.internet.url(),
-          location: loc._id,
+          location: usr.location,
           category: listOfCategories[randomNumber(listOfCategories.length - 1)],
           createdBy: usr._id,
-          votes: [other === usr ? listOfUsers[randomNumber(louLength)] : other]
-          // reply:{ text:'', up: [], down: [] }
+          votes: [other === usr ? listOfUsers[randomNumber(louLength)] : other],
+          reply: { text: faker.lorem.paragraphs(2), up: [], down: [] }
         });
         await post.save();
       }
@@ -189,14 +187,14 @@ const dbSeed = async () => {
     // const category = await categories();
     // const location = await locations();
     // const user = await users();
-    // const post = await posts();
-    // const newsPosts = await news();
+    const post = await posts();
+    const newsPosts = await news();
     return [
       // category,
       // location,
       // user,
-      // post
-      // newsPosts
+      post,
+      newsPosts
     ];
   } catch (error) {
     return error;

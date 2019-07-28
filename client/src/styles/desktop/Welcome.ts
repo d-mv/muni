@@ -5,7 +5,7 @@ export const Welcome = styled.div`
   height: 100vh;
   width: 100vw;
   background: rgba(0, 0, 0, 0)
-    url("https://res.cloudinary.com/diciu4xpu/image/upload/v1560150315/muni/photo-1509580357930-a711cf9d888d.jpg")
+    url("https://res.cloudinary.com/dpqyiwjbs/image/upload/v1564349461/ourchange/welcome.jpg")
     no-repeat scroll center center / cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;

@@ -8,10 +8,10 @@ cloudinary.config({
 
 export const uploadPhoto = async (photo: string) =>
   await cloudinary.v2.uploader.upload(photo, {
-    folder: "muni/uploads"
+    folder: "ourchange/uploads"
   });
 
 export const deletePhoto = async (link: string) =>
-  await cloudinary.v2.uploader.destroy(
-    `muni/${link.split("/muni/")[1].split(".")[0]}`
-  );
+         await cloudinary.v2.uploader.destroy(
+           `ourchange/${link.split("/ourchange/")[1].split(".")[0]}`
+         );

@@ -10,7 +10,6 @@ import { showPostPayload } from "../store/post/types";
 import {
   setToken,
   checkToken,
-  fetchData,
   getCategories,
   typingData,
   setMessage
@@ -45,7 +44,6 @@ import {
 
 import "../style/App.scss";
 import { AuthState } from "../models";
-import { emptyPost, emptyNewPost } from "../store/defaults";
 
 const App = (props: {
   token: string;
@@ -69,7 +67,6 @@ const App = (props: {
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   fetchLocations: (props?: any) => any;
-  fetchData: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
   getPosts: (arg0: string) => void;
   getNews: (arg0: string) => void;
@@ -207,11 +204,11 @@ const App = (props: {
       });
       props.clearPost();
       if (step !== 1) props.setStep(1);
-    } else if (props.module === 'welcome') {
+    } else if (props.module === "welcome") {
       // if (module !== "welcome" && !auth.status && !props.loading && !loading) {
       // toggleModule("welcome");
       setLoading(false);
-    // }
+      // }
     }
   }, [props.module]);
 
@@ -297,7 +294,6 @@ export default connect(
     setToken,
     checkToken,
     fetchLocations,
-    fetchData,
     showPost,
     getPosts,
     getNews,

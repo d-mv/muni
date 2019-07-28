@@ -4,7 +4,7 @@ import { categoryIdToName } from "../../modules/category_processor";
 import { goBack, iconEdit, iconClose } from "../../icons";
 
 import { AppState } from "../../store";
-import { vote, setModule, fetchData } from "../../store/users/actions";
+import { setModule } from "../../store/users/actions";
 import {
   updatePost,
   deletePost,
@@ -60,8 +60,6 @@ const Post = (props: {
   post: any;
   language: indexedObjAny;
   votePost: (arg0: string) => void;
-  // location: data;
-  vote: (arg0: string, arg1: string) => void;
   updatePost: (arg0: any) => void;
   setModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
@@ -83,8 +81,6 @@ const Post = (props: {
   const [replyOpened, setReplyOpened] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showNewReply, setShowNewReply] = useState(false);
-  // const [newReply, setNewReply] = useState(post.reply.text);
-  const replyRef = React.createRef<HTMLDivElement>();
 
   const originalPost = props.posts.filter(
     (post: any) => post._id === props.post._id
@@ -594,10 +590,8 @@ const mapStateToProps = (state: AppState) => {
 export default connect(
   mapStateToProps,
   {
-    vote,
     updatePost,
     setModule,
-    fetchData,
     getPosts,
     deletePost,
     showPost,
