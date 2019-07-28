@@ -1,11 +1,11 @@
 {
-  "name": "muni-dev",
-  "version": "0.8.0",
+  "name": "our-change",
+  "version": "1.0.0",
   "author": "Dmitry Melnikov",
-  "description": "Muni Project",
-  "license": "UNLICENSED",
+  "description": "Our change",
+  "license": "MIT",
   "private": true,
-  "repository": "",
+  "repository": "https://github.com/d-mv/muni",
   "scripts": {
     "dev": "set NODE_ENV=development && npm run build:live",
     "start": "node dist/start.js",

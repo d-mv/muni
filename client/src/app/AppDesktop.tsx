@@ -7,12 +7,7 @@ import { AppState } from "../store";
 import { data } from "../store/types";
 import { showPostPayload } from "../store/post/types";
 
-import {
-  setToken,
-  checkToken,
-  fetchData,
-  getCategories
-} from "../store/users/actions";
+import { setToken, checkToken, getCategories } from "../store/users/actions";
 import { fetchLocations, setModule } from "../store/app/actions";
 import { showPost, getPosts, getNews } from "../store/post/actions";
 
@@ -20,7 +15,11 @@ import logger from "../modules/logger";
 
 import Loading from "../pages/Loading";
 
-import { WelcomeDesktop, LoginDesktop, HomeDesktop } from "./components/Factory";
+import {
+  WelcomeDesktop,
+  LoginDesktop,
+  HomeDesktop
+} from "./components/Factory";
 
 import "../style/App.scss";
 import { AuthState } from "../models";
@@ -39,29 +38,15 @@ const AppDesktop = (props: {
   setToken: (arg0: string) => void;
   checkToken: (arg0: string) => void;
   fetchLocations: (props?: any) => any;
-  fetchData: (arg0: string) => void;
   showPost: (arg0: showPostPayload) => void;
   getPosts: (arg0: string) => void;
   getNews: (arg0: string) => void;
 }) => {
   const { token, cookies, auth } = props;
-  const userMuni = auth.user.type==='muni'
+  const userMuni = auth.user.type === "muni";
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
-
-  const fetchPostsNews = () => {
-    logger({ text: "fetching", emph: "categories", type: "positive" });
-    // setMessage("fetching categories...");
-    // console.log(!Object(props.categories));
-    // if (!Object(props.categories).keys) props.getCategories();
-    // logger({ text: "fetching", emph: "petitions", type: "positive" });
-    // setMessage("fetching petitions...");
-    // props.getPosts(auth.user.location);
-    // logger({ text: "fetching", emph: "news", type: "positive" });
-    // setMessage("fetching news...");
-    // props.getNews(auth.user.location);
-  };
 
   const toggleModule = (module: string) => {
     props.setModule(props.module, module);
@@ -86,12 +71,6 @@ const AppDesktop = (props: {
         cookies.set("token", token);
       }
       axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
-
-      // if (posts.length < 1) {
-      //   logger({ text: "posts are", emph: "false", type: "attention" });
-      //   setMessage("fetching data...");
-      //   fetchPostsNews();
-      // }
     } else if (!token) {
       logger({ text: "auth is", emph: "false", type: "attention" });
       const cookie = cookies.get("token");
@@ -112,10 +91,6 @@ const AppDesktop = (props: {
 
   useEffect(() => {
     console.log("2. triggered module");
-    // if (props.module != "post" && props.post.show) {
-    //   console.log("- module is not post, clear it");
-    //   props.showPost({ show: false });
-    // }
     if (props.module === "home") {
       console.log("- module is home");
       setLoading(false);
@@ -125,8 +100,6 @@ const AppDesktop = (props: {
   useEffect(() => {
     console.log("6. triggered posts");
     if (
-      // props.posts.length > 0 &&
-      // props.module !== "post" &&
       token !== "clear" &&
       auth.user._id.length > 0 &&
       props.module !== "home"
@@ -136,14 +109,6 @@ const AppDesktop = (props: {
       setLoading(false);
     }
   }, [props.auth]);
-
-  // useEffect(() => {
-  //   console.log("4. triggered post");
-  //   if (props.post.show && props.module !== "post") {
-  //     console.log("- post is there, show post");
-  //     toggleModule("post");
-  //   }
-  // }, [props.post]);
 
   const handleNewButtonClick = () => {
     toggleModule("new");
@@ -189,7 +154,6 @@ export default connect(
     setToken,
     checkToken,
     fetchLocations,
-    fetchData,
     showPost,
     getPosts,
     getNews,

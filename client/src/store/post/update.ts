@@ -131,3 +131,19 @@ export const deleteNews = (id: any) => async (
     })
     .catch(e => {});
 };
+export const deletePhoto = (link: string) => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
+  dispatch({
+    type: "SET_LOADING",
+    loading: true
+  });
+  del({ url: `/image`, body: { link } })
+    .then(response => {
+      dispatch({
+        type: "SET_LOADING",
+        loading: false
+      });
+    })
+    .catch(e => {});
+};

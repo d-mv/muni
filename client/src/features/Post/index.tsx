@@ -4,13 +4,14 @@ import { categoryIdToName } from "../../modules/category_processor";
 import { goBack, iconEdit, iconClose } from "../../icons";
 
 import { AppState } from "../../store";
-import { vote, setModule, fetchData } from "../../store/users/actions";
+import { setModule } from "../../store/users/actions";
 import {
   updatePost,
   deletePost,
   showPost,
   getPosts,
-  votePost
+  votePost,
+  deletePhoto
 } from "../../store/post/actions";
 import { indexedObjAny, data } from "../../store/types";
 
@@ -59,8 +60,6 @@ const Post = (props: {
   post: any;
   language: indexedObjAny;
   votePost: (arg0: string) => void;
-  // location: data;
-  vote: (arg0: string, arg1: string) => void;
   updatePost: (arg0: any) => void;
   setModule: (arg0: string) => void;
   getPosts: (arg0: string) => void;
@@ -71,6 +70,7 @@ const Post = (props: {
   auth: AuthState;
   categories: any;
   locations: data;
+  deletePhoto: (arg0: string) => void;
 }) => {
   // destructuring props
   const { categories, auth, locations, post } = props;
@@ -81,8 +81,6 @@ const Post = (props: {
   const [replyOpened, setReplyOpened] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showNewReply, setShowNewReply] = useState(false);
-  // const [newReply, setNewReply] = useState(post.reply.text);
-  const replyRef = React.createRef<HTMLDivElement>();
 
   const originalPost = props.posts.filter(
     (post: any) => post._id === props.post._id
@@ -111,7 +109,6 @@ const Post = (props: {
   const muniUser = auth.user.type === "muni";
 
   useEffect(() => {
-    console.log("posts changed");
     props.showPost(
       props.posts.filter((post: any) => post._id === props.post._id)[0]
     );
@@ -200,12 +197,17 @@ const Post = (props: {
       if (answer === "attention") {
         props.showPost(originalPost);
       } else {
+        if (originalPost.photo && post.photo !== originalPost.photo)
+          props.deletePhoto(originalPost.photo);
         props.updatePost(post);
       }
     } else {
+      if (originalPost.photo && post.photo !== originalPost.photo)
+        props.deletePhoto(originalPost.photo);
       props.updatePost(post);
     }
   };
+
   const submitVote = () => {
     setShowConfirm(true);
     setTimeout(() => {
@@ -235,10 +237,7 @@ const Post = (props: {
     setMuniEdit(false);
   };
 
-  // TODO: refactor
-
   const handleReplyVoting = (updown: boolean) => {
-    console.log("object");
     logger({
       text: "handleReplyVoting:",
       emph: updown.toString(),
@@ -268,7 +267,7 @@ const Post = (props: {
   ) : null;
 
   const voted = post.votes.includes(props.auth.user._id);
-  console.log("voted ", voted);
+
   const renderVoteButton = () => {
     if (voted) return <AlreadyPosted>{text["post.voted"]}</AlreadyPosted>;
 
@@ -591,13 +590,12 @@ const mapStateToProps = (state: AppState) => {
 export default connect(
   mapStateToProps,
   {
-    vote,
     updatePost,
     setModule,
-    fetchData,
     getPosts,
     deletePost,
     showPost,
-    votePost
+    votePost,
+    deletePhoto
   }
 )(Post);
