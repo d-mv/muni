@@ -11,5 +11,14 @@ router.get("/seed", async (req: any, res: any) => {
     res.status(400).send(e);
   }
 });
+router.delete("/image", async (req: any, res: any) => {
+  console.log(req.body)
+  // try {
+  //   const seed = await dbSeed();
+  //   res.status(201).send({ message: seed });
+  // } catch (e) {
+  //   res.status(400).send(e);
+  // }
+});
 
 export default router

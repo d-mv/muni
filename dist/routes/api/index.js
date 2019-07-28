@@ -20,5 +20,14 @@ router.get("/seed", (req, res) => __awaiter(this, void 0, void 0, function* () {
         res.status(400).send(e);
     }
 }));
+router.delete("/image", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    console.log(req.body);
+    // try {
+    //   const seed = await dbSeed();
+    //   res.status(201).send({ message: seed });
+    // } catch (e) {
+    //   res.status(400).send(e);
+    // }
+}));
 exports.default = router;
 //# sourceMappingURL=index.js.map
